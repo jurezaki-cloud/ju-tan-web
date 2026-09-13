@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 
-export default function CTAButton() {
-  return (
-    <Link
-      href="#contact"
-      className="
+type CTAButtonProps = {
+  className?: string;
+  onClick?: () => void;
+};
+
+export default function CTAButton({
+  className = `
         rounded-full
         bg-emerald-500
         px-6
@@ -18,8 +20,11 @@ export default function CTAButton() {
         hover:bg-emerald-400
         hover:shadow-lg
         hover:shadow-emerald-500/30
-      "
-    >
+      `,
+  onClick,
+}: CTAButtonProps) {
+  return (
+    <Link href="#contact" onClick={onClick} className={className}>
       Brezplačen posvet
     </Link>
   );

@@ -54,7 +54,7 @@ export default function Technologies() {
       <div className="mx-auto max-w-7xl px-6">
 
         <SectionTitle
-          eyebrow="TECHNOLOGIES"
+          badge="TECHNOLOGIES"
           title="Tehnologije, ki jim zaupamo"
           description="Gradimo moderne, hitre in varne rešitve."
         />

@@ -16,7 +16,7 @@ export default function Services() {
         <SectionTitle
           badge="SERVICES"
           title="Digital solutions powered by AI"
-          subtitle="JU-TAN develops premium software, AI automation and modern digital products."
+          description="JU-TAN develops premium software, AI automation and modern digital products."
         />
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">

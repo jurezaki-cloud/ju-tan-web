@@ -50,7 +50,7 @@ export default function Process() {
       <div className="mx-auto max-w-7xl px-6">
 
         <SectionTitle
-          eyebrow="PROCESS"
+          badge="PROCESS"
           title="Kako poteka sodelovanje"
           description="Od prve ideje do končne implementacije."
         />

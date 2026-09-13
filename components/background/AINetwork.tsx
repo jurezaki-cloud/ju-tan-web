@@ -11,6 +11,7 @@ export default function AINetwork() {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const canvasCtx: CanvasRenderingContext2D = ctx;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -28,7 +29,7 @@ export default function AINetwork() {
     }));
 
     function draw() {
-      ctx.clearRect(0, 0, width, height);
+      canvasCtx.clearRect(0, 0, width, height);
 
       for (const p of particles) {
         p.x += p.vx;
@@ -37,10 +38,10 @@ export default function AINetwork() {
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "#22c55e";
-        ctx.fill();
+        canvasCtx.beginPath();
+        canvasCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        canvasCtx.fillStyle = "#22c55e";
+        canvasCtx.fill();
       }
 
       for (let i = 0; i < particles.length; i++) {
@@ -50,12 +51,12 @@ export default function AINetwork() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 130) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(34,197,94,${1 - dist / 130})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+            canvasCtx.beginPath();
+            canvasCtx.moveTo(particles[i].x, particles[i].y);
+            canvasCtx.lineTo(particles[j].x, particles[j].y);
+            canvasCtx.strokeStyle = `rgba(34,197,94,${1 - dist / 130})`;
+            canvasCtx.lineWidth = 0.5;
+            canvasCtx.stroke();
           }
         }
       }
