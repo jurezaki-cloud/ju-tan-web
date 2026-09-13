@@ -10,37 +10,37 @@ import {
 export const services = [
   {
     icon: Bot,
-    title: "AI Automation",
+    title: "Umetna inteligenca in agenti",
     description:
       "Razvoj AI agentov in avtomatizacija poslovnih procesov za večjo učinkovitost.",
   },
   {
     icon: Code2,
-    title: "Software Development",
+    title: "Razvoj programske opreme",
     description:
       "Razvoj poslovnih aplikacij po meri z uporabo sodobnih tehnologij.",
   },
   {
     icon: Globe,
-    title: "Web Development",
+    title: "Spletne rešitve",
     description:
-      "Hitre, moderne in SEO optimizirane spletne strani ter portali.",
+      "Hitre, moderne in SEO-optimizirane spletne strani ter portali.",
   },
   {
     icon: Cloud,
-    title: "Cloud Infrastructure",
+    title: "Infrastruktura v oblaku",
     description:
       "Docker, strežniki, varnostne kopije in upravljanje infrastrukture.",
   },
   {
     icon: ShieldCheck,
-    title: "Cyber Security",
+    title: "Kibernetska varnost",
     description:
       "Zaščita informacijskih sistemov, omrežij in poslovnih podatkov.",
   },
   {
     icon: Palette,
-    title: "Design & Branding",
+    title: "Oblikovanje in video",
     description:
       "Grafično oblikovanje, video produkcija in celostna grafična podoba.",
   },

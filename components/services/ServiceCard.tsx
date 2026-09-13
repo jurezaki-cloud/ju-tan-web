@@ -1,10 +1,11 @@
 "use client";
 
+import { type LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import ServiceIcon from "./ServiceIcon";
 
 interface Props {
-  icon: any;
+  icon: LucideIcon;
   title: string;
   description: string;
 }
@@ -19,7 +20,7 @@ export default function ServiceCard({
       whileHover={{
         y: -8,
       }}
-      transition={{ duration: .25 }}
+      transition={{ duration: 0.25 }}
       className="
       group
       rounded-3xl

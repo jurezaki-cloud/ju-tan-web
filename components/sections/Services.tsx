@@ -11,16 +11,14 @@ export default function Services() {
       className="relative overflow-hidden py-32"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
-        <div className="container relative">
-
+      <div className="container relative">
         <SectionTitle
-          badge="SERVICES"
-          title="Digital solutions powered by AI"
-          description="JU-TAN develops premium software, AI automation and modern digital products."
+          badge="Storitve"
+          title="Rešitve, ki pospešijo vaše poslovanje"
+          description="JU-TAN razvija premium programsko opremo, umetno inteligenco in sodobne digitalne produkte za podjetja, ki želijo rasti hitreje."
         />
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-
           {services.map((service) => (
             <ServiceCard
               key={service.title}
@@ -29,9 +27,7 @@ export default function Services() {
               description={service.description}
             />
           ))}
-
         </div>
-
       </div>
     </section>
   );

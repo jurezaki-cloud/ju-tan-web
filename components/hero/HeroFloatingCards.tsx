@@ -6,20 +6,20 @@ import { Bot, Cloud, ShieldCheck } from "lucide-react";
 const cards = [
   {
     icon: Bot,
-    title: "AI Automation",
-    subtitle: "Workflow Active",
+    title: "Avtomatizacija",
+    subtitle: "Aktivni procesi",
     position: "left-0 top-16 lg:-left-10",
   },
   {
     icon: Cloud,
-    title: "Cloud Infrastructure",
-    subtitle: "99.99% Uptime",
+    title: "Infrastruktura v oblaku",
+    subtitle: "Stabilna razpoložljivost",
     position: "right-0 top-0 lg:-right-8",
   },
   {
     icon: ShieldCheck,
-    title: "Cyber Security",
-    subtitle: "Protected",
+    title: "Kibernetska varnost",
+    subtitle: "Zaščiteno okolje",
     position: "right-8 bottom-8",
   },
 ];

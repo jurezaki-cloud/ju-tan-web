@@ -77,10 +77,9 @@ export default function Contact() {
       className="bg-gradient-to-b from-[#050816] to-[#08101f] py-32"
     >
       <div className="mx-auto max-w-5xl px-6 text-center">
-
         <FadeIn>
           <SectionTitle
-            badge="Kontakt"
+            badge="KONTAKT"
             title="Začnimo vaš naslednji projekt"
             description="Povejte nam svojo idejo. Skupaj bomo ustvarili rešitev."
           />
@@ -92,7 +91,6 @@ export default function Contact() {
             className="mt-16 rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl"
           >
             <div className="grid gap-8 md:grid-cols-2">
-
               <input
                 required
                 autoComplete="name"
@@ -108,21 +106,20 @@ export default function Contact() {
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="Email"
+                placeholder="E-poštni naslov"
                 value={form.email}
                 onChange={(e) =>
                   setForm({ ...form, email: e.target.value })
                 }
                 className="rounded-xl border border-white/10 bg-black/20 px-5 py-4 outline-none focus:border-green-500"
               />
-
             </div>
 
             <textarea
               required
               minLength={10}
               rows={6}
-              placeholder="Vaše sporočilo..."
+              placeholder="Vaše sporočilo ..."
               value={form.message}
               onChange={(e) =>
                 setForm({ ...form, message: e.target.value })
@@ -132,7 +129,7 @@ export default function Contact() {
 
             <div className="mt-10 flex justify-center">
               <Button type="submit" disabled={loading}>
-                {loading ? "Pošiljam..." : "Pošlji povpraševanje"}
+                {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
               </Button>
             </div>
 
@@ -147,10 +144,8 @@ export default function Contact() {
                 {error}
               </p>
             )}
-
           </form>
         </Reveal>
-
       </div>
     </section>
   );

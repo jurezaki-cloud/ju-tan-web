@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { FadeIn } from "@/components/animations";
 
@@ -24,17 +25,16 @@ export default function ProjectCard({
     <FadeIn delay={delay}>
       <article className="group overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-green-500/40 hover:shadow-[0_0_40px_rgba(34,197,94,.18)]">
         <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-green-500/15 to-transparent">
-          <img
+          <Image
             src={image}
             alt={title}
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-            onError={(event) => {
-              event.currentTarget.style.display = "none";
-            }}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-60" />
           <span className="absolute right-5 top-5 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-black">
-            Featured
+            Izpostavljeno
           </span>
         </div>
 

@@ -18,7 +18,7 @@ export default function ScrollIndicator() {
         className="flex flex-col items-center text-slate-400 transition hover:text-green-400"
       >
         <span className="mb-2 text-xs uppercase tracking-[0.3em]">
-          Scroll
+          Pomakni se
         </span>
 
         <ChevronDown className="h-6 w-6" />

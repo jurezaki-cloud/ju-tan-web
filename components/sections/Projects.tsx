@@ -13,7 +13,7 @@ export default function Projects() {
       <div className="container relative">
         <FadeIn>
           <SectionTitle
-            badge="PROJECTS"
+            badge="Projekti"
             title="Izbrani projekti"
             description="Nekaj rešitev, ki prikazujejo naše znanje na področju umetne inteligence, razvoja programske opreme, spletnih aplikacij in digitalnega oblikovanja."
           />

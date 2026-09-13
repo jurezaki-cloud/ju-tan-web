@@ -48,24 +48,20 @@ export default function Process() {
       className="relative py-32"
     >
       <div className="mx-auto max-w-7xl px-6">
-
         <SectionTitle
-          badge="PROCESS"
+          badge="Postopek"
           title="Kako poteka sodelovanje"
           description="Od prve ideje do končne implementacije."
         />
 
         <Stagger className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-
           {steps.map((step) => {
             const Icon = step.icon;
 
             return (
               <StaggerItem key={step.number}>
                 <FadeIn>
-
                   <div className="group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-green-400/40 hover:bg-white/10">
-
                     <span className="absolute right-6 top-6 text-5xl font-black text-white/5">
                       {step.number}
                     </span>
@@ -81,16 +77,12 @@ export default function Process() {
                     <p className="leading-7 text-slate-400">
                       {step.description}
                     </p>
-
                   </div>
-
                 </FadeIn>
               </StaggerItem>
             );
           })}
-
         </Stagger>
-
       </div>
     </section>
   );

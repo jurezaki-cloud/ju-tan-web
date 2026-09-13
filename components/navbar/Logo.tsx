@@ -6,14 +6,14 @@ export default function Logo() {
     <Link href="/" className="flex items-center gap-3">
       <Image
         src="/logo/ju-tan-studio.png"
-        alt="JU-TAN Studio"
+        alt="JU-TAN"
         width={48}
         height={48}
         priority
       />
 
       <span className="text-xl font-bold tracking-wide text-white">
-        JU-TAN STUDIO
+        JU-TAN
       </span>
     </Link>
   );

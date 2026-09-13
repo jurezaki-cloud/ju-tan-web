@@ -1,7 +1,7 @@
 export const company = {
-  name: "JU-TAN Studio",
-  badge: "🚀 Next Generation AI Solutions",
-  headline: "Artificial Intelligence Made Simple",
+  name: "JU-TAN",
+  badge: "🚀 JU-TAN v2 • umetna inteligenca • avtomatizacija",
+  headline: "Umetna inteligenca za sodobna podjetja",
   description:
-    "JU-TAN Studio develops AI solutions, business automation, custom software, modern websites and cloud infrastructure.",
+    "Razvijamo rešitve umetne inteligence, avtomatizacije, poslovne programske opreme, spletnih strani in sodobne IT infrastrukture, ki podjetjem prihranijo čas in dvignejo produktivnost.",
 };

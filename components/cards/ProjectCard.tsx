@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 interface ProjectCardProps {
@@ -16,10 +17,12 @@ export default function ProjectCard({
   return (
     <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/5 transition duration-500 hover:border-green-500/40">
       <div className="relative aspect-[16/10] overflow-hidden">
-        <img
+        <Image
           src={image}
           alt={title}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition duration-700 group-hover:scale-110"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-60" />

@@ -13,7 +13,7 @@ import { FadeIn, Reveal } from "@/components/animations";
 const features = [
   {
     icon: Bot,
-    title: "AI Avtomatizacija",
+    title: "AI avtomatizacija",
     description:
       "Razvijamo inteligentne AI agente in avtomatizacije, ki prihranijo čas ter povečajo produktivnost.",
   },
@@ -31,7 +31,7 @@ const features = [
   },
   {
     icon: Cloud,
-    title: "Cloud Ready",
+    title: "Pripravljenost na oblak",
     description:
       "Pripravljeni na lokalno ali oblačno infrastrukturo z visoko razpoložljivostjo.",
   },
@@ -60,7 +60,7 @@ export default function About() {
         <FadeIn>
           <SectionTitle
             badge="Zakaj JU-TAN"
-            title="Gradimo digitalno prihodnost podjetij."
+            title="Gradimo digitalno prihodnost podjetij"
             description="Združujemo umetno inteligenco, razvoj programske opreme, spletne aplikacije in sodobno IT infrastrukturo v rešitve, ki podjetjem omogočajo hitrejšo rast, večjo učinkovitost in dolgoročno konkurenčno prednost."
           />
         </FadeIn>
@@ -71,23 +71,21 @@ export default function About() {
 
             return (
               <Reveal key={feature.title} delay={index * 0.08}>
-              <Card
-                className="group relative overflow-hidden"
-              >
-                <CardContent>
-                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
-                  <Icon className="h-10 w-10 text-green-400" />
-                </div>
+                <Card className="group relative overflow-hidden">
+                  <CardContent>
+                    <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
+                      <Icon className="h-10 w-10 text-green-400" />
+                    </div>
 
-                <h3 className="text-2xl font-bold transition-colors group-hover:text-green-400">
-                  {feature.title}
-                </h3>
+                    <h3 className="text-2xl font-bold transition-colors group-hover:text-green-400">
+                      {feature.title}
+                    </h3>
 
-                <p className="mt-5 leading-8 text-gray-400">
-                  {feature.description}
-                </p>
-                </CardContent>
-              </Card>
+                    <p className="mt-5 leading-8 text-gray-400">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
               </Reveal>
             );
           })}
@@ -101,13 +99,13 @@ export default function About() {
           ].map(([value, label]) => (
             <Card key={label} className="text-center">
               <CardContent>
-              <div className="text-5xl font-black text-green-400">
-                {value}
-              </div>
+                <div className="text-5xl font-black text-green-400">
+                  {value}
+                </div>
 
-              <p className="mt-3 text-gray-400">
-                {label}
-              </p>
+                <p className="mt-3 text-gray-400">
+                  {label}
+                </p>
               </CardContent>
             </Card>
           ))}
