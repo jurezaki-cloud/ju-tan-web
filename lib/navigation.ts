@@ -1,7 +1,9 @@
 export const navigation = [
-  { name: "Domov", href: "#" },
-  { name: "Storitve", href: "#services" },
-  { name: "O nas", href: "#about" },
-  { name: "Projekti", href: "#projects" },
-  { name: "Kontakt", href: "#contact" },
+  { label: "Domov", href: "#home" },
+  { label: "Storitve", href: "#services" },
+  { label: "O nas", href: "#about" },
+  { label: "Proces", href: "#process" },
+  { label: "Tehnologije", href: "#technologies" },
+  { label: "Projekti", href: "#projects" },
+  { label: "Kontakt", href: "#contact" },
 ];

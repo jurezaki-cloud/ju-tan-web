@@ -10,9 +10,9 @@ export default function Footer() {
           <Image
             src="/logo/ju-tan-studio.png"
             alt="JU-TAN Studio"
-            width={180}
+            width={220}
             height={70}
-            className="h-auto w-40"
+            className="h-12 w-auto"
           />
 
           <p className="mt-6 text-sm leading-7 text-gray-400">

@@ -1,0 +1,20 @@
+import { projects } from "@/lib/data/projects";
+import ProjectCard from "./ProjectCard";
+
+export default function ProjectsGrid() {
+  return (
+    <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+      {projects.map((project, index) => (
+        <ProjectCard
+          key={project.title}
+          title={project.title}
+          category={project.category}
+          description={project.description}
+          technologies={project.technologies}
+          image={project.image}
+          delay={0.2 + index * 0.15}
+        />
+      ))}
+    </div>
+  );
+}

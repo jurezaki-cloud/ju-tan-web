@@ -6,8 +6,9 @@ import {
   Cpu,
   HeartHandshake,
 } from "lucide-react";
-import Card from "@/components/ui/Card";
-import SectionTitle from "@/components/ui/SectionTitle";
+import { Card, CardContent } from "@/components/ui/card";
+import SectionTitle from "@/components/common/SectionTitle";
+import { FadeIn, Reveal } from "@/components/animations";
 
 const features = [
   {
@@ -50,26 +51,30 @@ const features = [
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-[#050816] py-32 text-white">
+    <section id="about" className="relative overflow-hidden py-32">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
       <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
 
       <div className="relative mx-auto max-w-7xl px-6">
-        <SectionTitle
-          badge="Zakaj JU-TAN"
-          title="Gradimo digitalno prihodnost podjetij."
-          description="Združujemo umetno inteligenco, razvoj programske opreme, spletne aplikacije in sodobno IT infrastrukturo v rešitve, ki podjetjem omogočajo hitrejšo rast, večjo učinkovitost in dolgoročno konkurenčno prednost."
-        />
+        <FadeIn>
+          <SectionTitle
+            badge="Zakaj JU-TAN"
+            title="Gradimo digitalno prihodnost podjetij."
+            description="Združujemo umetno inteligenco, razvoj programske opreme, spletne aplikacije in sodobno IT infrastrukturo v rešitve, ki podjetjem omogočajo hitrejšo rast, večjo učinkovitost in dolgoročno konkurenčno prednost."
+          />
+        </FadeIn>
 
         <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {features.map((feature) => {
+          {features.map((feature, index) => {
             const Icon = feature.icon;
 
             return (
+              <Reveal key={feature.title} delay={index * 0.08}>
               <Card
-                key={feature.title}
                 className="group relative overflow-hidden"
               >
+                <CardContent>
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
                   <Icon className="h-10 w-10 text-green-400" />
                 </div>
@@ -81,7 +86,9 @@ export default function About() {
                 <p className="mt-5 leading-8 text-gray-400">
                   {feature.description}
                 </p>
+                </CardContent>
               </Card>
+              </Reveal>
             );
           })}
         </div>
@@ -93,6 +100,7 @@ export default function About() {
             ["10+", "Let izkušenj"],
           ].map(([value, label]) => (
             <Card key={label} className="text-center">
+              <CardContent>
               <div className="text-5xl font-black text-green-400">
                 {value}
               </div>
@@ -100,6 +108,7 @@ export default function About() {
               <p className="mt-3 text-gray-400">
                 {label}
               </p>
+              </CardContent>
             </Card>
           ))}
         </div>

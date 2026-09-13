@@ -1,14 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import {
-  Bot,
-  Cloud,
-  ShieldCheck,
-  Cpu,
-  Workflow,
-} from "lucide-react";
 
 const nodes = [
   { x: "50%", y: "50%", size: 18 },
@@ -24,40 +16,9 @@ const nodes = [
   { x: "50%", y: "88%", size: 8 },
 ];
 
-function GlassCard({
-  icon,
-  title,
-  subtitle,
-  className,
-}: {
-  icon: ReactNode;
-  title: string;
-  subtitle: string;
-  className: string;
-}) {
-  return (
-    <motion.div
-      animate={{ y: [0, -8, 0] }}
-      transition={{
-        repeat: Infinity,
-        duration: 4,
-      }}
-      className={`absolute rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl shadow-2xl ${className}`}
-    >
-      <div className="mb-2 text-green-400">{icon}</div>
-      <h3 className="font-semibold text-white">
-        {title}
-      </h3>
-      <p className="text-sm text-gray-400">
-        {subtitle}
-      </p>
-    </motion.div>
-  );
-}
-
 export default function AINetwork() {
   return (
-    <div className="relative h-[600px] w-full">
+    <div className="pointer-events-none absolute inset-0">
 
       {/* Glow */}
 
@@ -128,37 +89,6 @@ export default function AINetwork() {
       >
         AI
       </motion.div>
-
-      <GlassCard
-        icon={<Bot size={24} />}
-        title="AI Agent"
-        subtitle="24/7 avtomatizacija"
-        className="left-0 top-10"
-      />
-      <GlassCard
-        icon={<Workflow size={24} />}
-        title="Automation"
-        subtitle="Pametni procesi"
-        className="right-0 top-24"
-      />
-      <GlassCard
-        icon={<Cloud size={24} />}
-        title="Cloud"
-        subtitle="Visoka razpoložljivost"
-        className="left-10 bottom-20"
-      />
-      <GlassCard
-        icon={<ShieldCheck size={24} />}
-        title="Cyber Security"
-        subtitle="Enterprise Ready"
-        className="right-10 bottom-10"
-      />
-      <GlassCard
-        icon={<Cpu size={24} />}
-        title="Software"
-        subtitle="Custom Development"
-        className="left-1/2 top-0 -translate-x-1/2"
-      />
 
     </div>
   );

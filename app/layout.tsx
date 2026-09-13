@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sl" className={cn("font-sans", geist.variable)}>
-      <body className="bg-[#050816] text-white antialiased">
+      <body className="antialiased">
         {children}
       </body>
     </html>
