@@ -36,9 +36,9 @@ const knowledge: { keys: string[]; answer: string }[] = [
       "Cena je odvisna od obsega. Najpogosteje začnemo s kratko analizo. Rezervirajte posvet ali izpolnite kontaktni obrazec.",
   },
   {
-    keys: ["kontakt", "email", "pošta", "telefon", "klic"],
+    keys: ["kontakt", "email", "pošta", "telefon", "klic", "lokacij", "naslov", "cerknica"],
     answer:
-      `Pokličite na ${company.contact.phone} ali ${company.contact.phoneSecondary}, pišite na ${company.contact.email} ali uporabite obrazec Kontakt. Odgovorimo ${company.contact.hours.toLowerCase()}.`,
+      `Smo na ${company.contact.location}. Pokličite na ${company.contact.phone} ali ${company.contact.phoneSecondary}, pišite na ${company.contact.email} ali uporabite obrazec Kontakt. Odgovorimo ${company.contact.hours.toLowerCase()}.`,
   },
   {
     keys: ["kako", "postopek", "sodelovan", "začn"],
