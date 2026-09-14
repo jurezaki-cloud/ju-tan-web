@@ -11,9 +11,10 @@ export default function Logo() {
       <Image
         src="/logo/ju-tan-studio.png"
         alt="Logotip JU-TAN"
-        width={48}
+        width={140}
         height={48}
-        sizes="48px"
+        sizes="140px"
+        className="h-10 w-auto"
         priority
         fetchPriority="high"
       />

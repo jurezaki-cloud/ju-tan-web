@@ -5,7 +5,7 @@ import { company } from "@/lib/data/company";
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#050816]">
-      <div className="container grid gap-6 py-9 md:grid-cols-4">
+      <div className="container grid gap-6 py-9 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Image
             src="/logo/ju-tan-studio.png"

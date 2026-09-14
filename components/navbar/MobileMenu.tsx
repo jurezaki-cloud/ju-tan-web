@@ -55,7 +55,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
 
         <CTAButton
           onClick={onClose}
-          className="rounded-2xl bg-gradient-to-r from-green-600 to-green-500 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-[250ms] hover:scale-[1.02] hover:shadow-green-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+          className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 text-center font-semibold text-white shadow-lg shadow-green-600/30 transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/50"
         />
       </div>
     </div>

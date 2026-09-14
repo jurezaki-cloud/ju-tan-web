@@ -9,6 +9,7 @@ interface Props {
   title: string;
   description: string;
   features?: string[];
+  showCta?: boolean;
 }
 
 export default function ServiceCard({
@@ -16,6 +17,7 @@ export default function ServiceCard({
   title,
   description,
   features = [],
+  showCta = true,
 }: Props) {
   return (
     <motion.div
@@ -24,13 +26,13 @@ export default function ServiceCard({
         scale: 1.02,
       }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="group flex h-full min-h-[240px] flex-col rounded-[22px] border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10 backdrop-blur-xl transition-all duration-[250ms] hover:border-green-400/40 hover:bg-white/[0.07] hover:shadow-[0_20px_60px_rgba(34,197,94,0.18)]"
+      className="group flex h-full min-h-[240px] flex-col rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10 backdrop-blur-xl transition-all duration-[250ms] hover:border-green-400/40 hover:bg-white/[0.07] hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]"
     >
       <ServiceIcon>
         <Icon size={28} />
       </ServiceIcon>
 
-      <h3 className="mb-1.5 text-[30px] font-bold leading-tight text-white">
+      <h3 className="mb-1.5 text-[28px] font-bold leading-tight text-white">
         {title}
       </h3>
 
@@ -52,13 +54,17 @@ export default function ServiceCard({
         </ul>
       ) : null}
 
-      <a
-        href="#contact"
-        className="mt-auto inline-flex items-center gap-2 pt-3 text-[14px] font-semibold text-green-400 transition-all duration-[250ms] hover:gap-3 hover:text-green-300"
-      >
-        Več informacij
-        <ArrowRight className="h-4 w-4" />
-      </a>
+      {showCta ? (
+        <a
+          href="#contact"
+          className="mt-auto inline-flex items-center gap-2 rounded-sm pt-3 text-[14px] font-semibold text-green-400 transition-all duration-[250ms] hover:gap-3 hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+        >
+          Več informacij
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      ) : (
+        <div className="mt-auto" />
+      )}
     </motion.div>
   );
 }

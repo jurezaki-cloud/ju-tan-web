@@ -31,9 +31,9 @@ export default function ProjectCard({
 
   return (
     <motion.article
-      whileHover={{ y: -6, scale: 1.02 }}
+      whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="group flex h-full min-h-[480px] w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl shadow-black/20 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_24px_60px_rgba(34,197,94,0.22)]"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl shadow-black/20 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]"
     >
       <div
         className={`relative h-[170px] shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
@@ -62,12 +62,12 @@ export default function ProjectCard({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="line-clamp-1 min-h-[36px] text-[28px] font-bold leading-tight text-white">
+      <div className="flex min-h-0 flex-1 flex-col p-6">
+        <h3 className="line-clamp-1 text-[28px] font-bold leading-tight text-white">
           {title}
         </h3>
 
-        <p className="mt-1 min-h-[22px] text-[14px] font-medium tracking-wide text-green-400">
+        <p className="mt-1 text-[14px] font-medium tracking-wide text-green-400">
           {category}
         </p>
 
@@ -75,11 +75,11 @@ export default function ProjectCard({
           {description}
         </p>
 
-        <div className="mt-3 flex min-h-[68px] flex-wrap content-start gap-1.5">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           {technologies.map((item) => (
             <span
               key={item}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[13px] text-gray-300 backdrop-blur-md"
+              className="inline-flex h-7 items-center rounded-full border border-white/10 bg-white/5 px-3 text-[13px] leading-none text-gray-300 backdrop-blur-md"
             >
               {item}
             </span>
@@ -88,7 +88,7 @@ export default function ProjectCard({
 
         <a
           href="#contact"
-          className="mt-auto inline-flex items-center gap-2 pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300"
+          className="mt-auto inline-flex items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         >
           Poglej projekt
           <ArrowRight className="h-4 w-4 transition-transform duration-[250ms] group-hover:translate-x-1" />

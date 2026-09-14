@@ -15,7 +15,7 @@ export default function SectionTitle({
     <div className="mx-auto mb-10 max-w-3xl text-center">
       <Badge>{badge}</Badge>
 
-      <h2 className="mt-3 mb-4 text-[32px] font-black leading-tight md:text-[46px]">
+      <h2 className="mt-3 mb-4 text-[30px] font-black leading-tight break-words md:text-[40px] lg:text-[46px]">
         {title}
       </h2>
 

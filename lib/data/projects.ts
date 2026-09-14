@@ -1,5 +1,44 @@
 import type { Project } from "@/lib/types";
 
+export const projectFilters = [
+  "Vsi",
+  "AI",
+  "Web",
+  "Business",
+  "Infrastructure",
+  "Security",
+] as const;
+
+export type ProjectFilter = (typeof projectFilters)[number];
+
+export function projectMatchesFilter(
+  project: Project,
+  filter: ProjectFilter,
+): boolean {
+  if (filter === "Vsi") return true;
+
+  const haystack = `${project.title} ${project.category}`.toLowerCase();
+
+  switch (filter) {
+    case "AI":
+      return haystack.includes("ai");
+    case "Web":
+      return haystack.includes("web");
+    case "Business":
+      return (
+        haystack.includes("business") ||
+        haystack.includes("erp") ||
+        haystack.includes("crm")
+      );
+    case "Infrastructure":
+      return haystack.includes("infrastructure");
+    case "Security":
+      return haystack.includes("security");
+    default:
+      return true;
+  }
+}
+
 export const projects: Project[] = [
   {
     title: "JU-TAN Office",

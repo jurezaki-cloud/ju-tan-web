@@ -55,7 +55,7 @@ export default function FloatingCards() {
               },
               scale: { duration: 0.25 },
             }}
-            className={`glass absolute hidden cursor-default rounded-[22px] p-5 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
+            className={`glass absolute hidden cursor-default rounded-2xl p-5 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
           >
             <div className="mb-1 text-green-400">
               <Icon size={16} />
