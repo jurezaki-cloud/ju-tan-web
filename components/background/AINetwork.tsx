@@ -26,9 +26,9 @@ export default function AINetwork() {
     let raf = 0;
     let last = 0;
     let running = !document.hidden && !reducedMotion;
-    const frameMs = isMobile ? 50 : 16;
-    const count = isMobile ? 6 : 18;
-    const linkDist = isMobile ? 90 : 130;
+    const frameMs = 16;
+    const count = isMobile ? 8 : 16;
+    const linkDist = isMobile ? 88 : 140;
 
     const particles = Array.from({ length: count }, () => ({
       x: 0,
