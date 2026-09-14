@@ -10,10 +10,9 @@ import Contact from "@/components/sections/Contact";
 import Booking from "@/components/sections/Booking";
 import Footer from "@/components/layout/Footer";
 import PremiumCTA from "@/components/common/PremiumCTA";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = createPageMetadata({ path: "/" });
 
 export default function Home() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
 
@@ -44,7 +45,44 @@ export const twitter = {
   title: defaultTitle,
   description: defaultDescription,
   images: ["/og-image.jpg"],
+  ...(process.env.NEXT_PUBLIC_TWITTER_SITE
+    ? { site: process.env.NEXT_PUBLIC_TWITTER_SITE }
+    : {}),
 };
+
+export function createPageMetadata({
+  title,
+  description,
+  path = "/",
+}: {
+  title?: string;
+  description?: string;
+  path?: string;
+} = {}): Metadata {
+  const canonical = path.startsWith("/") ? path : `/${path}`;
+  const url = absoluteUrl(canonical);
+  const pageTitle = title
+    ? `${title} | ${company.name}`
+    : defaultTitle;
+  const pageDescription = description ?? defaultDescription;
+
+  return {
+    title: title ?? { absolute: defaultTitle },
+    description: pageDescription,
+    alternates: { canonical },
+    openGraph: {
+      ...openGraph,
+      url,
+      title: pageTitle,
+      description: pageDescription,
+    },
+    twitter: {
+      ...twitter,
+      title: pageTitle,
+      description: pageDescription,
+    },
+  };
+}
 
 export function jsonLdGraph() {
   const url = siteConfig.url.replace(/\/$/, "");
@@ -91,7 +129,7 @@ export function jsonLdGraph() {
         publisher: { "@id": organizationId },
       },
       {
-        "@type": "ProfessionalService",
+        "@type": "LocalBusiness",
         "@id": localBusinessId,
         name: company.name,
         url,
@@ -113,9 +151,14 @@ export function jsonLdGraph() {
         ],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
+        priceRange: "$$",
         areaServed: {
           "@type": "Country",
           name: "Slovenia",
+        },
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "SI",
         },
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",

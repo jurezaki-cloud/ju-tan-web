@@ -2,20 +2,14 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/layout/Footer";
 import Booking from "@/components/sections/Booking";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Rezervacija posveta",
   description:
     "Rezervirajte posvet z ekipo JU-TAN za umetno inteligenco, splet, aplikacije, oblikovanje ali IT svetovanje.",
-  alternates: { canonical: "/booking" },
-  openGraph: {
-    title: "Rezervacija posveta | JU-TAN",
-    description:
-      "Izberite storitev, svetovalca in termin za brezplačen ali usmerjen posvet.",
-    url: "/booking",
-    type: "website",
-  },
-};
+  path: "/booking",
+});
 
 export default function BookingPage() {
   return (
