@@ -55,7 +55,7 @@ export default function FloatingCards() {
               },
               scale: { duration: 0.25 },
             }}
-            className={`glass absolute hidden cursor-default rounded-2xl p-5 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
+            className={`glass absolute hidden cursor-default rounded-2xl border border-white/10 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_16px_40px_rgba(34,197,94,0.18)] sm:block ${card.position}`}
           >
             <div className="mb-1 text-green-400">
               <Icon size={16} />

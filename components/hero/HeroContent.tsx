@@ -1,5 +1,5 @@
-import { Sparkles } from "lucide-react";
 import { company } from "@/lib/data/company";
+import HeroBadge from "./HeroBadge";
 
 export default function HeroContent() {
   const [first, accent, ...rest] = company.headline.split(" ");
@@ -7,10 +7,7 @@ export default function HeroContent() {
 
   return (
     <div className="max-w-3xl">
-      <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm font-medium text-green-400 backdrop-blur-md">
-        <Sparkles className="h-4 w-4" />
-        {company.badge}
-      </div>
+      <HeroBadge />
 
       <h1 className="font-heading text-[32px] font-semibold leading-[1.1] tracking-[-0.04em] text-white sm:text-[42px] md:text-[54px] lg:text-[64px]">
         {first}

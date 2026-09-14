@@ -11,27 +11,26 @@ import ScrollIndicator from "./ScrollIndicator";
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-[82vh] overflow-hidden pt-[70px] lg:pt-[80px]">
+    <section
+      id="home"
+      className="relative min-h-[88vh] overflow-hidden pt-[78px] lg:pt-[88px]"
+    >
       <AuroraBackground />
       <AINetwork />
       <HeroBackground />
 
       <div className="container relative z-10">
-        <div className="grid items-center gap-6 py-4 lg:grid-cols-2 lg:py-5">
+        <div className="grid items-center gap-8 py-6 lg:grid-cols-2 lg:gap-10 lg:py-8">
           <div>
             <HeroContent />
-
-            <FadeIn delay={0.15}>
-              <HeroButtons />
-            </FadeIn>
-
+            <HeroButtons />
             <HeroStats />
           </div>
 
-          <div className="relative mx-auto aspect-square w-full max-w-[390px]">
+          <FadeIn delay={0.12} className="relative mx-auto aspect-square w-full max-w-[420px]">
             <EcosystemNetwork />
             <FloatingCards />
-          </div>
+          </FadeIn>
         </div>
       </div>
 
