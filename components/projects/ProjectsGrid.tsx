@@ -4,9 +4,9 @@ import ProjectCard from "./ProjectCard";
 
 export default function ProjectsGrid() {
   return (
-    <Stagger className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <Stagger className="grid auto-rows-fr grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
-        <StaggerItem key={project.title} className="h-full">
+        <StaggerItem key={project.title} className="flex h-full">
           <ProjectCard
             title={project.title}
             category={project.category}

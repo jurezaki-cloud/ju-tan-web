@@ -23,17 +23,20 @@ export default function Projects() {
           <SectionTitle
             badge="Projekti"
             title="Naši projekti"
-            description="Rešitve, ki podjetjem pomagajo pri digitalizaciji, avtomatizaciji in uporabi umetne inteligence."
+            description="Razvijamo sodobne programske rešitve, AI sisteme, poslovne aplikacije in IT infrastrukturo po meri podjetij."
           />
         </FadeIn>
 
         <ProjectsGrid />
 
         <FadeIn delay={0.15}>
-          <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center shadow-lg shadow-black/10 backdrop-blur-xl">
-            <h3 className="text-[28px] font-bold text-white">Imate projekt?</h3>
+          <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center shadow-xl shadow-black/20 backdrop-blur-xl">
+            <h3 className="text-[28px] font-bold text-white">
+              Imate idejo za svoj projekt?
+            </h3>
             <p className="mx-auto mt-3 max-w-xl text-[16px] leading-[1.65] text-slate-400">
-              Skupaj razvijemo rešitev po meri vašega podjetja.
+              Skupaj razvijemo programsko rešitev, ki avtomatizira procese,
+              prihrani čas in podpira rast vašega podjetja.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
