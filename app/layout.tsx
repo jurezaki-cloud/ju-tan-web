@@ -11,7 +11,8 @@ const geist = Geist({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
   display: "swap",
-  preload: true,
+  preload: false,
+  adjustFontFallback: true,
 });
 
 const syne = Syne({
@@ -19,6 +20,7 @@ const syne = Syne({
   variable: "--font-heading",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 export default function RootLayout({

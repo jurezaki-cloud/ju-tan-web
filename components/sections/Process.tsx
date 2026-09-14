@@ -7,7 +7,7 @@ import { process } from "@/lib/data/process";
 
 export default function Process() {
   return (
-    <section id="process" className="relative overflow-hidden py-20">
+    <section id="process" className="below-fold relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-emerald-500/5" />
       <div className="pointer-events-none absolute right-[-120px] top-32 h-[380px] w-[380px] rounded-full bg-green-500/12 blur-[140px]" />
       <div
@@ -50,7 +50,7 @@ export default function Process() {
                       isEven ? "lg:pr-10" : "lg:ml-auto lg:pl-10"
                     }`}
                   >
-                    <FadeIn delay={index * 0.08}>
+                    <FadeIn delay={index * 0.08} className="h-full">
                       <ProcessCard
                         step={step.number}
                         title={step.title}

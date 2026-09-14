@@ -21,7 +21,7 @@ export default function Projects() {
   );
 
   return (
-    <section id="projects" className="relative overflow-hidden py-20">
+    <section id="projects" className="below-fold relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-green-500/10 blur-[160px]" />
       <div
@@ -54,7 +54,7 @@ export default function Projects() {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setFilter(item)}
-                className={`rounded-full border px-3 py-1.5 text-[13px] font-medium backdrop-blur-xl transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
+                className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium backdrop-blur-xl transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
                   active
                     ? "border-green-400/50 bg-green-500/20 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.18)]"
                     : "border-white/10 bg-white/5 text-slate-300 hover:border-green-400/30 hover:text-white"
@@ -67,7 +67,7 @@ export default function Projects() {
         </div>
 
         {visibleProjects.length === 0 ? (
-          <p role="status" className="py-12 text-center text-slate-400">
+          <p role="status" className="min-h-[20rem] py-12 text-center text-slate-400">
             Za izbrani filter trenutno ni projektov.
           </p>
         ) : (

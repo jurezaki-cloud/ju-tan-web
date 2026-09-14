@@ -15,11 +15,10 @@ export default function ProjectsGrid({ items }: ProjectsGridProps) {
         {items.map((project) => (
           <motion.div
             key={project.title}
-            layout
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
             className="flex h-full min-w-0"
           >
             <ProjectCard

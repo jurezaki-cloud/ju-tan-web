@@ -9,7 +9,10 @@ export default function AINetwork() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d", {
+      alpha: true,
+      desynchronized: true,
+    });
     if (!ctx) return;
     const canvasCtx: CanvasRenderingContext2D = ctx;
 
@@ -107,6 +110,7 @@ export default function AINetwork() {
     }
 
     resize();
+    draw();
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -127,15 +131,27 @@ export default function AINetwork() {
 
     document.addEventListener("visibilitychange", onVisibility);
 
+    let idleHandle = 0;
+    const startLoop = () => {
+      if (reducedMotion || !running) return;
+      raf = requestAnimationFrame(loop);
+    };
+
     if (reducedMotion) {
       draw();
+    } else if (typeof requestIdleCallback === "function") {
+      idleHandle = requestIdleCallback(startLoop, { timeout: 1200 });
     } else {
-      raf = requestAnimationFrame(loop);
+      idleHandle = window.setTimeout(startLoop, 400);
     }
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      if (typeof cancelIdleCallback === "function") {
+        cancelIdleCallback(idleHandle);
+      }
+      window.clearTimeout(idleHandle);
       observer.disconnect();
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);

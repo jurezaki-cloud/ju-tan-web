@@ -33,7 +33,7 @@ export default function PremiumCTA({
         {description}
       </p>
       <div className="relative mt-6 flex justify-center">
-        <CTAButton className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white shadow-lg shadow-green-600/30 transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/50">
+        <CTAButton className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white shadow-lg shadow-green-600/30 transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/50">
           {action}
           <ArrowRight className="h-5 w-5 transition-transform duration-[250ms] group-hover:translate-x-1" />
         </CTAButton>

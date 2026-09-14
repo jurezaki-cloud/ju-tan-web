@@ -21,7 +21,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Services />
-        <section className="relative overflow-hidden py-10">
+        <section className="below-fold relative overflow-hidden py-10">
           <div className="container">
             <PremiumCTA
               title="Od ideje do produkcije v tednih, ne mesecih."

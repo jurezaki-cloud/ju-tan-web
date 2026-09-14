@@ -22,7 +22,7 @@ export default function GlobalError({
       <body className="min-h-screen bg-[#050816] font-sans text-white antialiased">
         <main
           id="main"
-          className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+          className="flex min-h-dvh flex-col items-center justify-center px-[max(1.5rem,env(safe-area-inset-left,0px))] pt-[env(safe-area-inset-top,0px)] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] text-center"
         >
           <p className="text-[14px] font-medium uppercase tracking-[0.16em] text-green-400">
             500
@@ -36,7 +36,7 @@ export default function GlobalError({
           <button
             type="button"
             onClick={reset}
-            className="mt-8 inline-flex rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white"
+            className="mt-8 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white"
           >
             Poskusi znova
           </button>

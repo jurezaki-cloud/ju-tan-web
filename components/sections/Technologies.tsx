@@ -47,7 +47,7 @@ const technologies = [
 
 export default function Technologies() {
   return (
-    <section id="technologies" className="relative overflow-hidden py-20">
+    <section id="technologies" className="below-fold relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="container relative">
         <FadeIn>
@@ -58,7 +58,7 @@ export default function Technologies() {
           />
         </FadeIn>
 
-        <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
           {technologies.map((item) => {
             const Icon = item.icon;
 
@@ -73,7 +73,7 @@ export default function Technologies() {
                     {item.title}
                   </h3>
 
-                  <p className="text-[16px] leading-[1.65] text-slate-400">
+                  <p className="mt-auto pt-2 text-[16px] leading-[1.65] text-slate-400">
                     {item.text}
                   </p>
                 </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import dynamic from "next/dynamic";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import AgentButton from "./AgentButton";
-import AgentWindow from "./AgentWindow";
 import ChatMessage from "./ChatMessage";
 import LeadForm, { formatLeadSummary, type LeadPayload } from "./LeadForm";
 import QuickActions from "./QuickActions";
@@ -22,6 +22,15 @@ import {
 } from "./storage";
 
 const emptySubscribe = () => () => undefined;
+
+const AgentWindow = dynamic(() => import("./AgentWindow"), {
+  loading: () => (
+    <div
+      className="pointer-events-auto h-dvh w-full bg-[#050816]/88 md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-2xl"
+      aria-hidden
+    />
+  ),
+});
 
 function readState(raw: string): AgentState {
   try {
@@ -45,6 +54,7 @@ export default function JuTanAgent() {
   );
   const state = readState(raw);
   const [open, setOpen] = useState(false);
+  const [windowReady, setWindowReady] = useState(false);
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
   const [panelHeight, setPanelHeight] = useState<number | null>(null);
@@ -159,6 +169,7 @@ export default function JuTanAgent() {
       }`}
     >
       <div className="flex h-full min-h-0 flex-col items-end justify-end gap-3">
+        {windowReady ? (
         <AgentWindow
           open={open}
           panelHeight={open ? panelHeight : null}
@@ -227,8 +238,15 @@ export default function JuTanAgent() {
             </div>
           </form>
         </AgentWindow>
+        ) : null}
         <div className={`pointer-events-auto ${open ? "hidden md:block" : ""}`}>
-          <AgentButton open={open} onToggle={() => setOpen((value) => !value)} />
+          <AgentButton
+            open={open}
+            onToggle={() => {
+              setWindowReady(true);
+              setOpen((value) => !value);
+            }}
+          />
         </div>
       </div>
     </div>

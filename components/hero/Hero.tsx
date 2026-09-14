@@ -1,13 +1,12 @@
-import { FadeIn } from "@/components/animations";
-import EcosystemNetwork from "@/components/animations/AINetwork";
 import AuroraBackground from "@/components/background/AuroraBackground";
-import AINetwork from "@/components/background/AINetwork";
 import HeroBackground from "./HeroBackground";
+import HeroCanvas from "./HeroCanvas";
 import FloatingCards from "./FloatingCards";
 import HeroContent from "./HeroContent";
 import HeroButtons from "./HeroButtons";
 import HeroStats from "./HeroStats";
 import ScrollIndicator from "./ScrollIndicator";
+import EcosystemNetwork from "@/components/animations/AINetwork";
 
 export default function Hero() {
   return (
@@ -16,7 +15,7 @@ export default function Hero() {
       className="relative min-h-[88dvh] overflow-hidden pt-[calc(4.875rem+env(safe-area-inset-top,0px))] pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-[calc(5.5rem+env(safe-area-inset-top,0px))]"
     >
       <AuroraBackground />
-      <AINetwork />
+      <HeroCanvas />
       <HeroBackground />
 
       <div className="container relative z-10 max-w-6xl overflow-x-hidden">
@@ -27,14 +26,10 @@ export default function Hero() {
             <HeroStats />
           </div>
 
-          <FadeIn
-            delay={0.12}
-            y={0}
-            className="relative mx-auto aspect-square w-full max-w-[min(420px,100%)] overflow-hidden sm:overflow-visible"
-          >
+          <div className="relative mx-auto aspect-square w-full max-w-[min(420px,100%)] overflow-hidden sm:overflow-visible">
             <EcosystemNetwork />
             <FloatingCards />
-          </FadeIn>
+          </div>
         </div>
       </div>
 

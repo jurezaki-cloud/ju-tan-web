@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const nodes = [
   { x: "50%", y: "50%", size: 18 },
@@ -15,6 +15,8 @@ const nodes = [
 ];
 
 export default function AINetwork() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <div className="pointer-events-none absolute inset-0">
       <div className="absolute inset-0 rounded-full bg-green-500/18 blur-[160px]" />
@@ -34,14 +36,18 @@ export default function AINetwork() {
             y2={parseFloat(node.y)}
             stroke="rgba(74,222,128,0.55)"
             strokeWidth="0.4"
-            initial={{ pathLength: 0 }}
+            initial={reduceMotion ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{
-              duration: 4.5,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : {
+                    duration: 4.5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                  }
+            }
           />
         ))}
       </svg>
@@ -49,12 +55,16 @@ export default function AINetwork() {
       {nodes.map((node, index) => (
         <motion.div
           key={index}
-          animate={{
-            scale: [1, 1.18, 1],
-            opacity: [0.5, 1, 0.5],
-          }}
+          animate={
+            reduceMotion
+              ? { opacity: 0.85 }
+              : {
+                  scale: [1, 1.18, 1],
+                  opacity: [0.5, 1, 0.5],
+                }
+          }
           transition={{
-            repeat: Infinity,
+            repeat: reduceMotion ? 0 : Infinity,
             duration: 3 + index * 0.25,
           }}
           className="absolute rounded-full bg-green-500 shadow-[0_0_25px_rgba(34,197,94,0.8)]"
@@ -69,11 +79,9 @@ export default function AINetwork() {
       ))}
 
       <motion.div
-        animate={{
-          scale: [1, 1.08, 1],
-        }}
+        animate={reduceMotion ? undefined : { scale: [1, 1.08, 1] }}
         transition={{
-          repeat: Infinity,
+          repeat: reduceMotion ? 0 : Infinity,
           duration: 6,
           ease: "easeInOut",
         }}

@@ -1,35 +1,9 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 export default function HeroBackground() {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
-      <motion.div
-        animate={{
-          scale: [1, 1.12, 1],
-          opacity: [0.28, 0.42, 0.28],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute left-1/2 top-16 h-[820px] w-[820px] -translate-x-1/2 rounded-full bg-green-500/22 blur-[200px]"
-      />
+      <div className="hero-orb-a absolute top-16 left-1/2 h-[820px] w-[820px] -translate-x-1/2 rounded-full bg-green-500/22 blur-[200px]" />
 
-      <motion.div
-        animate={{
-          x: [-24, 24, -24],
-          y: [0, 16, 0],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute right-[4%] top-36 h-[280px] w-[280px] rounded-full bg-cyan-400/12 blur-[120px]"
-      />
+      <div className="hero-orb-b absolute top-36 right-[4%] h-[280px] w-[280px] rounded-full bg-cyan-400/12 blur-[120px]" />
 
       <div
         className="absolute inset-0 opacity-[0.035]

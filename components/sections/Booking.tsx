@@ -3,7 +3,7 @@ import BookingWizard from "@/components/booking/BookingWizard";
 
 export default function Booking() {
   return (
-    <section id="booking" className="relative overflow-hidden py-20">
+    <section id="booking" className="below-fold relative overflow-hidden py-20">
       <div className="container relative">
         <SectionTitle
           badge="Rezervacija"

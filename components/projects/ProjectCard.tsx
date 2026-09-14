@@ -1,7 +1,4 @@
-"use client";
-
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 type ProjectCardProps = {
   title: string;
@@ -30,13 +27,9 @@ export default function ProjectCard({
   const theme = mockupThemes[image] ?? mockupThemes.office;
 
   return (
-    <motion.article
-      whileHover={{ y: -4, scale: 1.02 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl shadow-black/20 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]"
-    >
+    <article className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl shadow-black/20 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]">
       <div
-        className={`relative h-[170px] shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
+        className={`relative aspect-[17/10] w-full shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
         aria-hidden
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.28),transparent_55%)]" />
@@ -75,7 +68,7 @@ export default function ProjectCard({
           {description}
         </p>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex min-h-8 flex-wrap items-center gap-2">
           {technologies.map((item) => (
             <span
               key={item}
@@ -88,12 +81,12 @@ export default function ProjectCard({
 
         <a
           href="#contact"
-          className="mt-auto inline-flex items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+          className="mt-auto inline-flex min-h-11 items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         >
           Poglej projekt
           <ArrowRight className="h-4 w-4 transition-transform duration-[250ms] group-hover:translate-x-1" />
         </a>
       </div>
-    </motion.article>
+    </article>
   );
 }

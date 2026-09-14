@@ -87,7 +87,7 @@ const advantages: Service[] = [
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden py-20">
+    <section id="about" className="below-fold relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-green-500/10 blur-[160px]" />
 
@@ -100,7 +100,7 @@ export default function About() {
           />
         </FadeIn>
 
-        <Stagger className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <Stagger className="grid auto-rows-fr grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
           {advantages.map((item) => (
             <StaggerItem key={item.title} className="h-full">
               <ServiceCard
@@ -120,9 +120,9 @@ export default function About() {
           </p>
           <div className="relative">
             <div className="pointer-events-none absolute top-4 right-8 left-8 hidden h-px bg-gradient-to-r from-green-500/0 via-green-500/40 to-green-500/0 xl:block" />
-            <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            <ol className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               {process.map((step) => (
-                <li key={step.number} className="min-w-0">
+                <li key={step.number} className="flex h-full min-w-0">
                   <ProcessCard
                     step={step.number}
                     title={step.title}

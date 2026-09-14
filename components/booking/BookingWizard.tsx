@@ -175,6 +175,7 @@ export default function BookingWizard() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18 }}
+          className="min-h-[14rem]"
         >
           {step === 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">

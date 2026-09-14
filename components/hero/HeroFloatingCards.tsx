@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useSyncExternalStore } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Bot, Cloud, Cpu, ShieldCheck, Workflow } from "lucide-react";
 
 const cards = [
@@ -36,7 +37,22 @@ const cards = [
   },
 ];
 
+function subscribeDesktop(onStoreChange: () => void) {
+  const media = window.matchMedia("(min-width: 640px)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
+
+function desktopSnapshot() {
+  return window.matchMedia("(min-width: 640px)").matches;
+}
+
 export default function FloatingCards() {
+  const reduceMotion = useReducedMotion();
+  const show = useSyncExternalStore(subscribeDesktop, desktopSnapshot, () => false);
+
+  if (!show) return null;
+
   return (
     <>
       {cards.map((card, index) => {
@@ -45,7 +61,7 @@ export default function FloatingCards() {
         return (
           <motion.div
             key={card.title}
-            animate={{ y: [0, -6, 0] }}
+            animate={reduceMotion ? undefined : { y: [0, -6, 0] }}
             whileHover={{ scale: 1.02 }}
             transition={{
               y: {
@@ -55,7 +71,7 @@ export default function FloatingCards() {
               },
               scale: { duration: 0.25 },
             }}
-            className={`glass absolute hidden cursor-default rounded-2xl border border-white/10 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_16px_40px_rgba(34,197,94,0.18)] sm:block ${card.position}`}
+            className={`glass absolute cursor-default rounded-2xl border border-white/10 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-[250ms] hover:border-green-400/40 hover:shadow-[0_16px_40px_rgba(34,197,94,0.18)] ${card.position}`}
           >
             <div className="mb-1 text-green-400">
               <Icon size={16} />

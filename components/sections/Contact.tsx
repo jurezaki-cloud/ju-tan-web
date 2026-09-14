@@ -138,7 +138,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden py-20">
+    <section id="contact" className="below-fold relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-[#08101f]" />
 
       <div className="container relative overflow-x-hidden">
@@ -179,7 +179,7 @@ export default function Contact() {
                                     rel: "noopener noreferrer",
                                   }
                                 : {})}
-                              className="whitespace-pre-line text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900"
+                              className="inline-flex min-h-11 items-center whitespace-pre-line text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900"
                             >
                               {item.value}
                             </a>

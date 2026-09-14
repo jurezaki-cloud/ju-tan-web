@@ -13,13 +13,13 @@ const companyLinks = [
 ];
 
 const linkClass =
-  "rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500";
+  "inline-flex min-h-11 items-center rounded-sm py-1 transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500";
 
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#050816]">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[28rem] -translate-x-1/2 rounded-full bg-green-500/10 blur-[90px]" />
+      <div className="pointer-events-none absolute top-0 left-1/2 h-40 w-[28rem] -translate-x-1/2 rounded-full bg-green-500/10 blur-[90px]" />
 
       <FadeIn>
         <div className="container grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -40,7 +40,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-5">
-              <CTAButton className="inline-flex rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:-translate-y-0.5 hover:shadow-green-500/40">
+              <CTAButton className="inline-flex min-h-11 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:-translate-y-0.5 hover:shadow-green-500/40">
                 Brezplačen posvet
               </CTAButton>
             </div>
@@ -50,7 +50,7 @@ export default function Footer() {
             <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
               Podjetje
             </h3>
-            <ul className="space-y-3 text-slate-400">
+            <ul className="space-y-1 text-slate-400">
               {companyLinks.map((item) => (
                 <li key={item.href}>
                   <Link className={linkClass} href={item.href}>
@@ -65,7 +65,7 @@ export default function Footer() {
             <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
               Storitve
             </h3>
-            <ul className="space-y-3 text-slate-400">
+            <ul className="space-y-1 text-slate-400">
               {services.map((service) => (
                 <li key={service.title}>
                   <Link className={linkClass} href="/#services">
@@ -80,7 +80,7 @@ export default function Footer() {
             <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
               Kontakt
             </h3>
-            <div className="space-y-3 text-slate-400">
+            <div className="space-y-1 text-slate-400">
               <p>
                 <a className={linkClass} href={`mailto:${company.contact.email}`}>
                   {company.contact.email}
@@ -102,13 +102,13 @@ export default function Footer() {
                   {company.contact.phoneSecondary}
                 </a>
               </p>
-              <p>{company.contact.hours}</p>
+              <p className="pt-2">{company.contact.hours}</p>
             </div>
           </div>
         </div>
       </FadeIn>
 
-      <div className="border-t border-white/10 py-4 text-center text-sm text-slate-400">
+      <div className="border-t border-white/10 px-[max(1rem,env(safe-area-inset-left,0px))] pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] text-center text-sm text-slate-400">
         © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.
       </div>
     </footer>
