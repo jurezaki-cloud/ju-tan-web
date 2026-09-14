@@ -6,10 +6,10 @@ export default function HeroContent() {
   const restLine = rest.join(" ");
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl min-w-0">
       <HeroBadge />
 
-      <h1 className="font-heading text-[32px] font-semibold leading-[1.1] tracking-[-0.04em] text-white sm:text-[42px] md:text-[54px] lg:text-[64px]">
+      <h1 className="font-heading text-[clamp(1.75rem,8vw,2rem)] font-semibold leading-[1.15] tracking-[-0.04em] break-words text-white sm:text-[42px] md:text-[54px] lg:text-[64px] sm:leading-[1.1]">
         {first}
         <br />
         <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent">

@@ -7,10 +7,10 @@ import { company } from "@/lib/data/company";
 export default function HeroBadge() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3.5 py-1.5 text-sm font-medium text-green-400 shadow-[0_0_24px_rgba(34,197,94,0.12)] backdrop-blur-md"
+      className="mb-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3.5 py-1.5 text-left text-sm font-medium leading-snug text-green-400 shadow-[0_0_24px_rgba(34,197,94,0.12)] backdrop-blur-md"
     >
       <motion.span
         animate={{ rotate: [0, 12, 0] }}

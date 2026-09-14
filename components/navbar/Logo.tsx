@@ -6,7 +6,7 @@ export default function Logo() {
     <Link
       href="/"
       aria-label="JU-TAN — domov"
-      className="flex items-center gap-3 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+      className="flex min-h-11 min-w-11 shrink-0 items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:gap-3"
     >
       <Image
         src="/logo/ju-tan-studio.png"
@@ -14,12 +14,12 @@ export default function Logo() {
         width={140}
         height={48}
         sizes="140px"
-        className="h-10 w-auto"
+        className="h-9 w-auto sm:h-10"
         priority
         fetchPriority="high"
       />
 
-      <span className="text-xl font-bold tracking-wide text-white light:text-slate-900">
+      <span className="hidden text-xl font-bold tracking-wide text-white min-[400px]:inline light:text-slate-900">
         JU-TAN
       </span>
     </Link>

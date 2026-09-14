@@ -9,29 +9,50 @@ export default function AINetwork() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
     const canvasCtx: CanvasRenderingContext2D = ctx;
 
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let width = 1;
+    let height = 1;
     let raf = 0;
+    let last = 0;
     let running = !document.hidden && !reducedMotion;
+    const frameMs = isMobile ? 50 : 16;
+    const count = isMobile ? 6 : 18;
+    const linkDist = isMobile ? 90 : 130;
 
-    canvas.width = width;
-    canvas.height = height;
-
-    const count = width < 768 ? 10 : 18;
     const particles = Array.from({ length: count }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
+      x: 0,
+      y: 0,
+      vx: (Math.random() - 0.5) * (isMobile ? 0.25 : 0.4),
+      vy: (Math.random() - 0.5) * (isMobile ? 0.25 : 0.4),
     }));
+
+    const node = canvas;
+
+    function resize() {
+      const rect = node.getBoundingClientRect();
+      width = Math.max(1, Math.floor(rect.width));
+      height = Math.max(1, Math.floor(rect.height));
+      node.width = width;
+      node.height = height;
+
+      for (const p of particles) {
+        if (!p.x && !p.y) {
+          p.x = Math.random() * width;
+          p.y = Math.random() * height;
+        } else {
+          p.x = Math.min(width, Math.max(0, p.x));
+          p.y = Math.min(height, Math.max(0, p.y));
+        }
+      }
+    }
 
     function draw() {
       canvasCtx.clearRect(0, 0, width, height);
@@ -53,13 +74,13 @@ export default function AINetwork() {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const dist = Math.hypot(dx, dy);
 
-          if (dist < 130) {
+          if (dist < linkDist) {
             canvasCtx.beginPath();
             canvasCtx.moveTo(particles[i].x, particles[i].y);
             canvasCtx.lineTo(particles[j].x, particles[j].y);
-            canvasCtx.strokeStyle = `rgba(34,197,94,${1 - dist / 130})`;
+            canvasCtx.strokeStyle = `rgba(34,197,94,${1 - dist / linkDist})`;
             canvasCtx.lineWidth = 0.5;
             canvasCtx.stroke();
           }
@@ -67,9 +88,12 @@ export default function AINetwork() {
       }
     }
 
-    function loop() {
+    function loop(time: number) {
       if (!running) return;
-      draw();
+      if (time - last >= frameMs) {
+        last = time;
+        draw();
+      }
       raf = requestAnimationFrame(loop);
     }
 
@@ -82,9 +106,12 @@ export default function AINetwork() {
       }
     }
 
+    resize();
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        running = Boolean(entry?.isIntersecting) && !document.hidden && !reducedMotion;
+        running =
+          Boolean(entry?.isIntersecting) && !document.hidden && !reducedMotion;
         if (running) {
           raf = requestAnimationFrame(loop);
         } else {
@@ -93,17 +120,12 @@ export default function AINetwork() {
       },
       { threshold: 0.05 },
     );
-    observer.observe(canvas);
+    observer.observe(node);
 
-    const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    };
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(node);
 
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("resize", resize, { passive: true });
 
     if (reducedMotion) {
       draw();
@@ -115,8 +137,8 @@ export default function AINetwork() {
       running = false;
       cancelAnimationFrame(raf);
       observer.disconnect();
+      resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("resize", resize);
     };
   }, []);
 
