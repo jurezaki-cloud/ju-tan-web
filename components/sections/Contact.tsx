@@ -12,7 +12,7 @@ import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)] light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)] md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 const emptyForm = {
   name: "",
@@ -221,7 +221,10 @@ export default function Contact() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <Input
                   required
+                  name="name"
                   autoComplete="name"
+                  inputMode="text"
+                  enterKeyHint="next"
                   placeholder="Ime"
                   aria-label="Ime"
                   value={form.name}
@@ -229,7 +232,10 @@ export default function Contact() {
                   className={fieldClass}
                 />
                 <Input
+                  name="organization"
                   autoComplete="organization"
+                  inputMode="text"
+                  enterKeyHint="next"
                   placeholder="Podjetje (opcijsko)"
                   aria-label="Podjetje"
                   value={form.company}
@@ -239,7 +245,10 @@ export default function Contact() {
                 <Input
                   type="email"
                   required
+                  name="email"
                   autoComplete="email"
+                  inputMode="email"
+                  enterKeyHint="next"
                   placeholder="E-pošta"
                   aria-label="E-pošta"
                   value={form.email}
@@ -248,7 +257,10 @@ export default function Contact() {
                 />
                 <Input
                   type="tel"
+                  name="tel"
                   autoComplete="tel"
+                  inputMode="tel"
+                  enterKeyHint="next"
                   placeholder="Telefon (opcijsko)"
                   aria-label="Telefon"
                   value={form.phone}
@@ -277,37 +289,38 @@ export default function Contact() {
                 </select>
                 <Textarea
                   required
-                  rows={5}
+                  name="message"
+                  enterKeyHint="send"
                   placeholder="Sporočilo"
                   aria-label="Sporočilo"
                   value={form.message}
                   onChange={update("message")}
-                  className={`${fieldClass} min-h-[132px] py-3 sm:col-span-2`}
+                  className={`${fieldClass} min-h-[132px] py-3 text-[16px] md:text-[16px] sm:col-span-2`}
                 />
               </div>
 
-              <div className="mt-6 flex justify-center sm:justify-start">
+              <div className="mt-6 flex justify-center pb-[env(safe-area-inset-bottom,0px)] sm:justify-start">
                 <Button
                   type="submit"
                   size="lg"
                   disabled={loading}
-                  className="h-11 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 text-[16px] font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-60"
+                  className="h-11 min-h-11 w-full rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 text-[16px] font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-60 sm:w-auto"
                 >
                   {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
                 </Button>
               </div>
 
               {success ? (
-                <p role="status" className="mt-4 text-[14px] text-green-400">
+                <p role="status" className="mt-4 min-h-5 text-[14px] text-green-400">
                   Povpraševanje je pripravljeno. Kmalu vas bomo kontaktirali.
                 </p>
-              ) : null}
-
-              {error ? (
-                <p role="alert" className="mt-4 text-[14px] text-red-400">
+              ) : error ? (
+                <p role="alert" className="mt-4 min-h-5 text-[14px] text-red-400">
                   {error}
                 </p>
-              ) : null}
+              ) : (
+                <p className="mt-4 min-h-5" aria-hidden />
+              )}
 
               <p className="mt-6 text-center text-[16px] font-medium tracking-wide text-green-400/90">
                 Od ideje do izvedbe.

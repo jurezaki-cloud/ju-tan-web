@@ -26,7 +26,7 @@ type LeadFormProps = {
 };
 
 const fieldClass =
-  "h-11 rounded-xl border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 rounded-xl border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 export function formatLeadSummary(data: LeadPayload) {
   return `Hvala, ${data.name}. Povzetek povpraševanja:
@@ -137,12 +137,15 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
     <form
       onSubmit={handleSubmit}
       aria-label="Povpraševanje za ponudbo"
-      className="space-y-2 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
+      className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
     >
       <p className="text-[13px] font-medium text-[#22c55e]">Povpraševanje za ponudbo</p>
       <Input
         required
+        name="name"
         autoComplete="name"
+        inputMode="text"
+        enterKeyHint="next"
         placeholder="Ime"
         aria-label="Ime"
         value={form.name}
@@ -150,7 +153,10 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         className={fieldClass}
       />
       <Input
+        name="organization"
         autoComplete="organization"
+        inputMode="text"
+        enterKeyHint="next"
         placeholder="Podjetje"
         aria-label="Podjetje"
         value={form.company}
@@ -160,7 +166,10 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       <Input
         type="email"
         required
+        name="email"
         autoComplete="email"
+        inputMode="email"
+        enterKeyHint="next"
         placeholder="E-pošta"
         aria-label="E-pošta"
         value={form.email}
@@ -169,7 +178,10 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       />
       <Input
         type="tel"
+        name="tel"
         autoComplete="tel"
+        inputMode="tel"
+        enterKeyHint="next"
         placeholder="Telefon"
         aria-label="Telefon"
         value={form.phone}
@@ -195,11 +207,12 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       <Textarea
         required
         rows={3}
+        enterKeyHint="send"
         placeholder="Opis projekta"
         aria-label="Opis projekta"
         value={form.description}
         onChange={update("description")}
-        className="min-h-20 rounded-xl border-white/10 bg-black/30 text-white light:border-slate-200 light:bg-white light:text-slate-900"
+        className="min-h-20 rounded-xl border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
       />
       <select
         required
@@ -234,10 +247,12 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         ))}
       </select>
       {error ? (
-        <p role="alert" className="text-[13px] text-red-400">
+        <p role="alert" className="min-h-5 text-[13px] text-red-400">
           {error}
         </p>
-      ) : null}
+      ) : (
+        <p className="min-h-5" aria-hidden />
+      )}
       <Button
         type="submit"
         disabled={loading}

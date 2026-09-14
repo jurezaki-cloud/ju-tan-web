@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useId, type ReactNode } from "react";
+import { useEffect, useId, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { lockBodyScroll } from "@/lib/lock-body-scroll";
 
 type AgentWindowProps = {
   open: boolean;
   onClose: () => void;
   onClear: () => void;
+  panelHeight?: number | null;
   children: ReactNode;
 };
 
@@ -16,6 +18,7 @@ export default function AgentWindow({
   open,
   onClose,
   onClear,
+  panelHeight,
   children,
 }: AgentWindowProps) {
   const titleId = useId();
@@ -28,14 +31,18 @@ export default function AgentWindow({
         onClose();
       }
     };
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
+    const unlock = lockBodyScroll();
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
+      unlock();
     };
   }, [open, onClose]);
+
+  const style: CSSProperties | undefined =
+    panelHeight && panelHeight > 0
+      ? { height: panelHeight, maxHeight: panelHeight }
+      : undefined;
 
   return (
     <AnimatePresence>
@@ -46,14 +53,15 @@ export default function AgentWindow({
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          initial={{ opacity: 0, y: 18, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 14, scale: 0.97 }}
-          transition={{ duration: 0.28, ease: "easeOut" }}
-          className="pointer-events-auto flex h-[100dvh] w-full flex-col overflow-hidden border-white/10 bg-[#050816]/88 shadow-xl backdrop-blur-2xl md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-2xl md:border light:border-slate-200 light:bg-white/95"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          style={style}
+          className="pointer-events-auto flex h-dvh w-full min-h-0 flex-col overflow-hidden border-white/10 bg-[#050816]/88 shadow-xl backdrop-blur-2xl md:h-[min(40rem,calc(100dvh-2rem))] md:max-h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-2xl md:border light:border-slate-200 light:bg-white/95"
         >
-          <header className="flex items-center justify-between gap-2 border-b border-white/10 bg-[#16a34a]/15 px-3 py-3 light:border-slate-200 light:bg-green-50">
-            <div>
+          <header className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#16a34a]/15 px-3 pb-3 pt-[max(0.75rem,env(safe-area-inset-top,0px))] backdrop-blur-md light:border-slate-200 light:bg-green-50">
+            <div className="min-w-0">
               <h2
                 id={titleId}
                 className="font-heading text-[16px] font-semibold text-white light:text-slate-900"
@@ -64,13 +72,13 @@ export default function AgentWindow({
                 Vaš digitalni pomočnik
               </p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex shrink-0 items-center gap-1">
               <Button
                 type="button"
                 variant="ghost"
                 aria-label="Počisti pogovor"
                 onClick={onClear}
-                className="h-9 w-9 text-slate-300 hover:bg-white/10 hover:text-white light:text-slate-600"
+                className="h-11 w-11 text-slate-300 hover:bg-white/10 hover:text-white light:text-slate-600"
               >
                 <Trash2 className="h-4 w-4" aria-hidden />
               </Button>
@@ -79,13 +87,15 @@ export default function AgentWindow({
                 variant="ghost"
                 aria-label="Zapri JU-TAN AI"
                 onClick={onClose}
-                className="h-9 w-9 text-slate-300 hover:bg-white/10 hover:text-white light:text-slate-600"
+                className="h-11 w-11 text-slate-300 hover:bg-white/10 hover:text-white light:text-slate-600"
               >
                 <X className="h-4 w-4" aria-hidden />
               </Button>
             </div>
           </header>
-          {children}
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            {children}
+          </div>
         </motion.section>
       ) : null}
     </AnimatePresence>

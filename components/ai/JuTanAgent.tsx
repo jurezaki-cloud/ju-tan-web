@@ -37,6 +37,7 @@ export default function JuTanAgent() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const inputId = useId();
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const raw = useSyncExternalStore(
     subscribeAgentHistory,
     getAgentSnapshot,
@@ -46,13 +47,47 @@ export default function JuTanAgent() {
   const [open, setOpen] = useState(false);
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
+  const [panelHeight, setPanelHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    listRef.current?.scrollTo({
-      top: listRef.current.scrollHeight,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
+    if (!open) return;
+
+    const updateHeight = () => {
+      const viewport = window.visualViewport;
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+      if (isDesktop) {
+        setPanelHeight(null);
+        return;
+      }
+      setPanelHeight(Math.round(viewport?.height ?? window.innerHeight));
+    };
+
+    updateHeight();
+    window.visualViewport?.addEventListener("resize", updateHeight);
+    window.visualViewport?.addEventListener("scroll", updateHeight);
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      window.visualViewport?.removeEventListener("resize", updateHeight);
+      window.visualViewport?.removeEventListener("scroll", updateHeight);
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const frame = window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [open]);
+
+  useEffect(() => {
+    const node = listRef.current;
+    if (!node || !open) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    node.scrollTo({
+      top: node.scrollHeight,
+      behavior: reduced ? "auto" : "smooth",
     });
   }, [state.messages, typing, state.showForm, open]);
 
@@ -104,7 +139,15 @@ export default function JuTanAgent() {
     });
   };
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div
+        data-nosnippet="true"
+        className="pointer-events-none fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-[60] h-14 w-14 md:right-6 md:bottom-6"
+        aria-hidden
+      />
+    );
+  }
 
   return (
     <div
@@ -115,9 +158,10 @@ export default function JuTanAgent() {
           : "right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] md:right-6 md:bottom-6"
       }`}
     >
-      <div className="flex h-full flex-col items-end justify-end gap-3">
+      <div className="flex h-full min-h-0 flex-col items-end justify-end gap-3">
         <AgentWindow
           open={open}
+          panelHeight={open ? panelHeight : null}
           onClose={() => setOpen(false)}
           onClear={() => {
             setTyping(false);
@@ -127,17 +171,23 @@ export default function JuTanAgent() {
           <QuickActions disabled={typing} onSelect={send} />
           <div
             ref={listRef}
-            className="flex-1 space-y-3 overflow-y-auto px-3 py-3"
+            className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-3 py-3"
             aria-live="polite"
           >
-            {state.messages.map((message) => (
-              <ChatMessage key={message.id} role={message.role} text={message.text} />
-            ))}
+            {state.messages.length === 0 ? (
+              <p role="status" className="text-[14px] text-slate-400">
+                Začnite pogovor — napišite vprašanje ali izberite hitri gumb.
+              </p>
+            ) : (
+              state.messages.map((message) => (
+                <ChatMessage key={message.id} role={message.role} text={message.text} />
+              ))
+            )}
             {typing ? <TypingIndicator /> : null}
             {state.showForm && !typing ? <LeadForm onSubmit={submitLead} /> : null}
           </div>
           <form
-            className="border-t border-white/10 p-3 light:border-slate-200"
+            className="shrink-0 border-t border-white/10 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] light:border-slate-200"
             onSubmit={(event) => {
               event.preventDefault();
               send(input);
@@ -148,9 +198,14 @@ export default function JuTanAgent() {
             </label>
             <div className="flex items-end gap-2">
               <Textarea
+                ref={inputRef}
                 id={inputId}
                 rows={2}
                 value={input}
+                inputMode="text"
+                enterKeyHint="send"
+                autoComplete="off"
+                autoCorrect="on"
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !event.shiftKey) {
@@ -159,13 +214,13 @@ export default function JuTanAgent() {
                   }
                 }}
                 placeholder="Napišite sporočilo ..."
-                className="min-h-11 resize-none rounded-xl border-white/10 bg-black/30 text-white light:border-slate-200 light:bg-white light:text-slate-900"
+                className="min-h-11 resize-none rounded-xl border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
               />
               <Button
                 type="submit"
                 aria-label="Pošlji sporočilo"
                 disabled={typing || !input.trim()}
-                className="h-11 w-11 rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
+                className="h-11 w-11 shrink-0 rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
               >
                 <Send className="h-4 w-4" aria-hidden />
               </Button>

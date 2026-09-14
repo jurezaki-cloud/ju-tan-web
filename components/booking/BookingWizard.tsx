@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronLeft } from "lucide-react";
 import {
@@ -14,10 +14,10 @@ import {
 } from "@/lib/data/booking";
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white outline-none transition placeholder:text-slate-500 focus-visible:border-green-500 light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white outline-none transition placeholder:text-slate-500 focus-visible:border-green-500 md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 const chipBase =
-  "rounded-xl border px-4 py-3 text-left text-[14px] transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500";
+  "min-h-11 rounded-xl border px-4 py-3 text-left text-[14px] transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500";
 
 type Draft = {
   serviceId: string;
@@ -43,6 +43,8 @@ export default function BookingWizard() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const wizardRef = useRef<HTMLDivElement>(null);
 
   const dates = useMemo(() => upcomingWeekdays(), []);
   const service = bookingServices.find((item) => item.id === draft.serviceId);
@@ -50,6 +52,13 @@ export default function BookingWizard() {
   const team = bookingEmployees.filter((item) =>
     draft.serviceId ? item.services.includes(draft.serviceId) : true,
   );
+
+  useEffect(() => {
+    wizardRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (step === 4) {
+      window.requestAnimationFrame(() => nameRef.current?.focus());
+    }
+  }, [step]);
 
   const goNext = () => {
     setError("");
@@ -151,7 +160,10 @@ export default function BookingWizard() {
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl backdrop-blur-xl sm:p-8 light:border-slate-200 light:bg-white">
+    <div
+      ref={wizardRef}
+      className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl backdrop-blur-xl sm:p-8 light:border-slate-200 light:bg-white"
+    >
       <p className="mb-5 text-[13px] font-medium uppercase tracking-[0.16em] text-green-400">
         Korak {step + 1} / 5
       </p>
@@ -159,10 +171,10 @@ export default function BookingWizard() {
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: 16 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -16 }}
-          transition={{ duration: 0.22 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
         >
           {step === 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">
@@ -175,14 +187,16 @@ export default function BookingWizard() {
                       ? "border-green-400/60 bg-green-500/15 text-white"
                       : "border-white/10 bg-black/20 text-slate-200 hover:border-green-400/30 light:border-slate-200 light:bg-slate-50 light:text-slate-800"
                   }`}
-                  onClick={() =>
+                  onClick={() => {
+                    setError("");
                     setDraft((current) => ({
                       ...current,
                       serviceId: item.id,
                       employeeId: defaultEmployeeId,
                       time: "",
-                    }))
-                  }
+                    }));
+                    setStep(1);
+                  }}
                 >
                   <span className="block font-semibold">{item.title}</span>
                   <span className="text-[12px] text-green-300">{item.duration}</span>
@@ -207,9 +221,11 @@ export default function BookingWizard() {
                       ? "border-green-400/60 bg-green-500/15 text-white"
                       : "border-white/10 bg-black/20 text-slate-200 hover:border-green-400/30 light:border-slate-200 light:bg-slate-50 light:text-slate-800"
                   }`}
-                  onClick={() =>
-                    setDraft((current) => ({ ...current, employeeId: item.id }))
-                  }
+                  onClick={() => {
+                    setError("");
+                    setDraft((current) => ({ ...current, employeeId: item.id }));
+                    setStep(2);
+                  }}
                 >
                   <span className="block font-semibold">{item.name}</span>
                   <span className="text-[12px] text-slate-400">{item.role}</span>
@@ -230,9 +246,11 @@ export default function BookingWizard() {
                       ? "border-green-400/60 bg-green-500/15 text-white"
                       : "border-white/10 bg-black/20 text-slate-200 hover:border-green-400/30 light:border-slate-200 light:bg-slate-50 light:text-slate-800"
                   }`}
-                  onClick={() =>
-                    setDraft((current) => ({ ...current, date: day, time: "" }))
-                  }
+                  onClick={() => {
+                    setError("");
+                    setDraft((current) => ({ ...current, date: day, time: "" }));
+                    setStep(3);
+                  }}
                 >
                   {formatDay(day)}
                 </button>
@@ -261,9 +279,11 @@ export default function BookingWizard() {
                         ? "border-green-400/60 bg-green-500/15 text-white"
                         : "border-white/10 bg-black/20 text-slate-200 hover:border-green-400/30 light:border-slate-200 light:bg-slate-50 light:text-slate-800"
                     }`}
-                    onClick={() =>
-                      setDraft((current) => ({ ...current, time: slot }))
-                    }
+                    onClick={() => {
+                      setError("");
+                      setDraft((current) => ({ ...current, time: slot }));
+                      setStep(4);
+                    }}
                   >
                     {slot}
                     {open ? "" : " — zasedeno"}
@@ -289,7 +309,12 @@ export default function BookingWizard() {
                 </p>
               </div>
               <input
+                ref={nameRef}
                 className={fieldClass}
+                name="name"
+                autoComplete="name"
+                inputMode="text"
+                enterKeyHint="next"
                 placeholder="Ime in priimek"
                 aria-label="Ime in priimek"
                 value={draft.name}
@@ -300,12 +325,22 @@ export default function BookingWizard() {
               <input
                 className={fieldClass}
                 type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                enterKeyHint="send"
                 placeholder="E-pošta"
                 aria-label="E-pošta"
                 value={draft.email}
                 onChange={(event) =>
                   setDraft((current) => ({ ...current, email: event.target.value }))
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    void confirm();
+                  }
+                }}
               />
             </div>
           ) : null}
@@ -313,16 +348,18 @@ export default function BookingWizard() {
       </AnimatePresence>
 
       {error ? (
-        <p role="alert" className="mt-4 text-[14px] text-red-400">
+        <p role="alert" className="mt-4 min-h-5 text-[14px] text-red-400">
           {error}
         </p>
-      ) : null}
+      ) : (
+        <p className="mt-4 min-h-5" aria-hidden />
+      )}
 
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:flex-wrap">
         {step > 0 ? (
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm text-white transition hover:border-green-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-800"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm text-white transition hover:border-green-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:w-auto light:text-slate-800"
             onClick={() => {
               setError("");
               setStep((current) => current - 1);
@@ -335,7 +372,7 @@ export default function BookingWizard() {
         {step < 4 ? (
           <button
             type="button"
-            className="rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30"
+            className="min-h-11 w-full rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 sm:w-auto"
             onClick={goNext}
           >
             Nadaljuj
@@ -345,7 +382,7 @@ export default function BookingWizard() {
             type="button"
             disabled={loading}
             aria-busy={loading}
-            className="rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 disabled:opacity-60"
+            className="min-h-11 w-full rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 disabled:opacity-60 sm:w-auto"
             onClick={() => void confirm()}
           >
             {loading ? "Pošiljam ..." : "Potrdi rezervacijo"}

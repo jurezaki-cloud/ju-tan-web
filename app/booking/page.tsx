@@ -15,7 +15,7 @@ export default function BookingPage() {
   return (
     <>
       <Navbar />
-      <main id="main" className="pt-[70px]">
+      <main id="main" className="pt-[calc(4.375rem+env(safe-area-inset-top,0px))]">
         <Booking />
       </main>
       <Footer />
