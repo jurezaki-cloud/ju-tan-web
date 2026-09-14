@@ -7,6 +7,7 @@ import Technologies from "@/components/sections/Technologies";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
+import PremiumCTA from "@/components/common/PremiumCTA";
 
 export default function Home() {
   return (
@@ -15,6 +16,15 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Services />
+        <section className="relative overflow-hidden py-10">
+          <div className="container">
+            <PremiumCTA
+              title="Od ideje do produkcije v tednih, ne mesecih."
+              description="Povejte nam izziv. Pripravimo tehnični predlog, arhitekturo in jasen načrt izvedbe."
+              action="Brezplačen posvet"
+            />
+          </div>
+        </section>
         <Process />
         <Technologies />
         <Projects />

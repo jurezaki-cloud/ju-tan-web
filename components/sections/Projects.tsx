@@ -1,20 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
-import CTAButton from "@/components/navbar/CTAButton";
+import PremiumCTA from "@/components/common/PremiumCTA";
 import {
   projectFilters,
   projectMatchesFilter,
   projects,
   type ProjectFilter,
 } from "@/lib/data/projects";
-
-const buttonTransition =
-  "transition-all duration-[250ms] ease-out hover:-translate-y-1 active:scale-[0.97]";
 
 export default function Projects() {
   const [filter, setFilter] = useState<ProjectFilter>("Vsi");
@@ -72,26 +68,12 @@ export default function Projects() {
 
         <ProjectsGrid items={visibleProjects} />
 
-        <FadeIn delay={0.12}>
-          <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 py-8 text-center shadow-xl shadow-black/20 backdrop-blur-xl">
-            <h3 className="text-[28px] font-bold text-white">
-              Iščete partnerja za razvoj?
-            </h3>
-            <p className="mx-auto mt-3 max-w-xl text-[16px] leading-[1.65] text-slate-400">
-              Pomagamo podjetjem razviti sodobne spletne rešitve, AI
-              avtomatizacije in poslovne sisteme.
-            </p>
-
-            <div className="mt-6 flex justify-center">
-              <CTAButton
-                className={`group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-500/50 ${buttonTransition}`}
-              >
-                Stopite v stik
-                <ArrowRight className="h-5 w-5 transition-transform duration-[250ms] group-hover:translate-x-1" />
-              </CTAButton>
-            </div>
-          </div>
-        </FadeIn>
+        <div className="mt-8">
+          <PremiumCTA
+            title="Iščete partnerja za razvoj?"
+            description="Pomagamo podjetjem razviti sodobne spletne rešitve, AI avtomatizacije in poslovne sisteme."
+          />
+        </div>
       </div>
     </section>
   );
