@@ -6,6 +6,7 @@ import { Check, ChevronLeft } from "lucide-react";
 import {
   bookingEmployees,
   bookingServices,
+  defaultEmployeeId,
   formatDay,
   isSlotOpen,
   timeSlots,
@@ -29,7 +30,7 @@ type Draft = {
 
 const emptyDraft: Draft = {
   serviceId: "",
-  employeeId: "",
+  employeeId: defaultEmployeeId,
   date: "",
   time: "",
   name: "",
@@ -138,7 +139,7 @@ export default function BookingWizard() {
                     setDraft((current) => ({
                       ...current,
                       serviceId: item.id,
-                      employeeId: "",
+                      employeeId: defaultEmployeeId,
                       time: "",
                     }))
                   }

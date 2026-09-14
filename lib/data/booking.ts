@@ -21,32 +21,24 @@ export const bookingServices: BookingService[] = [
   { id: "consult", title: "IT svetovanje", duration: "30 min" },
 ];
 
+const allServiceIds = bookingServices.map((service) => service.id);
+
 export const bookingEmployees: BookingEmployee[] = [
   {
-    id: "ana",
+    id: "tanja",
     name: "Tanja Hrup",
-    role: "AI in avtomatizacija",
-    services: ["ai", "auto", "consult"],
+    role: "Svetovalka",
+    services: allServiceIds,
   },
   {
-    id: "luka",
-    name: "Luka Horvat",
-    role: "Splet in programska oprema",
-    services: ["web", "software", "mobile", "consult"],
-  },
-  {
-    id: "maja",
-    name: "Maja Kralj",
-    role: "Oblikovanje in video",
-    services: ["design", "web"],
-  },
-  {
-    id: "tilen",
-    name: "Tilen Berg",
-    role: "Infrastruktura in svetovanje",
-    services: ["consult", "software", "auto"],
+    id: "jure",
+    name: "Jure Zakrajšek",
+    role: "Svetovalec",
+    services: allServiceIds,
   },
 ];
+
+export const defaultEmployeeId = bookingEmployees[0].id;
 
 export const timeSlots = [
   "08:00",
