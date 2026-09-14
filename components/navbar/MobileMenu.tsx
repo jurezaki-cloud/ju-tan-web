@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import NavLinks from "./NavLinks";
 import CTAButton from "./CTAButton";
@@ -11,8 +11,12 @@ type MobileMenuProps = {
 };
 
 export default function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (!open) return;
+
+    closeRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -40,6 +44,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col gap-8 border-l border-white/10 bg-[#050816]/95 p-6 pt-16 shadow-2xl"
       >
         <button
+          ref={closeRef}
           type="button"
           aria-label="Zapri meni"
           className="absolute right-5 top-6 rounded-xl p-2 text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"

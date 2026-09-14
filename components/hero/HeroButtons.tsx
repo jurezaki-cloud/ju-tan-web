@@ -8,6 +8,7 @@ export default function HeroButtons() {
     <div className="mt-6 flex flex-wrap gap-3">
       <motion.a
         href="#contact"
+        aria-label="Oddajte povpraševanje za brezplačen posvet"
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.97 }}
         className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:shadow-xl hover:shadow-green-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
@@ -18,6 +19,7 @@ export default function HeroButtons() {
 
       <motion.a
         href="#projects"
+        aria-label="Oglej si projekte JU-TAN"
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.97 }}
         className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white shadow-md shadow-black/20 backdrop-blur-sm transition duration-[250ms] hover:border-green-500/50 hover:bg-white/10 hover:shadow-lg hover:shadow-green-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"

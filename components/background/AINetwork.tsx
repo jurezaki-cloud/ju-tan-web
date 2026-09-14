@@ -124,7 +124,7 @@ export default function AINetwork() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="absolute inset-0 -z-10 h-full w-full opacity-40"
+      className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-40"
     />
   );
 }

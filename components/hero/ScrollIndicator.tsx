@@ -23,7 +23,7 @@ export default function ScrollIndicator() {
           Pomakni se
         </span>
 
-        <ChevronDown className="h-6 w-6" />
+        <ChevronDown className="h-6 w-6" aria-hidden />
       </a>
     </motion.div>
   );

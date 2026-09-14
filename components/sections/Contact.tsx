@@ -12,7 +12,7 @@ import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-0 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
+  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
 
 const emptyForm = {
   name: "",
@@ -162,7 +162,7 @@ export default function Contact() {
                     >
                       <CardContent className="flex items-center gap-4 p-5">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green-500/10 text-green-400">
-                          <Icon className="h-7 w-7" />
+                          <Icon className="h-7 w-7" aria-hidden />
                         </div>
                         <div className="min-w-0 text-left">
                           <p className="text-[14px] font-medium text-green-400">
@@ -201,6 +201,7 @@ export default function Contact() {
               id="contact-form"
               onSubmit={handleSubmit}
               noValidate
+              aria-label="Kontaktni obrazec"
               className="relative rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
             >
               <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden>

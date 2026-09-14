@@ -26,7 +26,7 @@ type LeadFormProps = {
 };
 
 const fieldClass =
-  "h-11 rounded-xl border-white/10 bg-black/30 text-[16px] text-white light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 rounded-xl border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] light:border-slate-200 light:bg-white light:text-slate-900";
 
 export function formatLeadSummary(data: LeadPayload) {
   return `Hvala, ${data.name}. Povzetek povpraševanja:
@@ -134,6 +134,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
+      aria-label="Povpraševanje za ponudbo"
       className="space-y-2 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
     >
       <p className="text-[13px] font-medium text-[#22c55e]">Povpraševanje za ponudbo</p>
