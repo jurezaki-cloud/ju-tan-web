@@ -1,88 +1,69 @@
 "use client";
 
-import {
-  Search,
-  Lightbulb,
-  Code2,
-  Rocket,
-} from "lucide-react";
-
 import SectionTitle from "@/components/common/SectionTitle";
-import { FadeIn, Stagger, StaggerItem } from "@/components/animations";
-
-const steps = [
-  {
-    icon: Search,
-    number: "01",
-    title: "Analiza",
-    description:
-      "Pregled poslovnih procesov, ciljev in priprava optimalne strategije.",
-  },
-  {
-    icon: Lightbulb,
-    number: "02",
-    title: "Načrtovanje",
-    description:
-      "Priprava arhitekture, UX, tehnologij in časovnega načrta projekta.",
-  },
-  {
-    icon: Code2,
-    number: "03",
-    title: "Razvoj",
-    description:
-      "Razvoj AI rešitev, spletnih aplikacij in avtomatizacije po najvišjih standardih.",
-  },
-  {
-    icon: Rocket,
-    number: "04",
-    title: "Implementacija",
-    description:
-      "Objava sistema, optimizacija, podpora in nadaljnji razvoj.",
-  },
-];
+import ProcessCard from "@/components/process/ProcessCard";
+import { FadeIn } from "@/components/animations";
+import { process } from "@/lib/data/process";
 
 export default function Process() {
   return (
-    <section
-      id="process"
-      className="relative py-32"
-    >
-      <div className="mx-auto max-w-7xl px-6">
-        <SectionTitle
-          badge="Postopek"
-          title="Kako poteka sodelovanje"
-          description="Od prve ideje do končne implementacije."
-        />
+    <section id="process" className="relative overflow-hidden py-24 md:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-emerald-500/5" />
+      <div className="pointer-events-none absolute right-[-120px] top-32 h-[380px] w-[380px] rounded-full bg-green-500/12 blur-[140px]" />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]
+          [background-image:linear-gradient(rgba(255,255,255,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.18)_1px,transparent_1px)]
+          [background-size:72px_72px]"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
 
-        <Stagger className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {steps.map((step) => {
-            const Icon = step.icon;
+      <div className="container relative">
+        <FadeIn>
+          <SectionTitle
+            badge="Postopek"
+            title="Kako poteka sodelovanje"
+            description="Jasna pot od analize do dolgoročne podpore."
+          />
+        </FadeIn>
 
-            return (
-              <StaggerItem key={step.number}>
-                <FadeIn>
-                  <div className="group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-green-400/40 hover:bg-white/10">
-                    <span className="absolute right-6 top-6 text-5xl font-black text-white/5">
-                      {step.number}
-                    </span>
+        <div className="relative mx-auto mt-20 max-w-5xl">
+          <div className="absolute top-0 bottom-6 left-[1.35rem] w-px bg-gradient-to-b from-green-500/0 via-green-500/40 to-green-500/0 lg:left-1/2 lg:-translate-x-1/2" />
 
-                    <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
-                      <Icon size={30} />
-                    </div>
+          <ol className="space-y-10 lg:space-y-16">
+            {process.map((step, index) => {
+              const isEven = index % 2 === 0;
 
-                    <h3 className="mb-4 text-2xl font-bold">
-                      {step.title}
-                    </h3>
+              return (
+                <li key={step.number} className="relative">
+                  <span className="absolute top-8 left-0 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-green-400/40 bg-[#050816] text-sm font-black text-green-300 shadow-[0_0_24px_rgba(34,197,94,0.35)] lg:left-1/2 lg:-translate-x-1/2">
+                    {step.number}
+                  </span>
 
-                    <p className="leading-7 text-slate-400">
-                      {step.description}
-                    </p>
+                  <div
+                    className={`pl-14 lg:w-1/2 lg:pl-0 ${
+                      isEven ? "lg:pr-16" : "lg:ml-auto lg:pl-16"
+                    }`}
+                  >
+                    <FadeIn delay={index * 0.08}>
+                      <ProcessCard
+                        step={step.number}
+                        title={step.title}
+                        description={step.description}
+                        icon={step.icon}
+                      />
+                    </FadeIn>
                   </div>
-                </FadeIn>
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </div>
     </section>
   );

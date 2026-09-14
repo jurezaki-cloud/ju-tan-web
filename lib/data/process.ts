@@ -1,38 +1,54 @@
-export const process = [
+import {
+  Search,
+  Lightbulb,
+  Code2,
+  FlaskConical,
+  Rocket,
+  LifeBuoy,
+} from "lucide-react";
+import type { ProcessStep } from "@/lib/types";
+
+export const process: ProcessStep[] = [
   {
-    step: "01",
-    title: "Posvet",
+    number: "01",
+    icon: Search,
+    title: "Analiza",
     description:
-      "Analiziramo vaše potrebe in določimo cilje projekta.",
+      "Pregledamo poslovne procese, cilje in izzive ter pripravimo jasno izhodišče projekta.",
   },
   {
-    step: "02",
+    number: "02",
+    icon: Lightbulb,
     title: "Načrtovanje",
     description:
-      "Pripravimo tehnično rešitev, arhitekturo in časovni načrt.",
+      "Določimo arhitekturo, obseg, tehnologije in časovnico, da je izvedba predvidljiva.",
   },
   {
-    step: "03",
+    number: "03",
+    icon: Code2,
     title: "Razvoj",
     description:
-      "Razvijemo programsko opremo ali spletno rešitev po meri.",
+      "Izdelamo rešitev po meri: AI, avtomatizacijo, programsko opremo ali spletno aplikacijo.",
   },
   {
-    step: "04",
+    number: "04",
+    icon: FlaskConical,
     title: "Testiranje",
     description:
-      "Preverimo delovanje, varnost in zmogljivost sistema.",
+      "Preverimo delovanje, varnost in zmogljivost, preden rešitev pride v produkcijo.",
   },
   {
-    step: "05",
+    number: "05",
+    icon: Rocket,
     title: "Implementacija",
     description:
-      "Rešitev namestimo in jo pripravimo za produkcijo.",
+      "Rešitev namestimo, usposobimo ekipo in poskrbimo za stabilen prehod v uporabo.",
   },
   {
-    step: "06",
+    number: "06",
+    icon: LifeBuoy,
     title: "Podpora",
     description:
-      "Nudimo podporo, nadgradnje in dolgoročno vzdrževanje.",
+      "Nudimo podporo, nadgradnje in dolgoročno vzdrževanje, da sistem raste z vami.",
   },
 ];
