@@ -151,6 +151,7 @@ export function jsonLdGraph() {
         ],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
+        logo: absoluteUrl("/logo/ju-tan-studio.png"),
         priceRange: "$$",
         areaServed: {
           "@type": "Country",

@@ -19,7 +19,7 @@ export default function Logo() {
         fetchPriority="high"
       />
 
-      <span className="text-xl font-bold tracking-wide text-white">
+      <span className="text-xl font-bold tracking-wide text-white light:text-slate-900">
         JU-TAN
       </span>
     </Link>

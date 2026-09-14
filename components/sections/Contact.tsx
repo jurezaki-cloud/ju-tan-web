@@ -12,7 +12,7 @@ import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
+  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)] light:border-slate-200 light:bg-white light:text-slate-900";
 
 const emptyForm = {
   name: "",
@@ -120,7 +120,9 @@ export default function Contact() {
         setError(
           response.status === 429
             ? "Preveč poskusov. Poskusite znova čez nekaj minut."
-            : "Pošiljanje povpraševanja ni uspelo.",
+            : response.status === 503
+              ? "Pošiljanje trenutno ni na voljo. Pišite nam na e-pošto."
+              : "Pošiljanje povpraševanja ni uspelo.",
         );
         return;
       }
@@ -177,12 +179,12 @@ export default function Contact() {
                                     rel: "noopener noreferrer",
                                   }
                                 : {})}
-                              className="whitespace-pre-line text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                              className="whitespace-pre-line text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900"
                             >
                               {item.value}
                             </a>
                           ) : (
-                            <p className="whitespace-pre-line text-[16px] font-semibold text-white">
+                            <p className="whitespace-pre-line text-[16px] font-semibold text-white light:text-slate-900">
                               {item.value}
                             </p>
                           )}
@@ -202,14 +204,16 @@ export default function Contact() {
               onSubmit={handleSubmit}
               noValidate
               aria-label="Kontaktni obrazec"
-              className="relative rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+              aria-busy={loading}
+              className="relative rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl light:border-slate-200 light:bg-white"
             >
-              <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden>
+              <div className="hidden" aria-hidden="true">
                 <label htmlFor="company-website">Spletna stran</label>
                 <input
                   id="company-website"
                   tabIndex={-1}
                   autoComplete="off"
+                  name="website"
                   value={honeypot}
                   onChange={(event) => setHoneypot(event.target.value)}
                 />

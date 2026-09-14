@@ -13,6 +13,7 @@ import TypingIndicator from "./TypingIndicator";
 import { isOfferIntent, replyToPrompt } from "./content";
 import {
   clearAgentHistory,
+  emptyAgentState,
   getAgentServerSnapshot,
   getAgentSnapshot,
   publishAgentState,
@@ -21,6 +22,16 @@ import {
 } from "./storage";
 
 const emptySubscribe = () => () => undefined;
+
+function readState(raw: string): AgentState {
+  try {
+    const parsed = JSON.parse(raw) as AgentState;
+    if (!parsed?.messages?.length) return emptyAgentState;
+    return parsed;
+  } catch {
+    return emptyAgentState;
+  }
+}
 
 export default function JuTanAgent() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
@@ -31,7 +42,7 @@ export default function JuTanAgent() {
     getAgentSnapshot,
     getAgentServerSnapshot,
   );
-  const state = JSON.parse(raw) as AgentState;
+  const state = readState(raw);
   const [open, setOpen] = useState(false);
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
@@ -39,7 +50,9 @@ export default function JuTanAgent() {
   useEffect(() => {
     listRef.current?.scrollTo({
       top: listRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
     });
   }, [state.messages, typing, state.showForm, open]);
 

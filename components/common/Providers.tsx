@@ -7,7 +7,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
       {children}
       <Analytics />
       <SpeedInsights />

@@ -42,6 +42,7 @@ export default function BookingWizard() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dates = useMemo(() => upcomingWeekdays(), []);
   const service = bookingServices.find((item) => item.id === draft.serviceId);
@@ -71,7 +72,7 @@ export default function BookingWizard() {
     setStep((current) => current + 1);
   };
 
-  const confirm = () => {
+  const confirm = async () => {
     setError("");
     if (!draft.name.trim()) {
       setError("Vnesite ime.");
@@ -81,7 +82,46 @@ export default function BookingWizard() {
       setError("Vnesite veljaven e-poštni naslov.");
       return;
     }
-    setDone(true);
+    if (!service || !employee) {
+      setError("Izberite storitev in svetovalca.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: draft.name.trim(),
+          email: draft.email.trim(),
+          service: service.title,
+          message: [
+            "Rezervacija termina",
+            `Svetovalec: ${employee.name}`,
+            `Datum: ${formatDay(draft.date)}`,
+            `Ura: ${draft.time}`,
+          ].join("\n"),
+        }),
+      });
+
+      if (!response.ok) {
+        setError(
+          response.status === 429
+            ? "Preveč poskusov. Poskusite znova čez nekaj minut."
+            : response.status === 503
+              ? "Pošiljanje trenutno ni na voljo. Pišite nam na e-pošto."
+              : "Rezervacije ni bilo mogoče poslati.",
+        );
+        return;
+      }
+
+      setDone(true);
+    } catch {
+      setError("Rezervacije ni bilo mogoče poslati.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (done && service && employee) {
@@ -152,6 +192,11 @@ export default function BookingWizard() {
           ) : null}
 
           {step === 1 ? (
+            team.length === 0 ? (
+              <p role="status" className="text-slate-400">
+                Za to storitev trenutno ni razpoložljivega svetovalca.
+              </p>
+            ) : (
             <div className="grid gap-3 sm:grid-cols-2">
               {team.map((item) => (
                 <button
@@ -171,6 +216,7 @@ export default function BookingWizard() {
                 </button>
               ))}
             </div>
+            )
           ) : null}
 
           {step === 2 ? (
@@ -195,6 +241,13 @@ export default function BookingWizard() {
           ) : null}
 
           {step === 3 ? (
+            timeSlots.every(
+              (slot) => !isSlotOpen(draft.employeeId, draft.date, slot),
+            ) ? (
+              <p role="status" className="text-slate-400">
+                Za izbrani dan ni prostih terminov. Izberite drug datum.
+              </p>
+            ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {timeSlots.map((slot) => {
                 const open = isSlotOpen(draft.employeeId, draft.date, slot);
@@ -218,6 +271,7 @@ export default function BookingWizard() {
                 );
               })}
             </div>
+            )
           ) : null}
 
           {step === 4 ? (
@@ -289,10 +343,12 @@ export default function BookingWizard() {
         ) : (
           <button
             type="button"
-            className="rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30"
-            onClick={confirm}
+            disabled={loading}
+            aria-busy={loading}
+            className="rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 disabled:opacity-60"
+            onClick={() => void confirm()}
           >
-            Potrdi rezervacijo
+            {loading ? "Pošiljam ..." : "Potrdi rezervacijo"}
           </button>
         )}
       </div>

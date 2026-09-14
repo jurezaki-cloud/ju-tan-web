@@ -118,7 +118,9 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         setError(
           response.status === 429
             ? "Preveč poskusov. Poskusite znova čez nekaj minut."
-            : "Pošiljanje povpraševanja ni uspelo.",
+            : response.status === 503
+              ? "Pošiljanje trenutno ni na voljo. Pišite nam na e-pošto."
+              : "Pošiljanje povpraševanja ni uspelo.",
         );
         return;
       }

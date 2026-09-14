@@ -66,7 +66,13 @@ export default function Projects() {
           })}
         </div>
 
-        <ProjectsGrid items={visibleProjects} />
+        {visibleProjects.length === 0 ? (
+          <p role="status" className="py-12 text-center text-slate-400">
+            Za izbrani filter trenutno ni projektov.
+          </p>
+        ) : (
+          <ProjectsGrid items={visibleProjects} />
+        )}
 
         <div className="mt-8">
           <PremiumCTA

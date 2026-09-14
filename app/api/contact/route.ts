@@ -4,8 +4,8 @@ import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
 
-function jsonError(status: number) {
-  return NextResponse.json({ success: false }, { status });
+function jsonError(status: number, extra?: HeadersInit) {
+  return NextResponse.json({ success: false }, { status, headers: extra });
 }
 
 export async function POST(req: Request) {
@@ -16,9 +16,16 @@ export async function POST(req: Request) {
     }
 
     if (isRateLimited(clientKey(req))) {
-      return jsonError(429);
+      return jsonError(429, { "Retry-After": "600" });
     }
-    const json: unknown = await req.json();
+
+    let json: unknown;
+    try {
+      json = await req.json();
+    } catch {
+      return jsonError(400);
+    }
+
     const parsed = contactSchema.safeParse(json);
 
     if (!parsed.success) {
@@ -32,7 +39,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.RESEND_API_KEY;
     const from = process.env.EMAIL_FROM;
     if (!apiKey || !from) {
-      return jsonError(500);
+      return jsonError(503);
     }
 
     const resend = new Resend(apiKey);

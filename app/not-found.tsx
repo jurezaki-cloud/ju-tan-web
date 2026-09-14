@@ -15,10 +15,10 @@ export default function NotFound() {
       <p className="text-[14px] font-medium uppercase tracking-[0.16em] text-green-400">
         404
       </p>
-      <h1 className="mt-3 font-heading text-[36px] font-semibold tracking-[-0.03em] text-white">
+      <h1 className="mt-3 font-heading text-[36px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
         Stran ne obstaja
       </h1>
-      <p className="mt-3 max-w-md text-slate-400">
+      <p className="mt-3 max-w-md text-slate-400 light:text-slate-600">
         Naslov ni veljaven ali je bil premaknjen. Vrnite se na domačo stran.
       </p>
       <Link
