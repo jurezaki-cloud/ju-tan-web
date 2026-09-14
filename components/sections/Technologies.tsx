@@ -49,23 +49,23 @@ export default function Technologies() {
   return (
     <section
       id="technologies"
-      className="py-32"
+      className="py-16 md:py-20"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="container relative">
         <SectionTitle
           badge="Tehnologije"
           title="Tehnologije, ki jim zaupamo"
           description="Gradimo moderne, hitre in varne rešitve."
         />
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
           {technologies.map((item) => {
             const Icon = item.icon;
 
             return (
               <FadeIn key={item.title}>
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
                     <Icon size={30} />
                   </div>
 

@@ -74,7 +74,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-32"
+      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-16 md:py-20"
     >
       <div className="mx-auto max-w-5xl px-6 text-center">
         <FadeIn>
@@ -88,9 +88,9 @@ export default function Contact() {
         <Reveal delay={0.2}>
           <form
             onSubmit={handleSubmit}
-            className="mt-16 rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl"
+            className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl md:p-8"
           >
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2">
               <input
                 required
                 autoComplete="name"

@@ -21,7 +21,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         onClick={onClose}
       />
 
-      <div className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col gap-8 border-l border-white/10 bg-[#050816]/95 p-6 pt-24 shadow-2xl">
+      <div className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col gap-8 border-l border-white/10 bg-[#050816]/95 p-6 pt-16 shadow-2xl">
         <button
           type="button"
           aria-label="Zapri meni"

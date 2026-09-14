@@ -6,7 +6,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden py-32"
+      className="relative overflow-hidden py-16 md:py-20"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
 

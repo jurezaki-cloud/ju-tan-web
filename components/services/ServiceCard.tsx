@@ -24,10 +24,10 @@ export default function ServiceCard({
         scale: 1.02,
       }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group h-full rounded-3xl border border-white/10 bg-white/5 p-8 shadow-lg shadow-black/10 backdrop-blur-xl transition-all duration-300 hover:border-green-400/40 hover:bg-white/[0.07] hover:shadow-[0_20px_60px_rgba(34,197,94,0.18)]"
+      className="group h-full rounded-3xl border border-white/10 bg-white/5 p-7 shadow-lg shadow-black/10 backdrop-blur-xl transition-all duration-300 hover:border-green-400/40 hover:bg-white/[0.07] hover:shadow-[0_20px_60px_rgba(34,197,94,0.18)]"
     >
       <ServiceIcon>
-        <Icon size={36} />
+        <Icon size={30} />
       </ServiceIcon>
 
       <h3 className="mb-3 text-2xl font-bold text-white">{title}</h3>
@@ -35,7 +35,7 @@ export default function ServiceCard({
       <p className="leading-8 text-slate-400">{description}</p>
 
       {features.length > 0 ? (
-        <ul className="mt-6 space-y-2.5">
+        <ul className="mt-4 space-y-2">
           {features.map((feature) => (
             <li
               key={feature}
@@ -50,7 +50,7 @@ export default function ServiceCard({
 
       <a
         href="#contact"
-        className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-green-400 transition-all duration-300 hover:gap-3 hover:text-green-300"
+        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-green-400 transition-all duration-300 hover:gap-3 hover:text-green-300"
       >
         Več informacij
         <ArrowRight className="h-4 w-4" />

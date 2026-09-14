@@ -8,10 +8,10 @@ const buttonTransition =
 
 export default function HeroButtons() {
   return (
-    <div className="mt-12 flex flex-wrap gap-5">
+    <div className="mt-6 flex flex-wrap gap-4">
       <Link
         href="#contact"
-        className={`group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-8 py-4 font-semibold text-white shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-500/50 ${buttonTransition}`}
+        className={`group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-7 py-3.5 font-semibold text-white shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-500/50 ${buttonTransition}`}
       >
         Brezplačen posvet
         <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -19,7 +19,7 @@ export default function HeroButtons() {
 
       <Link
         href="#projects"
-        className={`group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-4 font-semibold text-white shadow-md shadow-black/20 backdrop-blur-sm hover:border-green-500/50 hover:bg-white/10 hover:shadow-lg hover:shadow-green-500/20 ${buttonTransition}`}
+        className={`group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-7 py-3.5 font-semibold text-white shadow-md shadow-black/20 backdrop-blur-sm hover:border-green-500/50 hover:bg-white/10 hover:shadow-lg hover:shadow-green-500/20 ${buttonTransition}`}
       >
         Oglej si projekte
         <FolderOpen

@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#050816]">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-4">
+      <div className="container grid gap-8 py-12 md:grid-cols-4">
         <div>
           <Image
             src="/logo/ju-tan-studio.png"

@@ -7,7 +7,7 @@ import { process } from "@/lib/data/process";
 
 export default function Process() {
   return (
-    <section id="process" className="relative overflow-hidden py-24 md:py-32">
+    <section id="process" className="relative overflow-hidden py-16 md:py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-emerald-500/5" />
       <div className="pointer-events-none absolute right-[-120px] top-32 h-[380px] w-[380px] rounded-full bg-green-500/12 blur-[140px]" />
       <div
@@ -32,10 +32,10 @@ export default function Process() {
           />
         </FadeIn>
 
-        <div className="relative mx-auto mt-20 max-w-5xl">
+        <div className="relative mx-auto mt-10 max-w-4xl md:mt-12">
           <div className="absolute top-0 bottom-6 left-[1.35rem] w-px bg-gradient-to-b from-green-500/0 via-green-500/40 to-green-500/0 lg:left-1/2 lg:-translate-x-1/2" />
 
-          <ol className="space-y-10 lg:space-y-16">
+          <ol className="space-y-8 lg:space-y-10">
             {process.map((step, index) => {
               const isEven = index % 2 === 0;
 

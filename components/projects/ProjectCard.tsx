@@ -38,7 +38,7 @@ export default function ProjectCard({
           </span>
         </div>
 
-        <div className="p-7">
+        <div className="p-6">
           <p className="text-sm uppercase tracking-[3px] text-green-400">
             {category}
           </p>

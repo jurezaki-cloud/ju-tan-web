@@ -3,7 +3,7 @@ import ProjectCard from "./ProjectCard";
 
 export default function ProjectsGrid() {
   return (
-    <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+    <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
       {projects.map((project, index) => (
         <ProjectCard
           key={project.title}

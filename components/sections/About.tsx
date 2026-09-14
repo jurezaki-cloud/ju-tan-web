@@ -51,12 +51,12 @@ const features = [
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden py-32">
+    <section id="about" className="relative overflow-hidden py-16 md:py-20">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
       <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="container relative">
         <FadeIn>
           <SectionTitle
             badge="Zakaj JU-TAN"
@@ -65,7 +65,7 @@ export default function About() {
           />
         </FadeIn>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
           {features.map((feature, index) => {
             const Icon = feature.icon;
 
@@ -91,7 +91,7 @@ export default function About() {
           })}
         </div>
 
-        <div className="mt-24 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
             ["500+", "Zaključenih projektov"],
             ["50+", "Zadovoljnih partnerjev"],
