@@ -51,6 +51,7 @@ const details = [
 
 export default function Contact() {
   const [form, setForm] = useState(emptyForm);
+  const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -103,17 +104,26 @@ export default function Contact() {
       phone: form.phone.trim() || undefined,
       service: form.service,
       message: form.message.trim(),
+      website: honeypot,
     };
 
     setLoading(true);
 
     try {
-      await new Promise((resolve) => {
-        window.setTimeout(resolve, 400);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-      void payload;
+
+      if (!response.ok) {
+        setError("Pošiljanje povpraševanja ni uspelo.");
+        return;
+      }
+
       setSuccess(true);
       setForm(emptyForm);
+      setHoneypot("");
     } catch {
       setError("Priprava povpraševanja ni uspela.");
     } finally {
@@ -187,8 +197,18 @@ export default function Contact() {
               id="contact-form"
               onSubmit={handleSubmit}
               noValidate
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+              className="relative rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
             >
+              <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden>
+                <label htmlFor="company-website">Spletna stran</label>
+                <input
+                  id="company-website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(event) => setHoneypot(event.target.value)}
+                />
+              </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Input
                   required
