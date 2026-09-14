@@ -1,20 +1,21 @@
 import { projects } from "@/lib/data/projects";
+import { Stagger, StaggerItem } from "@/components/animations";
 import ProjectCard from "./ProjectCard";
 
 export default function ProjectsGrid() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {projects.map((project, index) => (
-        <ProjectCard
-          key={project.title}
-          title={project.title}
-          category={project.category}
-          description={project.description}
-          technologies={project.technologies}
-          image={project.image}
-          delay={0.2 + index * 0.15}
-        />
+    <Stagger className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project) => (
+        <StaggerItem key={project.title} className="h-full">
+          <ProjectCard
+            title={project.title}
+            category={project.category}
+            description={project.description}
+            technologies={project.technologies}
+            image={project.image}
+          />
+        </StaggerItem>
       ))}
-    </div>
+    </Stagger>
   );
 }

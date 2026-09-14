@@ -1,34 +1,52 @@
-export const projects = [
+import type { Project } from "@/lib/types";
+
+export const projects: Project[] = [
+  {
+    title: "JU-TAN AI Platform",
+    category: "Umetna inteligenca",
+    description:
+      "Osrednja platforma za AI agente, avtomatizacijo nalog in inteligentno podporo poslovnim procesom.",
+    technologies: ["OpenAI", "Python", "Next.js"],
+    image: "ai-platform",
+  },
   {
     title: "JU-TAN Office",
     category: "Poslovna programska oprema",
     description:
-      "Celovita poslovna aplikacija za podjetja z moduli za stranke, ponudbe, račune, skladišče in analitiko.",
-    technologies: ["Python", "CustomTkinter", "SQLite"],
-    image: "/projects/jutan-office.jpg",
+      "Celovita poslovna aplikacija z moduli za stranke, ponudbe, račune, skladišče in analitiko.",
+    technologies: ["Python", "TypeScript", "PostgreSQL"],
+    image: "office",
   },
   {
-    title: "AI avtomatizacija",
+    title: "AI Chatbot",
     category: "Umetna inteligenca",
     description:
-      "Razvoj AI agentov za avtomatizacijo poslovnih procesov, dokumentacije in podpore uporabnikom.",
-    technologies: ["OpenAI", "Python", "LangChain"],
-    image: "/projects/ai-automation.jpg",
+      "Pogovorni asistent, ki odgovarja na vprašanja strank, razbremeni podporo in deluje 24/7.",
+    technologies: ["OpenAI", "FastAPI", "React"],
+    image: "chatbot",
   },
   {
-    title: "Spletne strani za podjetja",
+    title: "CRM Sistem",
+    category: "Poslovna programska oprema",
+    description:
+      "Sistem za upravljanje strank, priložnosti in komunikacije z jasnim pregledom prodajnega lijaka.",
+    technologies: ["Next.js", "TypeScript", "PostgreSQL"],
+    image: "crm",
+  },
+  {
+    title: "ERP Integracija",
+    category: "Avtomatizacija",
+    description:
+      "Povezava obstoječih ERP sistemov z avtomatiziranimi tokovi podatkov, poročili in nadzorom.",
+    technologies: ["Python", "FastAPI", "Docker"],
+    image: "erp",
+  },
+  {
+    title: "Spletni Portal",
     category: "Spletni razvoj",
     description:
-      "Moderne, hitre in SEO-optimizirane spletne strani z uporabo Next.js in React.",
-    technologies: ["Next.js", "React", "TailwindCSS"],
-    image: "/projects/websites.jpg",
-  },
-  {
-    title: "Oblačna infrastruktura",
-    category: "Infrastruktura",
-    description:
-      "Postavitev strežnikov, Docker okolij, varnostnih kopij in omrežne infrastrukture.",
-    technologies: ["Docker", "Linux", "Cloudflare"],
-    image: "/projects/cloud.jpg",
+      "Sodobni portal za stranke in partnerje z varnim dostopom, vsebino in oblačno infrastrukturo.",
+    technologies: ["React", "Next.js", "Cloud"],
+    image: "portal",
   },
 ];
