@@ -31,6 +31,7 @@ export default function Footer() {
               height={70}
               sizes="180px"
               loading="lazy"
+              decoding="async"
               className="h-12 w-auto"
             />
 

@@ -25,7 +25,7 @@ export default function AINetwork() {
     canvas.width = width;
     canvas.height = height;
 
-    const count = width < 768 ? 16 : 28;
+    const count = width < 768 ? 10 : 18;
     const particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
