@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Geist } from "next/font/google";
+import { Geist, Syne } from "next/font/google";
 import type { ReactNode } from "react";
 import { jsonLdGraph } from "@/lib/seo";
 
@@ -12,6 +12,13 @@ const geist = Geist({
   preload: true,
 });
 
+const syne = Syne({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-heading",
+  display: "swap",
+  preload: true,
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,8 +27,8 @@ export default function RootLayout({
   const jsonLd = jsonLdGraph();
 
   return (
-    <html lang="sl" className={geist.variable}>
-      <body className="min-h-screen bg-[#050816] text-white antialiased">
+    <html lang="sl" className={`${geist.variable} ${syne.variable}`}>
+      <body className="min-h-screen bg-[#050816] font-sans text-white antialiased">
         <a href="#main" className="skip-link">
           Preskoči na vsebino
         </a>

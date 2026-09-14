@@ -12,7 +12,7 @@ export default function HeroContent() {
         {company.badge}
       </div>
 
-      <h1 className="text-[32px] font-black leading-[1.12] tracking-tight text-white sm:text-[40px] md:text-[52px] lg:text-[62px]">
+      <h1 className="font-heading text-[32px] font-semibold leading-[1.1] tracking-[-0.04em] text-white sm:text-[42px] md:text-[54px] lg:text-[64px]">
         {first}
         <br />
         <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent">
@@ -26,7 +26,7 @@ export default function HeroContent() {
         ) : null}
       </h1>
 
-      <p className="mt-3 max-w-2xl text-[16px] leading-[1.65] text-slate-300">
+      <p className="mt-4 max-w-2xl text-[17px] leading-[1.7] tracking-[-0.01em] text-slate-300">
         {company.description}
       </p>
     </div>
