@@ -7,9 +7,9 @@ import CTAButton from "@/components/navbar/CTAButton";
 
 const companyLinks = [
   { label: "Domov", href: "/" },
-  { label: "Zakaj JU-TAN", href: "#about" },
-  { label: "Projekti", href: "#projects" },
-  { label: "Kontakt", href: "#contact" },
+  { label: "Zakaj JU-TAN", href: "/#about" },
+  { label: "Projekti", href: "/#projects" },
+  { label: "Kontakt", href: "/#contact" },
 ];
 
 const linkClass =
@@ -68,7 +68,7 @@ export default function Footer() {
             <ul className="space-y-3 text-slate-400">
               {services.map((service) => (
                 <li key={service.title}>
-                  <a className={linkClass} href="#services">
+                  <a className={linkClass} href="/#services">
                     {service.title}
                   </a>
                 </li>

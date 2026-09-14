@@ -18,7 +18,7 @@ export default function CTAButton({
 }: CTAButtonProps) {
   return (
     <a
-      href="#contact"
+      href="/#contact"
       onClick={onClick}
       className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
     >
