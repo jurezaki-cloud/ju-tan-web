@@ -14,7 +14,7 @@ export default function HeroContent() {
         {company.badge}
       </div>
 
-      <h1 className="text-3xl font-black leading-[1.08] tracking-tight text-white sm:text-4xl md:text-[3.375rem]">
+      <h1 className="text-[34px] font-black leading-[1.12] tracking-tight text-white sm:text-[44px] md:text-[62px]">
         {first}
         <br />
         <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent">

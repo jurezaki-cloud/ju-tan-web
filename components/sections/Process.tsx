@@ -7,7 +7,7 @@ import { process } from "@/lib/data/process";
 
 export default function Process() {
   return (
-    <section id="process" className="relative overflow-hidden py-8 md:py-10">
+    <section id="process" className="relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-emerald-500/5" />
       <div className="pointer-events-none absolute right-[-120px] top-32 h-[380px] w-[380px] rounded-full bg-green-500/12 blur-[140px]" />
       <div
@@ -32,16 +32,16 @@ export default function Process() {
           />
         </FadeIn>
 
-        <div className="relative mx-auto mt-5 max-w-4xl md:mt-6">
-          <div className="absolute top-0 bottom-3 left-[1.1rem] w-px bg-gradient-to-b from-green-500/0 via-green-500/40 to-green-500/0 lg:left-1/2 lg:-translate-x-1/2" />
+        <div className="relative mx-auto max-w-4xl">
+          <div className="absolute top-0 bottom-2 left-[1.1rem] w-px bg-gradient-to-b from-green-500/0 via-green-500/40 to-green-500/0 lg:left-1/2 lg:-translate-x-1/2" />
 
-          <ol className="space-y-3 lg:space-y-4">
+          <ol className="space-y-2 lg:space-y-[0.7rem]">
             {process.map((step, index) => {
               const isEven = index % 2 === 0;
 
               return (
                 <li key={step.number} className="relative">
-                  <span className="absolute top-4 left-0 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-green-400/40 bg-[#050816] text-[11px] font-black text-green-300 shadow-[0_0_18px_rgba(34,197,94,0.35)] lg:left-1/2 lg:-translate-x-1/2">
+                  <span className="absolute top-3 left-0 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-green-400/40 bg-[#050816] text-[10px] font-black text-green-300 shadow-[0_0_18px_rgba(34,197,94,0.35)] lg:left-1/2 lg:-translate-x-1/2">
                     {step.number}
                   </span>
 

@@ -49,7 +49,7 @@ export default function Technologies() {
   return (
     <section
       id="technologies"
-      className="py-16 md:py-20"
+      className="py-20"
     >
       <div className="container relative">
         <SectionTitle
@@ -58,22 +58,22 @@ export default function Technologies() {
           description="Gradimo moderne, hitre in varne rešitve."
         />
 
-        <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {technologies.map((item) => {
             const Icon = item.icon;
 
             return (
               <FadeIn key={item.title}>
-                <div className="mx-auto flex h-[180px] max-w-[320px] flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
-                    <Icon size={22} />
+                <div className="mx-auto flex h-[200px] w-full max-w-[360px] flex-col rounded-[22px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:scale-[1.02] hover:border-green-500/40">
+                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
+                    <Icon size={28} />
                   </div>
 
-                  <h3 className="mb-1 text-lg font-bold">
+                  <h3 className="mb-1 text-[28px] font-bold leading-tight">
                     {item.title}
                   </h3>
 
-                  <p className="text-[16px] leading-[1.6] text-slate-400">
+                  <p className="text-[16px] leading-[1.65] text-slate-400">
                     {item.text}
                   </p>
                 </div>

@@ -31,13 +31,13 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-all duration-[250ms] ${
         scrolled
           ? "border-b border-white/10 bg-black/45 shadow-lg backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:h-[4.5rem]">
+      <div className="mx-auto flex h-[70px] max-w-6xl items-center justify-between px-6">
         <Logo />
         <NavLinks />
 

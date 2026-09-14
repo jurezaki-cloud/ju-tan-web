@@ -74,9 +74,9 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-12 md:py-16"
+      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-20"
     >
-      <div className="mx-auto max-w-5xl px-6 text-center">
+      <div className="container text-center">
         <FadeIn>
           <SectionTitle
             badge="KONTAKT"
@@ -88,9 +88,9 @@ export default function Contact() {
         <Reveal delay={0.2}>
           <form
             onSubmit={handleSubmit}
-            className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl md:p-6"
+            className="rounded-[22px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
           >
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2">
               <input
                 required
                 autoComplete="name"
@@ -124,7 +124,7 @@ export default function Contact() {
               onChange={(e) =>
                 setForm({ ...form, message: e.target.value })
               }
-              className="mt-5 w-full rounded-xl border border-white/10 bg-black/20 px-5 py-3 outline-none focus:border-green-500"
+              className="mt-6 w-full rounded-xl border border-white/10 bg-black/20 px-5 py-3 outline-none focus:border-green-500"
             />
 
             <div className="mt-6 flex justify-center">

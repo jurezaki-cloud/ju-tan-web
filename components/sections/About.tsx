@@ -51,7 +51,7 @@ const features = [
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden py-16 md:py-20">
+    <section id="about" className="relative overflow-hidden py-20">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
       <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-green-500/10 blur-[140px]" />
@@ -65,23 +65,23 @@ export default function About() {
           />
         </FadeIn>
 
-        <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon;
 
             return (
               <Reveal key={feature.title} delay={index * 0.08}>
-                <Card className="group relative overflow-hidden">
-                  <CardContent>
-                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
+                <Card className="group relative overflow-hidden rounded-[22px] border border-white/10 bg-white/5 transition duration-[250ms] hover:-translate-y-1 hover:border-green-400/40">
+                  <CardContent className="p-6">
+                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 transition-all duration-[250ms] group-hover:scale-105 group-hover:bg-green-500/20">
                       <Icon className="h-7 w-7 text-green-400" />
                     </div>
 
-                    <h3 className="text-xl font-bold transition-colors group-hover:text-green-400">
+                    <h3 className="text-[28px] font-bold leading-tight transition-colors duration-[250ms] group-hover:text-green-400">
                       {feature.title}
                     </h3>
 
-                    <p className="mt-3 text-[16px] leading-[1.65] text-gray-400">
+                    <p className="mt-2 text-[16px] leading-[1.65] text-gray-400">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -91,7 +91,7 @@ export default function About() {
           })}
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {[
             ["500+", "Zaključenih projektov"],
             ["50+", "Zadovoljnih partnerjev"],

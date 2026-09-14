@@ -7,7 +7,7 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/animations";
 
 export default function Services() {
   return (
-    <section id="services" className="relative overflow-hidden py-16 md:py-20">
+    <section id="services" className="relative overflow-hidden py-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-24 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-green-500/12 blur-[160px]" />
       <div
@@ -32,7 +32,7 @@ export default function Services() {
           />
         </FadeIn>
 
-        <Stagger className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
+        <Stagger className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service) => (
             <StaggerItem key={service.title} className="h-full">
               <ServiceCard

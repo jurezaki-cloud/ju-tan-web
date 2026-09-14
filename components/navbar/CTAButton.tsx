@@ -16,7 +16,7 @@ export default function CTAButton({
         font-semibold
         text-white
         transition-all
-        duration-300
+        duration-[250ms]
         hover:bg-emerald-400
         hover:shadow-lg
         hover:shadow-emerald-500/30

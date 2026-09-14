@@ -45,23 +45,25 @@ export default function FloatingCards() {
         return (
           <motion.div
             key={card.title}
-            animate={{ y: [0, -10, 0] }}
-            whileHover={{ scale: 1.06 }}
+            animate={{ y: [0, -6, 0] }}
+            whileHover={{ scale: 1.02 }}
             transition={{
               y: {
-                duration: 4.5 + index * 0.35,
+                duration: 6 + index * 0.4,
                 repeat: Infinity,
                 ease: "easeInOut",
               },
-              scale: { duration: 0.3 },
+              scale: { duration: 0.25 },
             }}
-            className={`glass absolute hidden cursor-default rounded-2xl px-4 py-3 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
+            className={`glass absolute hidden cursor-default rounded-[22px] p-5 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
           >
-            <div className="mb-1.5 text-green-400">
-              <Icon size={20} />
+            <div className="mb-1 text-green-400">
+              <Icon size={16} />
             </div>
-            <h3 className="text-sm font-semibold text-white">{card.title}</h3>
-            <p className="text-xs text-gray-400">{card.subtitle}</p>
+            <h3 className="text-[14px] font-semibold leading-tight text-white">
+              {card.title}
+            </h3>
+            <p className="text-[12px] text-gray-400">{card.subtitle}</p>
           </motion.div>
         );
       })}

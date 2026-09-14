@@ -13,15 +13,15 @@ import ScrollIndicator from "./ScrollIndicator";
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-[85vh] overflow-hidden pt-[80px] lg:pt-[96px]">
+    <section id="home" className="relative min-h-[82vh] overflow-hidden pt-[70px] lg:pt-[80px]">
       <AuroraBackground />
       <AINetwork />
       <HeroBackground />
 
       <div className="container relative z-10">
-        <div className="grid items-center gap-6 py-4 lg:grid-cols-2 lg:py-6">
+        <div className="grid items-center gap-6 py-4 lg:grid-cols-2 lg:py-5">
           <div>
-            <FadeIn duration={0.8}>
+            <FadeIn>
               <HeroContent />
             </FadeIn>
 
