@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 export default function ScrollIndicator() {
   return (
     <motion.div
-      className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2"
+      className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2"
       animate={{ y: [0, 10, 0] }}
       transition={{
         duration: 2,
@@ -15,10 +15,11 @@ export default function ScrollIndicator() {
     >
       <a
         href="#services"
-        className="flex flex-col items-center text-slate-400 transition hover:text-green-400"
+        aria-label="Pomakni se na storitve"
+        className="flex flex-col items-center rounded-sm text-slate-400 transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
       >
         <span className="mb-2 text-xs uppercase tracking-[0.3em]">
-          Scroll
+          Pomakni se
         </span>
 
         <ChevronDown className="h-6 w-6" />

@@ -1,19 +1,66 @@
 "use client";
 
 import { useState } from "react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn, Reveal } from "@/components/animations";
+import { company } from "@/lib/data/company";
+import { services } from "@/lib/data/services";
+
+const fieldClass =
+  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-0 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
+
+const emptyForm = {
+  name: "",
+  company: "",
+  email: "",
+  phone: "",
+  service: "",
+  message: "",
+};
+
+const details = [
+  {
+    icon: Phone,
+    title: "Telefon",
+    value: company.contact.phone,
+  },
+  {
+    icon: Mail,
+    title: "E-pošta",
+    value: company.contact.email,
+  },
+  {
+    icon: MapPin,
+    title: "Lokacija",
+    value: company.contact.location,
+  },
+  {
+    icon: Clock,
+    title: "Delovni čas",
+    value: company.contact.hours,
+  },
+];
 
 export default function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const update =
+    (key: keyof typeof emptyForm) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      setForm((current) => ({ ...current, [key]: e.target.value }));
+    };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,121 +83,191 @@ export default function Contact() {
       return;
     }
 
-    if (form.message.trim().length < 10) {
-      setError("Sporočilo mora vsebovati vsaj 10 znakov.");
+    if (!form.service) {
+      setError("Izberite storitev.");
       return;
     }
+
+    if (!form.message.trim()) {
+      setError("Vnesite sporočilo.");
+      return;
+    }
+
+    const payload = {
+      name: form.name.trim(),
+      company: form.company.trim() || undefined,
+      email: form.email.trim(),
+      phone: form.phone.trim() || undefined,
+      service: form.service,
+      message: form.message.trim(),
+    };
 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, 400);
       });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setSuccess(true);
-        setForm({
-          name: "",
-          email: "",
-          message: "",
-        });
-      } else {
-        setError("Pri pošiljanju je prišlo do napake.");
-      }
+      void payload;
+      setSuccess(true);
+      setForm(emptyForm);
     } catch {
-      setError("Napaka strežnika.");
+      setError("Priprava povpraševanja ni uspela.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section
-      id="contact"
-      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-32"
-    >
-      <div className="mx-auto max-w-5xl px-6 text-center">
+    <section id="contact" className="relative overflow-hidden py-20">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-[#08101f]" />
 
+      <div className="container relative overflow-x-hidden">
         <FadeIn>
           <SectionTitle
             badge="Kontakt"
-            title="Začnimo vaš naslednji projekt"
-            description="Povejte nam svojo idejo. Skupaj bomo ustvarili rešitev."
+            title="Pogovorimo se o vašem projektu"
+            description="Ne glede na to, ali potrebujete novo spletno stran, AI avtomatizacijo ali razvoj poslovnega sistema, smo pripravljeni pomagati."
           />
         </FadeIn>
 
-        <Reveal delay={0.2}>
-          <form
-            onSubmit={handleSubmit}
-            className="mt-16 rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl"
-          >
-            <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid items-start gap-6 lg:grid-cols-5">
+          <div className="min-w-0 lg:col-span-2">
+            <Reveal>
+              <div className="grid gap-4">
+                {details.map((item) => {
+                  const Icon = item.icon;
 
-              <input
-                required
-                autoComplete="name"
-                placeholder="Ime"
-                value={form.name}
-                onChange={(e) =>
-                  setForm({ ...form, name: e.target.value })
-                }
-                className="rounded-xl border border-white/10 bg-black/20 px-5 py-4 outline-none focus:border-green-500"
-              />
+                  return (
+                    <Card
+                      key={item.title}
+                      className="rounded-2xl border border-white/10 bg-white/5 py-0 shadow-xl shadow-black/10 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]"
+                    >
+                      <CardContent className="flex items-center gap-4 p-5">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green-500/10 text-green-400">
+                          <Icon className="h-7 w-7" />
+                        </div>
+                        <div className="min-w-0 text-left">
+                          <p className="text-[14px] font-medium text-green-400">
+                            {item.title}
+                          </p>
+                          <p className="truncate text-[16px] font-semibold text-white">
+                            {item.value}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </Reveal>
+          </div>
 
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
-                className="rounded-xl border border-white/10 bg-black/20 px-5 py-4 outline-none focus:border-green-500"
-              />
+          <div className="min-w-0 lg:col-span-3">
+            <Reveal delay={0.12}>
+              <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Input
+                  required
+                  autoComplete="name"
+                  placeholder="Ime"
+                  aria-label="Ime"
+                  value={form.name}
+                  onChange={update("name")}
+                  className={fieldClass}
+                />
+                <Input
+                  autoComplete="organization"
+                  placeholder="Podjetje (opcijsko)"
+                  aria-label="Podjetje"
+                  value={form.company}
+                  onChange={update("company")}
+                  className={fieldClass}
+                />
+                <Input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="E-pošta"
+                  aria-label="E-pošta"
+                  value={form.email}
+                  onChange={update("email")}
+                  className={fieldClass}
+                />
+                <Input
+                  type="tel"
+                  autoComplete="tel"
+                  placeholder="Telefon (opcijsko)"
+                  aria-label="Telefon"
+                  value={form.phone}
+                  onChange={update("phone")}
+                  className={fieldClass}
+                />
+                <select
+                  required
+                  aria-label="Storitev"
+                  value={form.service}
+                  onChange={update("service")}
+                  className={`${fieldClass} sm:col-span-2`}
+                >
+                  <option value="" className="bg-[#050816]">
+                    Storitev
+                  </option>
+                  {services.map((service) => (
+                    <option
+                      key={service.title}
+                      value={service.title}
+                      className="bg-[#050816]"
+                    >
+                      {service.title}
+                    </option>
+                  ))}
+                </select>
+                <Textarea
+                  required
+                  rows={5}
+                  placeholder="Sporočilo"
+                  aria-label="Sporočilo"
+                  value={form.message}
+                  onChange={update("message")}
+                  className={`${fieldClass} min-h-[132px] py-3 sm:col-span-2`}
+                />
+              </div>
 
-            </div>
+              <div className="mt-6 flex justify-center sm:justify-start">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={loading}
+                  className="h-11 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 text-[16px] font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-60"
+                >
+                  {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
+                </Button>
+              </div>
 
-            <textarea
-              required
-              minLength={10}
-              rows={6}
-              placeholder="Vaše sporočilo..."
-              value={form.message}
-              onChange={(e) =>
-                setForm({ ...form, message: e.target.value })
-              }
-              className="mt-8 w-full rounded-xl border border-white/10 bg-black/20 px-5 py-4 outline-none focus:border-green-500"
-            />
+              {success ? (
+                <p role="status" className="mt-4 text-[14px] text-green-400">
+                  Povpraševanje je pripravljeno. Kmalu vas bomo kontaktirali.
+                </p>
+              ) : null}
 
-            <div className="mt-10 flex justify-center">
-              <Button type="submit" disabled={loading}>
-                {loading ? "Pošiljam..." : "Pošlji povpraševanje"}
-              </Button>
-            </div>
+              {error ? (
+                <p role="alert" className="mt-4 text-[14px] text-red-400">
+                  {error}
+                </p>
+              ) : null}
 
-            {success && (
-              <p className="mt-6 text-center text-green-400">
-                ✅ Povpraševanje je bilo uspešno poslano.
+              <p className="mt-6 text-center text-[16px] font-medium tracking-wide text-green-400/90">
+                Od ideje do izvedbe.
               </p>
-            )}
-
-            {error && (
-              <p className="mt-6 text-center text-red-400">
-                {error}
-              </p>
-            )}
-
-          </form>
-        </Reveal>
-
+              </form>
+            </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ export const testimonials = [
   },
   {
     name: "Eva Horvat",
-    role: "Marketing vodja, GreenLab",
+    role: "Vodja marketinga, GreenLab",
     quote:
       "Spletna stran in vizualna podoba sta dvignili našo prepoznavnost. Sodelovanje je bilo enostavno od začetka do konca.",
   },

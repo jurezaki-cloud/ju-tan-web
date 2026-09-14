@@ -50,6 +50,38 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  border-radius: 0.75rem;
+  background: #22c55e;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #050816;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 * {
   box-sizing: border-box;
@@ -150,7 +182,10 @@ html {
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
   background: radial-gradient(circle at top, #10253a 0%, #050816 55%);
+  font-size: 16px;
+  line-height: 1.65;
 }
 
 section {
@@ -158,7 +193,7 @@ section {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 72rem;
   margin-inline: auto;
   padding-inline: 1.5rem;
 }

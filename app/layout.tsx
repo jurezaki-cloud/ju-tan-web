@@ -1,25 +1,37 @@
 import "./globals.css";
-import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
+import { jsonLdGraph } from "@/lib/seo";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+export { metadata, viewport } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "JU-TAN | AI • Software • Automation",
-  description:
-    "JU-TAN razvija AI avtomatizacije, poslovno programsko opremo, spletne strani in IT rešitve.",
-};
+const geist = Geist({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-sans",
+  display: "swap",
+  preload: true,
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
+  const jsonLd = jsonLdGraph();
+
   return (
-    <html lang="sl" className={cn("font-sans", geist.variable)}>
-      <body className="antialiased">
+    <html lang="sl" className={geist.variable}>
+      <body className="min-h-screen bg-[#050816] text-white antialiased">
+        <a href="#main" className="skip-link">
+          Preskoči na vsebino
+        </a>
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
       </body>
     </html>
   );

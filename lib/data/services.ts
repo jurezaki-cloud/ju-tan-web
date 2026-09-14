@@ -1,47 +1,78 @@
 import {
   Bot,
+  Workflow,
   Code2,
   Globe,
+  Server,
   ShieldCheck,
-  Cloud,
-  Palette,
 } from "lucide-react";
+import type { Service } from "@/lib/types";
 
-export const services = [
+export const services: Service[] = [
   {
     icon: Bot,
-    title: "AI Automation",
+    title: "Umetna inteligenca",
     description:
-      "Razvoj AI agentov in avtomatizacija poslovnih procesov za večjo učinkovitost.",
+      "AI agenti in pametni pomočniki, ki pospešijo delo ekipe in zmanjšajo ponavljajoča opravila.",
+    features: [
+      "AI agenti in pomočniki",
+      "Avtomatizacija dokumentacije",
+      "Integracija z obstoječimi orodji",
+    ],
+  },
+  {
+    icon: Workflow,
+    title: "Avtomatizacija procesov",
+    description:
+      "Povezujemo sisteme in poenostavimo poslovne tokove, da ekipa dela hitreje in z manj napakami.",
+    features: [
+      "Povezovanje orodij in API-jev",
+      "Ponavljajoči poslovni procesi",
+      "Nadzor, obvestila in poročila",
+    ],
   },
   {
     icon: Code2,
-    title: "Software Development",
+    title: "Razvoj programske opreme",
     description:
-      "Razvoj poslovnih aplikacij po meri z uporabo sodobnih tehnologij.",
+      "Poslovne aplikacije po meri, zgrajene s sodobnim skladom in jasno arhitekturo.",
+    features: [
+      "Aplikacije po meri",
+      "Stabilna in razširljiva arhitektura",
+      "Vzdrževanje in nadgradnje",
+    ],
   },
   {
     icon: Globe,
-    title: "Web Development",
+    title: "Spletne aplikacije",
     description:
-      "Hitre, moderne in SEO optimizirane spletne strani ter portali.",
+      "Hitre, odzivne in SEO pripravljene spletne rešitve za predstavitev in poslovanje.",
+    features: [
+      "Sodobne spletne aplikacije",
+      "Odziven in premium vmesnik",
+      "SEO in merjenje uspešnosti",
+    ],
   },
   {
-    icon: Cloud,
-    title: "Cloud Infrastructure",
+    icon: Server,
+    title: "IT infrastruktura",
     description:
-      "Docker, strežniki, varnostne kopije in upravljanje infrastrukture.",
+      "Zanesljiva infrastruktura, oblak, varnostne kopije in nadzor za nemoteno delovanje.",
+    features: [
+      "Strežniki, Docker in oblak",
+      "Varnostne kopije in monitoring",
+      "Optimizacija razpoložljivosti",
+    ],
   },
   {
     icon: ShieldCheck,
-    title: "Cyber Security",
+    title: "Kibernetska varnost",
     description:
-      "Zaščita informacijskih sistemov, omrežij in poslovnih podatkov.",
-  },
-  {
-    icon: Palette,
-    title: "Design & Branding",
-    description:
-      "Grafično oblikovanje, video produkcija in celostna grafična podoba.",
+      "Varujemo podatke, dostope in poslovne sisteme z jasnimi varnostnimi praksami.",
+    features: [
+      "Zaščita podatkov in dostopov",
+      "Pregled ranljivosti",
+      "Varnostne politike in nadzor",
+    ],
   },
 ];

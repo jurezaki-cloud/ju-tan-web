@@ -12,18 +12,16 @@ export default function SectionTitle({
   description,
 }: SectionTitleProps) {
   return (
-    <div className="mx-auto max-w-3xl text-center">
+    <div className="mx-auto mb-10 max-w-3xl text-center">
       <Badge>{badge}</Badge>
 
-      <h2 className="mt-6 text-5xl font-black md:text-6xl">
+      <h2 className="mt-3 mb-4 text-[30px] font-black leading-tight break-words md:text-[40px] lg:text-[46px]">
         {title}
       </h2>
 
-      {description && (
-        <p className="mt-6 text-lg leading-8 text-gray-400">
-          {description}
-        </p>
-      )}
+      {description ? (
+        <p className="text-[16px] leading-[1.65] text-gray-400">{description}</p>
+      ) : null}
     </div>
   );
 }

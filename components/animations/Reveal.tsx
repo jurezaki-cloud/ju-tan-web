@@ -10,10 +10,10 @@ type RevealProps = {
 };
 
 const variants = {
-  up: { x: 0, y: 40 },
-  down: { x: 0, y: -40 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
+  up: { x: 0, y: 24 },
+  down: { x: 0, y: -24 },
+  left: { x: 24, y: 0 },
+  right: { x: -24, y: 0 },
 };
 
 export default function Reveal({
@@ -34,7 +34,7 @@ export default function Reveal({
       }}
       viewport={{ once: true }}
       transition={{
-        duration: 0.7,
+        duration: 0.5,
         delay,
       }}
     >

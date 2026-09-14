@@ -16,7 +16,7 @@ export default function Navbar() {
       setScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -31,26 +31,30 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-all duration-[250ms] ${
         scrolled
-          ? "border-b border-white/10 bg-black/35 shadow-2xl backdrop-blur-xl"
-          : "border-b border-white/10 bg-black/35 backdrop-blur-xl"
+          ? "border-b border-white/10 bg-black/45 shadow-lg backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-[70px] max-w-6xl items-center justify-between px-6">
         <Logo />
         <NavLinks />
 
-        <div className="flex items-center gap-4">
-          <CTAButton />
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:block">
+            <CTAButton />
+          </div>
 
           <button
             type="button"
-            aria-label="Odpri meni"
-            className="rounded-xl p-2 transition hover:bg-white/10 lg:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Zapri meni" : "Odpri meni"}
+            className="rounded-xl p-2 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 lg:hidden"
             onClick={() => setMenuOpen(true)}
           >
-            <Menu size={28} />
+            <Menu size={28} aria-hidden />
           </button>
         </div>
       </div>

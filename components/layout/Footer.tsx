@@ -1,66 +1,70 @@
 import Link from "next/link";
 import Image from "next/image";
+import { company } from "@/lib/data/company";
 
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#050816]">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-4">
-        {/* Logo */}
+      <div className="container grid gap-6 py-9 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Image
             src="/logo/ju-tan-studio.png"
-            alt="JU-TAN Studio"
+            alt="Logotip JU-TAN"
             width={220}
             height={70}
+            sizes="220px"
             className="h-12 w-auto"
           />
 
-          <p className="mt-6 text-sm leading-7 text-gray-400">
-            AI avtomatizacija, razvoj programske opreme,
-            spletne strani, grafično oblikovanje,
-            video produkcija in IT infrastruktura.
+          <p className="mt-4 text-sm leading-[1.65] text-gray-400">
+            Umetna inteligenca, avtomatizacija, razvoj programske opreme,
+            spletne rešitve, oblikovanje in infrastruktura za sodobna podjetja.
           </p>
         </div>
 
-        {/* Podjetje */}
         <div>
-          <h3 className="mb-6 font-bold">Podjetje</h3>
+          <h3 className="mb-4 font-bold">Podjetje</h3>
 
           <ul className="space-y-3 text-gray-400">
-            <li><Link href="/">Domov</Link></li>
-            <li><Link href="#about">O nas</Link></li>
-            <li><Link href="#projects">Projekti</Link></li>
-            <li><Link href="#contact">Kontakt</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="/">Domov</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#about">Zakaj JU-TAN</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#projects">Projekti</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#contact">Kontakt</Link></li>
           </ul>
         </div>
 
-        {/* Storitve */}
         <div>
-          <h3 className="mb-6 font-bold">Storitve</h3>
+          <h3 className="mb-4 font-bold">Storitve</h3>
 
           <ul className="space-y-3 text-gray-400">
-            <li>AI Avtomatizacija</li>
-            <li>Programska oprema</li>
-            <li>Spletne strani</li>
-            <li>Grafično oblikovanje</li>
-            <li>Video produkcija</li>
+            <li>Umetna inteligenca</li>
+            <li>Razvoj programske opreme</li>
+            <li>Spletne rešitve</li>
+            <li>Oblikovanje in video</li>
+            <li>IT infrastruktura</li>
           </ul>
         </div>
 
-        {/* Kontakt */}
         <div>
-          <h3 className="mb-6 font-bold">Kontakt</h3>
+          <h3 className="mb-4 font-bold">Kontakt</h3>
 
           <div className="space-y-3 text-gray-400">
-            <p>info@ju-tan.si</p>
-            <p>+386 xx xxx xxx</p>
-            <p>Slovenija</p>
+            <p>
+              <a
+                href={`mailto:${company.contact.email}`}
+                className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+              >
+                {company.contact.email}
+              </a>
+            </p>
+            <p>{company.contact.phone}</p>
+            <p>{company.contact.location}</p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} JU-TAN Studio. Vse pravice pridržane.
+      <div className="border-t border-white/10 py-4 text-center text-sm text-gray-400">
+        © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.
       </div>
     </footer>
   );

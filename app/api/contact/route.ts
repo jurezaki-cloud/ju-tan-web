@@ -5,9 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    console.log("API CONTACT CALLED");
     const { name, email, message } = await req.json();
-    console.log(name, email, message);
 
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM!,
@@ -22,14 +20,14 @@ export async function POST(req: Request) {
   `,
     });
 
-    console.log(result);
+    if (result.error) {
+      return NextResponse.json({ success: false }, { status: 500 });
+    }
 
     return NextResponse.json({
       success: true,
     });
-  } catch (error) {
-    console.error("API CONTACT ERROR:", error);
-
+  } catch {
     return NextResponse.json(
       { success: false },
       { status: 500 }

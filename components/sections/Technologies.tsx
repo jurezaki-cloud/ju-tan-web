@@ -15,78 +15,72 @@ import { FadeIn } from "@/components/animations";
 const technologies = [
   {
     icon: Bot,
-    title: "Artificial Intelligence",
-    text: "OpenAI • LangChain • AI Agents",
+    title: "Umetna inteligenca",
+    text: "OpenAI • LangChain • AI agenti",
   },
   {
     icon: Code2,
-    title: "Development",
+    title: "Razvoj",
     text: "Next.js • React • Python • Node.js",
   },
   {
     icon: Database,
-    title: "Databases",
+    title: "Podatkovne zbirke",
     text: "PostgreSQL • MySQL • SQLite",
   },
   {
     icon: Cloud,
-    title: "Cloud",
+    title: "Oblak",
     text: "Docker • Linux • VPS • Cloudflare",
   },
   {
     icon: ShieldCheck,
-    title: "Cyber Security",
+    title: "Kibernetska varnost",
     text: "Firewall • Backup • Monitoring",
   },
   {
     icon: Cpu,
-    title: "Infrastructure",
-    text: "Networking • Servers • Virtualization",
+    title: "Infrastruktura",
+    text: "Omrežja • strežniki • virtualizacija",
   },
 ];
 
 export default function Technologies() {
   return (
-    <section
-      id="technologies"
-      className="py-32"
-    >
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="technologies" className="relative overflow-hidden py-20">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
+      <div className="container relative">
+        <FadeIn>
+          <SectionTitle
+            badge="Tehnologije"
+            title="Tehnologije, ki jim zaupamo"
+            description="Gradimo moderne, hitre in varne rešitve."
+          />
+        </FadeIn>
 
-        <SectionTitle
-          badge="TECHNOLOGIES"
-          title="Tehnologije, ki jim zaupamo"
-          description="Gradimo moderne, hitre in varne rešitve."
-        />
-
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-
+        <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
           {technologies.map((item) => {
             const Icon = item.icon;
 
             return (
-              <FadeIn key={item.title}>
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
-
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
-                    <Icon size={30} />
+              <FadeIn key={item.title} className="h-full">
+                <div className="flex h-full min-h-[200px] w-full flex-col rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:scale-[1.02] hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]">
+                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
+                    <Icon size={28} />
                   </div>
 
-                  <h3 className="mb-3 text-2xl font-bold">
+                  <h3 className="mb-1 text-[28px] font-bold leading-tight text-white">
                     {item.title}
                   </h3>
 
-                  <p className="text-slate-400 leading-7">
+                  <p className="text-[16px] leading-[1.65] text-slate-400">
                     {item.text}
                   </p>
-
                 </div>
               </FadeIn>
             );
           })}
-
         </div>
-
       </div>
     </section>
   );

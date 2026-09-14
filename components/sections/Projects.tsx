@@ -1,25 +1,97 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
+import CTAButton from "@/components/navbar/CTAButton";
+import {
+  projectFilters,
+  projectMatchesFilter,
+  projects,
+  type ProjectFilter,
+} from "@/lib/data/projects";
+
+const buttonTransition =
+  "transition-all duration-[250ms] ease-out hover:-translate-y-1 active:scale-[0.97]";
 
 export default function Projects() {
-  return (
-    <section
-      id="projects"
-      className="relative overflow-hidden py-32"
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
+  const [filter, setFilter] = useState<ProjectFilter>("Vsi");
 
-      <div className="container relative">
+  const visibleProjects = useMemo(
+    () => projects.filter((project) => projectMatchesFilter(project, filter)),
+    [filter],
+  );
+
+  return (
+    <section id="projects" className="relative overflow-hidden py-20">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
+      <div className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-green-500/10 blur-[160px]" />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]
+          [background-image:linear-gradient(rgba(255,255,255,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.18)_1px,transparent_1px)]
+          [background-size:72px_72px]"
+      />
+
+      <div className="container relative max-w-6xl overflow-x-hidden">
         <FadeIn>
           <SectionTitle
-            badge="PROJECTS"
-            title="Izbrani projekti"
-            description="Nekaj rešitev, ki prikazujejo naše znanje na področju umetne inteligence, razvoja programske opreme, spletnih aplikacij in digitalnega oblikovanja."
+            badge="Projekti"
+            title="Naši projekti"
+            description="Razvijamo sodobne programske rešitve, AI sisteme, poslovne aplikacije in IT infrastrukturo po meri podjetij."
           />
         </FadeIn>
 
-        <ProjectsGrid />
+        <div
+          className="-mt-4 mb-6 flex flex-wrap justify-center gap-2"
+          role="tablist"
+          aria-label="Filtri projektov"
+        >
+          {projectFilters.map((item) => {
+            const active = filter === item;
+
+            return (
+              <button
+                key={item}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setFilter(item)}
+                className={`rounded-full border px-3 py-1.5 text-[13px] font-medium backdrop-blur-xl transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
+                  active
+                    ? "border-green-400/50 bg-green-500/20 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.18)]"
+                    : "border-white/10 bg-white/5 text-slate-300 hover:border-green-400/30 hover:text-white"
+                }`}
+              >
+                {item}
+              </button>
+            );
+          })}
+        </div>
+
+        <ProjectsGrid items={visibleProjects} />
+
+        <FadeIn delay={0.12}>
+          <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 py-8 text-center shadow-xl shadow-black/20 backdrop-blur-xl">
+            <h3 className="text-[28px] font-bold text-white">
+              Iščete partnerja za razvoj?
+            </h3>
+            <p className="mx-auto mt-3 max-w-xl text-[16px] leading-[1.65] text-slate-400">
+              Pomagamo podjetjem razviti sodobne spletne rešitve, AI
+              avtomatizacije in poslovne sisteme.
+            </p>
+
+            <div className="mt-6 flex justify-center">
+              <CTAButton
+                className={`group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-3 font-semibold text-white shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-500/50 ${buttonTransition}`}
+              >
+                Stopite v stik
+                <ArrowRight className="h-5 w-5 transition-transform duration-[250ms] group-hover:translate-x-1" />
+              </CTAButton>
+            </div>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

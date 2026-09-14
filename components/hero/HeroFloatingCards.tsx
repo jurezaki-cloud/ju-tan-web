@@ -1,26 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bot, Cloud, ShieldCheck } from "lucide-react";
+import { Bot, Cloud, Cpu, ShieldCheck, Workflow } from "lucide-react";
 
 const cards = [
   {
+    icon: Cpu,
+    title: "Software",
+    subtitle: "Custom Development",
+    position: "left-1/2 top-0 -translate-x-1/2",
+  },
+  {
     icon: Bot,
-    title: "AI Automation",
-    subtitle: "Workflow Active",
-    position: "left-0 top-16 lg:-left-10",
+    title: "AI Agent",
+    subtitle: "24/7 avtomatizacija",
+    position: "left-0 top-[28%]",
+  },
+  {
+    icon: Workflow,
+    title: "Automation",
+    subtitle: "Pametni procesi",
+    position: "right-0 top-[28%]",
   },
   {
     icon: Cloud,
-    title: "Cloud Infrastructure",
-    subtitle: "99.99% Uptime",
-    position: "right-0 top-0 lg:-right-8",
+    title: "Cloud",
+    subtitle: "Visoka razpoložljivost",
+    position: "bottom-[6%] left-0",
   },
   {
     icon: ShieldCheck,
     title: "Cyber Security",
-    subtitle: "Protected",
-    position: "right-8 bottom-8",
+    subtitle: "Enterprise Ready",
+    position: "bottom-[6%] right-0",
   },
 ];
 
@@ -33,36 +45,25 @@ export default function FloatingCards() {
         return (
           <motion.div
             key={card.title}
-            animate={{
-              y: [0, -12, 0],
-            }}
+            animate={{ y: [0, -6, 0] }}
+            whileHover={{ scale: 1.02 }}
             transition={{
-              duration: 5 + index,
-              repeat: Infinity,
-              ease: "easeInOut",
+              y: {
+                duration: 6 + index * 0.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+              scale: { duration: 0.25 },
             }}
-            className={`absolute hidden lg:flex ${card.position}
-              glass
-              items-center
-              gap-4
-              rounded-2xl
-              px-5
-              py-4
-              shadow-xl`}
+            className={`glass absolute hidden cursor-default rounded-2xl p-5 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
           >
-            <div className="rounded-xl bg-green-500/15 p-3">
-              <Icon className="h-6 w-6 text-green-400" />
+            <div className="mb-1 text-green-400">
+              <Icon size={16} />
             </div>
-
-            <div>
-              <p className="font-semibold text-white">
-                {card.title}
-              </p>
-
-              <p className="text-sm text-slate-400">
-                {card.subtitle}
-              </p>
-            </div>
+            <h3 className="text-[14px] font-semibold leading-tight text-white">
+              {card.title}
+            </h3>
+            <p className="text-[12px] text-gray-400">{card.subtitle}</p>
           </motion.div>
         );
       })}
