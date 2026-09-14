@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import CTAButton from "./CTAButton";
 import MobileMenu from "./MobileMenu";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -46,6 +47,7 @@ export default function Navbar() {
         <NavLinks />
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <div className="hidden lg:block">
             <CTAButton />
           </div>

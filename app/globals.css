@@ -3,6 +3,7 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 @theme inline {
   --color-background: var(--background);
@@ -188,6 +189,15 @@ html {
 ::selection {
   background: #22c55e;
   color: white;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background: radial-gradient(circle at top, #e8f8ee 0%, #f4f7fb 55%);
+  color: #0f172a;
 }
 
 body {

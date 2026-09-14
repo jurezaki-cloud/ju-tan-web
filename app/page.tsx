@@ -6,6 +6,7 @@ import Process from "@/components/sections/Process";
 import Technologies from "@/components/sections/Technologies";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
+import Booking from "@/components/sections/Booking";
 import Footer from "@/components/layout/Footer";
 import PremiumCTA from "@/components/common/PremiumCTA";
 
@@ -29,6 +30,7 @@ export default function Home() {
         <Technologies />
         <Projects />
         <About />
+        <Booking />
         <Contact />
       </main>
       <Footer />
