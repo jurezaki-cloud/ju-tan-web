@@ -5,7 +5,10 @@ export const company = {
   description:
     "Razvijamo rešitve umetne inteligence, avtomatizacije, poslovne programske opreme, spletnih strani in sodobne IT infrastrukture, ki podjetjem prihranijo čas in dvignejo produktivnost.",
   contact: {
-    phone: "+386 xx xxx xxx",
+    phone: "+386 69 907 803",
+    phoneTel: "tel:+38669907803",
+    phoneSecondary: "+386 69 983 936",
+    phoneSecondaryTel: "tel:+38669983936",
     email: "info@ju-tan.com",
     location: "Slovenija",
     hours: "Pon–Pet, 8.00–16.00",

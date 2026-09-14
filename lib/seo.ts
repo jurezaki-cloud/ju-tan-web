@@ -63,6 +63,7 @@ export function jsonLdGraph() {
         url,
         description: company.description,
         email: company.contact.email,
+        telephone: [company.contact.phone, company.contact.phoneSecondary],
         logo,
         image: absoluteUrl("/og-image.jpg"),
         address: {
@@ -85,6 +86,7 @@ export function jsonLdGraph() {
         name: company.name,
         url,
         email: company.contact.email,
+        telephone: [company.contact.phone, company.contact.phoneSecondary],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
         areaServed: {

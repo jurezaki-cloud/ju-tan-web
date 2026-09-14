@@ -26,13 +26,21 @@ const emptyForm = {
 const details = [
   {
     icon: Phone,
-    title: "Telefon",
+    title: "Primarni kontakt",
     value: company.contact.phone,
+    href: company.contact.phoneTel,
+  },
+  {
+    icon: Phone,
+    title: "Sekundarni kontakt",
+    value: company.contact.phoneSecondary,
+    href: company.contact.phoneSecondaryTel,
   },
   {
     icon: Mail,
     title: "E-pošta",
     value: company.contact.email,
+    href: `mailto:${company.contact.email}`,
   },
   {
     icon: MapPin,
@@ -151,9 +159,18 @@ export default function Contact() {
                           <p className="text-[14px] font-medium text-green-400">
                             {item.title}
                           </p>
-                          <p className="truncate text-[16px] font-semibold text-white">
-                            {item.value}
-                          </p>
+                          {"href" in item && item.href ? (
+                            <a
+                              href={item.href}
+                              className="truncate text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                            >
+                              {item.value}
+                            </a>
+                          ) : (
+                            <p className="truncate text-[16px] font-semibold text-white">
+                              {item.value}
+                            </p>
+                          )}
                         </div>
                       </CardContent>
                     </Card>

@@ -86,7 +86,16 @@ export default function Footer() {
                   {company.contact.email}
                 </a>
               </p>
-              <p>{company.contact.phone}</p>
+              <p>
+                <a className={linkClass} href={company.contact.phoneTel}>
+                  {company.contact.phone}
+                </a>
+              </p>
+              <p>
+                <a className={linkClass} href={company.contact.phoneSecondaryTel}>
+                  {company.contact.phoneSecondary}
+                </a>
+              </p>
               <p>{company.contact.location}</p>
               <p>{company.contact.hours}</p>
             </div>
