@@ -68,9 +68,9 @@ export default function Footer() {
             <ul className="space-y-3 text-slate-400">
               {services.map((service) => (
                 <li key={service.title}>
-                  <a className={linkClass} href="/#services">
+                  <Link className={linkClass} href="/#services">
                     {service.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
