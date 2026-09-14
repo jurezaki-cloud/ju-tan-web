@@ -87,11 +87,17 @@ export default function Footer() {
                 </a>
               </p>
               <p>
+                <span className="mb-1 block text-[13px] text-slate-500">
+                  {company.contact.phoneLabel}
+                </span>
                 <a className={linkClass} href={company.contact.phoneTel}>
                   {company.contact.phone}
                 </a>
               </p>
               <p>
+                <span className="mb-1 block text-[13px] text-slate-500">
+                  {company.contact.phoneSecondaryLabel}
+                </span>
                 <a className={linkClass} href={company.contact.phoneSecondaryTel}>
                   {company.contact.phoneSecondary}
                 </a>

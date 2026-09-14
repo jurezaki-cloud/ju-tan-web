@@ -38,7 +38,7 @@ const knowledge: { keys: string[]; answer: string }[] = [
   {
     keys: ["kontakt", "email", "pošta", "telefon", "klic", "lokacij", "naslov", "cerknica"],
     answer:
-      `Smo na ${company.contact.location}. Pokličite na ${company.contact.phone} ali ${company.contact.phoneSecondary}, pišite na ${company.contact.email} ali uporabite obrazec Kontakt. Odgovorimo ${company.contact.hours.toLowerCase()}.`,
+      `Smo na ${company.contact.location}. ${company.contact.phoneLabel}: ${company.contact.phone}. ${company.contact.phoneSecondaryLabel}: ${company.contact.phoneSecondary}. Pišite na ${company.contact.email} ali uporabite obrazec Kontakt. Odgovorimo ${company.contact.hours.toLowerCase()}.`,
   },
   {
     keys: ["kako", "postopek", "sodelovan", "začn"],

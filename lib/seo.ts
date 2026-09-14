@@ -65,6 +65,20 @@ export function jsonLdGraph() {
         description: company.description,
         email: company.contact.email,
         telephone: [company.contact.phone, company.contact.phoneSecondary],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: company.contact.phone,
+            contactType: company.contact.phoneLabel,
+            availableLanguage: "sl",
+          },
+          {
+            "@type": "ContactPoint",
+            telephone: company.contact.phoneSecondary,
+            contactType: company.contact.phoneSecondaryLabel,
+            availableLanguage: "sl",
+          },
+        ],
         logo,
         image: absoluteUrl("/og-image.jpg"),
         address: {
@@ -91,6 +105,20 @@ export function jsonLdGraph() {
         url,
         email: company.contact.email,
         telephone: [company.contact.phone, company.contact.phoneSecondary],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: company.contact.phone,
+            contactType: company.contact.phoneLabel,
+            availableLanguage: "sl",
+          },
+          {
+            "@type": "ContactPoint",
+            telephone: company.contact.phoneSecondary,
+            contactType: company.contact.phoneSecondaryLabel,
+            availableLanguage: "sl",
+          },
+        ],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
         areaServed: {

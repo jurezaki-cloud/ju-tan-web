@@ -27,13 +27,13 @@ const emptyForm = {
 const details = [
   {
     icon: Phone,
-    title: "Primarni kontakt",
+    title: company.contact.phoneLabel,
     value: company.contact.phone,
     href: company.contact.phoneTel,
   },
   {
     icon: Phone,
-    title: "Sekundarni kontakt",
+    title: company.contact.phoneSecondaryLabel,
     value: company.contact.phoneSecondary,
     href: company.contact.phoneSecondaryTel,
   },

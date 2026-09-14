@@ -14,21 +14,30 @@ export default function LocationCard() {
         {companyLocationLines.join("\n")}
       </p>
 
-      <p className="mt-5 text-[14px] font-medium text-green-400">Telefon:</p>
-      <p className="mt-1 grid gap-1 text-[16px] font-semibold text-white light:text-slate-900">
-        <a
-          href={company.contact.phoneTel}
-          className="w-fit rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
-        >
-          {company.contact.phone}
-        </a>
-        <a
-          href={company.contact.phoneSecondaryTel}
-          className="w-fit rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
-        >
-          {company.contact.phoneSecondary}
-        </a>
-      </p>
+      <div className="mt-5 grid gap-4">
+        <div>
+          <p className="text-[14px] font-medium text-green-400">
+            {company.contact.phoneLabel}
+          </p>
+          <a
+            href={company.contact.phoneTel}
+            className="mt-1 block w-fit text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900"
+          >
+            {company.contact.phone}
+          </a>
+        </div>
+        <div>
+          <p className="text-[14px] font-medium text-green-400">
+            {company.contact.phoneSecondaryLabel}
+          </p>
+          <a
+            href={company.contact.phoneSecondaryTel}
+            className="mt-1 block w-fit text-[16px] font-semibold text-white transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900"
+          >
+            {company.contact.phoneSecondary}
+          </a>
+        </div>
+      </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <a
