@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import Hero from "@/components/hero/Hero";
 import Services from "@/components/sections/Services";
 import About from "@/components/sections/About";
@@ -17,7 +17,7 @@ export const metadata: Metadata = createPageMetadata({ path: "/" });
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <Header />
       <main id="main">
         <Hero />
         <Services />

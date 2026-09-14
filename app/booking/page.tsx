@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import Footer from "@/components/layout/Footer";
 import Booking from "@/components/sections/Booking";
 import { createPageMetadata } from "@/lib/seo";
@@ -14,8 +14,8 @@ export const metadata: Metadata = createPageMetadata({
 export default function BookingPage() {
   return (
     <>
-      <Navbar />
-      <main id="main" className="pt-[calc(4.375rem+env(safe-area-inset-top,0px))]">
+      <Header />
+      <main id="main">
         <Booking />
       </main>
       <Footer />

@@ -6,7 +6,15 @@ import { Moon, Sun } from "lucide-react";
 
 const emptySubscribe = () => () => undefined;
 
-export default function ThemeToggle() {
+type ThemeToggleProps = {
+  lightLabel: string;
+  darkLabel: string;
+};
+
+export default function ThemeToggle({
+  lightLabel,
+  darkLabel,
+}: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
@@ -19,7 +27,7 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label={isDark ? "Vklopi svetlo temo" : "Vklopi temno temo"}
+      aria-label={isDark ? lightLabel : darkLabel}
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition hover:border-green-400/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:border-slate-200 light:bg-white light:text-slate-800"
     >

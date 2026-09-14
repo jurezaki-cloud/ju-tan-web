@@ -1,0 +1,27 @@
+{
+  "a11y": {
+    "skipToContent": "Preskoči na vsebino",
+    "loading": "Nalaganje",
+    "close": "Zapri"
+  },
+  "header": {
+    "brand": "JU-TAN",
+    "logoAria": "JU-TAN — domov",
+    "logoAlt": "Logotip JU-TAN",
+    "navAria": "Glavna navigacija",
+    "menuAria": "Meni",
+    "openMenu": "Odpri meni",
+    "closeMenu": "Zapri meni",
+    "cta": "Brezplačen posvet",
+    "ctaAria": "Oddajte povpraševanje za brezplačen posvet",
+    "themeLight": "Vklopi svetlo temo",
+    "themeDark": "Vklopi temno temo",
+    "nav": {
+      "home": "Domov",
+      "solutions": "Rešitve",
+      "about": "O nas",
+      "references": "Reference",
+      "contact": "Kontakt"
+    }
+  }
+}

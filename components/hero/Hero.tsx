@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[88dvh] overflow-hidden pt-[calc(4.875rem+env(safe-area-inset-top,0px))] pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-[calc(5.5rem+env(safe-area-inset-top,0px))]"
+      className="relative min-h-[88dvh] overflow-hidden pt-8 pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-12"
     >
       <AuroraBackground />
       <HeroCanvas />

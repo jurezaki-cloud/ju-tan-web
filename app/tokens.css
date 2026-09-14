@@ -1,0 +1,242 @@
+:root {
+  --ju-brand: #00d26a;
+  --ju-background: #050816;
+  --ju-surface: #0b1220;
+  --ju-surface-2: #111827;
+  --ju-border: rgb(255 255 255 / 8%);
+  --ju-text: #f8fafc;
+  --ju-text-secondary: #cbd5e1;
+  --ju-muted: #94a3b8;
+  --ju-success: #22c55e;
+  --ju-warning: #f59e0b;
+  --ju-danger: #ef4444;
+  --ju-overlay: rgb(5 8 22 / 64%);
+  --ju-glass: rgb(255 255 255 / 5%);
+
+  --background: var(--ju-background);
+  --foreground: var(--ju-text);
+  --card: var(--ju-surface);
+  --card-foreground: var(--ju-text);
+  --popover: var(--ju-surface);
+  --popover-foreground: var(--ju-text);
+  --primary: var(--ju-brand);
+  --primary-foreground: var(--ju-background);
+  --secondary: var(--ju-surface-2);
+  --secondary-foreground: var(--ju-text);
+  --muted: var(--ju-surface-2);
+  --muted-foreground: var(--ju-muted);
+  --accent: var(--ju-brand);
+  --accent-foreground: var(--ju-background);
+  --destructive: var(--ju-danger);
+  --border: var(--ju-border);
+  --input: rgb(255 255 255 / 10%);
+  --ring: var(--ju-brand);
+
+  --radius: 1rem;
+  --container-max: 80rem;
+
+  --opacity-muted: 0.64;
+  --opacity-disabled: 0.5;
+  --opacity-overlay: 0.6;
+  --opacity-glass: 0.05;
+
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 500ms;
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-base: 0;
+  --z-dropdown: 20;
+  --z-sticky: 40;
+  --z-header: 50;
+  --z-overlay: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --z-skip: 100;
+
+  --ju-shadow-xs: 0 1px 2px rgb(0 0 0 / 18%);
+  --ju-shadow-sm: 0 8px 24px rgb(0 0 0 / 22%);
+  --ju-shadow-md: 0 16px 40px rgb(0 0 0 / 28%);
+  --ju-shadow-lg: 0 28px 64px rgb(0 0 0 / 38%);
+  --ju-shadow-glow: 0 0 40px color-mix(in srgb, var(--ju-brand) 35%, transparent);
+  --ju-shadow-glass: 0 18px 50px rgb(0 0 0 / 28%);
+}
+
+.dark {
+  --ju-brand: #00d26a;
+  --ju-background: #050816;
+  --ju-surface: #0b1220;
+  --ju-surface-2: #111827;
+  --ju-border: rgb(255 255 255 / 8%);
+  --ju-text: #f8fafc;
+  --ju-text-secondary: #cbd5e1;
+  --ju-muted: #94a3b8;
+  --ju-overlay: rgb(5 8 22 / 64%);
+  --ju-glass: rgb(255 255 255 / 5%);
+  --input: rgb(255 255 255 / 10%);
+}
+
+.light {
+  --ju-background: #f8fafc;
+  --ju-surface: #ffffff;
+  --ju-surface-2: #eef2f7;
+  --ju-border: rgb(15 23 42 / 10%);
+  --ju-text: #0f172a;
+  --ju-text-secondary: #334155;
+  --ju-muted: #64748b;
+  --ju-overlay: rgb(15 23 42 / 40%);
+  --ju-glass: rgb(255 255 255 / 72%);
+  --input: rgb(15 23 42 / 8%);
+  --ju-shadow-xs: 0 1px 2px rgb(15 23 42 / 6%);
+  --ju-shadow-sm: 0 8px 24px rgb(15 23 42 / 8%);
+  --ju-shadow-md: 0 16px 40px rgb(15 23 42 / 10%);
+  --ju-shadow-lg: 0 28px 64px rgb(15 23 42 / 12%);
+  --ju-shadow-glow: 0 0 32px color-mix(in srgb, var(--ju-brand) 28%, transparent);
+  --ju-shadow-glass: 0 18px 50px rgb(15 23 42 / 8%);
+}
+
+@theme inline {
+  --color-background: var(--ju-background);
+  --color-foreground: var(--ju-text);
+  --color-brand: var(--ju-brand);
+  --color-surface: var(--ju-surface);
+  --color-surface-2: var(--ju-surface-2);
+  --color-border: var(--ju-border);
+  --color-foreground-secondary: var(--ju-text-secondary);
+  --color-muted: var(--ju-surface-2);
+  --color-muted-foreground: var(--ju-muted);
+  --color-success: var(--ju-success);
+  --color-warning: var(--ju-warning);
+  --color-danger: var(--ju-danger);
+  --color-glass: var(--ju-glass);
+  --color-overlay: var(--ju-overlay);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.75);
+  --radius-4xl: calc(var(--radius) * 2);
+  --radius-full: 9999px;
+
+  --shadow-xs: var(--ju-shadow-xs);
+  --shadow-sm: var(--ju-shadow-sm);
+  --shadow-md: var(--ju-shadow-md);
+  --shadow-lg: var(--ju-shadow-lg);
+  --shadow-glow: var(--ju-shadow-glow);
+  --shadow-glass: var(--ju-shadow-glass);
+
+  --spacing-3xs: 0.125rem;
+  --spacing-2xs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 5rem;
+  --spacing-section: 5rem;
+  --spacing-gutter: 1rem;
+
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  --text-display: clamp(2.25rem, 6vw, 4rem);
+  --text-h1: clamp(2rem, 5vw, 3.5rem);
+  --text-h2: clamp(1.75rem, 3.6vw, 2.5rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+
+  --ease-premium: var(--ease-premium);
+  --default-transition-duration: var(--duration-base);
+}
+
+@utility text-display {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
+  font-size: var(--text-display);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+@utility text-h1 {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
+  font-size: var(--text-h1);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+@utility text-h2 {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
+  font-size: var(--text-h2);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+@utility text-h3 {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
+  font-size: var(--text-h3);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+}
+
+@utility text-body {
+  font-family: var(--font-sans), sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.7;
+}
+
+@utility text-small {
+  font-family: var(--font-sans), sans-serif;
+  font-size: var(--text-small);
+  line-height: 1.6;
+}
+
+@utility text-caption {
+  font-family: var(--font-sans), sans-serif;
+  font-size: var(--text-caption);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+@utility z-header {
+  z-index: var(--z-header);
+}
+
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+
+@utility z-skip {
+  z-index: var(--z-skip);
+}
