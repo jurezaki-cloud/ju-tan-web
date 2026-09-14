@@ -5,34 +5,34 @@ import { Bot, Cloud, Cpu, ShieldCheck, Workflow } from "lucide-react";
 
 const cards = [
   {
+    icon: Cpu,
+    title: "Software",
+    subtitle: "Custom Development",
+    position: "left-1/2 top-0 -translate-x-1/2",
+  },
+  {
     icon: Bot,
     title: "AI Agent",
     subtitle: "24/7 avtomatizacija",
-    position: "left-0 top-10",
+    position: "left-0 top-[28%]",
   },
   {
     icon: Workflow,
     title: "Automation",
     subtitle: "Pametni procesi",
-    position: "right-0 top-24",
+    position: "right-0 top-[28%]",
   },
   {
     icon: Cloud,
     title: "Cloud",
     subtitle: "Visoka razpoložljivost",
-    position: "bottom-20 left-10",
+    position: "bottom-[6%] left-0",
   },
   {
     icon: ShieldCheck,
     title: "Cyber Security",
     subtitle: "Enterprise Ready",
-    position: "bottom-10 right-10",
-  },
-  {
-    icon: Cpu,
-    title: "Software",
-    subtitle: "Custom Development",
-    position: "left-1/2 top-0 -translate-x-1/2",
+    position: "bottom-[6%] right-0",
   },
 ];
 
@@ -45,13 +45,17 @@ export default function FloatingCards() {
         return (
           <motion.div
             key={card.title}
-            animate={{ y: [0, -8, 0] }}
+            animate={{ y: [0, -10, 0] }}
+            whileHover={{ scale: 1.06 }}
             transition={{
-              duration: 4 + index * 0.4,
-              repeat: Infinity,
-              ease: "easeInOut",
+              y: {
+                duration: 4.5 + index * 0.35,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+              scale: { duration: 0.3 },
             }}
-            className={`absolute hidden rounded-2xl border border-white/10 bg-white/5 px-5 py-4 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
+            className={`glass absolute hidden cursor-default rounded-2xl px-5 py-4 shadow-2xl backdrop-blur-xl sm:block ${card.position}`}
           >
             <div className="mb-2 text-green-400">
               <Icon size={24} />

@@ -13,7 +13,7 @@ import ScrollIndicator from "./ScrollIndicator";
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden pt-28">
+    <section id="home" className="relative min-h-screen overflow-hidden pt-[110px] lg:pt-[150px]">
       <AuroraBackground />
       <AINetwork />
       <HeroBackground />
