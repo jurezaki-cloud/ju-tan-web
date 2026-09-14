@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { company, companyLocationLines } from "@/lib/data/company";
+import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
 import { FadeIn } from "@/components/animations";
 import CTAButton from "@/components/navbar/CTAButton";
@@ -102,7 +102,6 @@ export default function Footer() {
                   {company.contact.phoneSecondary}
                 </a>
               </p>
-              <p className="whitespace-pre-line">{companyLocationLines.join("\n")}</p>
               <p>{company.contact.hours}</p>
             </div>
           </div>

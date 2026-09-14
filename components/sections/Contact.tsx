@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn, Reveal } from "@/components/animations";
-import { company, companyLocationLines } from "@/lib/data/company";
+import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
-import LocationCard from "@/components/sections/LocationCard";
 
 const fieldClass =
   "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-0 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
@@ -42,11 +41,6 @@ const details = [
     title: "E-pošta",
     value: company.contact.email,
     href: `mailto:${company.contact.email}`,
-  },
-  {
-    icon: MapPin,
-    title: "Lokacija",
-    value: companyLocationLines.join("\n"),
   },
   {
     icon: Clock,
@@ -293,10 +287,6 @@ export default function Contact() {
             </Reveal>
           </div>
         </div>
-
-        <Reveal>
-          <LocationCard />
-        </Reveal>
       </div>
     </section>
   );

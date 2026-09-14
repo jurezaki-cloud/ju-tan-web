@@ -1,19 +1,3 @@
-export const companyAddress = {
-  street: "Turšičeva ulica 7",
-  postalCode: "1380",
-  city: "Cerknica",
-  country: "Slovenija",
-  countryCode: "SI",
-} as const;
-
-export const companyLocationQuery = `${companyAddress.street}, ${companyAddress.postalCode} ${companyAddress.city}, ${companyAddress.country}`;
-
-export const companyLocationLines = [
-  companyAddress.street,
-  `${companyAddress.postalCode} ${companyAddress.city}`,
-  companyAddress.country,
-] as const;
-
 export const company = {
   name: "JU-TAN",
   badge: "🚀 JU-TAN v2 • umetna inteligenca • avtomatizacija",
@@ -28,7 +12,6 @@ export const company = {
     phoneSecondaryLabel: "Marketing / Svetovanje",
     phoneSecondaryTel: "tel:+38669983936",
     email: "info@ju-tan.com",
-    location: companyLocationQuery,
     hours: "Pon–Pet, 8.00–16.00",
   },
 };

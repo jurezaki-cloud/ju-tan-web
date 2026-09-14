@@ -1,4 +1,4 @@
-import { company, companyAddress } from "@/lib/data/company";
+import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
 
 export function absoluteUrl(path = "/") {
@@ -20,7 +20,6 @@ export const defaultKeywords = [
   "IT infrastruktura",
   "AI agenti",
   "Slovenija",
-  "Cerknica",
 ] as const;
 
 export const openGraph = {
@@ -81,13 +80,6 @@ export function jsonLdGraph() {
         ],
         logo,
         image: absoluteUrl("/og-image.jpg"),
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: companyAddress.street,
-          postalCode: companyAddress.postalCode,
-          addressLocality: companyAddress.city,
-          addressCountry: companyAddress.countryCode,
-        },
       },
       {
         "@type": "WebSite",
@@ -124,13 +116,6 @@ export function jsonLdGraph() {
         areaServed: {
           "@type": "Country",
           name: "Slovenia",
-        },
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: companyAddress.street,
-          postalCode: companyAddress.postalCode,
-          addressLocality: companyAddress.city,
-          addressCountry: companyAddress.countryCode,
         },
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
