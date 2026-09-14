@@ -1,12 +1,12 @@
 export const testimonials = [
   {
-    name: "Ana Kovač",
+    name: "Tanja Hrup",
     role: "Direktorica, TechNova",
     quote:
       "JU-TAN je avtomatiziral naše interne procese. Prihranimo ure vsak teden, ekipa pa se lahko osredotoči na stranke.",
   },
   {
-    name: "Marko Novak",
+    name: "Jure Zakrajšek",
     role: "Lastnik, Novak Logistics",
     quote:
       "Od ideje do delujoče aplikacije v zelo kratkem času. Profesionalno, jasno in z odlično podporo.",

@@ -24,7 +24,7 @@ export const bookingServices: BookingService[] = [
 export const bookingEmployees: BookingEmployee[] = [
   {
     id: "ana",
-    name: "Ana Novak",
+    name: "Tanja Hrup",
     role: "AI in avtomatizacija",
     services: ["ai", "auto", "consult"],
   },
