@@ -44,6 +44,7 @@ Kmalu vas kontaktiramo.`;
 
 export default function LeadForm({ onSubmit }: LeadFormProps) {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<LeadPayload>({
     name: "",
     company: "",
@@ -61,7 +62,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       setForm((current) => ({ ...current, [key]: event.target.value }));
     };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!form.name.trim()) {
       setError("Vnesite ime.");
@@ -84,14 +85,50 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       return;
     }
     setError("");
-    onSubmit({
+    setLoading(true);
+
+    const payload = {
       ...form,
       name: form.name.trim(),
       company: form.company.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
       description: form.description.trim(),
-    });
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: payload.name,
+          company: payload.company || undefined,
+          email: payload.email,
+          phone: payload.phone || undefined,
+          service: payload.service,
+          message: [
+            payload.description,
+            `Proračun: ${payload.budget}`,
+            `Rok izvedbe: ${payload.deadline}`,
+          ].join("\n"),
+        }),
+      });
+
+      if (!response.ok) {
+        setError(
+          response.status === 429
+            ? "Preveč poskusov. Poskusite znova čez nekaj minut."
+            : "Pošiljanje povpraševanja ni uspelo.",
+        );
+        return;
+      }
+
+      onSubmit(payload);
+    } catch {
+      setError("Pošiljanje povpraševanja ni uspelo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -200,9 +237,10 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       ) : null}
       <Button
         type="submit"
+        disabled={loading}
         className="h-11 w-full rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
       >
-        Pošlji povpraševanje
+        {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
       </Button>
     </form>
   );
