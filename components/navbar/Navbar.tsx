@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
@@ -30,7 +31,10 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -12 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className={`fixed top-0 z-50 w-full transition-all duration-[250ms] ${
         scrolled
           ? "border-b border-white/10 bg-black/45 shadow-lg backdrop-blur-xl"
@@ -60,6 +64,6 @@ export default function Navbar() {
       </div>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-    </header>
+    </motion.header>
   );
 }

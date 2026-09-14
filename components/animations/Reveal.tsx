@@ -32,10 +32,11 @@ export default function Reveal({
         x: 0,
         y: 0,
       }}
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{
-        duration: 0.5,
+        duration: 0.55,
         delay,
+        ease: "easeOut",
       }}
     >
       {children}
