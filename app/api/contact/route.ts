@@ -4,16 +4,25 @@ import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
 
+function jsonError(status: number) {
+  return NextResponse.json({ success: false }, { status });
+}
+
 export async function POST(req: Request) {
   try {
+    const contentType = req.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().includes("application/json")) {
+      return jsonError(415);
+    }
+
     if (isRateLimited(clientKey(req))) {
-      return NextResponse.json({ success: false }, { status: 429 });
+      return jsonError(429);
     }
     const json: unknown = await req.json();
     const parsed = contactSchema.safeParse(json);
 
     if (!parsed.success) {
-      return NextResponse.json({ success: false }, { status: 400 });
+      return jsonError(400);
     }
 
     if (parsed.data.website) {
@@ -23,7 +32,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.RESEND_API_KEY;
     const from = process.env.EMAIL_FROM;
     if (!apiKey || !from) {
-      return NextResponse.json({ success: false }, { status: 500 });
+      return jsonError(500);
     }
 
     const resend = new Resend(apiKey);
@@ -46,16 +55,13 @@ export async function POST(req: Request) {
     });
 
     if (result.error) {
-      return NextResponse.json({ success: false }, { status: 500 });
+      return jsonError(500);
     }
 
     return NextResponse.json({
       success: true,
     });
   } catch {
-    return NextResponse.json(
-      { success: false },
-      { status: 500 },
-    );
+    return jsonError(500);
   }
 }
