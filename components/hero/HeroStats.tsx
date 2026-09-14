@@ -1,5 +1,3 @@
-"use client";
-
 import { FadeIn } from "@/components/animations";
 import { stats } from "@/lib/data/stats";
 

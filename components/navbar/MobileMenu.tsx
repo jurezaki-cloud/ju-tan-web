@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import NavLinks from "./NavLinks";
 import CTAButton from "./CTAButton";
@@ -10,10 +11,21 @@ type MobileMenuProps = {
 };
 
 export default function MobileMenu({ open, onClose }: MobileMenuProps) {
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden">
+    <div className="fixed inset-0 z-50 lg:hidden" id="mobile-menu">
       <button
         type="button"
         aria-label="Zapri meni"
@@ -21,14 +33,19 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         onClick={onClose}
       />
 
-      <div className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col gap-8 border-l border-white/10 bg-[#050816]/95 p-6 pt-16 shadow-2xl">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Meni"
+        className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col gap-8 border-l border-white/10 bg-[#050816]/95 p-6 pt-16 shadow-2xl"
+      >
         <button
           type="button"
           aria-label="Zapri meni"
-          className="absolute right-5 top-6 rounded-xl p-2 text-white transition hover:bg-white/10"
+          className="absolute right-5 top-6 rounded-xl p-2 text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
           onClick={onClose}
         >
-          <X size={28} />
+          <X size={28} aria-hidden />
         </button>
 
         <NavLinks
@@ -38,7 +55,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
 
         <CTAButton
           onClick={onClose}
-          className="rounded-2xl bg-gradient-to-r from-green-600 to-green-500 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-[250ms] hover:scale-[1.02] hover:shadow-green-400/60"
+          className="rounded-2xl bg-gradient-to-r from-green-600 to-green-500 px-7 py-3 text-center font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-[250ms] hover:scale-[1.02] hover:shadow-green-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         />
       </div>
     </div>

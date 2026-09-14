@@ -3,13 +3,19 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-3">
+    <Link
+      href="/"
+      aria-label="JU-TAN — domov"
+      className="flex items-center gap-3 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+    >
       <Image
         src="/logo/ju-tan-studio.png"
-        alt="JU-TAN"
+        alt="Logotip JU-TAN"
         width={48}
         height={48}
+        sizes="48px"
         priority
+        fetchPriority="high"
       />
 
       <span className="text-xl font-bold tracking-wide text-white">

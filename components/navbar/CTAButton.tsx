@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import type { ReactNode } from "react";
 
 type CTAButtonProps = {
   className?: string;
   onClick?: () => void;
+  children?: ReactNode;
 };
 
 export default function CTAButton({
@@ -22,10 +23,15 @@ export default function CTAButton({
         hover:shadow-emerald-500/30
       `,
   onClick,
+  children = "Brezplačen posvet",
 }: CTAButtonProps) {
   return (
-    <Link href="#contact" onClick={onClick} className={className}>
-      Brezplačen posvet
-    </Link>
+    <a
+      href="#contact"
+      onClick={onClick}
+      className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
+    >
+      {children}
+    </a>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { company } from "@/lib/data/company";
 
 export default function Footer() {
   return (
@@ -8,9 +9,10 @@ export default function Footer() {
         <div>
           <Image
             src="/logo/ju-tan-studio.png"
-            alt="JU-TAN"
+            alt="Logotip JU-TAN"
             width={220}
             height={70}
+            sizes="220px"
             className="h-12 w-auto"
           />
 
@@ -24,10 +26,10 @@ export default function Footer() {
           <h3 className="mb-4 font-bold">Podjetje</h3>
 
           <ul className="space-y-3 text-gray-400">
-            <li><Link href="/">Domov</Link></li>
-            <li><Link href="#about">Zakaj JU-TAN</Link></li>
-            <li><Link href="#projects">Projekti</Link></li>
-            <li><Link href="#contact">Kontakt</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="/">Domov</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#about">Zakaj JU-TAN</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#projects">Projekti</Link></li>
+            <li><Link className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500" href="#contact">Kontakt</Link></li>
           </ul>
         </div>
 
@@ -47,14 +49,21 @@ export default function Footer() {
           <h3 className="mb-4 font-bold">Kontakt</h3>
 
           <div className="space-y-3 text-gray-400">
-            <p>info@ju-tan.com</p>
-            <p>+386 xx xxx xxx</p>
-            <p>Slovenija</p>
+            <p>
+              <a
+                href={`mailto:${company.contact.email}`}
+                className="rounded-sm transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+              >
+                {company.contact.email}
+              </a>
+            </p>
+            <p>{company.contact.phone}</p>
+            <p>{company.contact.location}</p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-4 text-center text-sm text-gray-500">
+      <div className="border-t border-white/10 py-4 text-center text-sm text-gray-400">
         © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.
       </div>
     </footer>

@@ -13,15 +13,20 @@ export default function AINetwork() {
     if (!ctx) return;
     const canvasCtx: CanvasRenderingContext2D = ctx;
 
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     let raf = 0;
-    let running = !document.hidden;
+    let running = !document.hidden && !reducedMotion;
 
     canvas.width = width;
     canvas.height = height;
 
-    const particles = Array.from({ length: 60 }, () => ({
+    const count = width < 768 ? 16 : 28;
+    const particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.4,
@@ -69,13 +74,26 @@ export default function AINetwork() {
     }
 
     function onVisibility() {
-      running = !document.hidden;
+      running = !document.hidden && !reducedMotion;
       if (running) {
         raf = requestAnimationFrame(loop);
       } else {
         cancelAnimationFrame(raf);
       }
     }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        running = Boolean(entry?.isIntersecting) && !document.hidden && !reducedMotion;
+        if (running) {
+          raf = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(raf);
+        }
+      },
+      { threshold: 0.05 },
+    );
+    observer.observe(canvas);
 
     const resize = () => {
       width = window.innerWidth;
@@ -85,12 +103,18 @@ export default function AINetwork() {
     };
 
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("resize", resize);
-    raf = requestAnimationFrame(loop);
+    window.addEventListener("resize", resize, { passive: true });
+
+    if (reducedMotion) {
+      draw();
+    } else {
+      raf = requestAnimationFrame(loop);
+    }
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
     };
@@ -99,6 +123,7 @@ export default function AINetwork() {
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden
       className="absolute inset-0 -z-10 h-full w-full opacity-40"
     />
   );

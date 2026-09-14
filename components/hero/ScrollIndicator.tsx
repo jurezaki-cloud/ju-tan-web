@@ -15,7 +15,8 @@ export default function ScrollIndicator() {
     >
       <a
         href="#services"
-        className="flex flex-col items-center text-slate-400 transition hover:text-green-400"
+        aria-label="Pomakni se na storitve"
+        className="flex flex-col items-center rounded-sm text-slate-400 transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
       >
         <span className="mb-2 text-xs uppercase tracking-[0.3em]">
           Pomakni se

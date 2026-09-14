@@ -1,5 +1,3 @@
-"use client";
-
 import { FadeIn } from "@/components/animations";
 import EcosystemNetwork from "@/components/animations/AINetwork";
 import AuroraBackground from "@/components/background/AuroraBackground";
@@ -21,17 +19,13 @@ export default function Hero() {
       <div className="container relative z-10">
         <div className="grid items-center gap-6 py-4 lg:grid-cols-2 lg:py-5">
           <div>
-            <FadeIn>
-              <HeroContent />
-            </FadeIn>
+            <HeroContent />
 
-            <FadeIn delay={0.2}>
+            <FadeIn delay={0.15}>
               <HeroButtons />
             </FadeIn>
 
-            <FadeIn delay={0.4}>
-              <HeroStats />
-            </FadeIn>
+            <HeroStats />
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[390px]">
