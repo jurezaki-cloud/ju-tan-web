@@ -32,7 +32,7 @@ export default function Services() {
           />
         </FadeIn>
 
-        <Stagger className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
+        <Stagger className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
           {services.map((service) => (
             <StaggerItem key={service.title} className="h-full">
               <ServiceCard

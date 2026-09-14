@@ -58,22 +58,22 @@ export default function Technologies() {
           description="Gradimo moderne, hitre in varne rešitve."
         />
 
-        <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
+        <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
           {technologies.map((item) => {
             const Icon = item.icon;
 
             return (
               <FadeIn key={item.title}>
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
-                    <Icon size={30} />
+                <div className="mx-auto flex h-[180px] max-w-[320px] flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-green-500/40">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
+                    <Icon size={22} />
                   </div>
 
-                  <h3 className="mb-3 text-2xl font-bold">
+                  <h3 className="mb-1 text-lg font-bold">
                     {item.title}
                   </h3>
 
-                  <p className="leading-7 text-slate-400">
+                  <p className="text-[16px] leading-[1.6] text-slate-400">
                     {item.text}
                   </p>
                 </div>

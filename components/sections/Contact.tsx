@@ -74,7 +74,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-16 md:py-20"
+      className="bg-gradient-to-b from-[#050816] to-[#08101f] py-12 md:py-16"
     >
       <div className="mx-auto max-w-5xl px-6 text-center">
         <FadeIn>
@@ -88,7 +88,7 @@ export default function Contact() {
         <Reveal delay={0.2}>
           <form
             onSubmit={handleSubmit}
-            className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl md:p-8"
+            className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl md:p-6"
           >
             <div className="grid gap-5 md:grid-cols-2">
               <input
@@ -118,16 +118,16 @@ export default function Contact() {
             <textarea
               required
               minLength={10}
-              rows={6}
+              rows={4}
               placeholder="Vaše sporočilo ..."
               value={form.message}
               onChange={(e) =>
                 setForm({ ...form, message: e.target.value })
               }
-              className="mt-8 w-full rounded-xl border border-white/10 bg-black/20 px-5 py-4 outline-none focus:border-green-500"
+              className="mt-5 w-full rounded-xl border border-white/10 bg-black/20 px-5 py-3 outline-none focus:border-green-500"
             />
 
-            <div className="mt-10 flex justify-center">
+            <div className="mt-6 flex justify-center">
               <Button type="submit" disabled={loading}>
                 {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
               </Button>

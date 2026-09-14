@@ -65,7 +65,7 @@ export default function About() {
           />
         </FadeIn>
 
-        <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3 md:mt-12">
+        <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 md:mt-8 xl:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon;
 
@@ -73,15 +73,15 @@ export default function About() {
               <Reveal key={feature.title} delay={index * 0.08}>
                 <Card className="group relative overflow-hidden">
                   <CardContent>
-                    <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
-                      <Icon className="h-10 w-10 text-green-400" />
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500/20">
+                      <Icon className="h-7 w-7 text-green-400" />
                     </div>
 
-                    <h3 className="text-2xl font-bold transition-colors group-hover:text-green-400">
+                    <h3 className="text-xl font-bold transition-colors group-hover:text-green-400">
                       {feature.title}
                     </h3>
 
-                    <p className="mt-5 leading-8 text-gray-400">
+                    <p className="mt-3 text-[16px] leading-[1.65] text-gray-400">
                       {feature.description}
                     </p>
                   </CardContent>

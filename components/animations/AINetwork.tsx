@@ -77,7 +77,7 @@ export default function AINetwork() {
           duration: 6,
           ease: "easeInOut",
         }}
-        className="absolute left-1/2 top-1/2 flex h-[154px] w-[154px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-green-400/50 bg-gradient-to-br from-green-400/45 via-emerald-600/25 to-black/70 text-center shadow-[0_0_120px_rgba(34,197,94,.55)] backdrop-blur-2xl sm:h-[173px] sm:w-[173px]"
+        className="absolute left-1/2 top-1/2 flex h-[131px] w-[131px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-green-400/50 bg-gradient-to-br from-green-400/45 via-emerald-600/25 to-black/70 text-center shadow-[0_0_100px_rgba(34,197,94,.55)] backdrop-blur-2xl sm:h-[147px] sm:w-[147px]"
       >
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-green-200">
