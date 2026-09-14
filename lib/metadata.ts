@@ -22,9 +22,6 @@ export const metadata: Metadata = {
   publisher: company.name,
   applicationName: company.name,
   category: "technology",
-  alternates: {
-    canonical: "/",
-  },
   openGraph,
   twitter,
   icons: {
