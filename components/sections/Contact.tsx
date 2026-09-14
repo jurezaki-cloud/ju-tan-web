@@ -117,7 +117,11 @@ export default function Contact() {
       });
 
       if (!response.ok) {
-        setError("Pošiljanje povpraševanja ni uspelo.");
+        setError(
+          response.status === 429
+            ? "Preveč poskusov. Poskusite znova čez nekaj minut."
+            : "Pošiljanje povpraševanja ni uspelo.",
+        );
         return;
       }
 

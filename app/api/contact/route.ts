@@ -2,9 +2,13 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
+import { clientKey, isRateLimited } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
+    if (isRateLimited(clientKey(req))) {
+      return NextResponse.json({ success: false }, { status: 429 });
+    }
     const json: unknown = await req.json();
     const parsed = contactSchema.safeParse(json);
 
