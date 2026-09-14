@@ -3,7 +3,7 @@ import { Geist, Syne } from "next/font/google";
 import type { ReactNode } from "react";
 import { jsonLdGraph } from "@/lib/seo";
 import Providers from "@/components/common/Providers";
-import AIChat from "@/components/chat/AIChat";
+import { JuTanAgent } from "@/components/ai";
 
 export { metadata, viewport } from "@/lib/metadata";
 
@@ -36,7 +36,7 @@ export default function RootLayout({
           Preskoči na vsebino
         </a>
         {children}
-        <AIChat />
+        <JuTanAgent />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
