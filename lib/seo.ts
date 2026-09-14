@@ -1,4 +1,4 @@
-import { company, companyAddress, companyMaps } from "@/lib/data/company";
+import { company, companyAddress } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
 
 export function absoluteUrl(path = "/") {
@@ -74,12 +74,6 @@ export function jsonLdGraph() {
           addressLocality: companyAddress.city,
           addressCountry: companyAddress.countryCode,
         },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: companyAddress.latitude,
-          longitude: companyAddress.longitude,
-        },
-        hasMap: companyMaps.open,
       },
       {
         "@type": "WebSite",
@@ -99,12 +93,6 @@ export function jsonLdGraph() {
         telephone: [company.contact.phone, company.contact.phoneSecondary],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
-        hasMap: companyMaps.open,
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: companyAddress.latitude,
-          longitude: companyAddress.longitude,
-        },
         areaServed: {
           "@type": "Country",
           name: "Slovenia",

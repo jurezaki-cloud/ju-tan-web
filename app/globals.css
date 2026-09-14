@@ -234,7 +234,3 @@ section {
   background-clip: text;
   color: transparent;
 }
-
-.dark .company-map-frame {
-  filter: invert(0.9) hue-rotate(180deg) brightness(0.92) saturate(0.55);
-}

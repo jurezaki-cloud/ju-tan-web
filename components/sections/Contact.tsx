@@ -8,9 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn, Reveal } from "@/components/animations";
-import { company, companyLocationLines, companyMaps } from "@/lib/data/company";
+import { company, companyLocationLines } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
-import CompanyMap from "@/components/map/CompanyMap";
+import LocationCard from "@/components/sections/LocationCard";
 
 const fieldClass =
   "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-0 focus-visible:shadow-[0_0_20px_rgba(34,197,94,0.12)]";
@@ -47,7 +47,6 @@ const details = [
     icon: MapPin,
     title: "Lokacija",
     value: companyLocationLines.join("\n"),
-    href: companyMaps.open,
   },
   {
     icon: Clock,
@@ -191,6 +190,7 @@ export default function Contact() {
           <div className="min-w-0 lg:col-span-3">
             <Reveal delay={0.12}>
               <form
+              id="contact-form"
               onSubmit={handleSubmit}
               noValidate
               className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
@@ -295,7 +295,7 @@ export default function Contact() {
         </div>
 
         <Reveal>
-          <CompanyMap />
+          <LocationCard />
         </Reveal>
       </div>
     </section>
