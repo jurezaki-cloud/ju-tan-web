@@ -1,4 +1,9 @@
 export async function register() {
+  if (process.env.NEXT_RUNTIME === "nodejs") {
+    const { assertMailConfig } = await import("./lib/mail");
+    assertMailConfig();
+  }
+
   if (process.env.NEXT_PUBLIC_ENABLE_SENTRY !== "true") {
     return;
   }

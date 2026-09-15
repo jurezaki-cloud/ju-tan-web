@@ -1,9 +1,9 @@
 import "./globals.css";
 import { Geist, Syne } from "next/font/google";
 import type { ReactNode } from "react";
-import { jsonLdGraph } from "@/lib/seo";
+import { jsonLdGraph, serializeJsonLd } from "@/lib/seo";
 import Providers from "@/components/common/Providers";
-import { JuTanAgent } from "@/components/ai";
+import JuTanAgentLazy from "@/components/ai/JuTanAgentLazy";
 
 export { metadata, viewport } from "@/lib/metadata";
 
@@ -38,11 +38,11 @@ export default function RootLayout({
           Preskoči na vsebino
         </a>
         {children}
-        <JuTanAgent />
+        <JuTanAgentLazy />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+            __html: serializeJsonLd(jsonLd),
           }}
         />
         </Providers>

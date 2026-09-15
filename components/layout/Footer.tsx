@@ -7,9 +7,11 @@ import CTAButton from "@/components/navbar/CTAButton";
 
 const companyLinks = [
   { label: "Domov", href: "/" },
-  { label: "Zakaj JU-TAN", href: "/#about" },
-  { label: "Projekti", href: "/#projects" },
+  { label: "Rešitve", href: "/#services" },
+  { label: "Proces", href: "/#process" },
+  { label: "Reference", href: "/#projects" },
   { label: "Kontakt", href: "/#contact" },
+  { label: "Politika zasebnosti", href: "/#privacy" },
 ];
 
 const linkClass =
@@ -40,9 +42,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-5">
-              <CTAButton className="inline-flex min-h-11 rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:-translate-y-0.5 hover:shadow-green-500/40">
-                Brezplačen posvet
-              </CTAButton>
+              <CTAButton>Brezplačen posvet</CTAButton>
             </div>
           </div>
 
@@ -109,7 +109,13 @@ export default function Footer() {
       </FadeIn>
 
       <div className="border-t border-white/10 px-[max(1rem,env(safe-area-inset-left,0px))] pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] text-center text-sm text-slate-400">
-        © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.
+        © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.{" "}
+        <Link
+          href="/#privacy"
+          className="text-green-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+        >
+          Politika zasebnosti
+        </Link>
       </div>
     </footer>
   );

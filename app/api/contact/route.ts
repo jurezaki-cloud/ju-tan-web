@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
+import { getMailConfig } from "@/lib/mail";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: extra });
@@ -32,21 +33,33 @@ export async function POST(req: Request) {
       return jsonError(400);
     }
 
+    if (parsed.data.consent !== true) {
+      return jsonError(400);
+    }
+
     if (parsed.data.website) {
       return NextResponse.json({ success: true });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.EMAIL_FROM;
-    if (!apiKey || !from) {
+    const mail = getMailConfig();
+    if (!mail) {
       return jsonError(503);
     }
 
-    const resend = new Resend(apiKey);
-    const { name, email, message, company, phone, service } = parsed.data;
+    const resend = new Resend(mail.apiKey);
+    const {
+      name,
+      email,
+      message,
+      company,
+      phone,
+      service,
+      consentAt,
+    } = parsed.data;
+    const recordedAt = new Date().toISOString();
 
     const result = await resend.emails.send({
-      from,
+      from: mail.from,
       to: ["info@ju-tan.com"],
       subject: `Novo povpraševanje od ${name}`,
       replyTo: email,
@@ -57,6 +70,9 @@ export async function POST(req: Request) {
     <p><strong>Podjetje:</strong> ${escapeHtml(company ?? "—")}</p>
     <p><strong>Telefon:</strong> ${escapeHtml(phone ?? "—")}</p>
     <p><strong>Storitev:</strong> ${escapeHtml(service)}</p>
+    <p><strong>Soglasje:</strong> da</p>
+    <p><strong>Čas soglasja (odjemalec):</strong> ${escapeHtml(consentAt)}</p>
+    <p><strong>Čas prejema:</strong> ${escapeHtml(recordedAt)}</p>
     <p>${escapeHtml(message)}</p>
   `,
     });

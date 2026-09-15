@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Bot,
   Cloud,
@@ -87,7 +85,7 @@ const advantages: Service[] = [
 
 export default function About() {
   return (
-    <section id="about" className="below-fold relative overflow-hidden py-20">
+    <section id="about" className="below-fold relative overflow-hidden section-y">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-green-500/10 blur-[160px]" />
 
@@ -137,6 +135,7 @@ export default function About() {
 
         <div className="mt-8">
           <PremiumCTA
+            heading="h2"
             title="Pripravljeni na naslednji projekt?"
             description="Skupaj razvijmo rešitev, ki bo podprla rast vašega podjetja."
           />

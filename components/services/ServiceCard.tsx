@@ -17,15 +17,15 @@ export default function ServiceCard({
   showCta = true,
 }: Props) {
   return (
-    <article className="group relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1.5 hover:border-green-400/45 hover:bg-white/[0.07] hover:shadow-[0_22px_55px_rgba(34,197,94,0.2)]">
+    <article className="group relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur-xl transition duration-[250ms] hover:-translate-y-2 hover:border-green-400/45 hover:bg-white/[0.07] hover:shadow-card-hover">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent opacity-0 transition duration-[250ms] group-hover:opacity-100" />
       <div className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full bg-green-500/10 opacity-0 blur-3xl transition duration-[250ms] group-hover:opacity-100" />
 
       <ServiceIcon>
-        <Icon size={28} />
+        <Icon size={28} aria-hidden />
       </ServiceIcon>
 
-      <h3 className="mb-2 line-clamp-2 min-h-[2.4em] font-heading text-[26px] font-semibold leading-tight tracking-[-0.03em] text-white">
+      <h3 className="heading-3 mb-2 line-clamp-2 min-h-[2.5em] text-white">
         {title}
       </h3>
 
@@ -54,7 +54,7 @@ export default function ServiceCard({
           href="#contact"
           className="mt-auto inline-flex min-h-11 items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-all duration-[250ms] hover:gap-3 hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         >
-          Več informacij
+          Več
           <ArrowRight className="h-4 w-4" />
         </a>
       ) : (

@@ -1,11 +1,11 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import type { Project } from "@/lib/types";
 
 type ProjectCardProps = {
-  title: string;
-  category: string;
-  description: string;
-  technologies: string[];
-  image: string;
+  project: Project;
 };
 
 const mockupThemes: Record<string, string> = {
@@ -17,17 +17,20 @@ const mockupThemes: Record<string, string> = {
   security: "from-teal-400/25 via-emerald-950/60 to-[#07111f]",
 };
 
-export default function ProjectCard({
-  title,
-  category,
-  description,
-  technologies,
-  image,
-}: ProjectCardProps) {
-  const theme = mockupThemes[image] ?? mockupThemes.office;
+export default function ProjectCard({ project }: ProjectCardProps) {
+  const reduceMotion = useReducedMotion();
+  const theme = mockupThemes[project.image] ?? mockupThemes.office;
+  const hover = reduceMotion
+    ? undefined
+    : { y: -10, rotate: 1.2, scale: 1.02 };
 
   return (
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl shadow-black/20 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]">
+    <motion.article
+      whileHover={hover}
+      whileFocus={hover}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="group flex h-full w-full flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 shadow-card backdrop-blur-xl hover:border-green-400/50 hover:shadow-card-hover"
+    >
       <div
         className={`relative aspect-[17/10] w-full shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
         aria-hidden
@@ -39,7 +42,7 @@ export default function ProjectCard({
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80" />
             <span className="h-1.5 w-1.5 rounded-full bg-green-400/80" />
             <span className="ml-2 truncate text-[10px] uppercase tracking-[0.18em] text-green-200/80">
-              {title}
+              {project.title}
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2">
@@ -56,37 +59,40 @@ export default function ProjectCard({
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col p-6">
-        <h3 className="line-clamp-1 text-[28px] font-bold leading-tight text-white">
-          {title}
-        </h3>
+        <h3 className="heading-3 line-clamp-1 text-white">{project.title}</h3>
 
         <p className="mt-1 text-[14px] font-medium tracking-wide text-green-400">
-          {category}
+          {project.category}
         </p>
 
         <p className="mt-2 line-clamp-2 min-h-[52px] text-[16px] leading-[1.65] text-slate-400">
-          {description}
+          {project.description}
         </p>
 
-        <div className="mt-3 flex min-h-8 flex-wrap items-center gap-2">
-          {technologies.map((item) => (
-            <span
-              key={item}
-              className="inline-flex h-7 items-center rounded-full border border-white/10 bg-white/5 px-3 text-[13px] leading-none text-gray-300 backdrop-blur-md"
-            >
-              {item}
-            </span>
+        <ul className="mt-3 flex min-h-8 flex-wrap items-center gap-2" aria-label="Tehnologije">
+          {project.technologies.map((item) => (
+            <li key={item}>
+              <span className="inline-flex h-7 items-center rounded-full border border-white/10 bg-white/5 px-3 text-[13px] leading-none text-gray-300 backdrop-blur-md">
+                {item}
+              </span>
+            </li>
           ))}
-        </div>
+        </ul>
+
+        <p className="mt-3 text-[14px] leading-[1.55] text-slate-300">
+          <span className="font-semibold text-green-400">Rezultat: </span>
+          {project.result}
+        </p>
 
         <a
           href="#contact"
+          aria-label={`Ogled projekta ${project.title}`}
           className="mt-auto inline-flex min-h-11 items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         >
-          Poglej projekt
+          Ogled projekta
           <ArrowRight className="h-4 w-4 transition-transform duration-[250ms] group-hover:translate-x-1" />
         </a>
       </div>
-    </article>
+    </motion.article>
   );
 }

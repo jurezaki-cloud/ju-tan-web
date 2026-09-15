@@ -1,33 +1,45 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
 
 type ProjectsGridProps = {
   items: Project[];
+  labelledBy: string;
+  id: string;
 };
 
-export default function ProjectsGrid({ items }: ProjectsGridProps) {
+export default function ProjectsGrid({
+  items,
+  labelledBy,
+  id,
+}: ProjectsGridProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className="grid auto-rows-fr grid-cols-1 items-stretch gap-6 overflow-hidden md:grid-cols-2 lg:grid-cols-3">
+    <div
+      id={id}
+      role="tabpanel"
+      aria-labelledby={labelledBy}
+      className="grid auto-rows-fr grid-cols-1 items-stretch gap-6 overflow-hidden md:grid-cols-2 lg:grid-cols-3"
+    >
       <AnimatePresence mode="popLayout">
-        {items.map((project) => (
+        {items.map((project, index) => (
           <motion.div
             key={project.title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            layout={!reduceMotion}
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            transition={{
+              duration: reduceMotion ? 0.01 : 0.35,
+              delay: reduceMotion ? 0 : index * 0.06,
+              ease: "easeOut",
+            }}
             className="flex h-full min-w-0"
           >
-            <ProjectCard
-              title={project.title}
-              category={project.category}
-              description={project.description}
-              technologies={project.technologies}
-              image={project.image}
-            />
+            <ProjectCard project={project} />
           </motion.div>
         ))}
       </AnimatePresence>

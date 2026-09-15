@@ -1,6 +1,17 @@
+function resolveSiteUrl() {
+  const fallback = "https://ju-tan.com";
+  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? fallback;
+
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return fallback;
+  }
+}
+
 export const siteConfig = {
   name: "JU-TAN Studio",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ju-tan.com",
+  url: resolveSiteUrl(),
   locale: "sl_SI",
   language: "sl",
 } as const;

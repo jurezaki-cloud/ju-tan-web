@@ -3,7 +3,6 @@ import HeroBackground from "./HeroBackground";
 import HeroCanvas from "./HeroCanvas";
 import HeroContent from "./HeroContent";
 import HeroButtons from "./HeroButtons";
-import HeroStats from "./HeroStats";
 import ScrollIndicator from "./ScrollIndicator";
 import HeroStage from "./HeroStage";
 
@@ -11,7 +10,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[88dvh] overflow-hidden pt-8 pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-12"
+      className="relative min-h-[88dvh] overflow-hidden pt-[calc(5rem+0.5rem)] pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-[calc(5rem+1.5rem)]"
     >
       <AuroraBackground />
       <HeroCanvas />
@@ -26,7 +25,6 @@ export default function Hero() {
           <div className="order-2 min-w-0 lg:order-1">
             <HeroContent />
             <HeroButtons />
-            <HeroStats />
           </div>
         </div>
       </div>

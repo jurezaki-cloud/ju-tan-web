@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useRef, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,9 @@ type AgentWindowProps = {
   children: ReactNode;
 };
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
 export default function AgentWindow({
   open,
   onClose,
@@ -22,20 +25,49 @@ export default function AgentWindow({
   children,
 }: AgentWindowProps) {
   const titleId = useId();
+  const panelRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!open) return;
+
+    restoreFocusRef.current = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !panelRef.current) return;
+
+      const nodes = [
+        ...panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE),
+      ].filter((node) => !node.hasAttribute("disabled"));
+
+      if (nodes.length === 0) return;
+
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
+
     window.addEventListener("keydown", onKeyDown);
     const unlock = lockBodyScroll();
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       unlock();
+      restoreFocusRef.current?.focus();
     };
   }, [open, onClose]);
 
@@ -49,6 +81,7 @@ export default function AgentWindow({
       {open ? (
         <motion.section
           key="window"
+          ref={panelRef}
           id="jutan-agent-window"
           role="dialog"
           aria-modal="true"
@@ -66,7 +99,7 @@ export default function AgentWindow({
                 id={titleId}
                 className="font-heading text-[16px] font-semibold text-white light:text-slate-900"
               >
-                🤖 JU-TAN AI
+                JU-TAN AI
               </h2>
               <p className="text-[12px] text-[#22c55e] light:text-[#16a34a]">
                 Vaš digitalni pomočnik
@@ -83,6 +116,7 @@ export default function AgentWindow({
                 <Trash2 className="h-4 w-4" aria-hidden />
               </Button>
               <Button
+                ref={closeRef}
                 type="button"
                 variant="ghost"
                 aria-label="Zapri JU-TAN AI"

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Cpu,
   Database,
@@ -11,6 +9,7 @@ import {
 
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
+import SectionCta from "@/components/common/SectionCta";
 
 const technologies = [
   {
@@ -47,7 +46,7 @@ const technologies = [
 
 export default function Technologies() {
   return (
-    <section id="technologies" className="below-fold relative overflow-hidden py-20">
+    <section id="technologies" className="below-fold relative overflow-hidden section-y">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="container relative">
         <FadeIn>
@@ -64,12 +63,12 @@ export default function Technologies() {
 
             return (
               <FadeIn key={item.title} className="h-full">
-                <div className="flex h-full min-h-[200px] w-full flex-col rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10 backdrop-blur-xl transition duration-[250ms] hover:-translate-y-1 hover:scale-[1.02] hover:border-green-400/40 hover:shadow-[0_20px_50px_rgba(34,197,94,0.18)]">
-                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-400 text-black">
-                    <Icon size={28} />
+                <div className="flex h-full min-h-[200px] w-full flex-col rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur-xl transition duration-[250ms] hover:-translate-y-2 hover:scale-[1.02] hover:border-green-400/40 hover:shadow-card-hover">
+                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-green-500 to-emerald-400 text-black">
+                    <Icon size={28} aria-hidden />
                   </div>
 
-                  <h3 className="mb-1 text-[28px] font-bold leading-tight text-white">
+                  <h3 className="heading-3 mb-1 text-white">
                     {item.title}
                   </h3>
 
@@ -81,6 +80,8 @@ export default function Technologies() {
             );
           })}
         </div>
+
+        <SectionCta />
       </div>
     </section>
   );

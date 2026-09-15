@@ -7,12 +7,16 @@ export interface Service {
   features: string[];
 }
 
+export type ProjectTag = "AI" | "Web" | "Avtomatizacija";
+
 export interface Project {
   title: string;
   category: string;
   description: string;
   technologies: string[];
+  result: string;
   image: string;
+  tags: readonly ProjectTag[];
 }
 
 export interface Technology {

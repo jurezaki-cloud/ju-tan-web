@@ -2,17 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import type { HeaderNavItem } from "@/lib/navigation";
+import type { NavItem, NavSectionId } from "@/types/navigation";
 
-export function useActiveSection(items: HeaderNavItem[]) {
+export function useActiveSection(items: NavItem[]) {
   const pathname = usePathname();
-  const [sectionId, setSectionId] = useState<HeaderNavItem["id"]>("home");
+  const [sectionId, setSectionId] = useState<NavSectionId>("home");
 
   useEffect(() => {
     if (pathname !== "/") return;
 
-    const nodes = items
-      .map((item) => document.getElementById(item.id))
+    const uniqueIds = [...new Set(items.map((item) => item.sectionId))];
+    const nodes = uniqueIds
+      .map((id) => document.getElementById(id))
       .filter((node): node is HTMLElement => Boolean(node));
 
     if (nodes.length === 0) return;
@@ -22,11 +23,10 @@ export function useActiveSection(items: HeaderNavItem[]) {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort(
-            (a, b) =>
-              a.boundingClientRect.top - b.boundingClientRect.top,
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
           );
 
-        const top = visible[0]?.target.id as HeaderNavItem["id"] | undefined;
+        const top = visible[0]?.target.id as NavSectionId | undefined;
         if (top) setSectionId(top);
       },
       {

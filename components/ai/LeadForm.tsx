@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { contactSchema } from "@/lib/validation/contact";
 import {
   budgetOptions,
   deadlineOptions,
@@ -45,6 +47,8 @@ Kmalu vas kontaktiramo.`;
 export default function LeadForm({ onSubmit }: LeadFormProps) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [consentAt, setConsentAt] = useState("");
   const [form, setForm] = useState<LeadPayload>({
     name: "",
     company: "",
@@ -84,9 +88,6 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       setError("Izberite proračun in rok izvedbe.");
       return;
     }
-    setError("");
-    setLoading(true);
-
     const payload = {
       ...form,
       name: form.name.trim(),
@@ -96,22 +97,34 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       description: form.description.trim(),
     };
 
+    const parsed = contactSchema.safeParse({
+      name: payload.name,
+      company: payload.company || undefined,
+      email: payload.email,
+      phone: payload.phone || undefined,
+      service: payload.service,
+      message: [
+        payload.description,
+        `Proračun: ${payload.budget}`,
+        `Rok izvedbe: ${payload.deadline}`,
+      ].join("\n"),
+      consent,
+      consentAt: consent ? consentAt || new Date().toISOString() : "",
+    });
+
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Preverite vnesena polja.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: payload.name,
-          company: payload.company || undefined,
-          email: payload.email,
-          phone: payload.phone || undefined,
-          service: payload.service,
-          message: [
-            payload.description,
-            `Proračun: ${payload.budget}`,
-            `Rok izvedbe: ${payload.deadline}`,
-          ].join("\n"),
-        }),
+        body: JSON.stringify(parsed.data),
       });
 
       if (!response.ok) {
@@ -253,9 +266,29 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       ) : (
         <p className="min-h-5" aria-hidden />
       )}
+      <label className="flex items-start gap-2 text-[12px] leading-5 text-slate-300">
+        <input
+          type="checkbox"
+          required
+          checked={consent}
+          onChange={(event) => {
+            const checked = event.target.checked;
+            setConsent(checked);
+            setConsentAt(checked ? new Date().toISOString() : "");
+          }}
+          className="mt-0.5 h-4 w-4 shrink-0 accent-green-500"
+        />
+        <span>
+          Soglašam z obdelavo podatkov skladno s{" "}
+          <Link href="/#privacy" className="text-green-400 underline-offset-2 hover:underline">
+            Politiko zasebnosti
+          </Link>
+          .
+        </span>
+      </label>
       <Button
         type="submit"
-        disabled={loading}
+        disabled={loading || !consent}
         className="h-11 w-full rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
       >
         {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}

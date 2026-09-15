@@ -1,13 +1,12 @@
-"use client";
-
 import { services } from "@/lib/data/services";
 import ServiceCard from "@/components/services/ServiceCard";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn, Stagger, StaggerItem } from "@/components/animations";
+import SectionCta from "@/components/common/SectionCta";
 
 export default function Services() {
   return (
-    <section id="services" className="below-fold relative overflow-hidden py-20">
+    <section id="services" className="below-fold relative overflow-hidden section-y">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-24 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-green-500/12 blur-[160px]" />
       <div
@@ -44,6 +43,8 @@ export default function Services() {
             </StaggerItem>
           ))}
         </Stagger>
+
+        <SectionCta />
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import type { ReactNode } from "react";
 
 type StaggerItemProps = {
@@ -13,14 +13,16 @@ export default function StaggerItem({
   className,
   ...props
 }: StaggerItemProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
+        hidden: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.5, ease: "easeOut" },
+          transition: { duration: reduceMotion ? 0.01 : 0.5, ease: "easeOut" },
         },
       }}
       className={className}

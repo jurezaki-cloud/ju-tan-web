@@ -3,35 +3,36 @@
 import { useEffect, useRef, useState } from "react";
 import { Activity, BarChart3, Gauge, Globe2 } from "lucide-react";
 import { neuralGraphDesktop, headProfile } from "@/lib/hero-neural";
+import { heroCopy } from "./copy";
 
-const statuses = ["Online", "Processing", "Learning"] as const;
+const statuses = heroCopy.dashboard.statuses;
 
 const cards = [
   {
     id: "analytics",
-    title: "Analytics",
-    detail: "Live metrics",
+    title: heroCopy.dashboard.analytics.title,
+    detail: heroCopy.dashboard.analytics.detail,
     icon: BarChart3,
     className: "top-[4%] left-0",
   },
   {
     id: "performance",
-    title: "Performance",
-    detail: "12 ms",
+    title: heroCopy.dashboard.performance.title,
+    detail: heroCopy.dashboard.performance.detail,
     icon: Gauge,
     className: "top-[4%] right-0",
   },
   {
     id: "world",
-    title: "World Network",
-    detail: "Global mesh",
+    title: heroCopy.dashboard.world.title,
+    detail: heroCopy.dashboard.world.detail,
     icon: Globe2,
     className: "bottom-[6%] left-0",
   },
   {
     id: "status",
-    title: "AI Status",
-    detail: "Online",
+    title: heroCopy.dashboard.status.title,
+    detail: statuses[0],
     icon: Activity,
     className: "bottom-[6%] right-0",
   },
@@ -79,7 +80,7 @@ function StatusCycle({ motion }: { motion: boolean }) {
     return () => window.clearInterval(timer);
   }, [motion]);
 
-  const current = motion ? statuses[index] : "Online";
+  const current = motion ? statuses[index] : statuses[0];
 
   return (
     <span className="grid text-[10px] text-slate-400 sm:text-[12px]">

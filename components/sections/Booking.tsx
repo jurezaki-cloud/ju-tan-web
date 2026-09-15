@@ -3,12 +3,12 @@ import BookingWizard from "@/components/booking/BookingWizard";
 
 export default function Booking() {
   return (
-    <section id="booking" className="below-fold relative overflow-hidden py-20">
+    <section id="booking" className="below-fold relative overflow-hidden section-y">
       <div className="container relative">
         <SectionTitle
-          badge="Rezervacija"
-          title="Izberite termin za posvet"
-          description="Izberite storitev, svetovalca, datum in uro. Potrditev prejmete na e-pošto."
+          badge="Termin"
+          title="Dogovorite se za posvet"
+          description="Po oddaji povpraševanja vas bomo kontaktirali za dogovor termina."
         />
         <BookingWizard />
       </div>

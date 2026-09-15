@@ -84,11 +84,34 @@ export function createPageMetadata({
   };
 }
 
+export function serializeJsonLd(data: unknown) {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+export function breadcrumbJsonLd(
+  items: readonly { name: string; path: string }[],
+  id = "breadcrumb",
+) {
+  const origin = siteConfig.url.replace(/\/$/, "");
+
+  return {
+    "@type": "BreadcrumbList",
+    "@id": `${origin}/#${id}`,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
+  };
+}
+
 export function jsonLdGraph() {
   const url = siteConfig.url.replace(/\/$/, "");
   const organizationId = `${url}/#organization`;
   const websiteId = `${url}/#website`;
-  const localBusinessId = `${url}/#localbusiness`;
+  const webpageId = `${url}/#webpage`;
+  const professionalId = `${url}/#professional`;
   const logo = absoluteUrl("/logo/ju-tan-studio.png");
 
   return {
@@ -129,37 +152,30 @@ export function jsonLdGraph() {
         publisher: { "@id": organizationId },
       },
       {
-        "@type": "LocalBusiness",
-        "@id": localBusinessId,
+        "@type": "WebPage",
+        "@id": webpageId,
+        url,
+        name: defaultTitle,
+        description: defaultDescription,
+        inLanguage: "sl",
+        isPartOf: { "@id": websiteId },
+        about: { "@id": organizationId },
+        breadcrumb: { "@id": `${url}/#breadcrumb` },
+      },
+      breadcrumbJsonLd([{ name: "Domov", path: "/" }]),
+      {
+        "@type": "ProfessionalService",
+        "@id": professionalId,
         name: company.name,
         url,
         email: company.contact.email,
         telephone: [company.contact.phone, company.contact.phoneSecondary],
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            telephone: company.contact.phone,
-            contactType: company.contact.phoneLabel,
-            availableLanguage: "sl",
-          },
-          {
-            "@type": "ContactPoint",
-            telephone: company.contact.phoneSecondary,
-            contactType: company.contact.phoneSecondaryLabel,
-            availableLanguage: "sl",
-          },
-        ],
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
-        logo: absoluteUrl("/logo/ju-tan-studio.png"),
-        priceRange: "$$",
+        logo,
         areaServed: {
           "@type": "Country",
           name: "Slovenia",
-        },
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "SI",
         },
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",

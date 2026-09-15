@@ -1,20 +1,37 @@
 import { getMessages } from "@/lib/i18n/messages";
+import type { NavItem } from "@/types/navigation";
 
-export type HeaderNavItem = {
-  id: "home" | "services" | "about" | "projects" | "contact";
-  href: string;
-  label: string;
-};
+export type { NavItem } from "@/types/navigation";
 
-export function getHeaderNavigation(): HeaderNavItem[] {
+export function getHeaderNavigation(): NavItem[] {
   const { nav } = getMessages().header;
 
   return [
-    { id: "home", href: "/#home", label: nav.home },
-    { id: "services", href: "/#services", label: nav.solutions },
-    { id: "about", href: "/#about", label: nav.about },
-    { id: "projects", href: "/#projects", label: nav.references },
-    { id: "contact", href: "/#contact", label: nav.contact },
+    { id: "home", href: "/#home", sectionId: "home", label: nav.home },
+    {
+      id: "services",
+      href: "/#services",
+      sectionId: "services",
+      label: nav.solutions,
+    },
+    {
+      id: "process",
+      href: "/#process",
+      sectionId: "process",
+      label: nav.process,
+    },
+    {
+      id: "projects",
+      href: "/#projects",
+      sectionId: "projects",
+      label: nav.references,
+    },
+    {
+      id: "contact",
+      href: "/#contact",
+      sectionId: "contact",
+      label: nav.contact,
+    },
   ];
 }
 

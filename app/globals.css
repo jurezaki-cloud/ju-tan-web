@@ -54,6 +54,10 @@ html {
   overflow-x: clip;
 }
 
+#main [id] {
+  scroll-margin-top: 6rem;
+}
+
 .skip-link {
   position: absolute;
   left: 1rem;
@@ -230,6 +234,48 @@ section {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section-y {
+  padding-block: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-y {
+    padding-block: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-y {
+    padding-block: 8rem;
+  }
+}
+
+.radius-card {
+  border-radius: 1.5rem;
+}
+
+.heading-3 {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+  .heading-3 {
+    font-size: 1.5rem;
+  }
+}
+
+.shadow-card {
+  box-shadow: 0 16px 40px rgb(0 0 0 / 22%);
+}
+
+.shadow-card-hover {
+  box-shadow: 0 22px 55px rgb(34 197 94 / 18%);
 }
 
 .glow {
