@@ -7,7 +7,7 @@ export interface Service {
   features: string[];
 }
 
-export type ProjectTag = "AI" | "Web" | "Avtomatizacija";
+export type ProjectTag = "AI" | "Splet" | "Avtomatizacija";
 
 export interface Project {
   title: string;
@@ -17,6 +17,7 @@ export interface Project {
   result: string;
   image: string;
   tags: readonly ProjectTag[];
+  conceptual: boolean;
 }
 
 export interface Technology {

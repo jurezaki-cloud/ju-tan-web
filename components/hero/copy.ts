@@ -1,17 +1,16 @@
 export const heroCopy = {
-  badge: "AI Studio za podjetja",
-  titleLead: "AI rešitve,",
-  titleAccent: "ki delajo",
-  titleRest: "za vaše podjetje.",
+  badge: "Razvoj programske opreme · Slovenija",
+  titleLead: "Poslovni sistemi",
+  titleAccent: "in AI agenti",
+  titleRest: "za podjetja.",
   description:
-    "Razvijamo AI agente, avtomatizacije poslovnih procesov in sodobne spletne aplikacije po meri.",
-  primaryCta: "Rezerviraj brezplačen posvet",
-  primaryCtaAria: "Rezervirajte brezplačen posvet z ekipo JU-TAN",
-  secondaryCta: "Oglej si projekte",
-  secondaryCtaAria: "Oglejte si reference JU-TAN",
-  pills: ["AI Agenti", "Avtomatizacija", "Spletne aplikacije"] as const,
+    "Povezujemo CRM, ERP in interne procese. Izdelamo avtomatizacije, spletne aplikacije in agente po meri. Odgovorimo v enem delovnem dnevu.",
+  primaryCta: "Začnimo projekt",
+  primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
+  secondaryCta: "Oglejte si primere",
+  secondaryCtaAria: "Oglejte si primere rešitev JU-TAN",
+  pills: ["AI agenti", "Avtomatizacija", "Spletne aplikacije"] as const,
   network: {
-    center: "JU-TAN",
     nodes: [
       "CRM",
       "ERP",

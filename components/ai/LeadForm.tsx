@@ -28,7 +28,7 @@ type LeadFormProps = {
 };
 
 const fieldClass =
-  "h-11 rounded-xl border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 export function formatLeadSummary(data: LeadPayload) {
   return `Hvala, ${data.name}. Povzetek povpraševanja:
@@ -150,9 +150,9 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
     <form
       onSubmit={handleSubmit}
       aria-label="Povpraševanje za ponudbo"
-      className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
+      className="space-y-3 rounded-[10px] border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
     >
-      <p className="text-[13px] font-medium text-[#22c55e]">Povpraševanje za ponudbo</p>
+      <p className="text-[13px] font-medium text-green-600">Povpraševanje za ponudbo</p>
       <Input
         required
         name="name"
@@ -225,7 +225,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="Opis projekta"
         value={form.description}
         onChange={update("description")}
-        className="min-h-20 rounded-xl border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
+        className="min-h-20 rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
       />
       <select
         required
@@ -276,11 +276,11 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
             setConsent(checked);
             setConsentAt(checked ? new Date().toISOString() : "");
           }}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-green-500"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[#16a34a]"
         />
         <span>
           Soglašam z obdelavo podatkov skladno s{" "}
-          <Link href="/#privacy" className="text-green-400 underline-offset-2 hover:underline">
+          <Link href="/#privacy" className="text-green-600 underline-offset-2 hover:underline">
             Politiko zasebnosti
           </Link>
           .
@@ -289,7 +289,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       <Button
         type="submit"
         disabled={loading || !consent}
-        className="h-11 w-full rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
+        className="h-11 w-full rounded-[10px] border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
       >
         {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
       </Button>

@@ -6,20 +6,20 @@ import { cn } from "@/lib/utils";
 import { getMessages } from "@/lib/i18n/messages";
 
 const baseButtonClass =
-  "group inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl font-semibold transition-all duration-[250ms] ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] disabled:pointer-events-none disabled:opacity-50";
+  "group inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] font-semibold tracking-[-0.01em] transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50";
 
 const buttonSizes = {
-  default: "px-7 py-3.5 text-[15px]",
-  compact: "px-5 py-2.5 text-[13px]",
+  default: "px-6 py-3 text-[14px]",
+  compact: "px-4 py-2 text-[13px]",
 } as const;
 
 export const buttonVariants = {
   primary:
-    "bg-gradient-to-r from-green-600 to-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.28)] hover:scale-[1.03] hover:shadow-[0_14px_40px_rgba(34,197,94,0.45)] active:scale-[0.97]",
+    "bg-[#16a34a] text-white shadow-[0_8px_24px_rgba(0,0,0,0.32)] hover:-translate-y-[2px] hover:bg-[#15803d] hover:shadow-[0_10px_28px_rgba(22,163,74,0.22)] active:translate-y-0",
   secondary:
-    "border border-white/15 bg-white/5 text-white shadow-md shadow-black/20 backdrop-blur-sm hover:scale-[1.03] hover:border-green-500/50 hover:bg-white/10 hover:shadow-[0_12px_32px_rgba(34,197,94,0.18)] active:scale-[0.97]",
+    "border border-white/12 bg-transparent text-slate-100 hover:-translate-y-[2px] hover:border-white/20 hover:bg-white/[0.04] active:translate-y-0",
   ghost:
-    "bg-transparent text-green-400 hover:bg-white/5 hover:text-green-300 active:scale-[0.98]",
+    "bg-transparent text-slate-200 hover:bg-white/[0.04] hover:text-white",
 } as const;
 
 export type ButtonVariant = keyof typeof buttonVariants;
@@ -73,7 +73,7 @@ export default function CTAButton({
     <Link
       href={href}
       onClick={onClick}
-      aria-label={ariaLabel ?? copy.ctaAria}
+      aria-label={ariaLabel}
       className={classes}
     >
       {label}

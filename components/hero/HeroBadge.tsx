@@ -1,12 +1,10 @@
-import { Sparkles } from "lucide-react";
+import CoreMark from "@/components/common/CoreMark";
 import { heroCopy } from "./copy";
 
 export default function HeroBadge() {
   return (
-    <div className="mb-4 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3.5 py-1.5 text-left text-sm font-medium leading-snug text-green-400 shadow-[0_0_24px_rgba(34,197,94,0.12)] backdrop-blur-md">
-      <span className="hero-sparkle inline-flex">
-        <Sparkles className="h-4 w-4" aria-hidden />
-      </span>
+    <div className="mb-5 flex max-w-full items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400">
+      <CoreMark className="h-3.5 w-3.5 shrink-0 text-slate-400" />
       {heroCopy.badge}
     </div>
   );

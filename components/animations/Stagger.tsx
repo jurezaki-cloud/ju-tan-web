@@ -13,7 +13,7 @@ type StaggerProps = {
 export default function Stagger({
   children,
   delay = 0,
-  stagger = 0.12,
+  stagger = 0.08,
   className,
   ...props
 }: StaggerProps) {

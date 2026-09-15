@@ -10,8 +10,9 @@ function resolveSiteUrl() {
 }
 
 export const siteConfig = {
-  name: "JU-TAN Studio",
+  name: "JU-TAN",
   url: resolveSiteUrl(),
   locale: "sl_SI",
   language: "sl",
+  copyrightYear: 2026,
 } as const;

@@ -1,8 +1,8 @@
 export const radius = {
   sm: "0.5rem",
-  md: "0.75rem",
-  lg: "1rem",
-  xl: "1.5rem",
+  md: "0.625rem",
+  lg: "0.625rem",
+  xl: "0.625rem",
   pill: "999px",
 } as const;
 

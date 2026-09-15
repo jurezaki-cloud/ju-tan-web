@@ -1,46 +1,49 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import CTAButton from "@/components/navbar/CTAButton";
+import { duration, easeOut } from "@/design";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type PremiumCTAProps = {
   title: string;
   description: string;
-  action?: string;
+  action: string;
   heading?: "h2" | "h3";
+  href?: string;
+  "aria-label"?: string;
 };
 
 export default function PremiumCTA({
   title,
   description,
-  action = "Brezplačen posvet",
+  action,
   heading = "h3",
+  href = "/#contact",
+  "aria-label": ariaLabel,
 }: PremiumCTAProps) {
   const Heading = heading;
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: reduceMotion ? 0.01 : 0.45, ease: "easeOut" }}
-      className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 px-6 py-10 text-center shadow-card backdrop-blur-xl"
+      transition={{ duration: reduceMotion ? 0.01 : duration.base, ease: easeOut }}
+      className="border-t border-white/[0.08] pt-8"
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-green-500/10 via-transparent to-emerald-400/10" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-green-400/60 to-transparent" />
-
-      <Heading className="relative font-heading text-[28px] font-semibold leading-[1.2] tracking-[-0.03em] text-white md:text-[32px]">
+      <Heading className="heading-display relative font-heading font-semibold text-white light:text-slate-900">
         {title}
       </Heading>
-      <p className="relative mx-auto mt-3 max-w-xl text-[16px] leading-[1.7] text-slate-400">
+      <p className="relative mt-3 max-w-xl text-[16px] leading-[1.7] text-slate-400">
         {description}
       </p>
-      <div className="relative mt-6 flex justify-center">
-        <CTAButton>
+      <div className="relative mt-6">
+        <CTAButton href={href} aria-label={ariaLabel ?? action}>
           {action}
-          <ArrowRight className="h-5 w-5 transition-transform duration-[250ms] group-hover:translate-x-1" />
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
         </CTAButton>
       </div>
     </motion.div>

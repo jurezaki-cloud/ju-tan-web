@@ -7,7 +7,7 @@ import { createPageMetadata, breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo
 export const metadata: Metadata = createPageMetadata({
   title: "Rezervacija posveta",
   description:
-    "Rezervirajte posvet z ekipo JU-TAN za umetno inteligenco, splet, aplikacije, oblikovanje ali IT svetovanje.",
+    "Rezervirajte posvet z ekipo JU-TAN za umetno inteligenco, programsko opremo, avtomatizacijo, splet in IT infrastrukturo.",
   path: "/booking",
 });
 
@@ -16,7 +16,7 @@ export default function BookingPage() {
     <>
       <Header />
       <main id="main">
-        <Booking />
+        <Booking heading="h1" />
       </main>
       <script
         type="application/ld+json"

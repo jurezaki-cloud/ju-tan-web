@@ -1,8 +1,9 @@
 export const colors = {
   background: "#050816",
   surface: "#0B1220",
-  primary: "#22C55E",
-  primaryHover: "#16A34A",
+  primary: "#16A34A",
+  primaryHover: "#15803D",
+  filament: "#16A34A",
   text: "#FFFFFF",
   textSecondary: "#CBD5E1",
   muted: "#94A3B8",

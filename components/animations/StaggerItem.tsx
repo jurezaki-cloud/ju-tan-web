@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import type { ReactNode } from "react";
+import { duration, easeOut } from "@/design";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type StaggerItemProps = {
   children: ReactNode;
@@ -13,16 +15,19 @@ export default function StaggerItem({
   className,
   ...props
 }: StaggerItemProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <motion.div
       variants={{
-        hidden: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 8 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: reduceMotion ? 0.01 : 0.5, ease: "easeOut" },
+          transition: {
+            duration: reduceMotion ? 0.01 : duration.base,
+            ease: easeOut,
+          },
         },
       }}
       className={className}

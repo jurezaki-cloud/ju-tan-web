@@ -19,7 +19,7 @@ export default function QuickActions({ disabled, onSelect }: QuickActionsProps) 
           type="button"
           disabled={disabled}
           onClick={() => onSelect(action.prompt)}
-          className="min-h-11 shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] font-medium text-slate-200 transition hover:border-[#22c55e]/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] disabled:opacity-50 light:border-slate-200 light:bg-white light:text-slate-800"
+          className="min-h-11 shrink-0 rounded-[10px] border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] font-medium text-slate-200 transition-colors duration-200 hover:border-green-600/50 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 disabled:opacity-50 light:border-slate-200 light:bg-white light:text-slate-800"
         >
           {action.label}
         </button>

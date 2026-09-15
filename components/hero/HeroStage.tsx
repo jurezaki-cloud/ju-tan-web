@@ -1,28 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef } from "react";
 import HeroNetwork from "./HeroNetwork";
-
-function subscribeMotion(onStoreChange: () => void) {
-  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-  media.addEventListener("change", onStoreChange);
-  return () => media.removeEventListener("change", onStoreChange);
-}
 
 export default function HeroStage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useSyncExternalStore(
-    subscribeMotion,
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false,
-  );
 
   useEffect(() => {
     const stage = stageRef.current;
     const tilt = tiltRef.current;
     if (!stage || !tilt) return;
-    if (reduceMotion || window.matchMedia("(max-width: 767px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(max-width: 767px)").matches) return;
 
     let frame = 0;
     let targetX = 0;
@@ -31,8 +21,8 @@ export default function HeroStage() {
     let currentY = 0;
 
     const tick = () => {
-      currentX += (targetX - currentX) * 0.08;
-      currentY += (targetY - currentY) * 0.08;
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
       tilt.style.transform = `rotateX(${currentY.toFixed(3)}deg) rotateY(${currentX.toFixed(3)}deg)`;
       const settled =
         Math.abs(targetX - currentX) < 0.02 &&
@@ -48,8 +38,8 @@ export default function HeroStage() {
       const rect = stage.getBoundingClientRect();
       const nx = (event.clientX - rect.left) / rect.width - 0.5;
       const ny = (event.clientY - rect.top) / rect.height - 0.5;
-      targetX = Math.max(-0.5, Math.min(0.5, nx)) * 6;
-      targetY = Math.max(-0.5, Math.min(0.5, ny)) * -4;
+      targetX = Math.max(-0.5, Math.min(0.5, nx)) * 2.8;
+      targetY = Math.max(-0.5, Math.min(0.5, ny)) * -2;
       kick();
     };
 
@@ -68,21 +58,17 @@ export default function HeroStage() {
       stage.removeEventListener("pointerleave", onLeave);
       tilt.style.transform = "";
     };
-  }, [reduceMotion]);
+  }, []);
 
   return (
     <div
       ref={stageRef}
-      className="relative mx-auto aspect-square w-full max-w-[min(380px,100%)] overflow-hidden [perspective:900px] sm:max-w-[min(460px,100%)] sm:overflow-visible lg:max-w-[520px]"
+      className="relative mx-auto aspect-square h-auto w-full max-h-full [perspective:1400px]"
       aria-hidden
     >
-      <div
-        className={`pointer-events-none absolute inset-[12%] rounded-full bg-green-500/20 blur-[80px] ${
-          reduceMotion ? "" : "hero-core-breathe"
-        }`}
-      />
+      <div className="hero-core-breathe pointer-events-none absolute inset-[18%] rounded-full bg-green-700/12 blur-[80px]" />
       <div ref={tiltRef} className="relative h-full w-full [transform-style:preserve-3d]">
-        <HeroNetwork motion={!reduceMotion} />
+        <HeroNetwork motion />
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ export const services: Service[] = [
       "Hitre, odzivne in SEO pripravljene spletne rešitve za predstavitev in poslovanje.",
     features: [
       "Sodobne spletne aplikacije",
-      "Odziven in premium vmesnik",
+      "Odziven vmesnik",
       "SEO in merjenje uspešnosti",
     ],
   },

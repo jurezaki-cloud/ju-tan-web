@@ -31,7 +31,13 @@ export default function RootLayout({
   const jsonLd = jsonLdGraph();
 
   return (
-    <html lang="sl" className={`${geist.variable} ${syne.variable}`} suppressHydrationWarning>
+    <html
+      lang="sl"
+      className={`${geist.variable} ${syne.variable}`}
+      // next-themes writes `class="dark|light"` on <html> before React hydrates.
+      // Official requirement: https://github.com/pacocoursey/next-themes#with-app
+      suppressHydrationWarning
+    >
       <body className="min-h-screen bg-[#050816] font-sans text-white antialiased light:bg-slate-50 light:text-slate-900">
         <Providers>
         <a href="#main" className="skip-link">

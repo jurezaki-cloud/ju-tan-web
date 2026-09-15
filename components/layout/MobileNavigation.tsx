@@ -1,20 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import type { NavItem, NavSectionId } from "@/types/navigation";
 import { getMessages } from "@/lib/i18n/messages";
 import HeaderCTA from "./HeaderCTA";
-
-const CloseIcon = dynamic(
-  () => import("lucide-react").then((mod) => ({ default: mod.X })),
-  {
-    ssr: true,
-    loading: () => <span className="size-7" aria-hidden />,
-  },
-);
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type MobileNavigationProps = {
   open: boolean;
@@ -36,7 +29,7 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   const copy = getMessages().header;
 
   useEffect(() => {
@@ -75,7 +68,7 @@ export default function MobileNavigation({
   }, [open, onClose]);
 
   return (
-    <div className="lg:hidden" id="mobile-navigation">
+    <div className="xl:hidden" id="mobile-navigation">
       <AnimatePresence>
         {open ? (
           <motion.div
@@ -94,10 +87,10 @@ export default function MobileNavigation({
               ref={closeRef}
               type="button"
               aria-label={copy.closeMenu}
-              className="absolute right-[max(1rem,env(safe-area-inset-right,0px))] top-[max(1.25rem,env(safe-area-inset-top,0px))] inline-flex h-11 w-11 items-center justify-center rounded-xl text-white transition-colors duration-200 ease-out hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-900 light:hover:bg-slate-100"
+              className="absolute right-[max(1rem,env(safe-area-inset-right,0px))] top-[max(1.25rem,env(safe-area-inset-top,0px))] inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-white transition-colors duration-200 ease-out hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 light:text-slate-900 light:hover:bg-slate-100"
               onClick={onClose}
             >
-              <CloseIcon size={28} aria-hidden />
+              <X className="h-5 w-5" aria-hidden />
             </button>
 
             <nav
@@ -113,8 +106,8 @@ export default function MobileNavigation({
                     href={item.href}
                     onClick={onClose}
                     aria-current={active ? "page" : undefined}
-                    className={`inline-flex min-h-11 items-center text-xl font-medium text-slate-200 transition-colors duration-200 ease-out hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 light:text-slate-800 ${
-                      active ? "text-green-400 light:text-green-600" : ""
+                    className={`inline-flex min-h-11 items-center text-xl font-medium tracking-[-0.03em] text-slate-200 transition-colors duration-200 ease-out hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 light:text-slate-800 ${
+                      active ? "text-white light:text-slate-900" : ""
                     }`}
                   >
                     {item.label}

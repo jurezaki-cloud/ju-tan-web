@@ -1,16 +1,18 @@
 "use client";
 
 import CTAButton from "@/components/navbar/CTAButton";
-import { bookingNotice } from "@/lib/data/booking";
 
 export default function BookingWizard() {
   return (
-    <div className="surface-card px-6 py-10 text-center sm:px-10 light:border-slate-200 light:bg-white">
-      <p className="mx-auto max-w-xl text-[16px] leading-[1.7] text-slate-300 light:text-slate-600">
-        {bookingNotice}
+    <div className="max-w-xl border-t border-white/[0.08] pt-8">
+      <p className="text-[16px] leading-[1.7] text-slate-400 light:text-slate-600">
+        Na spletu ni koledarja. Oddate povpraševanje, termin uskladimo po
+        e-pošti ali telefonu.
       </p>
-      <div className="mt-6 flex justify-center">
-        <CTAButton href="/#contact">Oddajte povpraševanje</CTAButton>
+      <div className="mt-6">
+        <CTAButton href="/#contact" aria-label="Rezervirajte termin">
+          Rezerviraj termin
+        </CTAButton>
       </div>
     </div>
   );

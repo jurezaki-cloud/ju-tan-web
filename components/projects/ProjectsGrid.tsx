@@ -1,8 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type ProjectsGridProps = {
   items: Project[];
@@ -15,25 +16,25 @@ export default function ProjectsGrid({
   labelledBy,
   id,
 }: ProjectsGridProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <div
       id={id}
       role="tabpanel"
       aria-labelledby={labelledBy}
-      className="grid auto-rows-fr grid-cols-1 items-stretch gap-6 overflow-hidden md:grid-cols-2 lg:grid-cols-3"
+      className="grid auto-rows-fr grid-cols-1 items-stretch gap-10 overflow-hidden md:grid-cols-2 md:gap-12"
     >
       <AnimatePresence mode="popLayout">
         {items.map((project, index) => (
           <motion.div
             key={project.title}
             layout={!reduceMotion}
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            exit={{ opacity: 0, y: 8 }}
             transition={{
-              duration: reduceMotion ? 0.01 : 0.35,
+              duration: reduceMotion ? 0.01 : 0.28,
               delay: reduceMotion ? 0 : index * 0.06,
               ease: "easeOut",
             }}

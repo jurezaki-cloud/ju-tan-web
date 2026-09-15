@@ -6,6 +6,7 @@ export default function Privacy() {
     <section id="privacy" className="below-fold relative overflow-hidden section-y">
       <div className="container relative max-w-3xl">
         <SectionTitle
+          index="08"
           badge="Zasebnost"
           title="Politika zasebnosti"
           description="Kako obdelujemo podatke iz povpraševanj."
@@ -20,8 +21,12 @@ export default function Privacy() {
             dogovorimo posvet. Pravna podlaga je vaše soglasje.
           </p>
           <p>
-            Podatkov ne prodajamo. Hrani jih pooblaščeni ponudnik e-pošte za
-            namen dostave sporočila. Soglasje lahko kadarkoli prekličete na{" "}
+            Pogovor v vodiču storitev se shrani v brskalniku (localStorage), da
+            ostane zgodovina na tej napravi. Obrazec pošlje podatke na naš
+            strežnik in pooblaščenemu ponudniku e-pošte.
+          </p>
+          <p>
+            Podatkov ne prodajamo. Soglasje lahko kadarkoli prekličete na{" "}
             {company.contact.email}.
           </p>
         </div>

@@ -28,7 +28,7 @@ export default function ProjectFilters({
 
   return (
     <div
-      className="-mt-4 mb-6 flex flex-wrap justify-center gap-2"
+      className="-mt-1 mb-7 flex flex-wrap gap-4"
       role="tablist"
       aria-label="Filtri referenc"
     >
@@ -67,10 +67,10 @@ export default function ProjectFilters({
                 moveFocus(projectFilters.length - 1);
               }
             }}
-            className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium backdrop-blur-xl transition duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
+            className={`relative min-h-11 rounded-[10px] px-1 py-2 text-[13px] font-medium tracking-[0.02em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 ${
               active
-                ? "border-green-400/50 bg-green-500/20 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.18)]"
-                : "border-white/10 bg-white/5 text-slate-300 hover:border-green-400/30 hover:text-white"
+                ? "text-white after:absolute after:inset-x-0 after:bottom-1 after:h-px after:bg-green-600/80"
+                : "text-slate-500 hover:text-white"
             }`}
           >
             {item}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { company } from "@/lib/data/company";
+import { siteConfig } from "@/lib/config";
 import { services } from "@/lib/data/services";
 import { FadeIn } from "@/components/animations";
 import CTAButton from "@/components/navbar/CTAButton";
@@ -15,16 +16,15 @@ const companyLinks = [
 ];
 
 const linkClass =
-  "inline-flex min-h-11 items-center rounded-sm py-1 transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500";
+  "inline-flex min-h-11 items-center rounded-[10px] py-1 text-slate-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600";
 
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#050816]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent" />
-      <div className="pointer-events-none absolute top-0 left-1/2 h-40 w-[28rem] -translate-x-1/2 rounded-full bg-green-500/10 blur-[90px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
 
       <FadeIn>
-        <div className="container grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="container grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Image
               src="/logo/ju-tan-studio.png"
@@ -42,12 +42,14 @@ export default function Footer() {
             </p>
 
             <div className="mt-5">
-              <CTAButton>Brezplačen posvet</CTAButton>
+              <CTAButton size="compact" aria-label="Pošlji povpraševanje">
+                Pošlji povpraševanje
+              </CTAButton>
             </div>
           </div>
 
           <div>
-            <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
+            <h3 className="heading-3 mb-4 text-white">
               Podjetje
             </h3>
             <ul className="space-y-1 text-slate-400">
@@ -62,7 +64,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
+            <h3 className="heading-3 mb-4 text-white">
               Storitve
             </h3>
             <ul className="space-y-1 text-slate-400">
@@ -77,7 +79,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 font-heading text-[18px] font-semibold tracking-[-0.03em] text-white">
+            <h3 className="heading-3 mb-4 text-white">
               Kontakt
             </h3>
             <div className="space-y-1 text-slate-400">
@@ -109,10 +111,10 @@ export default function Footer() {
       </FadeIn>
 
       <div className="border-t border-white/10 px-[max(1rem,env(safe-area-inset-left,0px))] pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] text-center text-sm text-slate-400">
-        © {new Date().getFullYear()} JU-TAN. Vse pravice pridržane.{" "}
+        © {siteConfig.copyrightYear} JU-TAN. Vse pravice pridržane.{" "}
         <Link
           href="/#privacy"
-          className="text-green-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+          className="rounded-[10px] text-slate-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
         >
           Politika zasebnosti
         </Link>

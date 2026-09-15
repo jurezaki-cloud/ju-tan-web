@@ -5,7 +5,6 @@ import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import ProjectFilters from "@/components/projects/ProjectFilters";
-import PremiumCTA from "@/components/common/PremiumCTA";
 import {
   projectMatchesFilter,
   projects,
@@ -28,21 +27,16 @@ export default function Projects() {
       aria-labelledby="projects-heading"
       className="below-fold relative overflow-hidden section-y"
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
-      <div className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-green-500/10 blur-[160px]" />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]
-          [background-image:linear-gradient(rgba(255,255,255,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.18)_1px,transparent_1px)]
-          [background-size:72px_72px]"
-      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.015] to-transparent" />
 
-      <div className="container relative max-w-6xl overflow-x-hidden">
+      <div className="container relative overflow-x-hidden">
         <FadeIn>
           <div id="projects-heading">
             <SectionTitle
+              index="04"
               badge="Reference"
-              title="Naši projekti"
-              description="Podjetjem pomagamo avtomatizirati procese, razviti AI agente in izdelati sodobne spletne rešitve."
+              title="Primeri rešitev"
+              description="Konceptualni primeri tipičnega dela — ne javne reference strank. Vsaka kartica je označena."
             />
           </div>
         </FadeIn>
@@ -69,12 +63,6 @@ export default function Projects() {
           />
         )}
 
-        <div className="mt-8">
-          <PremiumCTA
-            title="Iščete partnerja za razvoj?"
-            description="Pomagamo podjetjem razviti sodobne spletne rešitve, AI avtomatizacije in poslovne sisteme."
-          />
-        </div>
       </div>
     </section>
   );

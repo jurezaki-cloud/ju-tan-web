@@ -1,98 +1,49 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import type { Project } from "@/lib/types";
+import CoreMark from "@/components/common/CoreMark";
+import ProjectArt from "./ProjectArt";
 
 type ProjectCardProps = {
   project: Project;
 };
 
-const mockupThemes: Record<string, string> = {
-  office: "from-green-500/30 via-slate-800/80 to-[#07111f]",
-  "ai-agent": "from-emerald-400/35 via-green-900/50 to-[#07111f]",
-  portal: "from-green-400/30 via-cyan-950/40 to-[#07111f]",
-  crm: "from-lime-400/20 via-green-950/70 to-[#07111f]",
-  infra: "from-emerald-300/25 via-slate-900 to-[#07111f]",
-  security: "from-teal-400/25 via-emerald-950/60 to-[#07111f]",
-};
-
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const reduceMotion = useReducedMotion();
-  const theme = mockupThemes[project.image] ?? mockupThemes.office;
-  const hover = reduceMotion
-    ? undefined
-    : { y: -10, rotate: 1.2, scale: 1.02 };
-
   return (
-    <motion.article
-      whileHover={hover}
-      whileFocus={hover}
-      transition={{ duration: 0.25, ease: "easeOut" }}
-      className="surface-card group flex h-full w-full flex-col overflow-hidden hover:border-green-400/50 hover:shadow-card-hover"
-    >
-      <div
-        className={`relative aspect-[17/10] w-full shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
-        aria-hidden
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.28),transparent_55%)]" />
-        <div className="absolute inset-x-4 top-4 rounded-xl border border-white/10 bg-black/25 p-3 shadow-lg backdrop-blur-md">
-          <div className="mb-3 flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-400/80" />
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80" />
-            <span className="h-1.5 w-1.5 rounded-full bg-green-400/80" />
-            <span className="ml-2 truncate text-[10px] uppercase tracking-[0.18em] text-green-200/80">
-              {project.title}
-            </span>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="h-10 rounded-md bg-white/10" />
-            <div className="h-10 rounded-md bg-green-400/20" />
-            <div className="h-10 rounded-md bg-white/10" />
-          </div>
-          <div className="mt-2 space-y-1.5">
-            <div className="h-1.5 w-[88%] rounded-full bg-white/15" />
-            <div className="h-1.5 w-[64%] rounded-full bg-green-400/35" />
-            <div className="h-1.5 w-[74%] rounded-full bg-white/10" />
-          </div>
-        </div>
+    <article className="group flex h-full w-full flex-col overflow-hidden border-t border-white/[0.08] pt-6">
+      <div className="relative overflow-hidden" aria-hidden>
+        <ProjectArt kind={project.image} />
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col p-6">
-        <h3 className="heading-3 line-clamp-1 text-white">{project.title}</h3>
+      <div className="flex min-h-0 flex-1 flex-col pt-5">
+        {project.conceptual ? (
+          <p className="mb-2 inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+            <CoreMark className="h-3.5 w-3.5 text-slate-500" />
+            Konceptualni primer
+          </p>
+        ) : null}
 
-        <p className="mt-1 text-[14px] font-medium tracking-wide text-green-400">
+        <h3 className="heading-3 text-white transition-colors duration-200 group-hover:text-slate-100 light:text-slate-900 light:group-hover:text-slate-700">
+          {project.title}
+        </h3>
+
+        <p className="mt-1.5 text-[13px] font-medium tracking-[0.04em] text-slate-500">
           {project.category}
         </p>
 
-        <p className="mt-2 line-clamp-2 min-h-[52px] text-[16px] leading-[1.65] text-slate-400">
+        <p className="mt-3 text-[15px] leading-[1.7] text-slate-400">
           {project.description}
         </p>
 
-        <ul className="mt-3 flex min-h-8 flex-wrap items-center gap-2" aria-label="Tehnologije">
-          {project.technologies.map((item) => (
-            <li key={item}>
-              <span className="inline-flex h-7 items-center rounded-full border border-white/10 bg-white/5 px-3 text-[13px] leading-none text-gray-300 backdrop-blur-md">
-                {item}
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-3 text-[14px] leading-[1.55] text-slate-300">
-          <span className="font-semibold text-green-400">Rezultat: </span>
-          {project.result}
+        <p className="mt-3 text-[12px] leading-5 tracking-[0.02em] text-slate-500">
+          {project.technologies.join("  ·  ")}
         </p>
 
-        <a
-          href="#contact"
-          aria-label={`Ogled projekta ${project.title}`}
-          className="mt-auto inline-flex min-h-11 items-center gap-2 rounded-sm pt-4 text-[14px] font-semibold text-green-400 transition-colors duration-[250ms] hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
-        >
-          Ogled projekta
-          <ArrowRight className="h-4 w-4 transition-transform duration-[250ms] group-hover:translate-x-1" />
-        </a>
+        <p className="mt-auto pt-4 text-[14px] leading-[1.65] text-slate-300">
+          <span className="font-medium text-green-600/85">Namen: </span>
+          {project.result}
+        </p>
       </div>
-    </motion.article>
+    </article>
   );
 }

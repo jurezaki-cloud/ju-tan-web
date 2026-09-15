@@ -1,9 +1,8 @@
 export const company = {
   name: "JU-TAN",
-  badge: "🚀 JU-TAN v2 • umetna inteligenca • avtomatizacija",
-  headline: "Umetna inteligenca za sodobna podjetja",
+  headline: "Programska oprema, avtomatizacija in AI agenti za podjetja",
   description:
-    "Razvijamo rešitve umetne inteligence, avtomatizacije, poslovne programske opreme, spletnih strani in sodobne IT infrastrukture, ki podjetjem prihranijo čas in dvignejo produktivnost.",
+    "JU-TAN razvija programsko opremo po meri, avtomatizacije poslovnih procesov, spletne aplikacije in AI agente za podjetja v Sloveniji.",
   contact: {
     phone: "+386 69 907 803",
     phoneLabel: "Razvoj",

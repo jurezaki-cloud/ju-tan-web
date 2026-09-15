@@ -9,7 +9,7 @@ export default function HeaderLogo() {
     <Link
       href="/#home"
       aria-label={copy.logoAria}
-      className="flex min-h-11 min-w-11 shrink-0 items-center gap-2 rounded-lg opacity-100 transition-opacity duration-200 ease-out hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 sm:gap-3"
+      className="flex min-h-11 min-w-11 shrink-0 items-center gap-2 rounded-[10px] opacity-100 transition-opacity duration-200 ease-out hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 sm:gap-3"
     >
       <Image
         src="/logo/ju-tan-studio.png"
@@ -21,9 +21,7 @@ export default function HeaderLogo() {
         priority
         fetchPriority="high"
       />
-      <span className="hidden text-lg font-bold tracking-wide text-white min-[400px]:inline light:text-slate-900">
-        {copy.brand}
-      </span>
+      <span className="sr-only">{copy.brand}</span>
     </Link>
   );
 }

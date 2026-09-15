@@ -15,7 +15,7 @@ export default function HeroButtons() {
           className="w-full sm:w-auto"
         >
           {heroCopy.primaryCta}
-          <ArrowRight className="h-5 w-5 transition-transform duration-[250ms] group-hover:translate-x-1" />
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
         </CTAButton>
 
         <CTAButton
@@ -26,8 +26,7 @@ export default function HeroButtons() {
         >
           {heroCopy.secondaryCta}
           <LayoutGrid
-            className="transition-transform duration-[250ms] group-hover:scale-110"
-            size={20}
+            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
             aria-hidden
           />
         </CTAButton>

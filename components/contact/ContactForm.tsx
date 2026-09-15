@@ -14,7 +14,7 @@ import {
 import ContactSuccess from "./ContactSuccess";
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-[16px] text-white shadow-none outline-none transition duration-[250ms] placeholder:text-slate-500 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/50 aria-invalid:border-red-400 aria-invalid:ring-2 aria-invalid:ring-red-400/40 md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
+  "h-11 w-full rounded-[10px] border border-white/10 bg-transparent px-4 text-[16px] text-white shadow-none outline-none transition duration-200 placeholder:text-slate-500 focus-visible:border-white/20 focus-visible:ring-1 focus-visible:ring-green-700/80 aria-invalid:border-red-400 aria-invalid:ring-1 aria-invalid:ring-red-400/40 md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 const emptyForm = {
   name: "",
@@ -128,7 +128,7 @@ export default function ContactForm() {
       noValidate
       aria-label="Kontaktni obrazec"
       aria-busy={loading}
-      className="relative rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur-xl light:border-slate-200 light:bg-white"
+      className="relative border-t border-white/[0.08] pt-8"
     >
       <div className="hidden" aria-hidden="true">
         <label htmlFor={`${formId}-website`}>Spletna stran</label>
@@ -146,7 +146,7 @@ export default function ContactForm() {
         <div
           id={`${formId}-summary`}
           role="alert"
-          className="mb-4 rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-[14px] text-red-300"
+          className="mb-4 rounded-[10px] border border-red-400/40 bg-red-500/10 px-4 py-3 text-[14px] text-red-300"
         >
           <p className="font-semibold">Obrazec vsebuje napake:</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
@@ -287,6 +287,7 @@ export default function ContactForm() {
             id={`${formId}-message`}
             required
             name="message"
+            placeholder="Sistem, število uporabnikov, rok."
             value={form.message}
             onChange={update("message")}
             aria-invalid={Boolean(errors.message)}
@@ -323,13 +324,13 @@ export default function ContactForm() {
                 return next;
               });
             }}
-            className="mt-1 h-5 w-5 shrink-0 rounded border-white/30 accent-green-500"
+            className="mt-1 h-5 w-5 shrink-0 rounded-[4px] border-white/30 accent-[#16a34a]"
           />
           <span>
             Soglašam z obdelavo osebnih podatkov skladno s{" "}
             <Link
               href="/#privacy"
-              className="font-semibold text-green-400 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+              className="font-medium text-slate-200 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
             >
               Politiko zasebnosti
             </Link>
@@ -348,7 +349,7 @@ export default function ContactForm() {
           type="submit"
           size="lg"
           disabled={loading || !consent}
-          className="h-11 min-h-11 w-full rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 text-[16px] font-semibold text-white shadow-lg shadow-green-600/30 transition duration-[250ms] hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-60 sm:w-auto"
+          className="h-11 min-h-11 w-full rounded-[10px] bg-[#16a34a] px-6 text-[16px] font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.32)] transition-[transform,background-color,box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[2px] hover:bg-[#15803d] hover:shadow-[0_10px_28px_rgba(22,163,74,0.22)] disabled:opacity-60 sm:w-auto"
         >
           {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
         </Button>

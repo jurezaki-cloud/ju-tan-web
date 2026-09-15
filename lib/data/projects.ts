@@ -3,7 +3,7 @@ import type { Project } from "@/lib/types";
 export const projectFilters = [
   "Vse",
   "AI",
-  "Web",
+  "Splet",
   "Avtomatizacija",
 ] as const;
 
@@ -19,63 +19,69 @@ export function projectMatchesFilter(
 
 export const projects: Project[] = [
   {
-    title: "JU-TAN Office",
+    title: "Poslovni informacijski sistem",
     category: "ERP • CRM",
     description:
-      "Poslovni informacijski sistem za stranke, dokumente in ekipe.",
-    result: "Manj ročnega vnosa in enoten pregled poslovanja.",
+      "Enoten pregled strank, dokumentov in ekipe v enem sistemu.",
+    result: "Manj podvojenega vnosa med orodji.",
     technologies: ["React", "TypeScript", "Python", "PostgreSQL"],
     image: "office",
     tags: ["Avtomatizacija"],
+    conceptual: true,
   },
   {
-    title: "JU-TAN AI Agent",
+    title: "AI agent za administracijo",
     category: "AI • Avtomatizacija",
     description:
-      "Pametni AI pomočnik, ki prevzame ponavljajoča poslovna opravila.",
-    result: "Do 70 % manj ponavljajočih nalog v podpori in administraciji.",
+      "Pomočnik, ki prevzame ponavljajoča opravila v podpori in administraciji.",
+    result: "Manj ročnega prepisovanja med sistemi.",
     technologies: ["OpenAI", "Python", "FastAPI", "Docker"],
     image: "ai-agent",
     tags: ["AI", "Avtomatizacija"],
+    conceptual: true,
   },
   {
-    title: "Spletni Portal",
+    title: "Spletni portal",
     category: "Spletna platforma",
     description:
-      "Hitra, odzivna spletna rešitev za predstavitev in povpraševanja.",
-    result: "Jasnejša pot do stranke in hitrejši prvi stik.",
+      "Hitra spletna rešitev za predstavitev ponudbe in povpraševanja.",
+    result: "Krajša pot od obiska do prvega stika.",
     technologies: ["Next.js", "React", "TypeScript", "Cloud"],
     image: "portal",
-    tags: ["Web"],
+    tags: ["Splet"],
+    conceptual: true,
   },
   {
-    title: "CRM Platform",
+    title: "CRM za prodajni tok",
     category: "Poslovna programska oprema",
     description:
-      "Sistem za upravljanje strank, priložnosti in komunikacije.",
-    result: "Pregled pipeline-a in manj izgubljenih priložnosti.",
+      "Upravljanje strank, priložnosti in komunikacije na enem mestu.",
+    result: "Pregleden pipeline brez izgubljenih zapisov v preglednicah.",
     technologies: ["React", "API", "PostgreSQL", "Cloud"],
     image: "crm",
-    tags: ["Avtomatizacija", "Web"],
+    tags: ["Avtomatizacija", "Splet"],
+    conceptual: true,
   },
   {
-    title: "Cloud Infrastructure",
+    title: "Oblačna infrastruktura",
     category: "Infrastruktura",
     description:
-      "Zanesljiva oblačna infrastruktura z nadzorom in varnostnimi kopijami.",
-    result: "Stabilnejše delovanje in predvidljivo vzdrževanje.",
+      "Namestitev, nadzor in varnostne kopije za produkcijsko okolje.",
+    result: "Predvidljivo vzdrževanje in obnovitev.",
     technologies: ["Docker", "Linux", "Cloud", "Backup"],
     image: "infra",
-    tags: ["Web"],
+    tags: ["Splet"],
+    conceptual: true,
   },
   {
-    title: "Cyber Security",
+    title: "Nadzor dostopov",
     category: "Kibernetska varnost",
     description:
       "Zaščita podatkov, dostopov in poslovnih informacijskih sistemov.",
-    result: "Manjše tveganje vdora in nadzorovan dostop do sistemov.",
+    result: "Nadzorovan dostop in manjša izpostavljenost.",
     technologies: ["Firewall", "VPN", "Monitoring", "Security"],
     image: "security",
     tags: ["Avtomatizacija"],
+    conceptual: true,
   },
 ];

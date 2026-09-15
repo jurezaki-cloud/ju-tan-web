@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Bot, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import CoreMark from "@/components/common/CoreMark";
 
 type AgentButtonProps = {
   open: boolean;
@@ -11,24 +11,19 @@ type AgentButtonProps = {
 
 export default function AgentButton({ open, onToggle }: AgentButtonProps) {
   return (
-    <motion.div
-      animate={open ? { scale: 1 } : { scale: [1, 1.06, 1] }}
-      transition={
-        open
-          ? { duration: 0.2 }
-          : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }
-      }
+    <Button
+      type="button"
+      aria-expanded={open}
+      aria-controls="jutan-agent-window"
+      aria-label={open ? "Zapri vodič storitev" : "Odpri vodič storitev"}
+      onClick={onToggle}
+      className="h-12 w-12 rounded-[10px] border border-white/12 bg-[#0b1220] text-slate-100 shadow-[0_12px_28px_rgba(0,0,0,0.45)] hover:bg-[#111827] hover:text-white focus-visible:ring-green-700"
     >
-      <Button
-        type="button"
-        aria-expanded={open}
-        aria-controls="jutan-agent-window"
-        aria-label={open ? "Zapri JU-TAN AI" : "Odpri JU-TAN AI"}
-        onClick={onToggle}
-        className="h-14 w-14 rounded-full border-0 bg-[#16a34a] text-white shadow-xl shadow-[#16a34a]/40 hover:bg-[#15803d] focus-visible:ring-[#22c55e]"
-      >
-        {open ? <X className="h-6 w-6" aria-hidden /> : <Bot className="h-6 w-6" aria-hidden />}
-      </Button>
-    </motion.div>
+      {open ? (
+        <X className="h-5 w-5" aria-hidden />
+      ) : (
+        <CoreMark className="h-5 w-5 text-slate-200" />
+      )}
+    </Button>
   );
 }

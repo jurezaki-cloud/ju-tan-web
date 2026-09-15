@@ -10,7 +10,7 @@ export const defaultTitle =
   "JU-TAN | Umetna inteligenca, programska oprema in avtomatizacija";
 
 export const defaultDescription =
-  "JU-TAN razvija rešitve umetne inteligence, avtomatizacije, programske opreme, spletnih strani in IT infrastrukture za sodobna podjetja.";
+  "JU-TAN razvija programsko opremo po meri, avtomatizacije, spletne aplikacije in AI agente za podjetja v Sloveniji.";
 
 export const defaultKeywords = [
   "JU-TAN",

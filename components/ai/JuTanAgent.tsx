@@ -21,12 +21,10 @@ import {
   type AgentState,
 } from "./storage";
 
-const emptySubscribe = () => () => undefined;
-
 const AgentWindow = dynamic(() => import("./AgentWindow"), {
   loading: () => (
     <div
-      className="pointer-events-auto h-dvh w-full bg-[#050816]/88 md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-2xl"
+      className="pointer-events-auto h-dvh w-full bg-[#050816]/88 md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-[10px]"
       aria-hidden
     />
   ),
@@ -43,7 +41,6 @@ function readState(raw: string): AgentState {
 }
 
 export default function JuTanAgent() {
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const inputId = useId();
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -149,16 +146,6 @@ export default function JuTanAgent() {
     });
   };
 
-  if (!mounted) {
-    return (
-      <div
-        data-nosnippet="true"
-        className="pointer-events-none fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-[60] h-14 w-14 md:right-6 md:bottom-6"
-        aria-hidden
-      />
-    );
-  }
-
   return (
     <div
       data-nosnippet="true"
@@ -205,7 +192,7 @@ export default function JuTanAgent() {
             }}
           >
             <label className="sr-only" htmlFor={inputId}>
-              Vprašanje za JU-TAN AI
+              Vprašanje za vodič storitev
             </label>
             <div className="flex items-end gap-2">
               <Textarea
@@ -225,13 +212,13 @@ export default function JuTanAgent() {
                   }
                 }}
                 placeholder="Napišite sporočilo ..."
-                className="min-h-11 resize-none rounded-xl border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
+                className="min-h-11 resize-none rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
               />
               <Button
                 type="submit"
                 aria-label="Pošlji sporočilo"
                 disabled={typing || !input.trim()}
-                className="h-11 w-11 shrink-0 rounded-xl border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
+                className="h-11 w-11 shrink-0 rounded-[10px] border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
               >
                 <Send className="h-4 w-4" aria-hidden />
               </Button>

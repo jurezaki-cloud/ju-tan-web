@@ -1,6 +1,6 @@
 # JU-TAN
 
-Production marketing site for JU-TAN, a Slovenian AI studio: agents, process automation, custom software, and web applications.
+Production marketing site for JU-TAN, a Slovenian software engineering studio: custom software, process automation, web applications, and AI agents.
 
 Stack: Next.js App Router, React 19, TypeScript (strict), Tailwind CSS, Resend, Vercel.
 

@@ -1,2 +1,2 @@
 export const bookingNotice =
-  "Po oddaji povpraševanja vas bomo kontaktirali za dogovor termina.";
+  "Po oddaji povpraševanja vas kontaktiramo in uskladimo 20-minutni klic.";

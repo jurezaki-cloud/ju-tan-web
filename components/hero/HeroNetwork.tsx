@@ -1,15 +1,48 @@
 import { heroCopy } from "./copy";
 
-const RADIUS = 38;
-const CENTER = 50;
+function q(value: number) {
+  return (Math.round(value * 10000) / 10000).toFixed(4);
+}
 
-function nodePoint(index: number, total: number) {
+const CENTER = 50;
+const OUTER = 38;
+const NODE_COUNT = heroCopy.network.nodes.length;
+const TICK_COUNT = 72;
+const CENTER_ATTR = q(CENTER);
+
+type Point = { x: string; y: string; left: string; top: string };
+
+function pointAt(index: number, total: number, radius: number): Point {
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
+  const x = CENTER + Math.cos(angle) * radius;
+  const y = CENTER + Math.sin(angle) * radius;
+  const outward = 1.12;
   return {
-    x: CENTER + Math.cos(angle) * RADIUS,
-    y: CENTER + Math.sin(angle) * RADIUS,
+    x: q(x),
+    y: q(y),
+    left: q(CENTER + (x - CENTER) * outward),
+    top: q(CENTER + (y - CENTER) * outward),
   };
 }
+
+const POINTS: Point[] = Array.from({ length: NODE_COUNT }, (_, index) =>
+  pointAt(index, NODE_COUNT, OUTER),
+);
+
+const MARKS = Array.from({ length: TICK_COUNT }, (_, index) => {
+  const angle = (index / TICK_COUNT) * Math.PI * 2 - Math.PI / 2;
+  const major = index % 6 === 0;
+  const inner = OUTER + (major ? 0.35 : 0.8);
+  const outer = OUTER + (major ? 3.2 : 1.7);
+  return {
+    key: index,
+    major,
+    x1: q(CENTER + Math.cos(angle) * inner),
+    y1: q(CENTER + Math.sin(angle) * inner),
+    x2: q(CENTER + Math.cos(angle) * outer),
+    y2: q(CENTER + Math.sin(angle) * outer),
+  };
+});
 
 type HeroNetworkProps = {
   motion: boolean;
@@ -17,65 +50,151 @@ type HeroNetworkProps = {
 
 export default function HeroNetwork({ motion }: HeroNetworkProps) {
   const nodes = heroCopy.network.nodes;
-  const points = nodes.map((_, index) => nodePoint(index, nodes.length));
+  const filament = POINTS[0];
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full text-white light:text-slate-800">
       <svg
         className="absolute inset-0 h-full w-full"
         viewBox="0 0 100 100"
         aria-hidden
       >
         <defs>
-          <radialGradient id="hero-core-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(34,197,94,0.35)" />
-            <stop offset="70%" stopColor="rgba(16,185,129,0.06)" />
-            <stop offset="100%" stopColor="rgba(34,197,94,0)" />
+          <radialGradient id="hero-core-glow" cx="50%" cy="48%" r="52%">
+            <stop offset="0%" stopColor="rgba(22,163,74,0.28)" />
+            <stop offset="38%" stopColor="rgba(22,163,74,0.08)" />
+            <stop offset="100%" stopColor="rgba(22,163,74,0)" />
           </radialGradient>
-          <filter id="hero-line-glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="0.6" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
 
-        <circle cx={CENTER} cy={CENTER} r="28" fill="url(#hero-core-glow)" />
+        <circle cx={CENTER_ATTR} cy={CENTER_ATTR} r="24" fill="url(#hero-core-glow)" />
 
-        {points.map((point, index) => (
-          <line
-            key={nodes[index]}
-            x1={CENTER}
-            y1={CENTER}
-            x2={point.x}
-            y2={point.y}
-            stroke="rgba(74,222,128,0.42)"
-            strokeWidth="0.45"
-            filter="url(#hero-line-glow)"
-            className={motion ? "hero-link-pulse" : undefined}
-            style={motion ? { animationDelay: `${index * 0.35}s` } : undefined}
+        <line
+          x1={CENTER_ATTR}
+          y1="6"
+          x2={CENTER_ATTR}
+          y2="94"
+          stroke="currentColor"
+          strokeWidth="0.18"
+          opacity="0.12"
+        />
+        <line
+          x1="6"
+          y1={CENTER_ATTR}
+          x2="94"
+          y2={CENTER_ATTR}
+          stroke="currentColor"
+          strokeWidth="0.18"
+          opacity="0.12"
+        />
+
+        <circle
+          cx={CENTER_ATTR}
+          cy={CENTER_ATTR}
+          r="44.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.18"
+          strokeDasharray="0.7 1.5"
+          opacity="0.22"
+        />
+
+        {(["14", "26", "38"] as const).map((radius) => (
+          <circle
+            key={radius}
+            cx={CENTER_ATTR}
+            cy={CENTER_ATTR}
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.28"
+            opacity="0.55"
           />
         ))}
+
+        {MARKS.map((tick) => (
+          <line
+            key={tick.key}
+            x1={tick.x1}
+            y1={tick.y1}
+            x2={tick.x2}
+            y2={tick.y2}
+            stroke="currentColor"
+            strokeWidth={tick.major ? "0.28" : "0.16"}
+            opacity={tick.major ? "0.38" : "0.16"}
+          />
+        ))}
+
+        {POINTS.map((point, index) => (
+          <line
+            key={`spoke-${nodes[index]}`}
+            x1={CENTER_ATTR}
+            y1={CENTER_ATTR}
+            x2={point.x}
+            y2={point.y}
+            stroke="currentColor"
+            strokeWidth="0.22"
+            opacity="0.22"
+            className={motion ? "hero-link-pulse" : undefined}
+            style={motion ? { animationDelay: `${index * 0.55}s` } : undefined}
+          />
+        ))}
+
+        {filament ? (
+          <line
+            x1={CENTER_ATTR}
+            y1={CENTER_ATTR}
+            x2={filament.x}
+            y2={filament.y}
+            stroke="#16a34a"
+            strokeWidth="0.38"
+            opacity="0.7"
+          />
+        ) : null}
+
+        {POINTS.map((point, index) => (
+          <circle
+            key={`node-${nodes[index]}`}
+            cx={point.x}
+            cy={point.y}
+            r="0.85"
+            fill="currentColor"
+            opacity="0.72"
+          />
+        ))}
+
+        <circle
+          cx={CENTER_ATTR}
+          cy={CENTER_ATTR}
+          r="6.4"
+          className="hero-core-void"
+          stroke="currentColor"
+          strokeWidth="0.32"
+          opacity="0.9"
+        />
+        <circle
+          cx={CENTER_ATTR}
+          cy={CENTER_ATTR}
+          r="1.45"
+          fill="#16a34a"
+          opacity="0.88"
+        />
       </svg>
 
-      <div className="absolute left-1/2 top-1/2 z-10 flex h-[5.6rem] w-[5.6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-green-400/40 bg-[#07111f]/90 text-[13px] font-semibold tracking-[0.18em] text-green-200 shadow-[0_0_36px_rgba(34,197,94,0.35)] backdrop-blur-xl sm:h-28 sm:w-28 sm:text-[15px]">
-        {heroCopy.network.center}
-      </div>
-
       {nodes.map((label, index) => {
-        const point = points[index];
+        const point = POINTS[index];
         if (!point) return null;
+
         return (
           <div
             key={label}
-            className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/12 bg-white/8 px-2.5 py-1.5 text-[10px] font-medium text-slate-200 shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:px-3 sm:text-[12px] ${
+            className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 text-[8px] font-medium uppercase tracking-[0.16em] text-slate-400 sm:text-[10px] light:text-slate-500 ${
               motion ? "hero-node-float" : ""
             }`}
             style={{
-              left: `${point.x}%`,
-              top: `${point.y}%`,
-              animationDelay: motion ? `${index * 0.28}s` : undefined,
+              left: `${point.left}%`,
+              top: `${point.top}%`,
+              animationDelay: motion ? `${index * 0.45}s` : undefined,
             }}
           >
             {label}
