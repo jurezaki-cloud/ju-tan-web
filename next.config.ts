@@ -1,5 +1,43 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
+const vercelScripts = [
+  "https://va.vercel-scripts.com",
+  "https://vitals.vercel-insights.com",
+] as const;
+
+const vercelConnect = [
+  "https://va.vercel-scripts.com",
+  "https://vitals.vercel-insights.com",
+  "https://*.vercel-insights.com",
+  "https://*.ingest.sentry.io",
+  "https://*.ingest.de.sentry.io",
+] as const;
+
+function contentSecurityPolicy(development: boolean) {
+  const scriptSrc = [
+    "'self'",
+    "'unsafe-inline'",
+    ...(development ? ["'unsafe-eval'"] as const : []),
+    ...vercelScripts,
+  ];
+
+  return [
+    "default-src 'self'",
+    `script-src ${scriptSrc.join(" ")}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    `connect-src 'self' ${vercelConnect.join(" ")}`,
+    "worker-src 'self' blob:",
+    "frame-ancestors 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+  ].join("; ");
+}
+
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -18,19 +56,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
-      "font-src 'self' data:",
-      "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.vercel-insights.com https://*.ingest.sentry.io https://*.ingest.de.sentry.io",
-      "worker-src 'self' blob:",
-      "frame-ancestors 'self'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "object-src 'none'",
-    ].join("; "),
+    value: contentSecurityPolicy(isDev),
   },
 ];
 

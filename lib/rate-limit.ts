@@ -33,8 +33,6 @@ export class MemoryRateLimitStore implements RateLimitStore {
   }
 }
 
-// TODO: Redis/Upstash adapter — implement RateLimitStore when RATE_LIMIT_URL is set. Do not instantiate a remote client without configuration.
-
 function createStore(): RateLimitStore {
   return new MemoryRateLimitStore();
 }

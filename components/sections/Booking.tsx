@@ -1,5 +1,6 @@
 import SectionTitle from "@/components/common/SectionTitle";
 import BookingWizard from "@/components/booking/BookingWizard";
+import { bookingNotice } from "@/lib/data/booking";
 
 export default function Booking() {
   return (
@@ -8,7 +9,7 @@ export default function Booking() {
         <SectionTitle
           badge="Termin"
           title="Dogovorite se za posvet"
-          description="Po oddaji povpraševanja vas bomo kontaktirali za dogovor termina."
+          description={bookingNotice}
         />
         <BookingWizard />
       </div>

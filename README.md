@@ -24,7 +24,7 @@ Required for contact mail: `RESEND_API_KEY` and `EMAIL_FROM` (or `FROM_EMAIL`). 
 
 ```bash
 npm run lint
-npx tsc --noEmit
+npm run typecheck
 npm run build
 ```
 

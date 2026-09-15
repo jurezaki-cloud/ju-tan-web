@@ -10,8 +10,9 @@ import {
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
 import SectionCta from "@/components/common/SectionCta";
+import type { Technology } from "@/lib/types";
 
-const technologies = [
+const technologies: readonly Technology[] = [
   {
     icon: Code2,
     title: "Frontend",
@@ -42,7 +43,7 @@ const technologies = [
     title: "DevOps",
     text: "CI/CD • monitoring • varnostne kopije",
   },
-] as const;
+];
 
 export default function Technologies() {
   return (
