@@ -1,4 +1,3 @@
-import AuroraBackground from "@/components/background/AuroraBackground";
 import HeroBackground from "./HeroBackground";
 import HeroCanvas from "./HeroCanvas";
 import HeroContent from "./HeroContent";
@@ -10,21 +9,20 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[88dvh] overflow-hidden pt-[calc(5rem+0.5rem)] pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:pt-[calc(5rem+1.5rem)]"
+      className="relative min-h-[88dvh] overflow-hidden pt-[calc(5rem+0.5rem)] pb-[max(4.5rem,calc(env(safe-area-inset-bottom,0px)+3.5rem))] lg:min-h-[92dvh] lg:pt-[calc(5rem+2rem)] lg:pb-16"
     >
-      <AuroraBackground />
       <HeroCanvas />
       <HeroBackground />
 
-      <div className="container relative z-10 max-w-6xl overflow-x-hidden">
-        <div className="grid items-center gap-6 py-4 sm:gap-8 sm:py-6 lg:grid-cols-2 lg:gap-10 lg:py-8">
-          <div className="relative order-1 lg:order-2">
-            <HeroStage />
-          </div>
-
-          <div className="order-2 min-w-0 lg:order-1">
+      <div className="container relative z-10 max-w-6xl overflow-x-hidden lg:max-w-7xl">
+        <div className="grid items-center gap-8 py-6 sm:gap-10 sm:py-8 lg:grid-cols-2 lg:gap-16 lg:py-12">
+          <div className="min-w-0">
             <HeroContent />
             <HeroButtons />
+          </div>
+
+          <div className="relative">
+            <HeroStage />
           </div>
         </div>
       </div>

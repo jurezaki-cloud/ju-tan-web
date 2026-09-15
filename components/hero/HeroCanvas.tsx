@@ -9,7 +9,10 @@ const Canvas = dynamic(() => import("@/components/background/AINetwork"), {
 
 export default function HeroCanvas() {
   return (
-    <div className="pointer-events-none absolute inset-0" aria-hidden>
+    <div
+      className="pointer-events-none absolute inset-0 opacity-35"
+      aria-hidden
+    >
       <Canvas />
     </div>
   );

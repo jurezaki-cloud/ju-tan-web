@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 import { lockBodyScroll } from "@/lib/lock-body-scroll";
 import { getMessages } from "@/lib/i18n/messages";
 import { getHeaderNavigation } from "@/lib/navigation";
@@ -38,11 +39,10 @@ function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full pt-[env(safe-area-inset-top,0px)] transition-[background-color,border-color,backdrop-filter] duration-200 ease-out ${
-        scrolled || menuOpen
-          ? "border-b border-white/10 bg-[rgba(5,8,22,0.75)] backdrop-blur-xl light:border-slate-200 light:bg-white/90"
-          : "border-b border-transparent bg-transparent"
-      }`}
+      className={cn(
+        "header-shell sticky top-0 w-full pt-[env(safe-area-inset-top,0px)]",
+        (scrolled || menuOpen) && "header-shell-scrolled",
+      )}
     >
       <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-between gap-3 px-4 md:px-6">
         <HeaderLogo />

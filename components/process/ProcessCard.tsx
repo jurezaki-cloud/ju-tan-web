@@ -14,7 +14,7 @@ export default function ProcessCard({
   icon: Icon,
 }: Props) {
   return (
-    <div className="flex h-full flex-col rounded-[1.5rem] border border-white/10 bg-white/5 p-3 shadow-card backdrop-blur-xl transition-all duration-[250ms] hover:-translate-y-1 hover:border-green-400/40 hover:shadow-card-hover">
+    <div className="surface-card flex h-full flex-col p-3 transition-all duration-[250ms] hover:-translate-y-1 hover:border-green-400/40 hover:shadow-card-hover">
       <div className="mb-1 flex items-center justify-between gap-2">
         <div className="text-lg font-black leading-none text-green-500">
           {step}

@@ -15,7 +15,7 @@ function DesktopNavigation({
   ariaLabel,
 }: DesktopNavigationProps) {
   return (
-    <nav className="hidden items-center gap-8 lg:flex" aria-label={ariaLabel}>
+    <nav className="hidden min-w-0 items-center justify-center gap-6 xl:gap-8 lg:flex" aria-label={ariaLabel}>
       {items.map((item) => {
         const active = activeSection === item.sectionId;
 

@@ -20,7 +20,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/design": ["./src/design/index.ts"],
+      "@/design/*": ["./src/design/*"]
     }
   },
   "include": [

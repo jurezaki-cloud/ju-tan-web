@@ -405,6 +405,71 @@ section {
   animation: hero-core-breathe 5.2s ease-in-out infinite;
 }
 
+.heading-display {
+  font-size: clamp(1.75rem, 5vw, 2.85rem);
+}
+
+.header-shell {
+  z-index: 50;
+  border-bottom: 1px solid transparent;
+  background: rgba(5, 8, 22, 0.55);
+  backdrop-filter: blur(20px);
+  transition:
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    backdrop-filter 200ms ease-out;
+}
+
+.header-shell-scrolled {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: rgba(5, 8, 22, 0.86);
+}
+
+html.light .header-shell {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+html.light .header-shell-scrolled {
+  border-bottom-color: rgb(226 232 240);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+@keyframes hero-node-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-5px);
+  }
+}
+
+.hero-node-float {
+  animation: hero-node-float 5.8s ease-in-out infinite;
+}
+
+@keyframes hero-link-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.hero-link-pulse {
+  animation: hero-link-pulse 4.6s ease-in-out infinite;
+}
+
+.surface-card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 22%);
+  backdrop-filter: blur(18px);
+}
+
 @keyframes hero-card-enter {
   from {
     opacity: 0;

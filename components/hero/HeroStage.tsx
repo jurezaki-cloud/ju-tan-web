@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import dynamic from "next/dynamic";
-import AICoreFallback, { AnalyticsCards } from "./AICoreFallback";
-
-const AICoreCanvas = dynamic(() => import("./AICoreCanvas"), {
-  ssr: false,
-});
+import HeroNetwork from "./HeroNetwork";
 
 function subscribeMotion(onStoreChange: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -17,7 +12,6 @@ function subscribeMotion(onStoreChange: () => void) {
 export default function HeroStage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
-  const bloomRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useSyncExternalStore(
     subscribeMotion,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -41,7 +35,8 @@ export default function HeroStage() {
       currentY += (targetY - currentY) * 0.08;
       tilt.style.transform = `rotateX(${currentY.toFixed(3)}deg) rotateY(${currentX.toFixed(3)}deg)`;
       const settled =
-        Math.abs(targetX - currentX) < 0.02 && Math.abs(targetY - currentY) < 0.02;
+        Math.abs(targetX - currentX) < 0.02 &&
+        Math.abs(targetY - currentY) < 0.02;
       frame = settled ? 0 : requestAnimationFrame(tick);
     };
 
@@ -53,8 +48,8 @@ export default function HeroStage() {
       const rect = stage.getBoundingClientRect();
       const nx = (event.clientX - rect.left) / rect.width - 0.5;
       const ny = (event.clientY - rect.top) / rect.height - 0.5;
-      targetX = Math.max(-0.5, Math.min(0.5, nx)) * 7;
-      targetY = Math.max(-0.5, Math.min(0.5, ny)) * -5;
+      targetX = Math.max(-0.5, Math.min(0.5, nx)) * 6;
+      targetY = Math.max(-0.5, Math.min(0.5, ny)) * -4;
       kick();
     };
 
@@ -75,45 +70,19 @@ export default function HeroStage() {
     };
   }, [reduceMotion]);
 
-  useEffect(() => {
-    const stage = stageRef.current;
-    const bloom = bloomRef.current;
-    if (!stage || !bloom || reduceMotion) return;
-
-    let clearBurst = 0;
-    const onBurst = () => {
-      bloom.classList.add("hero-core-burst");
-      window.clearTimeout(clearBurst);
-      clearBurst = window.setTimeout(() => {
-        bloom.classList.remove("hero-core-burst");
-      }, 900);
-    };
-
-    stage.addEventListener("aicore:burst", onBurst);
-    return () => {
-      window.clearTimeout(clearBurst);
-      stage.removeEventListener("aicore:burst", onBurst);
-    };
-  }, [reduceMotion]);
-
   return (
     <div
       ref={stageRef}
-      className="group relative mx-auto aspect-square w-full max-w-[min(420px,100%)] overflow-hidden [perspective:900px] sm:overflow-visible"
+      className="relative mx-auto aspect-square w-full max-w-[min(380px,100%)] overflow-hidden [perspective:900px] sm:max-w-[min(460px,100%)] sm:overflow-visible lg:max-w-[520px]"
       aria-hidden
     >
+      <div
+        className={`pointer-events-none absolute inset-[12%] rounded-full bg-green-500/20 blur-[80px] ${
+          reduceMotion ? "" : "hero-core-breathe"
+        }`}
+      />
       <div ref={tiltRef} className="relative h-full w-full [transform-style:preserve-3d]">
-        <div
-          ref={bloomRef}
-          className={`hero-core-bloom pointer-events-none absolute inset-[8%] rounded-full bg-green-500/25 blur-[70px] sm:blur-[90px] ${
-            reduceMotion ? "" : "hero-core-breathe"
-          }`}
-        />
-        <div className="group-has-[[data-ai-core]]:invisible">
-          <AICoreFallback />
-        </div>
-        {reduceMotion ? null : <AICoreCanvas />}
-        <AnalyticsCards floating={!reduceMotion} />
+        <HeroNetwork motion={!reduceMotion} />
       </div>
     </div>
   );

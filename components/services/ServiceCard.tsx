@@ -17,7 +17,7 @@ export default function ServiceCard({
   showCta = true,
 }: Props) {
   return (
-    <article className="group relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur-xl transition duration-[250ms] hover:-translate-y-2 hover:border-green-400/45 hover:bg-white/[0.07] hover:shadow-card-hover">
+    <article className="surface-card group relative flex h-full min-h-[260px] flex-col overflow-hidden p-6 transition duration-[250ms] hover:-translate-y-2 hover:border-green-400/45 hover:bg-white/[0.07] hover:shadow-card-hover">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent opacity-0 transition duration-[250ms] group-hover:opacity-100" />
       <div className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full bg-green-500/10 opacity-0 blur-3xl transition duration-[250ms] group-hover:opacity-100" />
 

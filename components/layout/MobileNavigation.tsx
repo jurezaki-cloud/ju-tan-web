@@ -84,7 +84,7 @@ export default function MobileNavigation({
             role="dialog"
             aria-modal="true"
             aria-label={copy.menuAria}
-            className="fixed inset-0 z-[60] flex h-dvh flex-col bg-[#050816] px-4 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] light:bg-white"
+            className="fixed inset-0 z-[60] flex h-dvh flex-col bg-[#050816]/96 px-4 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? undefined : { opacity: 0, y: 12 }}

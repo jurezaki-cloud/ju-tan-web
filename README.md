@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JU-TAN
 
-## Getting Started
+Production marketing site for JU-TAN, a Slovenian AI studio: agents, process automation, custom software, and web applications.
 
-First, run the development server:
+Stack: Next.js App Router, React 19, TypeScript (strict), Tailwind CSS, Resend, Vercel.
+
+## Product (now)
+
+- Slovenian B2B homepage with sticky header, hero, services, process, technologies, projects, about, booking CTA, contact, privacy
+- Contact API with Zod validation, GDPR consent, honeypot, rate limiting, HTML-escaped mail
+- Production boot asserts Resend config; preview and `next dev` do not (the contact route still returns 503 if mail is unset)
+- SEO: metadata, Open Graph, JSON-LD, sitemap, robots, canonical URLs
+- Design tokens in `src/design/`
+
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required for contact mail: `RESEND_API_KEY` and `EMAIL_FROM` (or `FROM_EMAIL`). See `.env.example`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture notes
 
-## Learn More
+- App routes live in `app/`. UI in `components/`. Shared logic in `lib/`.
+- Do not add product surfaces (CRM, admin, portal) until the marketing site is the lead engine and those products have a real backend.
+- UI copy is Slovenian-only.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel. Set `NEXT_PUBLIC_SITE_URL` to the production origin.

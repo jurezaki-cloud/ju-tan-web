@@ -10,6 +10,12 @@ export function getMailConfig(): { apiKey: string; from: string } | null {
   return { apiKey, from };
 }
 
+export function shouldAssertMailOnBoot(): boolean {
+  if (process.env.VERCEL_ENV === "preview") return false;
+  if (process.env.NODE_ENV !== "production") return false;
+  return true;
+}
+
 export function assertMailConfig(): { apiKey: string; from: string } {
   const config = getMailConfig();
 

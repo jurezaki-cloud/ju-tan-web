@@ -1,10 +1,10 @@
 import {
-  Cpu,
   Database,
   Cloud,
   ShieldCheck,
   Bot,
   Code2,
+  Server,
 } from "lucide-react";
 
 import SectionTitle from "@/components/common/SectionTitle";
@@ -13,36 +13,36 @@ import SectionCta from "@/components/common/SectionCta";
 
 const technologies = [
   {
+    icon: Code2,
+    title: "Frontend",
+    text: "Next.js • React • Tailwind",
+  },
+  {
+    icon: Server,
+    title: "Backend",
+    text: "Node.js • Python • API integracije",
+  },
+  {
     icon: Bot,
-    title: "Umetna inteligenca",
+    title: "AI",
     text: "OpenAI • LangChain • AI agenti",
   },
   {
-    icon: Code2,
-    title: "Razvoj",
-    text: "Next.js • React • Python • Node.js",
-  },
-  {
-    icon: Database,
-    title: "Podatkovne zbirke",
-    text: "PostgreSQL • MySQL • SQLite",
-  },
-  {
     icon: Cloud,
-    title: "Oblak",
+    title: "Cloud",
     text: "Docker • Linux • VPS • Cloudflare",
   },
   {
-    icon: ShieldCheck,
-    title: "Kibernetska varnost",
-    text: "Firewall • Backup • Monitoring",
+    icon: Database,
+    title: "Database",
+    text: "PostgreSQL • MySQL • SQLite",
   },
   {
-    icon: Cpu,
-    title: "Infrastruktura",
-    text: "Omrežja • strežniki • virtualizacija",
+    icon: ShieldCheck,
+    title: "DevOps",
+    text: "CI/CD • monitoring • varnostne kopije",
   },
-];
+] as const;
 
 export default function Technologies() {
   return (
@@ -63,14 +63,12 @@ export default function Technologies() {
 
             return (
               <FadeIn key={item.title} className="h-full">
-                <div className="flex h-full min-h-[200px] w-full flex-col rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur-xl transition duration-[250ms] hover:-translate-y-2 hover:scale-[1.02] hover:border-green-400/40 hover:shadow-card-hover">
+                <div className="surface-card flex h-full min-h-[200px] w-full flex-col p-6 transition duration-[250ms] hover:-translate-y-2 hover:border-green-400/40 hover:shadow-card-hover">
                   <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-green-500 to-emerald-400 text-black">
                     <Icon size={28} aria-hidden />
                   </div>
 
-                  <h3 className="heading-3 mb-1 text-white">
-                    {item.title}
-                  </h3>
+                  <h3 className="heading-3 mb-1 text-white">{item.title}</h3>
 
                   <p className="mt-auto pt-2 text-[16px] leading-[1.65] text-slate-400">
                     {item.text}

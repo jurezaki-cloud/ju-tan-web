@@ -29,7 +29,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       whileHover={hover}
       whileFocus={hover}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 shadow-card backdrop-blur-xl hover:border-green-400/50 hover:shadow-card-hover"
+      className="surface-card group flex h-full w-full flex-col overflow-hidden hover:border-green-400/50 hover:shadow-card-hover"
     >
       <div
         className={`relative aspect-[17/10] w-full shrink-0 overflow-hidden bg-gradient-to-br ${theme}`}
