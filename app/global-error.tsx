@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import CTAButton from "@/components/navbar/CTAButton";
+import { bodyClass, kickerClass } from "@/design";
+import { cn } from "@/lib/utils";
+import "./globals.css";
 
 export default function GlobalError({
   error,
@@ -24,22 +28,18 @@ export default function GlobalError({
           id="main"
           className="flex min-h-dvh flex-col items-center justify-center px-[max(1.5rem,env(safe-area-inset-left,0px))] pt-[env(safe-area-inset-top,0px)] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] text-center"
         >
-          <p className="text-[14px] font-medium uppercase tracking-[0.16em] text-[#16a34a]">
+          <p className={cn(kickerClass, "justify-center text-[#16a34a]")}>
             500
           </p>
-          <h1 className="mt-3 text-[36px] font-semibold tracking-[-0.03em] text-white">
+          <h1 className="heading-display mt-3.5 font-heading font-semibold text-white">
             Prišlo je do napake
           </h1>
-          <p className="mt-3 max-w-md text-slate-400">
+          <p className={cn(bodyClass, "mt-3.5 max-w-md")}>
             Aplikacije trenutno ni mogoče naložiti. Poskusite znova.
           </p>
-          <button
-            type="button"
-            onClick={reset}
-            className="mt-8 inline-flex min-h-11 items-center justify-center rounded-[10px] bg-[#16a34a] px-6 py-3 font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
-          >
+          <CTAButton type="button" className="mt-8" onClick={reset}>
             Poskusi znova
-          </button>
+          </CTAButton>
         </main>
       </body>
     </html>

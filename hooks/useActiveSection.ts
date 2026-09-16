@@ -39,6 +39,7 @@ export function useActiveSection(items: NavItem[]) {
     return () => observer.disconnect();
   }, [items, pathname]);
 
+  if (pathname === "/kontakt") return "contact";
   if (pathname !== "/") return null;
   return sectionId;
 }

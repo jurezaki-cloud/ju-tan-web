@@ -17,8 +17,8 @@ type FadeInProps = {
 export default function FadeIn({
   children,
   delay = 0,
-  duration: durationProp = duration.base,
-  y = 8,
+  duration: durationProp = duration.reveal,
+  y = 12,
   once = true,
   className,
 }: FadeInProps) {

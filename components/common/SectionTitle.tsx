@@ -1,4 +1,6 @@
 import CoreMark from "@/components/common/CoreMark";
+import { cn } from "@/lib/utils";
+import { kickerClass, bodyClass } from "@/design";
 
 type SectionTitleProps = {
   index?: string;
@@ -6,6 +8,11 @@ type SectionTitleProps = {
   title: string;
   description?: string;
   heading?: "h1" | "h2";
+  align?: "start" | "center";
+  className?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
+  showRule?: boolean;
 };
 
 export default function SectionTitle({
@@ -14,12 +21,30 @@ export default function SectionTitle({
   title,
   description,
   heading = "h2",
+  align = "start",
+  className,
+  titleClassName,
+  descriptionClassName,
+  showRule = true,
 }: SectionTitleProps) {
   const Heading = heading;
+  const centered = align === "center";
 
   return (
-    <div className="mb-9 max-w-2xl">
-      <p className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
+    <div
+      className={cn(
+        centered
+          ? "mx-auto mb-10 flex w-full max-w-3xl flex-col items-center text-center"
+          : "mb-10 max-w-2xl",
+        className,
+      )}
+    >
+      <p
+        className={cn(
+          kickerClass,
+          centered && "justify-center",
+        )}
+      >
         <CoreMark className="h-3.5 w-3.5 shrink-0 text-slate-400" />
         {index ? (
           <span className="tabular-nums text-green-600/80">{index}</span>
@@ -27,17 +52,31 @@ export default function SectionTitle({
         {badge}
       </p>
 
-      <Heading className="heading-display mt-3.5 mb-3 font-heading font-semibold leading-[1.14] tracking-[-0.038em] break-words text-white light:text-slate-900">
+      <Heading
+        className={cn(
+          "heading-display mt-3.5 font-heading font-semibold break-words text-white light:text-slate-900",
+          titleClassName,
+        )}
+      >
         {title}
       </Heading>
 
       {description ? (
-        <p className="max-w-[38rem] text-[16px] leading-[1.7] tracking-[-0.012em] text-slate-400 md:text-[17px]">
+        <p
+          className={cn(
+            bodyClass,
+            "mt-3.5 max-w-[40rem]",
+            centered && "w-full",
+            descriptionClassName,
+          )}
+        >
           {description}
         </p>
       ) : null}
 
-      <div className="plate-rule mt-6" aria-hidden />
+      {showRule ? (
+        <div className={cn("plate-rule mt-6", centered && "mx-auto")} aria-hidden />
+      ) : null}
     </div>
   );
 }

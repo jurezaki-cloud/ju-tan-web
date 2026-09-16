@@ -8,6 +8,8 @@ import type { NavItem, NavSectionId } from "@/types/navigation";
 import { getMessages } from "@/lib/i18n/messages";
 import HeaderCTA from "./HeaderCTA";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { colorTransition, duration, easeOut, focusRing, iconButtonClass } from "@/design";
+import { cn } from "@/lib/utils";
 
 type MobileNavigationProps = {
   open: boolean;
@@ -19,7 +21,7 @@ type MobileNavigationProps = {
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-const transition = { duration: 0.2, ease: "easeOut" as const };
+const transition = { duration: duration.hover, ease: easeOut };
 
 export default function MobileNavigation({
   open,
@@ -77,17 +79,20 @@ export default function MobileNavigation({
             role="dialog"
             aria-modal="true"
             aria-label={copy.menuAria}
-            className="fixed inset-0 z-[60] flex h-dvh flex-col bg-[#050816]/96 px-4 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: 12 }}
+            className="fixed inset-0 z-overlay flex h-dvh flex-col bg-[#050816]/96 px-4 pt-[max(4.75rem,calc(env(safe-area-inset-top,0px)+3.5rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
+            initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, x: 16 }}
             transition={transition}
           >
             <button
               ref={closeRef}
               type="button"
               aria-label={copy.closeMenu}
-              className="absolute right-[max(1rem,env(safe-area-inset-right,0px))] top-[max(1.25rem,env(safe-area-inset-top,0px))] inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-white transition-colors duration-200 ease-out hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 light:text-slate-900 light:hover:bg-slate-100"
+              className={cn(
+                iconButtonClass,
+                "absolute right-[max(1rem,env(safe-area-inset-right,0px))] top-[max(1.25rem,env(safe-area-inset-top,0px))] text-white hover:bg-white/10 light:text-slate-900 light:hover:bg-slate-100",
+              )}
               onClick={onClose}
             >
               <X className="h-5 w-5" aria-hidden />
@@ -95,7 +100,7 @@ export default function MobileNavigation({
 
             <nav
               aria-label={copy.navAria}
-              className="flex flex-1 flex-col items-center justify-center gap-2"
+              className="flex flex-1 flex-col items-center justify-center gap-4"
             >
               {items.map((item) => {
                 const active = activeSection === item.sectionId;
@@ -106,9 +111,13 @@ export default function MobileNavigation({
                     href={item.href}
                     onClick={onClose}
                     aria-current={active ? "page" : undefined}
-                    className={`inline-flex min-h-11 items-center text-xl font-medium tracking-[-0.03em] text-slate-200 transition-colors duration-200 ease-out hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 light:text-slate-800 ${
-                      active ? "text-white light:text-slate-900" : ""
-                    }`}
+                    className={cn(
+                      "relative inline-flex min-h-11 items-center text-[14px] font-medium tracking-[0.02em] text-slate-200 hover:text-white light:text-slate-800",
+                      colorTransition,
+                      focusRing,
+                      active ? "text-white after:opacity-100 light:text-slate-900" : "after:opacity-0",
+                      "after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:bg-[#16a34a] after:transition-opacity after:duration-hover after:ease-out hover:after:opacity-100",
+                    )}
                   >
                     {item.label}
                   </Link>

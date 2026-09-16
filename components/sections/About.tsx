@@ -1,34 +1,49 @@
-import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
-import { company } from "@/lib/data/company";
+import Section from "@/components/common/Section";
+import SectionTitle from "@/components/common/SectionTitle";
+import { bodyClass } from "@/design";
 
 export default function About() {
   return (
-    <section id="about" className="below-fold relative overflow-hidden section-y">
-      <div className="container relative overflow-x-hidden">
+    <Section
+      id="about"
+      belowFold
+      innerClassName="flex flex-col items-center overflow-x-hidden text-center"
+      decorate={
+        <div
+          className="about-ambient-glow pointer-events-none absolute left-1/2 top-[42%] h-[28rem] w-[min(42rem,92vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(22,163,74,0.28),transparent_68%)] blur-[64px]"
+          aria-hidden
+        />
+      }
+    >
+      <div className="relative w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[760px]">
         <FadeIn>
           <SectionTitle
+            align="center"
+            className="mb-0"
             index="05"
-            badge="Zakaj JU-TAN"
-            title="Majhna ekipa, produkcijski sistemi"
-            description={company.headline}
+            badge="Sodelovanje"
+            title="Kako delamo"
+            description="Partnerstvo od analize do vzdrževanja. Kakovost merimo z delujočim sistemom v produkciji, ne s predstavitvijo."
           />
         </FadeIn>
 
-        <FadeIn delay={0.08}>
-          <div className="max-w-2xl space-y-4 text-[16px] leading-[1.7] text-slate-400">
+        <div className={`mx-auto mt-8 max-w-[40rem] space-y-4 ${bodyClass}`}>
+          <FadeIn delay={0.08}>
             <p>
-              Delamo s slovenskimi podjetji, ki potrebujejo programsko opremo
-              po meri — ne predlogo in ne neskončen workshop. Prvi stik je
-              kratek klic, nato pisni obseg.
+              Delamo kot dolgoročni partner: obseg je pisen, odločitve so
+              zabeležene, koda ostane pri vas. Po uvedbi sledijo nadgradnje,
+              ko se procesi v podjetju spremenijo.
             </p>
+          </FadeIn>
+          <FadeIn delay={0.16}>
             <p>
-              Primeri v razdelku Reference so konceptualni, dokler stranka ne
-              dovoli javne navedbe.
+              Sistemi so zastavljeni modularno, da jih je mogoče širiti. Primeri
+              v razdelku Reference so tipi projektov, ne javne navedbe strank.
             </p>
-          </div>
-        </FadeIn>
+          </FadeIn>
+        </div>
       </div>
-    </section>
+    </Section>
   );
 }

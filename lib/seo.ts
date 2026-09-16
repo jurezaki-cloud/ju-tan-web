@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
+import { services } from "@/lib/data/services";
+import { brandAssets } from "@/brand/theme";
 
 export function absoluteUrl(path = "/") {
   return new URL(path, siteConfig.url).toString();
@@ -32,7 +34,7 @@ export const openGraph = {
   description: defaultDescription,
   images: [
     {
-      url: "/og-image.jpg",
+      url: brandAssets.og,
       width: 1200,
       height: 630,
       alt: `${company.name} — umetna inteligenca in razvoj programske opreme`,
@@ -44,7 +46,7 @@ export const twitter = {
   card: "summary_large_image" as const,
   title: defaultTitle,
   description: defaultDescription,
-  images: ["/og-image.jpg"],
+  images: [brandAssets.twitter],
   ...(process.env.NEXT_PUBLIC_TWITTER_SITE
     ? { site: process.env.NEXT_PUBLIC_TWITTER_SITE }
     : {}),
@@ -69,7 +71,10 @@ export function createPageMetadata({
   return {
     title: title ?? { absolute: defaultTitle },
     description: pageDescription,
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: { sl: url, "x-default": url },
+    },
     openGraph: {
       ...openGraph,
       url,
@@ -112,7 +117,18 @@ export function jsonLdGraph() {
   const websiteId = `${url}/#website`;
   const webpageId = `${url}/#webpage`;
   const professionalId = `${url}/#professional`;
-  const logo = absoluteUrl("/logo/ju-tan-studio.png");
+  const faqId = `${url}/#faq`;
+  const logo = absoluteUrl(brandAssets.logoPng);
+  const postalParts = company.contact.address.postal.split(" ");
+  const postalCode = postalParts[0] ?? company.contact.address.postal;
+  const addressLocality = postalParts.slice(1).join(" ") || company.contact.address.postal;
+  const postalAddress = {
+    "@type": "PostalAddress",
+    streetAddress: company.contact.address.street,
+    postalCode,
+    addressLocality,
+    addressCountry: "SI",
+  };
 
   return {
     "@context": "https://schema.org",
@@ -140,7 +156,8 @@ export function jsonLdGraph() {
           },
         ],
         logo,
-        image: absoluteUrl("/og-image.jpg"),
+        image: absoluteUrl(brandAssets.og),
+        address: postalAddress,
       },
       {
         "@type": "WebSite",
@@ -164,15 +181,16 @@ export function jsonLdGraph() {
       },
       breadcrumbJsonLd([{ name: "Domov", path: "/" }]),
       {
-        "@type": "ProfessionalService",
+        "@type": ["ProfessionalService", "LocalBusiness"],
         "@id": professionalId,
         name: company.name,
         url,
         email: company.contact.email,
         telephone: [company.contact.phone, company.contact.phoneSecondary],
         description: company.description,
-        image: absoluteUrl("/og-image.jpg"),
+        image: absoluteUrl(brandAssets.og),
         logo,
+        address: postalAddress,
         areaServed: {
           "@type": "Country",
           name: "Slovenia",
@@ -190,6 +208,30 @@ export function jsonLdGraph() {
           closes: "16:00",
         },
         parentOrganization: { "@id": organizationId },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Storitve",
+          itemListElement: services.map((service) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: service.title,
+              description: service.description,
+            },
+          })),
+        },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": faqId,
+        mainEntity: services.map((service) => ({
+          "@type": "Question",
+          name: service.title,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: service.description,
+          },
+        })),
       },
     ],
   };

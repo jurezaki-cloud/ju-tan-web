@@ -1,19 +1,17 @@
-"use client";
-
-import CTAButton from "@/components/navbar/CTAButton";
+import CtaLink from "@/components/navbar/CtaLink";
+import { bodyClass } from "@/design";
+import { cn } from "@/lib/utils";
 
 export default function BookingWizard() {
   return (
-    <div className="max-w-xl border-t border-white/[0.08] pt-8">
-      <p className="text-[16px] leading-[1.7] text-slate-400 light:text-slate-600">
+    <div className="flex flex-col items-center text-center">
+      <p className={cn(bodyClass, "max-w-[40rem]")}>
         Na spletu ni koledarja. Oddate povpraševanje, termin uskladimo po
         e-pošti ali telefonu.
       </p>
-      <div className="mt-6">
-        <CTAButton href="/#contact" aria-label="Rezervirajte termin">
-          Rezerviraj termin
-        </CTAButton>
-      </div>
+      <CtaLink href="/kontakt" aria-label="Rezervirajte termin" className="mt-8">
+        Rezerviraj termin
+      </CtaLink>
     </div>
   );
 }

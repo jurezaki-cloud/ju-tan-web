@@ -6,7 +6,7 @@
   },
   "header": {
     "brand": "JU-TAN",
-    "logoAria": "JU-TAN — domov",
+    "logoAria": "JU-TAN domov",
     "logoAlt": "Logotip JU-TAN",
     "navAria": "Glavna navigacija",
     "menuAria": "Meni",
@@ -23,5 +23,12 @@
       "references": "Reference",
       "contact": "Kontakt"
     }
+  },
+  "cookies": {
+    "title": "Piškotki",
+    "message": "Za merjenje obiska uporabljamo analitična orodja gostitelja. Podrobnosti so v Politiki piškotkov.",
+    "accept": "Sprejmem",
+    "necessary": "Samo nujno",
+    "policy": "Politika piškotkov"
   }
 }

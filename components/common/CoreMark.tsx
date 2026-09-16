@@ -7,7 +7,7 @@ export default function CoreMark({ className = "h-3.5 w-3.5" }: CoreMarkProps) {
   return (
     <svg
       viewBox="0 0 24 24"
-      className={className}
+      className={`block ${className}`}
       aria-hidden
       fill="none"
     >

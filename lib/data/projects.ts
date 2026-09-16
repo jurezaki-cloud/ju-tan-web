@@ -1,10 +1,14 @@
 import type { Project } from "@/lib/types";
+import { Bot, Cable, Cloud, Database, Globe, Users } from "lucide-react";
 
 export const projectFilters = [
   "Vse",
+  "CRM",
+  "ERP",
   "AI",
-  "Splet",
-  "Avtomatizacija",
+  "Portal",
+  "SaaS",
+  "Integracija",
 ] as const;
 
 export type ProjectFilter = (typeof projectFilters)[number];
@@ -14,74 +18,80 @@ export function projectMatchesFilter(
   filter: ProjectFilter,
 ): boolean {
   if (filter === "Vse") return true;
-  return project.tags.includes(filter);
+  return project.tags.some((tag) => tag === filter);
 }
 
 export const projects: Project[] = [
   {
-    title: "Poslovni informacijski sistem",
-    category: "ERP • CRM",
+    title: "Prodajni tok in stiki",
+    category: "CRM",
     description:
-      "Enoten pregled strank, dokumentov in ekipe v enem sistemu.",
-    result: "Manj podvojenega vnosa med orodji.",
-    technologies: ["React", "TypeScript", "Python", "PostgreSQL"],
-    image: "office",
-    tags: ["Avtomatizacija"],
-    conceptual: true,
-  },
-  {
-    title: "AI agent za administracijo",
-    category: "AI • Avtomatizacija",
-    description:
-      "Pomočnik, ki prevzame ponavljajoča opravila v podpori in administraciji.",
-    result: "Manj ročnega prepisovanja med sistemi.",
-    technologies: ["OpenAI", "Python", "FastAPI", "Docker"],
-    image: "ai-agent",
-    tags: ["AI", "Avtomatizacija"],
-    conceptual: true,
-  },
-  {
-    title: "Spletni portal",
-    category: "Spletna platforma",
-    description:
-      "Hitra spletna rešitev za predstavitev ponudbe in povpraševanja.",
-    result: "Krajša pot od obiska do prvega stika.",
-    technologies: ["Next.js", "React", "TypeScript", "Cloud"],
-    image: "portal",
-    tags: ["Splet"],
-    conceptual: true,
-  },
-  {
-    title: "CRM za prodajni tok",
-    category: "Poslovna programska oprema",
-    description:
-      "Upravljanje strank, priložnosti in komunikacije na enem mestu.",
-    result: "Pregleden pipeline brez izgubljenih zapisov v preglednicah.",
-    technologies: ["React", "API", "PostgreSQL", "Cloud"],
+      "Stranke, priložnosti in komunikacija v enem zapisu namesto po pošti in preglednicah.",
+    result: "Pregled pipelinea in manj izgubljenih zapisov.",
+    technologies: ["React", "API", "PostgreSQL"],
     image: "crm",
-    tags: ["Avtomatizacija", "Splet"],
+    icon: Users,
+    tags: ["CRM"],
     conceptual: true,
   },
   {
-    title: "Oblačna infrastruktura",
-    category: "Infrastruktura",
+    title: "Dokumenti in interni procesi",
+    category: "ERP",
     description:
-      "Namestitev, nadzor in varnostne kopije za produkcijsko okolje.",
-    result: "Predvidljivo vzdrževanje in obnovitev.",
-    technologies: ["Docker", "Linux", "Cloud", "Backup"],
+      "Zaloga, dokumenti in ekipa v istem viru podatkov.",
+    result: "Enkratni vnos namesto usklajevanja med orodji.",
+    technologies: ["React", "TypeScript", "PostgreSQL"],
+    image: "office",
+    icon: Database,
+    tags: ["ERP"],
+    conceptual: true,
+  },
+  {
+    title: "Agent za administracijo",
+    category: "AI",
+    description:
+      "Osnutki in prenosi podatkov iz obstoječih sistemov, kjer so opravila ponavljajoča.",
+    result: "Manj ročnega prepisovanja med orodji.",
+    technologies: ["Python", "API", "Docker"],
+    image: "ai-agent",
+    icon: Bot,
+    tags: ["AI"],
+    conceptual: true,
+  },
+  {
+    title: "Dostop strank in partnerjev",
+    category: "Portal",
+    description:
+      "Prijava, vloge in status zahtevkov, povezan na notranje sisteme.",
+    result: "Krajša pot od zahteve do obdelave.",
+    technologies: ["Next.js", "TypeScript", "Cloud"],
+    image: "portal",
+    icon: Globe,
+    tags: ["Portal"],
+    conceptual: true,
+  },
+  {
+    title: "Večnajemniški izdelek",
+    category: "SaaS",
+    description:
+      "Računi, vloge in ločeni podatki za več strank na istem jedru.",
+    result: "Eno jedro kode, ločeni računi.",
+    technologies: ["React", "API", "PostgreSQL"],
     image: "infra",
-    tags: ["Splet"],
+    icon: Cloud,
+    tags: ["SaaS"],
     conceptual: true,
   },
   {
-    title: "Nadzor dostopov",
-    category: "Kibernetska varnost",
+    title: "Povezava obstoječih sistemov",
+    category: "Integracija",
     description:
-      "Zaščita podatkov, dostopov in poslovnih informacijskih sistemov.",
-    result: "Nadzorovan dostop in manjša izpostavljenost.",
-    technologies: ["Firewall", "VPN", "Monitoring", "Security"],
+      "Sinhronizacija med CRM, ERP in računovodstvom prek stabilnih vmesnikov.",
+    result: "Ažurni podatki brez dvojnega vnosa.",
+    technologies: ["API", "Python", "Cloud"],
     image: "security",
-    tags: ["Avtomatizacija"],
+    icon: Cable,
+    tags: ["Integracija"],
     conceptual: true,
   },
 ];

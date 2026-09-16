@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import CTAButton from "@/components/navbar/CTAButton";
 import AgentButton from "./AgentButton";
 import ChatMessage from "./ChatMessage";
 import LeadForm, { formatLeadSummary, type LeadPayload } from "./LeadForm";
@@ -24,7 +24,7 @@ import {
 const AgentWindow = dynamic(() => import("./AgentWindow"), {
   loading: () => (
     <div
-      className="pointer-events-auto h-dvh w-full bg-[#050816]/88 md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-[10px]"
+      className="pointer-events-auto h-dvh w-full bg-[#050816]/88 md:h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-lg"
       aria-hidden
     />
   ),
@@ -149,7 +149,7 @@ export default function JuTanAgent() {
   return (
     <div
       data-nosnippet="true"
-      className={`pointer-events-none fixed z-[60] ${
+      className={`pointer-events-none fixed z-overlay ${
         open
           ? "inset-0 md:inset-auto md:right-6 md:bottom-6"
           : "right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] md:right-6 md:bottom-6"
@@ -212,16 +212,17 @@ export default function JuTanAgent() {
                   }
                 }}
                 placeholder="Napišite sporočilo ..."
-                className="min-h-11 resize-none rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
+                className="min-h-11 resize-none rounded-lg border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
               />
-              <Button
+              <CTAButton
                 type="submit"
                 aria-label="Pošlji sporočilo"
                 disabled={typing || !input.trim()}
-                className="h-11 w-11 shrink-0 rounded-[10px] border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
+                size="compact"
+                className="h-11 w-11 shrink-0 px-0"
               >
                 <Send className="h-4 w-4" aria-hidden />
-              </Button>
+              </CTAButton>
             </div>
           </form>
         </AgentWindow>

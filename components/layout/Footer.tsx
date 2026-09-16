@@ -1,123 +1,74 @@
 import Link from "next/link";
-import Image from "next/image";
-import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
-import { services } from "@/lib/data/services";
-import { FadeIn } from "@/components/animations";
-import CTAButton from "@/components/navbar/CTAButton";
+import FooterColumns from "./FooterColumns";
+import BrandLogo from "@/components/common/BrandLogo";
+import { brandName } from "@/brand/theme";
+import { cn } from "@/lib/utils";
+import { colorTransition, focusRing } from "@/design";
 
-const companyLinks = [
-  { label: "Domov", href: "/" },
-  { label: "Rešitve", href: "/#services" },
-  { label: "Proces", href: "/#process" },
-  { label: "Reference", href: "/#projects" },
-  { label: "Kontakt", href: "/#contact" },
-  { label: "Politika zasebnosti", href: "/#privacy" },
-];
+const legalLinkClass = cn(
+  "rounded-lg text-slate-300 hover:text-white light:text-slate-700 light:hover:text-slate-900",
+  colorTransition,
+  focusRing,
+);
 
-const linkClass =
-  "inline-flex min-h-11 items-center rounded-[10px] py-1 text-slate-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600";
+const legalLinks = [
+  { href: "/politika-zasebnosti", label: "Privacy" },
+  { href: "/politika-piskotkov", label: "Cookies" },
+] as const;
 
 export default function Footer() {
+  const socialLinks = [
+    siteConfig.github
+      ? { href: siteConfig.github, label: "GitHub", external: true }
+      : null,
+    siteConfig.linkedin
+      ? { href: siteConfig.linkedin, label: "LinkedIn", external: true }
+      : null,
+  ].filter((item): item is { href: string; label: string; external: true } =>
+    Boolean(item),
+  );
+
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#050816]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#050816] light:border-slate-200 light:bg-slate-50">
+      <div className="container py-12 md:py-14">
+        <FooterColumns />
+      </div>
 
-      <FadeIn>
-        <div className="container grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <Image
-              src="/logo/ju-tan-studio.png"
-              alt="Logotip JU-TAN"
-              width={220}
-              height={70}
-              sizes="180px"
-              loading="lazy"
-              decoding="async"
-              className="h-12 w-auto"
-            />
-
-            <p className="mt-4 text-sm leading-[1.7] text-slate-400">
-              {company.description}
-            </p>
-
-            <div className="mt-5">
-              <CTAButton size="compact" aria-label="Pošlji povpraševanje">
-                Pošlji povpraševanje
-              </CTAButton>
-            </div>
+      <div className="border-t border-white/10 light:border-slate-200">
+        <div className="container flex flex-col items-center gap-3 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] text-center text-[13px] text-slate-400 sm:flex-row sm:justify-between light:text-slate-600">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/#home"
+              aria-label={`${brandName} domov`}
+              className={cn("rounded-lg", focusRing)}
+            >
+              <BrandLogo variant="footer" />
+            </Link>
+            <p>© {siteConfig.copyrightYear} JU-TAN. Vse pravice pridržane.</p>
           </div>
-
-          <div>
-            <h3 className="heading-3 mb-4 text-white">
-              Podjetje
-            </h3>
-            <ul className="space-y-1 text-slate-400">
-              {companyLinks.map((item) => (
-                <li key={item.href}>
-                  <Link className={linkClass} href={item.href}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="heading-3 mb-4 text-white">
-              Storitve
-            </h3>
-            <ul className="space-y-1 text-slate-400">
-              {services.map((service) => (
-                <li key={service.title}>
-                  <Link className={linkClass} href="/#services">
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="heading-3 mb-4 text-white">
-              Kontakt
-            </h3>
-            <div className="space-y-1 text-slate-400">
-              <p>
-                <a className={linkClass} href={`mailto:${company.contact.email}`}>
-                  {company.contact.email}
+          <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            {legalLinks.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className={legalLinkClass}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            {socialLinks.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className={legalLinkClass}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
                 </a>
-              </p>
-              <p>
-                <span className="mb-1 block text-[13px] text-slate-500">
-                  {company.contact.phoneLabel}
-                </span>
-                <a className={linkClass} href={company.contact.phoneTel}>
-                  {company.contact.phone}
-                </a>
-              </p>
-              <p>
-                <span className="mb-1 block text-[13px] text-slate-500">
-                  {company.contact.phoneSecondaryLabel}
-                </span>
-                <a className={linkClass} href={company.contact.phoneSecondaryTel}>
-                  {company.contact.phoneSecondary}
-                </a>
-              </p>
-              <p className="pt-2">{company.contact.hours}</p>
-            </div>
-          </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </FadeIn>
-
-      <div className="border-t border-white/10 px-[max(1rem,env(safe-area-inset-left,0px))] pt-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] text-center text-sm text-slate-400">
-        © {siteConfig.copyrightYear} JU-TAN. Vse pravice pridržane.{" "}
-        <Link
-          href="/#privacy"
-          className="rounded-[10px] text-slate-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
-        >
-          Politika zasebnosti
-        </Link>
       </div>
     </footer>
   );

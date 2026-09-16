@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-[calc(4rem+0.75rem)] pb-16 lg:pt-[calc(4rem+1.75rem)] lg:pb-14"
+      className="relative overflow-hidden pt-[calc(4rem+0.75rem)] pb-16 lg:pt-[calc(4rem+1.5rem)] lg:pb-20"
     >
       <HeroBackground />
 

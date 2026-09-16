@@ -1,48 +1,48 @@
 import type { MetadataRoute } from "next";
-import { company } from "@/lib/data/company";
 import { defaultDescription } from "@/lib/seo";
+import {
+  brandAssets,
+  brandColor,
+  brandDark,
+  brandName,
+  brandShort,
+} from "@/brand/theme";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: company.name,
-    short_name: company.name,
+    name: brandName,
+    short_name: brandShort,
     description: defaultDescription,
     start_url: "/",
     display: "standalone",
-    theme_color: "#16a34a",
-    background_color: "#050816",
+    theme_color: brandColor.toLowerCase(),
+    background_color: brandDark,
     lang: "sl",
     icons: [
       {
-        src: "/favicon.ico",
-        sizes: "48x48",
-        type: "image/x-icon",
+        src: brandAssets.favicon,
+        sizes: "any",
+        type: "image/svg+xml",
       },
       {
-        src: "/favicon-16x16.png",
+        src: brandAssets.favicon16,
         sizes: "16x16",
         type: "image/png",
       },
       {
-        src: "/favicon-32x32.png",
+        src: brandAssets.favicon32,
         sizes: "32x32",
         type: "image/png",
       },
       {
-        src: "/apple-touch-icon.png",
+        src: brandAssets.mark,
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+      {
+        src: brandAssets.appleTouch,
         sizes: "180x180",
         type: "image/png",
-      },
-      {
-        src: "/android-chrome-192.png",
-        sizes: "192x192",
-        type: "image/png",
-      },
-      {
-        src: "/android-chrome-512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "any",
       },
     ],
   };

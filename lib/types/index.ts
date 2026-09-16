@@ -3,11 +3,20 @@ import type { LucideIcon } from "lucide-react";
 export interface Service {
   icon: LucideIcon;
   title: string;
+  problem: string;
+  solution: string;
+  result: string;
   description: string;
-  features: string[];
+  stack: string[];
 }
 
-export type ProjectTag = "AI" | "Splet" | "Avtomatizacija";
+export type ProjectTag =
+  | "CRM"
+  | "ERP"
+  | "AI"
+  | "Portal"
+  | "SaaS"
+  | "Integracija";
 
 export interface Project {
   title: string;
@@ -16,6 +25,7 @@ export interface Project {
   technologies: string[];
   result: string;
   image: string;
+  icon: LucideIcon;
   tags: readonly ProjectTag[];
   conceptual: boolean;
 }
@@ -31,4 +41,5 @@ export interface ProcessStep {
   icon: LucideIcon;
   title: string;
   description: string;
+  stack: string[];
 }

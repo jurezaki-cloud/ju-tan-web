@@ -1,15 +1,17 @@
 export const heroCopy = {
   badge: "Razvoj programske opreme · Slovenija",
-  titleLead: "Poslovni sistemi",
-  titleAccent: "in AI agenti",
-  titleRest: "za podjetja.",
+  titleLead: "AI agenti, CRM, ERP",
+  titleAccent: "in avtomatizacija",
+  titleRest: "poslovnih sistemov.",
   description:
-    "Povezujemo CRM, ERP in interne procese. Izdelamo avtomatizacije, spletne aplikacije in agente po meri. Odgovorimo v enem delovnem dnevu.",
+    "Za podjetja, ki potrebujejo povezane procese: stranke, dokumente in interne tokove v enem skladu.",
+  supporting:
+    "Manj ročnega dela, manj napak, hitrejša rast, povezani procesi.",
   primaryCta: "Začnimo projekt",
   primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
   secondaryCta: "Oglejte si primere",
   secondaryCtaAria: "Oglejte si primere rešitev JU-TAN",
-  pills: ["AI agenti", "Avtomatizacija", "Spletne aplikacije"] as const,
+  pills: ["AI agenti", "CRM", "ERP", "Avtomatizacija"] as const,
   network: {
     nodes: [
       "CRM",

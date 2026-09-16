@@ -2,6 +2,7 @@ import "./globals.css";
 import { Geist, Syne } from "next/font/google";
 import type { ReactNode } from "react";
 import { jsonLdGraph, serializeJsonLd } from "@/lib/seo";
+import { getMessages } from "@/lib/i18n/messages";
 import Providers from "@/components/common/Providers";
 import JuTanAgentLazy from "@/components/ai/JuTanAgentLazy";
 
@@ -29,6 +30,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   const jsonLd = jsonLdGraph();
+  const skipLabel = getMessages().a11y.skipToContent;
 
   return (
     <html
@@ -40,17 +42,17 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-[#050816] font-sans text-white antialiased light:bg-slate-50 light:text-slate-900">
         <Providers>
-        <a href="#main" className="skip-link">
-          Preskoči na vsebino
-        </a>
-        {children}
-        <JuTanAgentLazy />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: serializeJsonLd(jsonLd),
-          }}
-        />
+          <a href="#main" className="skip-link">
+            {skipLabel}
+          </a>
+          {children}
+          <JuTanAgentLazy />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: serializeJsonLd(jsonLd),
+            }}
+          />
         </Providers>
       </body>
     </html>

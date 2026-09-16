@@ -22,7 +22,9 @@
     "paths": {
       "@/*": ["./*"],
       "@/design": ["./src/design/index.ts"],
-      "@/design/*": ["./src/design/*"]
+      "@/design/*": ["./src/design/*"],
+      "@/brand": ["./src/brand/index.ts"],
+      "@/brand/*": ["./src/brand/*"]
     }
   },
   "include": [

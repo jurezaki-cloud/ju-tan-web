@@ -5,6 +5,8 @@ import {
   projectFilters,
   type ProjectFilter,
 } from "@/lib/data/projects";
+import { colorTransition, focusRing } from "@/design";
+import { cn } from "@/lib/utils";
 
 type ProjectFiltersProps = {
   value: ProjectFilter;
@@ -28,7 +30,7 @@ export default function ProjectFilters({
 
   return (
     <div
-      className="-mt-1 mb-7 flex flex-wrap gap-4"
+      className="-mt-1 mb-5 flex flex-wrap justify-center gap-3"
       role="tablist"
       aria-label="Filtri referenc"
     >
@@ -67,11 +69,14 @@ export default function ProjectFilters({
                 moveFocus(projectFilters.length - 1);
               }
             }}
-            className={`relative min-h-11 rounded-[10px] px-1 py-2 text-[13px] font-medium tracking-[0.02em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 ${
+            className={cn(
+              "relative min-h-11 rounded-lg px-1 py-2 text-[13px] font-medium tracking-[0.02em]",
+              colorTransition,
+              focusRing,
               active
                 ? "text-white after:absolute after:inset-x-0 after:bottom-1 after:h-px after:bg-green-600/80"
-                : "text-slate-500 hover:text-white"
-            }`}
+                : "text-slate-500 hover:text-white",
+            )}
           >
             {item}
           </button>

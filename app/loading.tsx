@@ -8,16 +8,16 @@ export default function Loading() {
     >
       <p className="sr-only">Nalaganje …</p>
       <div className="mx-auto max-w-6xl space-y-6">
-        <div className="h-8 w-48 animate-pulse rounded-[10px] bg-white/10" />
-        <div className="h-12 w-3/4 max-w-lg animate-pulse rounded-[10px] bg-white/10" />
-        <div className="h-24 w-full animate-pulse rounded-[10px] bg-white/5" />
+        <div className="h-8 w-48 animate-pulse rounded-lg bg-white/10" />
+        <div className="h-12 w-3/4 max-w-lg animate-pulse rounded-lg bg-white/10" />
+        <div className="h-24 w-full animate-pulse rounded-lg bg-white/5" />
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="h-11 animate-pulse rounded-[10px] bg-white/10" />
-          <div className="h-11 animate-pulse rounded-[10px] bg-white/10" />
+          <div className="h-11 animate-pulse rounded-lg bg-white/10" />
+          <div className="h-11 animate-pulse rounded-lg bg-white/10" />
         </div>
         <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
-          <div className="min-h-[10rem] animate-pulse rounded-[10px] bg-white/5" />
-          <div className="min-h-[10rem] animate-pulse rounded-[10px] bg-white/5" />
+          <div className="min-h-[10rem] animate-pulse rounded-lg bg-white/5" />
+          <div className="min-h-[10rem] animate-pulse rounded-lg bg-white/5" />
         </div>
       </div>
     </main>

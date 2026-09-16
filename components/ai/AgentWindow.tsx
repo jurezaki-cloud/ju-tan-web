@@ -91,7 +91,7 @@ export default function AgentWindow({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
           style={style}
-          className="pointer-events-auto flex h-dvh w-full min-h-0 flex-col overflow-hidden border-white/10 bg-[#050816]/88 shadow-[0_18px_40px_rgb(0_0_0_/_36%)] backdrop-blur-2xl md:h-[min(40rem,calc(100dvh-2rem))] md:max-h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-[10px] md:border light:border-slate-200 light:bg-white/95"
+          className="pointer-events-auto flex h-dvh w-full min-h-0 flex-col overflow-hidden border-white/10 bg-[#050816]/88 shadow-[0_18px_40px_rgb(0_0_0_/_36%)] backdrop-blur-2xl md:h-[min(40rem,calc(100dvh-2rem))] md:max-h-[min(40rem,calc(100dvh-2rem))] md:w-[420px] md:rounded-lg md:border light:border-slate-200 light:bg-white/95"
         >
           <header className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#16a34a]/15 px-3 pb-3 pt-[max(0.75rem,env(safe-area-inset-top,0px))] backdrop-blur-md light:border-slate-200 light:bg-green-50">
             <div className="min-w-0">

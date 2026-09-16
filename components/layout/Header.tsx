@@ -1,7 +1,8 @@
 "use client";
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Menu } from "lucide-react";
+import { iconButtonClass } from "@/design";
 import { cn } from "@/lib/utils";
 import { lockBodyScroll } from "@/lib/lock-body-scroll";
 import { getMessages } from "@/lib/i18n/messages";
@@ -14,15 +15,15 @@ import DesktopNavigation from "./DesktopNavigation";
 import MobileNavigation from "./MobileNavigation";
 import HeaderCTA from "./HeaderCTA";
 
-function Header() {
+const items = getHeaderNavigation();
+
+export default function Header() {
   const copy = getMessages().header;
-  const items = useMemo(() => getHeaderNavigation(), []);
   const scrolled = useScroll(12);
   const activeSection = useActiveSection(items);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
-  const toggleMenu = useCallback(() => setMenuOpen((open) => !open), []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -36,7 +37,7 @@ function Header() {
         (scrolled || menuOpen) && "header-shell-scrolled",
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-3 px-[max(1.125rem,env(safe-area-inset-left,0px))] md:px-6">
+      <div className="container flex h-[60px] items-center justify-between gap-3">
         <HeaderLogo />
 
         <DesktopNavigation
@@ -60,8 +61,11 @@ function Header() {
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-white transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 xl:hidden light:text-slate-900 light:hover:bg-slate-100"
-            onClick={toggleMenu}
+            className={cn(
+              iconButtonClass,
+              "text-white hover:bg-white/10 xl:hidden light:text-slate-900 light:hover:bg-slate-100",
+            )}
+            onClick={() => setMenuOpen((open) => !open)}
           >
             <Menu className="h-5 w-5" aria-hidden />
           </button>
@@ -77,5 +81,3 @@ function Header() {
     </header>
   );
 }
-
-export default memo(Header);

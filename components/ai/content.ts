@@ -48,34 +48,44 @@ export const deadlineOptions = [
 
 const replies: { keys: string[]; answer: string }[] = [
   {
-    keys: ["umetn", "ai rešit", "agent"],
+    keys: ["umetn", "ai", "agent"],
     answer:
-      "Pripravimo AI agente in pomočnike, ki se povežejo z vašimi obstoječimi orodji. Za oceno obsega izberite »Želim ponudbo«.",
+      "AI agenti berejo obstoječe sisteme in pripravijo osnutke ali prenose. Za oceno obsega izberite »Želim ponudbo«.",
   },
   {
-    keys: ["avtomat", "proces", "workflow"],
+    keys: ["crm", "prodaj", "stik"],
     answer:
-      "Avtomatizacija poveže API-je in odpravi ponavljajoče delo. Opišite trenutni postopek, predlagamo konkreten tok.",
+      "CRM pokrije stranke, priložnosti in zgodovino komunikacije v enem toku. Opišite, kje danes vodite zapise.",
   },
   {
-    keys: ["programsk", "namizn", "software", "razvoj"],
+    keys: ["erp", "zalog", "dokument"],
     answer:
-      "Programsko opremo razvijemo po meri: jasna arhitektura, integracije in vzdrževanje. Opišite proces, ki ga želite digitalizirati.",
+      "ERP moduli pokrijejo dokumente, zalogo in interne procese. Povejte, kateri del želite najprej urediti.",
   },
   {
-    keys: ["splet", "website", "portal"],
+    keys: ["portal", "splet", "website"],
     answer:
-      "Spletne aplikacije zasnujemo odzivno, hitro in z merjenjem. Povejte cilj (predstavitev, povpraševanja, interno orodje).",
+      "Portali dajo strankam ali partnerjem dostop do ponudbe, zahtevkov in statusa. Opišite, kdo bo uporabljal dostop.",
   },
   {
-    keys: ["infrastruk", "strež", "docker", "oblak", "cloud"],
+    keys: ["mobil", "android", "ios", "aplikac"],
     answer:
-      "Za infrastrukturo uredimo namestitev, kopije in nadzor. Povejte, kje danes teče produkcija.",
+      "Mobilne aplikacije berejo in pišejo v isti API kot ostali sistemi. Povejte, ali gre za teren, prodajo ali interno ekipo.",
   },
   {
-    keys: ["varnost", "kibernet", "dostop"],
+    keys: ["saas", "najem"],
     answer:
-      "Pri varnosti se osredotočimo na dostope, politike in pregled ranljivosti — ne na marketinški pentest, če ga ne izvajamo kot ločeno storitev. Opišite okolje.",
+      "SaaS jedro loči podatke po računih strank. Opišite, koliko organizacij naj hkrati uporablja izdelek.",
+  },
+  {
+    keys: ["api", "integrac", "računovod"],
+    answer:
+      "API integracije uskladijo CRM, ERP in računovodstvo. Navedite sisteme, ki jih je treba povezati.",
+  },
+  {
+    keys: ["avtomat", "workflow", "proces"],
+    answer:
+      "Poslovna avtomatizacija sproži dejanja ob dogodkih v sistemih. Opišite trenutni ročni korak.",
   },
   {
     keys: ["kontakt", "telefon", "klic"],

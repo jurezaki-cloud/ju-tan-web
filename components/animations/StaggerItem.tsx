@@ -20,12 +20,12 @@ export default function StaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 8 },
+        hidden: { opacity: 0, y: 12 },
         show: {
           opacity: 1,
           y: 0,
           transition: {
-            duration: reduceMotion ? 0.01 : duration.base,
+            duration: reduceMotion ? 0.01 : duration.reveal,
             ease: easeOut,
           },
         },

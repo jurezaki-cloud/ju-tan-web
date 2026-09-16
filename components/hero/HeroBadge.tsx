@@ -1,9 +1,11 @@
 import CoreMark from "@/components/common/CoreMark";
 import { heroCopy } from "./copy";
+import { kickerClass } from "@/design";
+import { cn } from "@/lib/utils";
 
 export default function HeroBadge() {
   return (
-    <div className="mb-5 flex max-w-full items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400">
+    <div className={cn(kickerClass, "mb-5 max-w-full")}>
       <CoreMark className="h-3.5 w-3.5 shrink-0 text-slate-400" />
       {heroCopy.badge}
     </div>

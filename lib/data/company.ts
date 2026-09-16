@@ -12,5 +12,12 @@ export const company = {
     phoneSecondaryTel: "tel:+38669983936",
     email: "info@ju-tan.com",
     hours: "Pon–Pet, 8.00–16.00",
+    hoursLines: ["Pon–Pet", "08.00–16.00"] as const,
+    address: {
+      name: "Tanja Hrup s.p.",
+      street: "Turšičeva ulica 7",
+      postal: "1380 Cerknica",
+      country: "Slovenija",
+    },
   },
 };

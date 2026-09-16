@@ -1,6 +1,9 @@
-import Link from "next/link";
+"use client";
+
 import { memo } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { colorTransition, focusRing } from "@/design";
 import type { NavItem, NavSectionId } from "@/types/navigation";
 
 type DesktopNavigationProps = {
@@ -15,7 +18,10 @@ function DesktopNavigation({
   ariaLabel,
 }: DesktopNavigationProps) {
   return (
-    <nav className="hidden min-w-0 items-center justify-center gap-6 xl:flex xl:gap-8" aria-label={ariaLabel}>
+    <nav
+      className="hidden min-w-0 items-center justify-center gap-6 xl:flex xl:gap-8"
+      aria-label={ariaLabel}
+    >
       {items.map((item) => {
         const active = activeSection === item.sectionId;
 
@@ -25,14 +31,26 @@ function DesktopNavigation({
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "relative inline-flex min-h-11 items-center text-[13px] font-medium tracking-[-0.01em] text-slate-400 transition-colors duration-200",
-              "hover:text-white focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600",
+              "group relative inline-flex min-h-11 items-center text-[14px] font-medium tracking-[0.02em] text-slate-400",
+              colorTransition,
+              "hover:text-white",
+              "focus-visible:text-white",
+              focusRing,
               "light:text-slate-600 light:hover:text-slate-900",
-              "after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-green-600/80 after:transition-[width] after:duration-200 hover:after:w-full",
-              active && "text-white after:w-full light:text-slate-900",
+              active && "text-white light:text-slate-900",
             )}
           >
-            {item.label}
+            <span className="relative inline-block">
+              {item.label}
+              <span
+                className={cn(
+                  "absolute inset-x-0 -bottom-1 h-px bg-[#16a34a] opacity-0 transition-opacity duration-hover ease-out",
+                  "group-hover:opacity-100",
+                  active && "opacity-100",
+                )}
+                aria-hidden
+              />
+            </span>
           </Link>
         );
       })}

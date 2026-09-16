@@ -35,16 +35,18 @@ function contentSecurityPolicy(development: boolean) {
     "base-uri 'self'",
     "form-action 'self'",
     "object-src 'none'",
+    ...(development ? [] : ["upgrade-insecure-requests"]),
   ].join("; ");
 }
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=()",
+    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()",
   },
   {
     key: "Strict-Transport-Security",
@@ -67,6 +69,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
     deviceSizes: [320, 360, 375, 390, 412, 430, 640, 750, 768, 828, 1080, 1200, 1920],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async headers() {
     return [

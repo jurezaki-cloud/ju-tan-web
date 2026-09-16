@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
+import { brandAssets } from "@/brand/theme";
+import { colors } from "@/design";
 import {
   defaultDescription,
   defaultKeywords,
@@ -22,6 +24,10 @@ export const metadata: Metadata = {
   publisher: company.name,
   applicationName: company.name,
   category: "technology",
+  alternates: {
+    canonical: "/",
+    languages: { sl: "/", "x-default": "/" },
+  },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
     : undefined,
@@ -29,24 +35,18 @@ export const metadata: Metadata = {
   twitter,
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      {
-        url: "/android-chrome-192.png",
-        sizes: "192x192",
-        type: "image/png",
-      },
-      {
-        url: "/android-chrome-512.png",
-        sizes: "512x512",
-        type: "image/png",
-      },
+      { url: brandAssets.favicon, type: "image/svg+xml" },
+      { url: brandAssets.favicon16, sizes: "16x16", type: "image/png" },
+      { url: brandAssets.favicon32, sizes: "32x32", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-    shortcut: ["/favicon.ico"],
+    apple: [{ url: brandAssets.appleTouch, sizes: "180x180" }],
+    shortcut: [brandAssets.favicon],
   },
   manifest: "/manifest.webmanifest",
+  other: {
+    "msapplication-TileColor": colors.background,
+    "msapplication-config": brandAssets.browserconfig,
+  },
   robots: {
     index: true,
     follow: true,

@@ -28,7 +28,7 @@ export function getHeaderNavigation(): NavItem[] {
     },
     {
       id: "contact",
-      href: "/#contact",
+      href: "/kontakt",
       sectionId: "contact",
       label: nav.contact,
     },

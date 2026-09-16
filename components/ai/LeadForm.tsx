@@ -2,9 +2,11 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import CTAButton from "@/components/navbar/CTAButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { contactSchema } from "@/lib/validation/contact";
 import {
   budgetOptions,
@@ -26,9 +28,6 @@ export type LeadPayload = {
 type LeadFormProps = {
   onSubmit: (payload: LeadPayload) => void;
 };
-
-const fieldClass =
-  "h-11 rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900";
 
 export function formatLeadSummary(data: LeadPayload) {
   return `Hvala, ${data.name}. Povzetek povpraševanja:
@@ -68,26 +67,11 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!form.name.trim()) {
-      setError("Vnesite ime.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      setError("Vnesite veljaven e-poštni naslov.");
-      return;
-    }
-    if (!form.service) {
-      setError("Izberite storitev.");
-      return;
-    }
-    if (!form.description.trim()) {
-      setError("Opišite projekt.");
-      return;
-    }
     if (!form.budget || !form.deadline) {
       setError("Izberite proračun in rok izvedbe.");
       return;
     }
+
     const payload = {
       ...form,
       name: form.name.trim(),
@@ -150,7 +134,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
     <form
       onSubmit={handleSubmit}
       aria-label="Povpraševanje za ponudbo"
-      className="space-y-3 rounded-[10px] border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
+      className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
     >
       <p className="text-[13px] font-medium text-green-600">Povpraševanje za ponudbo</p>
       <Input
@@ -163,7 +147,6 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="Ime"
         value={form.name}
         onChange={update("name")}
-        className={fieldClass}
       />
       <Input
         name="organization"
@@ -174,7 +157,6 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="Podjetje"
         value={form.company}
         onChange={update("company")}
-        className={fieldClass}
       />
       <Input
         type="email"
@@ -187,7 +169,6 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="E-pošta"
         value={form.email}
         onChange={update("email")}
-        className={fieldClass}
       />
       <Input
         type="tel"
@@ -199,14 +180,13 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="Telefon"
         value={form.phone}
         onChange={update("phone")}
-        className={fieldClass}
       />
-      <select
+      <Select
         required
+        name="service"
         aria-label="Storitev"
         value={form.service}
         onChange={update("service")}
-        className={`${fieldClass} w-full px-3`}
       >
         <option value="" className="bg-[#050816]">
           Storitev
@@ -216,7 +196,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
             {item}
           </option>
         ))}
-      </select>
+      </Select>
       <Textarea
         required
         rows={3}
@@ -225,14 +205,13 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         aria-label="Opis projekta"
         value={form.description}
         onChange={update("description")}
-        className="min-h-20 rounded-[10px] border-white/10 bg-black/30 text-[16px] text-white md:text-[16px] light:border-slate-200 light:bg-white light:text-slate-900"
+        className="min-h-20"
       />
-      <select
+      <Select
         required
         aria-label="Proračun"
         value={form.budget}
         onChange={update("budget")}
-        className={`${fieldClass} w-full px-3`}
       >
         <option value="" className="bg-[#050816]">
           Proračun
@@ -242,13 +221,12 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
             {item}
           </option>
         ))}
-      </select>
-      <select
+      </Select>
+      <Select
         required
         aria-label="Rok izvedbe"
         value={form.deadline}
         onChange={update("deadline")}
-        className={`${fieldClass} w-full px-3`}
       >
         <option value="" className="bg-[#050816]">
           Rok izvedbe
@@ -258,7 +236,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
             {item}
           </option>
         ))}
-      </select>
+      </Select>
       {error ? (
         <p role="alert" className="min-h-5 text-[13px] text-red-400">
           {error}
@@ -267,8 +245,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         <p className="min-h-5" aria-hidden />
       )}
       <label className="flex items-start gap-2 text-[12px] leading-5 text-slate-300">
-        <input
-          type="checkbox"
+        <Checkbox
           required
           checked={consent}
           onChange={(event) => {
@@ -276,23 +253,18 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
             setConsent(checked);
             setConsentAt(checked ? new Date().toISOString() : "");
           }}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-[#16a34a]"
         />
         <span>
           Soglašam z obdelavo podatkov skladno s{" "}
-          <Link href="/#privacy" className="text-green-600 underline-offset-2 hover:underline">
+          <Link href="/politika-zasebnosti" className="text-green-600 underline-offset-2 hover:underline">
             Politiko zasebnosti
           </Link>
           .
         </span>
       </label>
-      <Button
-        type="submit"
-        disabled={loading || !consent}
-        className="h-11 w-full rounded-[10px] border-0 bg-[#16a34a] text-white hover:bg-[#15803d]"
-      >
+      <CTAButton type="submit" disabled={loading || !consent} className="w-full">
         {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
-      </Button>
+      </CTAButton>
     </form>
   );
 }

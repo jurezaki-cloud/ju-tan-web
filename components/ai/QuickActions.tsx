@@ -1,6 +1,8 @@
 "use client";
 
 import { quickActions } from "./content";
+import { colorTransition, focusRing } from "@/design";
+import { cn } from "@/lib/utils";
 
 type QuickActionsProps = {
   disabled?: boolean;
@@ -19,7 +21,11 @@ export default function QuickActions({ disabled, onSelect }: QuickActionsProps) 
           type="button"
           disabled={disabled}
           onClick={() => onSelect(action.prompt)}
-          className="min-h-11 shrink-0 rounded-[10px] border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] font-medium text-slate-200 transition-colors duration-200 hover:border-green-600/50 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 disabled:opacity-50 light:border-slate-200 light:bg-white light:text-slate-800"
+          className={cn(
+            "min-h-11 shrink-0 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] font-medium text-slate-200 hover:border-green-600/50 hover:text-white disabled:opacity-50 light:border-slate-200 light:bg-white light:text-slate-800",
+            colorTransition,
+            focusRing,
+          )}
         >
           {action.label}
         </button>

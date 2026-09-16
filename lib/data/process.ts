@@ -1,8 +1,8 @@
 import {
   Search,
-  Lightbulb,
+  DraftingCompass,
   Code2,
-  FlaskConical,
+  ShieldCheck,
   Rocket,
   LifeBuoy,
 } from "lucide-react";
@@ -14,41 +14,47 @@ export const process: ProcessStep[] = [
     icon: Search,
     title: "Analiza",
     description:
-      "Pregledamo poslovne procese, cilje in izzive ter pripravimo jasno izhodišče projekta.",
+      "Pregled procesov, sistemov in omejitev. Določimo, kaj je v obsegu.",
+    stack: ["Pisni obseg pred začetkom razvoja."],
   },
   {
     number: "02",
-    icon: Lightbulb,
-    title: "Načrtovanje",
+    icon: DraftingCompass,
+    title: "Načrt",
     description:
-      "Določimo arhitekturo, obseg, tehnologije in časovnico, da je izvedba predvidljiva.",
+      "Arhitektura, vmesniki in časovnica. Odločitve so zapisane, ne ustne.",
+    stack: ["Načrt, ki ga lahko preverite pred kodo."],
   },
   {
     number: "03",
     icon: Code2,
     title: "Razvoj",
     description:
-      "Izdelamo rešitev po meri: AI, avtomatizacijo, programsko opremo ali spletno aplikacijo.",
+      "Izvedba po načrtu: moduli, API in vmesnik, usklajeni z obstoječimi sistemi.",
+    stack: ["Redni predogledi na testnem okolju."],
   },
   {
     number: "04",
-    icon: FlaskConical,
+    icon: ShieldCheck,
     title: "Testiranje",
     description:
-      "Preverimo delovanje, varnost in zmogljivost, preden rešitev pride v produkcijo.",
+      "Preverjanje tokov, pravic dostopa in obremenitev pred produkcijo.",
+    stack: ["Seznam napak zapremo pred uvedbo."],
   },
   {
     number: "05",
     icon: Rocket,
-    title: "Implementacija",
+    title: "Uvedba",
     description:
-      "Rešitev namestimo, usposobimo ekipo in poskrbimo za stabilen prehod v uporabo.",
+      "Namestitev, prenosi podatkov in usposobitev ekipe za vsakodnevno rabo.",
+    stack: ["Prehod z dogovorjenim rezervnim načrtom."],
   },
   {
     number: "06",
     icon: LifeBuoy,
     title: "Podpora",
     description:
-      "Nudimo podporo, nadgradnje in dolgoročno vzdrževanje, da sistem raste z vami.",
+      "Vzdrževanje, nadgradnje in spremembe, ko se procesi v podjetju spremenijo.",
+    stack: ["Koda in dokumentacija ostaneta pri vas."],
   },
 ];

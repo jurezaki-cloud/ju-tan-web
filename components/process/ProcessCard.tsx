@@ -1,19 +1,56 @@
-interface Props {
-  step: string;
+import { cn } from "@/lib/utils";
+import BaseCard from "@/components/common/BaseCard";
+import { numberBadgeClass, headingCard, cardBodyClass, metaClass } from "@/design";
+
+type ProcessCardProps = {
+  number: string;
   title: string;
   description: string;
-}
+  stack: string[];
+  align: "left" | "right";
+};
 
-export default function ProcessCard({ step, title, description }: Props) {
+export default function ProcessCard({
+  number,
+  title,
+  description,
+  stack,
+  align,
+}: ProcessCardProps) {
+  const fromRight = align === "right";
+
   return (
-    <div className="pb-8">
-      <div className="font-heading text-[13px] font-medium tabular-nums tracking-[0.14em] text-green-600/80">
-        {step}
+    <BaseCard
+      className={cn(
+        "w-full max-w-[400px]",
+        fromRight ? "lg:ml-auto lg:text-right" : "lg:mr-auto",
+      )}
+    >
+      <div
+        className={cn(
+          "relative flex items-center gap-3",
+          fromRight && "lg:flex-row-reverse",
+        )}
+      >
+        <span className={numberBadgeClass}>{number}</span>
+        <h3 className={headingCard}>{title}</h3>
       </div>
-      <h3 className="heading-3 mt-2 text-white light:text-slate-900">{title}</h3>
-      <p className="mt-2 max-w-xl text-[15px] leading-[1.7] text-slate-400">
-        {description}
-      </p>
-    </div>
+
+      <p className={`relative mt-3 ${cardBodyClass} leading-[1.7]`}>{description}</p>
+
+      <ul
+        className={cn(
+          "relative mt-3 flex flex-wrap gap-x-2 gap-y-1",
+          fromRight && "lg:justify-end",
+        )}
+      >
+        {stack.map((item, index) => (
+          <li key={item} className={metaClass}>
+            {index > 0 ? "• " : ""}
+            {item}
+          </li>
+        ))}
+      </ul>
+    </BaseCard>
   );
 }
