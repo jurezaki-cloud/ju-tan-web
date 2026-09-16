@@ -5,15 +5,19 @@ import { notificationConfig } from "../config";
 import { writeAudit } from "@/src/services/identity/shared";
 
 export class PasswordResetDeliveryService {
-  async request(email: string): Promise<Result<NotificationResult>> {
+  async request(email: string, resetToken?: string): Promise<Result<NotificationResult>> {
     if (!email.includes("@")) return ok(this.empty());
     writeAudit("PasswordResetDeliveryPrepared", "system", email, {});
+    const origin = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ju-tan.com").replace(/\/$/, "");
+    const body = resetToken
+      ? `Zahteva za ponastavitev gesla za ${notificationConfig.companyName}. Povezava velja eno uro: ${origin}/login?resetToken=${resetToken}`
+      : `Zahteva za ponastavitev gesla za ${notificationConfig.companyName} je bila sprejeta.`;
     return notificationDeliveryService.deliver({
       channel: "email",
       status: "prepared",
       to: email,
       subject: "Ponastavitev gesla",
-      body: `Zahteva za ponastavitev gesla za ${notificationConfig.companyName} je bila sprejeta.`,
+      body,
       metadata: { templateId: "password.reset.request" },
     });
   }

@@ -5,10 +5,13 @@ import { readJsonBody } from "@/src/identity/loginRequest";
 
 export async function POST(request: Request) {
   try {
-    const body = (await readJsonBody(request)) as { email?: unknown; password?: unknown };
-    const email = typeof body.email === "string" ? body.email : "";
+    const body = (await readJsonBody(request)) as { token?: unknown; password?: unknown };
+    const token = typeof body.token === "string" ? body.token.trim() : "";
     const password = typeof body.password === "string" ? body.password : "";
-    if (email && password) getIdentity().controller.resetPassword(email, password);
+    if (!token || !password) {
+      return NextResponse.json({ ok: false, error: "Zahteva ni veljavna.", code: "VALIDATION" }, { status: 400 });
+    }
+    getIdentity().controller.resetPassword(token, password);
     return NextResponse.json({ ok: true });
   } catch (error) {
     return identityErrorResponse(error);

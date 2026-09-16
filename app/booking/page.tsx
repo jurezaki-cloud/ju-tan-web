@@ -5,9 +5,9 @@ import Booking from "@/components/sections/Booking";
 import { createPageMetadata, breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Rezervacija posveta",
+  title: "Posvet",
   description:
-    "Rezervirajte posvet z ekipo JU-TAN za umetno inteligenco, programsko opremo, avtomatizacijo, splet in IT infrastrukturo.",
+    "Oddajte povpraševanje JU-TAN. Termin uskladimo po e-pošti ali telefonu; na spletu ni koledarja.",
   path: "/booking",
 });
 
@@ -26,7 +26,7 @@ export default function BookingPage() {
             ...breadcrumbJsonLd(
               [
                 { name: "Domov", path: "/" },
-                { name: "Termin", path: "/booking" },
+                { name: "Posvet", path: "/booking" },
               ],
               "breadcrumb-booking",
             ),

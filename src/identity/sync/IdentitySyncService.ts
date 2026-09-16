@@ -1,10 +1,9 @@
 import type { IdentitySyncResult } from "@/src/types/identity-sync";
 import type { IdentityUser, IdentitySession } from "@/src/identity/types";
-import { identityConfig } from "@/src/identity/config";
 import { identityWriteModelService } from "./IdentityWriteModelService";
 import { identityReadModelService } from "./IdentityReadModelService";
-import { userIdentityRepository } from "@/src/repositories/identity/store";
-import { randomBytes } from "crypto";
+import { passwordResetTokenRepository, userIdentityRepository } from "@/src/repositories/identity/store";
+import { hashResetToken, issueResetToken } from "@/src/identity/password";
 
 export class IdentitySyncService {
   syncUser(user: IdentityUser): IdentitySyncResult {
@@ -75,14 +74,33 @@ export class IdentitySyncService {
   }
 
   persistPasswordResetRequest(email: string): IdentitySyncResult {
+    return this.issuePasswordReset(email).result;
+  }
+
+  issuePasswordReset(email: string): { result: IdentitySyncResult; token?: string } {
     return identityWriteModelService.transaction(() => {
       const user = identityReadModelService.getUserByEmail(email);
       identityWriteModelService.audit("IdentityPasswordResetRequested", "system", user?.id, {});
-      if (!user) return { ok: true, status: "synced" };
-      const token = randomBytes(32).toString("hex");
+      if (!user) return { result: { ok: true, status: "synced" } };
+      const token = issueResetToken();
       identityWriteModelService.createPasswordReset(user.id, token);
-      return { ok: true, status: "synced", entityId: user.id };
+      return { result: { ok: true, status: "synced", entityId: user.id }, token };
     });
+  }
+
+  issuePasswordResetForUser(user: IdentityUser): string {
+    identityWriteModelService.upsertUser(user);
+    const issued = this.issuePasswordReset(user.email);
+    return issued.token ?? "";
+  }
+
+  consumePasswordResetToken(token: string): IdentityUser | undefined {
+    const row = passwordResetTokenRepository.getByHash(hashResetToken(token));
+    if (!row || row.usedAt || row.revokedAt) return undefined;
+    if (Date.parse(row.expiresAt) <= Date.now()) return undefined;
+    const record = identityReadModelService.getUser(row.userId);
+    if (!record) return undefined;
+    return identityReadModelService.toKernelUser(record);
   }
 
   persistPasswordResetComplete(user: IdentityUser): IdentitySyncResult {
@@ -124,7 +142,7 @@ export class IdentitySyncService {
     return identityWriteModelService.transaction(() => {
       const next = { ...user, status: "Active" as const, passwordHash, updatedAt: new Date().toISOString() };
       identityWriteModelService.upsertUser(next);
-      identityWriteModelService.setCredential(user.id, passwordHash, identityConfig.passwordHashPrefix === "mock:" ? "demo" : "v1");
+      identityWriteModelService.setCredential(user.id, passwordHash, "v1");
       identityWriteModelService.recordStatus(user.id, "invited", "active", user.id);
       identityWriteModelService.audit("IdentityUserActivated", user.id, user.id, {});
       identityWriteModelService.audit("IdentityPasswordSet", user.id, user.id, {});

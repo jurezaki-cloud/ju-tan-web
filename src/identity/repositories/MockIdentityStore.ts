@@ -1,5 +1,6 @@
 import type { IdentityEvent, IdentitySession, IdentityUser } from "@/src/identity/types";
 import { mockIdentityUsers } from "@/src/identity/users/mockUsers";
+import { identityDemoEnabled } from "@/src/identity/config";
 
 export class MockIdentityStore {
   readonly users: IdentityUser[];
@@ -9,7 +10,7 @@ export class MockIdentityStore {
   readonly audit: IdentityEvent[] = [];
   readonly revoked = new Set<string>();
 
-  constructor(users: IdentityUser[] = mockIdentityUsers.map((item) => ({ ...item }))) {
+  constructor(users: IdentityUser[] = identityDemoEnabled() ? mockIdentityUsers.map((item) => ({ ...item })) : []) {
     this.users = users;
   }
 

@@ -28,8 +28,8 @@ export default function Booking({ heading = "h2" }: BookingProps) {
             align="center"
             className="mb-0"
             index="06"
-            badge="Termin"
-            title="Rezervirajte termin"
+            badge="Posvet"
+            title="Dogovorite posvet"
             description={bookingNotice}
           />
         </FadeIn>

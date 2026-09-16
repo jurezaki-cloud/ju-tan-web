@@ -13,9 +13,10 @@ import type { AuditRepository } from "@/src/identity/repositories/SessionReposit
 import type { SessionService } from "@/src/identity/session/SessionService";
 import type { PermissionService } from "@/src/identity/permissions/PermissionService";
 import type { TokenService } from "@/src/identity/tokens/TokenService";
-import type { RateLimiter, TimingSafeCompare } from "@/src/identity/security";
-import { MockTimingSafeCompare, MemoryRateLimiter } from "@/src/identity/security";
+import type { RateLimiter } from "@/src/identity/security";
+import { MemoryRateLimiter } from "@/src/identity/security";
 import { identitySyncService } from "@/src/identity/sync/IdentitySyncService";
+import { hashPassword, verifyPassword } from "@/src/identity/password";
 
 export { AuthError } from "@/src/identity/errors";
 
@@ -26,7 +27,6 @@ export class AuthService {
     private readonly permissions: PermissionService,
     private readonly audit: AuditRepository,
     private readonly tokens: TokenService,
-    private readonly compare: TimingSafeCompare = new MockTimingSafeCompare(),
     private readonly limiter: RateLimiter = new MemoryRateLimiter(identityConfig.maxLoginAttempts),
     private readonly now: () => Date = () => new Date(),
   ) {}
@@ -43,9 +43,7 @@ export class AuthService {
     }
 
     const user = this.users.getByEmail(request.email);
-    const expected = user?.passwordHash ?? `${identityConfig.passwordHashPrefix}missing`;
-    const presented = `${identityConfig.passwordHashPrefix}${request.password}`;
-    const match = this.compare.equal(presented, expected);
+    const match = user ? verifyPassword(request.password, user.passwordHash) : verifyPassword(request.password, hashPassword("missing"));
 
     if (!user || !match) {
       this.emit("LoginFailed", { email: request.email });
@@ -128,33 +126,40 @@ export class AuthService {
     if (!next || next.length < 4) throw new AuthError("Novo geslo ni veljavno.", "VALIDATION");
     const user = this.users.getById(userId);
     if (!user) throw new AuthError("Seja ni veljavna.", "INVALID_SESSION");
-    const ok = this.compare.equal(
-      `${identityConfig.passwordHashPrefix}${current}`,
-      user.passwordHash,
-    );
-    if (!ok) throw new AuthError("Neveljavni podatki.", "INVALID_CREDENTIALS");
-    user.passwordHash = `${identityConfig.passwordHashPrefix}${next}`;
+    if (!verifyPassword(current, user.passwordHash)) {
+      throw new AuthError("Neveljavni podatki.", "INVALID_CREDENTIALS");
+    }
+    user.passwordHash = hashPassword(next);
     user.updatedAt = this.now().toISOString();
     this.users.save(user);
     identitySyncService.persistPasswordChange(user);
     this.emit("PasswordChanged", { userId });
   }
 
-  requestPasswordReset(email: string): void {
+  requestPasswordReset(email: string): string | undefined {
     const user = this.users.getByEmail(email);
-    identitySyncService.persistPasswordResetRequest(email);
     this.emit("PasswordResetRequested", { email, userId: user?.id });
+    if (!user) {
+      identitySyncService.persistPasswordResetRequest(email);
+      return undefined;
+    }
+    identitySyncService.syncUser(user);
+    const token = identitySyncService.issuePasswordResetForUser(user);
+    return token || undefined;
   }
 
-  resetPassword(email: string, next: string): void {
-    if (!next || next.length < 4) throw new AuthError("Novo geslo ni veljavno.", "VALIDATION");
-    const user = this.users.getByEmail(email);
-    if (!user) return;
-    user.passwordHash = `${identityConfig.passwordHashPrefix}${next}`;
-    user.updatedAt = this.now().toISOString();
-    this.users.save(user);
-    identitySyncService.persistPasswordResetComplete(user);
-    this.emit("PasswordReset", { userId: user.id, email });
+  resetPassword(token: string, next: string): void {
+    if (!token || !next || next.length < 4) {
+      throw new AuthError("Zahteva ni veljavna.", "VALIDATION");
+    }
+    const user = identitySyncService.consumePasswordResetToken(token);
+    if (!user) throw new AuthError("Zahteva ni veljavna.", "VALIDATION");
+    const kernel = this.users.getById(user.id) ?? user;
+    kernel.passwordHash = hashPassword(next);
+    kernel.updatedAt = this.now().toISOString();
+    this.users.save(kernel);
+    identitySyncService.persistPasswordResetComplete(kernel);
+    this.emit("PasswordReset", { userId: kernel.id, email: kernel.email });
   }
 
   private emit(

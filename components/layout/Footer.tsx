@@ -13,8 +13,8 @@ const legalLinkClass = cn(
 );
 
 const legalLinks = [
-  { href: "/politika-zasebnosti", label: "Privacy" },
-  { href: "/politika-piskotkov", label: "Cookies" },
+  { href: "/politika-zasebnosti", label: "Zasebnost" },
+  { href: "/politika-piskotkov", label: "Piškotki" },
 ] as const;
 
 export default function Footer() {

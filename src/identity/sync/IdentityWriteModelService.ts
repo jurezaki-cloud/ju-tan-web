@@ -14,6 +14,7 @@ import {
 import type { IdentityUser } from "@/src/identity/types";
 import type { IdentitySession } from "@/src/identity/types";
 import { hashIdentitySecret } from "./hash";
+import { hashResetToken } from "@/src/identity/password";
 import { nextIdentityId, stampEntity, toIdentityUserRecord } from "./map";
 import { appPersistence } from "@/src/persistence/app";
 
@@ -173,7 +174,7 @@ export class IdentityWriteModelService {
     const row = {
       ...stampEntity(nextIdentityId("prt"), "active", userId),
       userId,
-      tokenHash: hashIdentitySecret(token),
+      tokenHash: hashResetToken(token),
       expiresAt: new Date(Date.now() + ttlMs).toISOString(),
     };
     passwordResetTokenRepository.save(row);

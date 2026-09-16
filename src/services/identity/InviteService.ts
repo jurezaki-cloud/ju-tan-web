@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 import { Permission } from "@/src/config/permissions";
-import { identityConfig } from "@/src/identity/config";
+import { hashPassword } from "@/src/identity/password";
 import { getIdentity } from "@/src/identity";
 import { err, ok, type Result } from "@/src/types/platform";
 import type { InviteAcceptanceRequest, InviteAcceptanceResult, InviteResult } from "@/src/types/identity";
@@ -154,7 +154,7 @@ export class InviteService {
         ...user,
         firstName: input.firstName?.trim() || user.firstName,
         lastName: input.lastName?.trim() || user.lastName,
-        passwordHash: `${identityConfig.passwordHashPrefix}${input.password}`,
+        passwordHash: hashPassword(input.password),
         status: "active",
         updatedAt: acceptedAt,
       });
@@ -199,12 +199,12 @@ export class InviteService {
           status: "Active",
           createdAt: user.createdAt,
           updatedAt: acceptedAt,
-          passwordHash: `${identityConfig.passwordHashPrefix}${input.password}`,
+          passwordHash: hashPassword(input.password),
           tenantId: user.tenantId,
           organizationId: user.organizationId,
           workspaceId: user.workspaceId,
         },
-        `${identityConfig.passwordHashPrefix}${input.password}`,
+        hashPassword(input.password),
       );
       if (input.createSession) {
         getIdentity().sessions.create({ userId: user.id, role: user.role, device: input.device });

@@ -68,7 +68,7 @@ export const platformNavigation: PlatformNavItem[] = [
 ];
 
 export function permissionForPath(pathname: string): Permission | null {
-  if (pathname.startsWith("/admin/users") || pathname.startsWith("/admin/invites")) {
+  if (pathname.startsWith("/admin")) {
     return Permission.UsersRead;
   }
   const match = platformNavigation.find(

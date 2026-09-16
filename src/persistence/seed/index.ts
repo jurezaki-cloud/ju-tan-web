@@ -12,6 +12,7 @@ import {
 } from "../mapping";
 import { defaultTenant } from "../entities";
 import { mockIdentityUsers } from "@/src/identity/users/mockUsers";
+import { identityDemoEnabled } from "@/src/identity/config";
 import { hashIdentitySecret } from "@/src/identity/sync/hash";
 import { stampEntity, toIdentityUserRecord } from "@/src/identity/sync/map";
 
@@ -206,6 +207,7 @@ export class SeedRunner {
   }
 
   private seedIdentityStore(scope: TenantScope) {
+    if (!identityDemoEnabled()) return;
     if (this.tables.list("identity_users", scope).length > 0) return;
     for (const user of mockIdentityUsers) {
       const record = toIdentityUserRecord(user);

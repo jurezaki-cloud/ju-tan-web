@@ -1,6 +1,6 @@
 import { Permission } from "@/src/config/permissions";
 import { Role } from "@/src/config/roles";
-import { identityConfig } from "@/src/identity/config";
+import { hashPassword } from "@/src/identity/password";
 import { initials } from "@/src/identity/types";
 import { err, ok, type Result } from "@/src/types/platform";
 import type { Invite, InviteToken, IdentityUserRecord } from "@/src/domain/identity";
@@ -78,7 +78,7 @@ export class UserProvisioningService {
           avatar: initials({ firstName, lastName }),
           role: input.role,
           department: input.department ?? "",
-          passwordHash: `${identityConfig.passwordHashPrefix}unset`,
+          passwordHash: hashPassword(`unset:${userId}`),
         };
 
     const token = issueToken();

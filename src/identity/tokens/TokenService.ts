@@ -1,30 +1,46 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { SessionError } from "@/src/identity/errors";
 import type { AccessTokenPayload } from "@/src/identity/types";
+import {
+  ACCESS_TOKEN_PREFIX,
+  base64UrlToBytes,
+  bytesToBase64Url,
+  canonicalizeAccessPayload,
+  decodeTokenPayload,
+  encodeTokenPayload,
+  readAccessPayload,
+} from "./codec";
+import { getIdentityTokenSecret } from "./secret";
 
-function encode(value: string): string {
-  const bytes = new TextEncoder().encode(value);
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+function sign(message: string, secret: string): string {
+  return bytesToBase64Url(createHmac("sha256", secret).update(message).digest());
 }
 
-function decode(value: string): string {
-  const padded = value.replaceAll("-", "+").replaceAll("_", "/");
-  const binary = atob(padded);
-  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
+function verifySignature(message: string, signature: string, secret: string): boolean {
+  const expected = createHmac("sha256", secret).update(message).digest();
+  const presented = Buffer.from(base64UrlToBytes(signature));
+  if (presented.length !== expected.length) return false;
+  return timingSafeEqual(presented, expected);
 }
 
 export class TokenService {
   issue(payload: AccessTokenPayload): string {
-    return `jt1.${encode(JSON.stringify(payload))}`;
+    const secret = getIdentityTokenSecret();
+    if (!secret) throw new SessionError("Seje ni bilo mogoče ustvariti.", "SESSION_FAILED");
+    const body = encodeTokenPayload(canonicalizeAccessPayload(payload));
+    return `${ACCESS_TOKEN_PREFIX}.${body}.${sign(body, secret)}`;
   }
 
   parse(token: string | undefined): AccessTokenPayload | undefined {
-    if (!token || !token.startsWith("jt1.")) return undefined;
+    if (!token) return undefined;
+    const parts = token.split(".");
+    if (parts.length !== 3 || parts[0] !== ACCESS_TOKEN_PREFIX) return undefined;
+    const secret = getIdentityTokenSecret();
+    if (!secret) return undefined;
+    const [, body, signature] = parts;
     try {
-      const parsed = JSON.parse(decode(token.slice(4))) as AccessTokenPayload;
-      if (!parsed.sub || !parsed.exp || !parsed.typ) return undefined;
-      return parsed;
+      if (!verifySignature(body, signature, secret)) return undefined;
+      return readAccessPayload(decodeTokenPayload(body));
     } catch {
       return undefined;
     }

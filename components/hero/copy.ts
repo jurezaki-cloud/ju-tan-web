@@ -9,18 +9,18 @@ export const heroCopy = {
     "Manj ročnega dela, manj napak, hitrejša rast, povezani procesi.",
   primaryCta: "Začnimo projekt",
   primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
-  secondaryCta: "Oglejte si primere",
-  secondaryCtaAria: "Oglejte si primere rešitev JU-TAN",
+  secondaryCta: "Oglejte si tipe sistemov",
+  secondaryCtaAria: "Oglejte si konceptualne tipe sistemov JU-TAN",
   pills: ["AI agenti", "CRM", "ERP", "Avtomatizacija"] as const,
   network: {
     nodes: [
       "CRM",
       "ERP",
       "API",
-      "Automation",
+      "Avtomatizacija",
       "AI",
-      "Analytics",
-      "Web Apps",
+      "Analitika",
+      "Aplikacije",
     ] as const,
   },
 } as const;

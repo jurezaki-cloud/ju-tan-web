@@ -10,6 +10,10 @@ export const identityConfig = {
   maxLoginAttempts: 8,
 };
 
+export function identityDemoEnabled() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export const identityHome: Record<string, string> = {
   OWNER: "/dashboard",
   ADMIN: "/dashboard",

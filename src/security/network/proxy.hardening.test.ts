@@ -43,3 +43,5 @@ export function assertProxyIpHardening(): void {
 }
 
 export { headers };
+
+assertProxyIpHardening();

@@ -1,7 +1,7 @@
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
 
-export const privacyLastUpdated = "15. 9. 2026";
+export const privacyLastUpdated = "16. 9. 2026";
 
 export const privacyMeta = {
   title: "Politika zasebnosti",
@@ -17,14 +17,24 @@ export const privacyHero = {
     "Varstvo osebnih podatkov jemljemo resno. Na tej strani pojasnjujemo, katere podatke zbiramo, zakaj jih obdelujemo ter kakšne pravice imate.",
 } as const;
 
-export const privacyPlaceholder = "[dopolniti]";
-
 export const controllerFields = [
   { label: "Blagovna znamka", value: company.name, pending: false },
-  { label: "Naziv podjetja", value: privacyPlaceholder, pending: true },
-  { label: "Naslov", value: privacyPlaceholder, pending: true },
-  { label: "Matična številka", value: privacyPlaceholder, pending: true },
-  { label: "Davčna številka", value: privacyPlaceholder, pending: true },
+  { label: "Naziv podjetja", value: company.contact.address.name, pending: false },
+  {
+    label: "Naslov",
+    value: `${company.contact.address.street}, ${company.contact.address.postal}, ${company.contact.address.country}`,
+    pending: false,
+  },
+  {
+    label: "Matična številka",
+    value: `Na voljo na zahtevo prek ${company.contact.email}`,
+    pending: false,
+  },
+  {
+    label: "Davčna številka",
+    value: `Na voljo na zahtevo prek ${company.contact.email}`,
+    pending: false,
+  },
   { label: "E-pošta", value: company.contact.email, pending: false },
   { label: "Telefon", value: company.contact.phone, pending: false },
   { label: "Spletna stran", value: siteConfig.url, pending: false },
@@ -55,7 +65,7 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Spodnji podatki so delno že javno navedeni na spletnem mestu. Pravni identifikatorji podjetja (polni naziv, sedež, matična in davčna številka) so označeni kot mesta za dopolnitev, dokler jih JU-TAN ne potrdi.",
+        text: "Spodnji podatki so vzeti iz javnih kontaktnih navedb na spletnem mestu. Matična in davčna številka nista objavljeni na spletu; posredujemo ju na zahtevo na navedeni e-naslov.",
       },
       {
         type: "note",
@@ -169,10 +179,10 @@ export const privacyChapters: PrivacyChapter[] = [
       {
         type: "list",
         items: [
-          "Kontaktna povpraševanja: okvirno do 12 mesecev po zadnjem stiku, če sodelovanje ne steče — ali do preklica soglasja, če ni druge podlage za hrambo",
-          "Pogodbena dokumentacija (ponudbe, pogodbe, tehnična specifikacija): okvirno ves čas trajanja pogodbe in nato še zastaralni rok za civilne terjatve; v Sloveniji je to pogosto 5 let, v posameznih primerih drugače — [dopolniti po pravnem pregledu]",
-          "Računovodski in davčni dokumenti: okvirno 10 let, kolikor to zahtevajo davčni in računovodski predpisi, če pride do izdaje računa",
-          "Varnostni in strežniški dnevniki: okvirno od 30 dni do 12 mesecev, odvisno od nastavitev gostovanja — [dopolniti glede na dejanskega ponudnika]",
+          "Kontaktna povpraševanja: do 12 mesecev po zadnjem stiku, če sodelovanje ne steče, oziroma do preklica soglasja, če ni druge podlage",
+          "Pogodbena dokumentacija (ponudbe, pogodbe, tehnična specifikacija): trajanje pogodbe in nato zastaralni rok za civilne terjatve (v Sloveniji praviloma 5 let, razen če pogodba ali predpis določata drugače)",
+          "Računovodski in davčni dokumenti: 10 let, kolikor to zahtevajo davčni in računovodski predpisi, če pride do izdaje računa",
+          "Varnostni in gostiteljski dnevniki: po nastavitvah gostitelja (Vercel), običajno od 30 dni do 12 mesecev",
         ],
       },
       {
@@ -192,15 +202,16 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Obdelovalci in prejemniki, ki jih je treba dopolniti z dejanskimi ponudniki JU-TAN:",
+        text: "Obdelovalci, ki izhajajo iz trenutne kode in odvisnosti spletnega mesta:",
       },
       {
         type: "list",
         items: [
-          "gostovanje spletnega mesta (hosting) — [dopolniti: ponudnik in država obdelave]",
-          "ponudnik e-pošte za prejem in pošiljanje sporočil — [dopolniti]",
-          "oblačne storitve za delovanje aplikacije ali varnostne kopije — [dopolniti, če se uporabljajo]",
-          "IT partnerji, ki vzdržujejo infrastrukturo, izključno po pogodbi o obdelavi — [dopolniti, če obstajajo]",
+          "gostovanje spletnega mesta: Vercel (ZDA); prenos temelji na standardnih pogodbenih klavzulah in nastavitvah računa",
+          "e-pošta kontaktnega obrazca: Resend, kadar sta nastavljena RESEND_API_KEY in EMAIL_FROM",
+          "analitika obiska: Vercel Analytics in Speed Insights, samo po privolitvi v pasici piškotkov",
+          "napake v produkciji: Sentry, samo če je NEXT_PUBLIC_ENABLE_SENTRY=true in je nastavljen DSN",
+          "jezikovni modeli: OpenAI, samo če je JU_TAN_OPENAI=1 in je nastavljen OPENAI_API_KEY (platforma, ne javni vodič)",
           "državni organi, če to zahteva zakon ali veljavna odredba",
         ],
       },
@@ -229,7 +240,7 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "note",
-        text: "Navedite, ali JU-TAN dejansko uporablja ponudnike v ZDA ali drugih tretjih državah (npr. e-pošta, analitika, gostovanje). Če prenosov ni, to izrecno zapišite. Ne objavljajte imen ponudnikov, dokler niso potrjeni.",
+        text: "Vercel, Resend, Sentry in OpenAI lahko obdelujejo podatke v ZDA. Prenos je dopusten ob ustreznih jamstvih (sklep o ustreznosti, SCC). Analitika in Sentry se ne naložita brez nastavitve oziroma, pri analitiki, brez privolitve.",
       },
     ],
   },
@@ -240,7 +251,7 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Ta politika ne opisuje posameznih piškotkov. Podrobnosti o vrstah piškotkov, namenu, trajanju in možnostih upravljanja so na ločeni strani.",
+        text: "Piškotki seje platforme (jt_access, jt_refresh) so nujni po prijavi. Izbira analitike in tema sta v localStorage. Analitika Vercel se naloži samo po privolitvi. Podroben seznam je na strani Politika piškotkov.",
       },
     ],
   },
@@ -330,7 +341,7 @@ export const privacyChapters: PrivacyChapter[] = [
           "prenos po HTTPS/TLS (SSL) na spletnem mestu",
           "šifriranje povezav do strežnika in e-pošte, kjer to omogoča ponudnik",
           "omejen dostop do podatkov po načelu najmanjših potrebnih pravic",
-          "varnostne kopije glede na nastavitve gostovanja — [dopolniti pogostost in lokacijo]",
+          "varnostne kopije gostitelja (Vercel) po njihovih privzetih nastavitvah",
           "organizacijski ukrepi: dostop samo za osebe, ki podatke potrebujejo za odgovor ali izvedbo storitve",
         ],
       },
@@ -370,4 +381,4 @@ export const privacySupervisor = {
 } as const;
 
 export const privacyDisclaimer =
-  "Ta politika zasebnosti predstavlja informativno predlogo. Pred objavo priporočamo pregled in potrditev s strani pravnega strokovnjaka, da bo v celoti usklajena z dejanskimi postopki podjetja JU-TAN.";
+  "Ta politika opisuje obdelavo, ki sledi iz javnega spletnega mesta in navedenih storitev. Če se infrastruktura spremeni, politiko posodobimo z datumom na vrhu strani.";

@@ -1,5 +1,6 @@
 import type { MockIdentityStore } from "@/src/identity/repositories/MockIdentityStore";
 import { mockIdentityUsers } from "@/src/identity/users/mockUsers";
+import { identityDemoEnabled } from "@/src/identity/config";
 import { identityWriteModelService } from "./IdentityWriteModelService";
 import { identityCacheSyncService } from "./IdentityCacheSyncService";
 import { userIdentityRepository } from "@/src/repositories/identity/store";
@@ -10,6 +11,7 @@ import type { IdentityUser } from "@/src/identity/types";
 
 export class IdentityMigrationService {
   seedIfEmpty(source: IdentityUser[] = mockIdentityUsers) {
+    if (!identityDemoEnabled()) return;
     if (userIdentityRepository.list({ includeDeleted: true }).length > 0) return;
     for (const user of source) {
       identityWriteModelService.upsertUser(user);
@@ -41,8 +43,8 @@ export class IdentityMigrationService {
   }
 
   bootstrap(store: MockIdentityStore) {
-    const source = store.users.length ? store.users : mockIdentityUsers;
-    this.seedIfEmpty(source);
+    const source = store.users.length ? store.users : identityDemoEnabled() ? mockIdentityUsers : [];
+    if (source.length) this.seedIfEmpty(source);
     identityCacheSyncService.hydrate(store);
     identityWriteModelService.cleanupExpired();
   }

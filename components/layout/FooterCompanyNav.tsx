@@ -14,7 +14,7 @@ const companyLinks = [
   { label: "Domov", href: "/" },
   { label: "Rešitve", href: "/#services" },
   { label: "Proces", href: "/#process" },
-  { label: "Reference", href: "/#projects" },
+  { label: "Primeri sistemov", href: "/#projects" },
   { label: "Kontakt", href: "/kontakt" },
   { label: "Politika zasebnosti", href: "/politika-zasebnosti" },
   { label: "Politika piškotkov", href: "/politika-piskotkov" },

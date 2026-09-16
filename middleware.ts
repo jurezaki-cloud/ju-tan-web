@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { IDENTITY_COOKIE_ACCESS } from "@/src/identity/config";
-import { TokenService } from "@/src/identity/tokens/TokenService";
+import { parseSignedToken } from "@/src/identity/tokens/parseEdge";
 import { hasPermission } from "@/src/config/permissions";
 import { permissionForPath } from "@/src/config/navigation";
 import { Role } from "@/src/config/roles";
@@ -9,6 +9,7 @@ import { resolveIdentityHome } from "@/src/identity/redirects";
 
 function isPlatform(pathname: string): boolean {
   return (
+    pathname.startsWith("/admin") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/crm") ||
     pathname.startsWith("/clients") ||
@@ -23,18 +24,17 @@ function isPlatform(pathname: string): boolean {
   );
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (!isPlatform(pathname) && !pathname.startsWith("/login")) {
     return NextResponse.next();
   }
 
   const token = request.cookies.get(IDENTITY_COOKIE_ACCESS)?.value;
-  const tokens = new TokenService();
-  const payload = tokens.parse(token);
+  const payload = await parseSignedToken(token);
 
   if (pathname === "/login") {
-    if (payload && !tokens.expired(payload)) {
+    if (payload && payload.exp > Date.now()) {
       const home = resolveIdentityHome(payload.role);
       return NextResponse.redirect(new URL(home, request.url));
     }
@@ -49,7 +49,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(login);
   }
 
-  if (tokens.expired(payload)) {
+  if (payload.exp <= Date.now()) {
     return NextResponse.redirect(new URL("/session-expired", request.url));
   }
 
@@ -82,6 +82,8 @@ export const config = {
     "/portal/:path*",
     "/dashboard",
     "/dashboard/:path*",
+    "/admin",
+    "/admin/:path*",
     "/crm",
     "/crm/:path*",
     "/clients",

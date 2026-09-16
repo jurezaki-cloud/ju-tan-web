@@ -53,12 +53,12 @@ export class IdentityController {
     this.auth.changePassword(userId, current, next);
   }
 
-  requestPasswordReset(email: string): void {
-    this.auth.requestPasswordReset(email);
+  requestPasswordReset(email: string): string | undefined {
+    return this.auth.requestPasswordReset(email);
   }
 
-  resetPassword(email: string, next: string): void {
-    this.auth.resetPassword(email, next);
+  resetPassword(token: string, next: string): void {
+    this.auth.resetPassword(token, next);
   }
 
   listSessions(userId: string) {

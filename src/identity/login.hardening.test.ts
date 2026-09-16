@@ -63,4 +63,43 @@ export async function assertIdentityLoginHardening(): Promise<void> {
   const logs = listIdentityLogs();
   if (!logs.some((item) => item.type === "LoginSuccess")) throw new Error("missing LoginSuccess log");
   if (logs.some((item) => JSON.stringify(item).includes("\"password\""))) throw new Error("password in logs");
+
+  const forged = kernel.tokens.parse(`jt1.${Buffer.from(JSON.stringify({
+    typ: "access",
+    sub: "u-admin",
+    role: "ADMIN",
+    sid: "ses-forged",
+    exp: Date.now() + 60_000,
+    iat: Date.now(),
+  })).toString("base64url")}`);
+  if (forged) throw new Error("unsigned jt1 must be rejected");
+
+  const issued = admin.session.token;
+  if (!issued.startsWith("jt2.")) throw new Error("signed prefix");
+  const parsed = kernel.tokens.parse(issued);
+  if (!parsed || parsed.sub !== "u-admin" || parsed.role !== "ADMIN") throw new Error("signed parse");
+  const tampered = `${issued.slice(0, -2)}aa`;
+  if (kernel.tokens.parse(tampered)) throw new Error("tampered token");
+
+  const { parseSignedToken } = await import("@/src/identity/tokens/parseEdge");
+  const edge = await parseSignedToken(issued);
+  if (!edge || edge.sub !== parsed.sub) throw new Error("edge hmac mismatch");
+
+  try {
+    kernel.controller.resetPassword("not-a-token", "newpass");
+    throw new Error("reset without issued token should fail");
+  } catch (error) {
+    if (!(error instanceof AuthError) || error.code !== "VALIDATION") throw error;
+  }
+
+  const resetToken = kernel.controller.requestPasswordReset("admin@ju-tan.com");
+  if (!resetToken) throw new Error("reset token issued");
+  kernel.controller.resetPassword(resetToken, "newpass");
+  const afterReset = await kernel.auth.login({ email: "admin@ju-tan.com", password: "newpass" });
+  if (afterReset.user.id !== "u-admin") throw new Error("login after reset");
 }
+
+void assertIdentityLoginHardening().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

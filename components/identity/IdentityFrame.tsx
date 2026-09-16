@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import BrandLogo from "@/components/common/BrandLogo";
 import { cardSurface, cardBodyClass } from "@/design";
-import { brandName } from "@/brand/theme";
 
 export default function IdentityFrame({
   title,
@@ -17,7 +16,7 @@ export default function IdentityFrame({
         <h1 className="mt-6 font-heading text-[22px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
           {title}
         </h1>
-        <p className={`mt-1 ${cardBodyClass}`}>{brandName} identity</p>
+        <p className={`mt-1 ${cardBodyClass}`}>Notranja platforma</p>
         <div className="mt-6">{children}</div>
       </div>
     </main>

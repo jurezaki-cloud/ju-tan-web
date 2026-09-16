@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import Header from "@/components/layout/Header";
 import Hero from "@/components/hero/Hero";
 import TrustBar from "@/components/common/TrustBar";
-import LogoStrip from "@/components/common/LogoStrip";
 import Value from "@/components/sections/Value";
 import Services from "@/components/sections/Services";
 import Trust from "@/components/sections/Trust";
@@ -25,7 +24,6 @@ export default function Home() {
       <main id="main">
         <Hero />
         <TrustBar />
-        <LogoStrip />
         <Value />
         <Services />
         <Process />

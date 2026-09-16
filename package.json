@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:hardening": "npx --no-install tsx src/security/rate-limit/cleanup.hardening.test.ts && npx --no-install tsx src/notifications/delivery.hardening.test.ts"
+    "test:hardening": "npx --no-install tsx src/security/rate-limit/cleanup.hardening.test.ts && npx --no-install tsx src/notifications/delivery.hardening.test.ts && npx --no-install tsx src/identity/login.hardening.test.ts && npx --no-install tsx src/security/network/proxy.hardening.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
