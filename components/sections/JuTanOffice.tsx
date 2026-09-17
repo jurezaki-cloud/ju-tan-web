@@ -106,30 +106,32 @@ function ModuleNode({
         "group relative overflow-hidden rounded-[1.35rem] border px-4 py-3 text-left",
         "bg-[linear-gradient(180deg,rgba(10,16,18,0.9),rgba(6,10,12,0.9))]",
         "shadow-[0_18px_42px_rgba(0,0,0,0.22)] transition-[transform,border-color,opacity,box-shadow,background-color] duration-300",
+        "light:bg-[linear-gradient(180deg,#ffffff,#f7f8f7)] light:shadow-[0_14px_32px_rgba(15,23,42,0.07)]",
         focusRing,
         mobile ? "w-full" : `absolute w-[10.75rem] ${item.desktopClassName}`,
         item.future
-          ? "border-dashed border-white/10 bg-[linear-gradient(180deg,rgba(9,14,16,0.72),rgba(6,9,11,0.72))]"
-          : "border-white/10",
+          ? "border-dashed border-white/10 bg-[linear-gradient(180deg,rgba(9,14,16,0.72),rgba(6,9,11,0.72))] light:border-slate-300/80 light:bg-[linear-gradient(180deg,#fbfaf9,#f3f5f4)]"
+          : "border-white/10 light:border-slate-200/90",
         isActive &&
           (item.future
-            ? "border-[#16a34a]/26 shadow-[0_22px_46px_rgba(4,120,87,0.1)]"
-            : "-translate-y-0.5 border-[#16a34a]/28 shadow-[0_24px_52px_rgba(4,120,87,0.12)]"),
+            ? "border-[#16a34a]/26 shadow-[0_22px_46px_rgba(4,120,87,0.1)] light:border-[#16a34a]/30 light:shadow-[0_16px_34px_rgba(22,163,74,0.08)]"
+            : "-translate-y-0.5 border-[#16a34a]/28 shadow-[0_24px_52px_rgba(4,120,87,0.12)] light:border-[#16a34a]/32 light:shadow-[0_18px_36px_rgba(22,163,74,0.1)]"),
         isDimmed && "opacity-45",
       )}
       aria-label={item.future ? `${item.label} - ${item.status}` : item.label}
     >
       <div
         className={cn(
-          "absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.2),transparent)]",
-          isActive && "bg-[linear-gradient(to_right,transparent,rgba(134,239,172,0.42),transparent)]",
+          "absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.2),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.1),transparent)]",
+          isActive &&
+            "bg-[linear-gradient(to_right,transparent,rgba(134,239,172,0.42),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(22,163,74,0.35),transparent)]",
         )}
       />
-      <p className="text-[14px] font-semibold tracking-[-0.03em] text-white">
+      <p className="text-[14px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
         {item.label}
       </p>
       {item.future ? (
-        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-slate-500">
+        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-slate-500 light:text-slate-500">
           {item.status}
         </p>
       ) : null}
@@ -148,20 +150,20 @@ export default function JuTanOffice() {
       id="office"
       belowFold
       labelledBy="office-title"
-      className="scroll-mt-28 bg-[#020807]"
+      className="scroll-mt-28 bg-[#020807] light:bg-slate-50"
       innerClassName="overflow-x-hidden"
       decorate={
         <>
           <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(22,163,74,0.1),transparent_26%),radial-gradient(circle_at_82%_24%,rgba(148,163,184,0.08),transparent_24%),linear-gradient(180deg,rgba(2,8,7,0.98),rgba(4,10,12,1))]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(22,163,74,0.1),transparent_26%),radial-gradient(circle_at_82%_24%,rgba(148,163,184,0.08),transparent_24%),linear-gradient(180deg,rgba(2,8,7,0.98),rgba(4,10,12,1))] light:bg-[radial-gradient(circle_at_16%_12%,rgba(22,163,74,0.08),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(148,163,184,0.07),transparent_28%),linear-gradient(180deg,#f8fafc,#f1f5f4)]"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.16),transparent)]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.16),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.1),transparent)]"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.12),transparent)]"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.12),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.08),transparent)]"
             aria-hidden
           />
         </>
@@ -171,40 +173,40 @@ export default function JuTanOffice() {
         <div className="mx-auto grid w-full max-w-[1240px] gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.12fr)] lg:items-center lg:gap-14">
           <FadeIn>
             <div className="max-w-[36rem]">
-              <p className={kickerClass}>IZDELEK JU-TAN</p>
+              <p className={cn(kickerClass, "light:text-slate-500")}>IZDELEK JU-TAN</p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#86efac]">
+                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#86efac] light:text-[#15803d]">
                   JU-TAN Office
                 </p>
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300">
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300 light:border-slate-200 light:bg-white/80 light:text-slate-600">
                   V AKTIVNEM RAZVOJU
                 </span>
               </div>
 
-              <p className="mt-5 text-[clamp(1.8rem,calc(1.35rem+1.9vw),2.85rem)] font-heading font-semibold leading-[1.08] tracking-[-0.05em] text-white">
+              <p className="mt-5 text-[clamp(1.8rem,calc(1.35rem+1.9vw),2.85rem)] font-heading font-semibold leading-[1.08] tracking-[-0.05em] text-white light:text-slate-900">
                 JU-TAN Office
               </p>
 
               <h2
                 id="office-title"
-                className="mt-4 max-w-[10ch] text-[clamp(1.55rem,calc(1.32rem+1.05vw),2.45rem)] font-heading font-semibold leading-[1.14] tracking-[-0.045em] text-white"
+                className="mt-4 max-w-[10ch] text-[clamp(1.55rem,calc(1.32rem+1.05vw),2.45rem)] font-heading font-semibold leading-[1.14] tracking-[-0.045em] text-white light:text-slate-900"
               >
                 Poslovanje na enem mestu.
               </h2>
 
-              <p className={`${bodyClass} mt-5 max-w-[35rem] text-slate-300`}>
+              <p className={`${bodyClass} mt-5 max-w-[35rem] text-slate-300 light:text-slate-600`}>
                 JU-TAN Office je lastna poslovna platforma JU-TAN v aktivnem
                 razvoju, zasnovana za povezovanje ključnih podatkov in
                 vsakodnevnih poslovnih procesov v enem okolju.
               </p>
 
-              <p className={`${bodyClass} mt-4 max-w-[34rem] text-slate-400`}>
+              <p className={`${bodyClass} mt-4 max-w-[34rem] text-slate-400 light:text-slate-600`}>
                 Razvijamo ga kot dolgoročno platformo, ki lahko raste skupaj s
                 podjetjem in njegovimi procesi.
               </p>
 
-              <p className="mt-5 text-[12px] uppercase tracking-[0.18em] text-slate-500">
+              <p className="mt-5 text-[12px] uppercase tracking-[0.18em] text-slate-500 light:text-slate-500">
                 Namizna aplikacija · Python · PySide6
               </p>
 
@@ -213,7 +215,7 @@ export default function JuTanOffice() {
                   href="/#booking"
                   variant="secondary"
                   aria-label="Spoznajte JU-TAN Office in oddajte povpraševanje"
-                  className="border-white/14 bg-white/[0.03] text-white hover:border-[#16a34a]/26 hover:bg-white/[0.05]"
+                  className="border-white/14 bg-white/[0.03] text-white hover:border-[#16a34a]/26 hover:bg-white/[0.05] light:border-slate-200 light:bg-white light:text-slate-800 light:hover:border-[#16a34a]/35 light:hover:bg-[#f0fdf4]"
                 >
                   Spoznajte JU-TAN Office
                 </CtaLink>
@@ -224,7 +226,7 @@ export default function JuTanOffice() {
           <FadeIn delay={0.08}>
             <div className="relative mx-auto w-full max-w-[47rem] lg:pt-4">
               <motion.div
-                className="pointer-events-none absolute inset-[16%] rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_66%)] blur-3xl"
+                className="pointer-events-none absolute inset-[16%] rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_66%)] blur-3xl light:bg-[radial-gradient(circle,rgba(22,163,74,0.08),transparent_66%)]"
                 aria-hidden
                 animate={reduceMotion ? undefined : { opacity: [0.2, 0.32, 0.2] }}
                 transition={{
@@ -234,10 +236,10 @@ export default function JuTanOffice() {
                 }}
               />
 
-              <div className="relative overflow-hidden rounded-[2.1rem] border border-white/10 bg-[linear-gradient(180deg,rgba(5,11,12,0.96),rgba(5,9,11,0.98))] p-4 shadow-[0_34px_100px_rgba(0,0,0,0.38)] sm:p-6 lg:p-7">
-                <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_72%)]" />
-                <div className="absolute inset-x-[18%] top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.16),transparent)]" />
-                <div className="absolute inset-x-[22%] bottom-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.12),transparent)]" />
+              <div className="relative overflow-hidden rounded-[2.1rem] border border-white/10 bg-[linear-gradient(180deg,rgba(5,11,12,0.96),rgba(5,9,11,0.98))] p-4 shadow-[0_34px_100px_rgba(0,0,0,0.38)] light:border-slate-200/90 light:bg-[linear-gradient(180deg,#ffffff,#f7f8f7)] light:shadow-[0_28px_64px_rgba(15,23,42,0.08)] sm:p-6 lg:p-7">
+                <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_72%)] light:bg-[radial-gradient(circle_at_top,rgba(22,163,74,0.05),transparent_72%)]" />
+                <div className="absolute inset-x-[18%] top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.16),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.1),transparent)]" />
+                <div className="absolute inset-x-[22%] bottom-0 h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.12),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.08),transparent)]" />
 
                 <div className="relative hidden min-h-[34rem] md:block">
                   <svg
@@ -255,15 +257,12 @@ export default function JuTanOffice() {
                           key={item.id}
                           d={item.path}
                           fill="none"
-                          stroke={
-                            item.future
-                              ? isActive
-                                ? "rgba(134,239,172,0.66)"
-                                : "rgba(148,163,184,0.2)"
-                              : isActive
-                                ? "rgba(134,239,172,0.78)"
-                                : "rgba(148,163,184,0.26)"
-                          }
+                          className={cn(
+                            "office-connection-path",
+                            item.future && "office-connection-path-future",
+                            isActive && "office-connection-path-active",
+                            isDimmed && "office-connection-path-dimmed",
+                          )}
                           strokeWidth={isActive ? 0.96 : item.future ? 0.68 : 0.82}
                           strokeLinecap="round"
                           strokeDasharray={item.future ? "1.8 2.6" : undefined}
@@ -357,14 +356,14 @@ export default function JuTanOffice() {
                   >
                     <div
                       className={cn(
-                        "relative overflow-hidden rounded-[2rem] border bg-[linear-gradient(180deg,rgba(7,12,14,0.99),rgba(5,9,11,0.98))] p-4 shadow-[0_30px_72px_rgba(0,0,0,0.32)]",
+                        "relative overflow-hidden rounded-[2rem] border bg-[linear-gradient(180deg,rgba(7,12,14,0.99),rgba(5,9,11,0.98))] p-4 shadow-[0_30px_72px_rgba(0,0,0,0.32)] light:bg-[linear-gradient(180deg,#ffffff,#f8faf9)] light:shadow-[0_22px_48px_rgba(15,23,42,0.08)]",
                         hasActiveModule
-                          ? "border-[#16a34a]/22"
-                          : "border-white/10",
+                          ? "border-[#16a34a]/22 light:border-[#16a34a]/28"
+                          : "border-white/10 light:border-slate-200/90",
                       )}
                     >
                       <motion.div
-                        className="absolute inset-x-[16%] top-10 h-24 rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_72%)] blur-3xl"
+                        className="absolute inset-x-[16%] top-10 h-24 rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_72%)] blur-3xl light:bg-[radial-gradient(circle,rgba(22,163,74,0.08),transparent_72%)]"
                         aria-hidden
                         animate={
                           reduceMotion
@@ -384,24 +383,24 @@ export default function JuTanOffice() {
                       />
 
                       <div className="relative flex items-center gap-2 px-1">
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/65" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/28" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/18" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/65 light:bg-slate-400/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/28 light:bg-slate-300/80" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/18 light:bg-slate-200" />
                       </div>
 
-                      <div className="relative mt-4 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,20,23,0.92),rgba(8,13,15,0.98))] px-7 py-8">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(148,163,184,0.08),transparent_48%)]" />
-                        <div className="absolute inset-x-7 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.18),transparent)]" />
+                      <div className="relative mt-4 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,20,23,0.92),rgba(8,13,15,0.98))] px-7 py-8 light:border-slate-200/90 light:bg-[linear-gradient(180deg,#fbfaf9,#f3f5f4)]">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(148,163,184,0.08),transparent_48%)] light:bg-[radial-gradient(circle_at_top_left,rgba(22,163,74,0.05),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(148,163,184,0.08),transparent_48%)]" />
+                        <div className="absolute inset-x-7 top-0 h-px bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.18),transparent)] light:bg-[linear-gradient(to_right,transparent,rgba(15,23,42,0.1),transparent)]" />
 
                         <div className="relative">
-                          <p className="text-[0.82rem] font-semibold uppercase tracking-[0.28em] text-white/78">
+                          <p className="text-[0.82rem] font-semibold uppercase tracking-[0.28em] text-white/78 light:text-slate-600">
                             JU-TAN
                           </p>
-                          <p className="mt-2 text-[clamp(4.15rem,8.4vw,5.6rem)] font-heading font-semibold leading-[0.92] tracking-[-0.095em] text-white [text-shadow:0_10px_32px_rgba(255,255,255,0.06)]">
+                          <p className="mt-2 text-[clamp(4.15rem,8.4vw,5.6rem)] font-heading font-semibold leading-[0.92] tracking-[-0.095em] text-white [text-shadow:0_10px_32px_rgba(255,255,255,0.06)] light:text-slate-900 light:[text-shadow:none]">
                             Office
                           </p>
 
-                          <div className="mt-5 h-px w-16 bg-[linear-gradient(to_right,rgba(134,239,172,0.42),transparent)]" />
+                          <div className="mt-5 h-px w-16 bg-[linear-gradient(to_right,rgba(134,239,172,0.42),transparent)] light:bg-[linear-gradient(to_right,rgba(22,163,74,0.45),transparent)]" />
 
                           <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] tracking-[0.01em]">
                             {productAreas.map((item, index) => {
@@ -415,16 +414,16 @@ export default function JuTanOffice() {
                                   className="flex items-center gap-2"
                                 >
                                   {index > 0 ? (
-                                    <span className="text-slate-600">·</span>
+                                    <span className="text-slate-600 light:text-slate-400">·</span>
                                   ) : null}
                                   <span
                                     className={cn(
                                       "font-medium transition-colors duration-300",
                                       isActive
-                                        ? "text-white"
+                                        ? "text-white light:text-slate-950"
                                         : isDimmed
-                                          ? "text-slate-500"
-                                          : "text-white/74",
+                                          ? "text-slate-500 light:text-slate-400"
+                                          : "text-white/74 light:text-slate-700",
                                     )}
                                   >
                                     {item.label}
@@ -442,8 +441,10 @@ export default function JuTanOffice() {
                 <div className="md:hidden">
                   <motion.div
                     className={cn(
-                      "rounded-[1.7rem] border bg-[linear-gradient(180deg,rgba(6,12,14,0.98),rgba(4,8,10,0.96))] p-3.5 shadow-[0_28px_60px_rgba(0,0,0,0.26)]",
-                      hasActiveModule ? "border-[#16a34a]/22" : "border-white/10",
+                      "rounded-[1.7rem] border bg-[linear-gradient(180deg,rgba(6,12,14,0.98),rgba(4,8,10,0.96))] p-3.5 shadow-[0_28px_60px_rgba(0,0,0,0.26)] light:bg-[linear-gradient(180deg,#ffffff,#f7f8f7)] light:shadow-[0_20px_44px_rgba(15,23,42,0.08)]",
+                      hasActiveModule
+                        ? "border-[#16a34a]/22 light:border-[#16a34a]/28"
+                        : "border-white/10 light:border-slate-200/90",
                     )}
                     initial={reduceMotion ? false : { opacity: 0, y: 18 }}
                     whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -465,18 +466,18 @@ export default function JuTanOffice() {
                       ease: "easeInOut",
                     }}
                   >
-                    <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,20,23,0.92),rgba(8,13,15,0.98))] px-5 py-6">
+                    <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,20,23,0.92),rgba(8,13,15,0.98))] px-5 py-6 light:border-slate-200/90 light:bg-[linear-gradient(180deg,#fbfaf9,#f3f5f4)]">
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/65" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/28" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-white/18" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/65 light:bg-slate-400/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/28 light:bg-slate-300/80" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-white/18 light:bg-slate-200" />
                       </div>
 
                       <div className="mt-5">
-                        <p className="text-[0.8rem] font-semibold uppercase tracking-[0.28em] text-white/78">
+                        <p className="text-[0.8rem] font-semibold uppercase tracking-[0.28em] text-white/78 light:text-slate-600">
                           JU-TAN
                         </p>
-                        <p className="mt-2 text-[3.2rem] font-heading font-semibold leading-[0.94] tracking-[-0.09em] text-white [text-shadow:0_10px_28px_rgba(255,255,255,0.06)]">
+                        <p className="mt-2 text-[3.2rem] font-heading font-semibold leading-[0.94] tracking-[-0.09em] text-white [text-shadow:0_10px_28px_rgba(255,255,255,0.06)] light:text-slate-900 light:[text-shadow:none]">
                           Office
                         </p>
 
@@ -489,16 +490,16 @@ export default function JuTanOffice() {
                             return (
                               <span key={item.id} className="flex items-center gap-2">
                                 {index > 0 ? (
-                                  <span className="text-slate-600">·</span>
+                                  <span className="text-slate-600 light:text-slate-400">·</span>
                                 ) : null}
                                 <span
                                   className={cn(
                                     "font-medium transition-colors duration-300",
                                     isActive
-                                      ? "text-white"
+                                      ? "text-white light:text-slate-950"
                                       : isDimmed
-                                        ? "text-slate-500"
-                                        : "text-white/74",
+                                        ? "text-slate-500 light:text-slate-400"
+                                        : "text-white/74 light:text-slate-700",
                                   )}
                                 >
                                   {item.label}
@@ -512,7 +513,7 @@ export default function JuTanOffice() {
                   </motion.div>
 
                   <div className="relative mx-auto mt-5 max-w-[22rem] pt-6">
-                    <div className="pointer-events-none absolute left-1/2 top-0 h-6 w-px -translate-x-1/2 bg-[linear-gradient(to_bottom,rgba(134,239,172,0.35),rgba(148,163,184,0.02))]" />
+                    <div className="pointer-events-none absolute left-1/2 top-0 h-6 w-px -translate-x-1/2 bg-[linear-gradient(to_bottom,rgba(134,239,172,0.35),rgba(148,163,184,0.02))] light:bg-[linear-gradient(to_bottom,rgba(22,163,74,0.4),rgba(148,163,184,0.05))]" />
                     <div className="grid gap-3">
                       {currentModules.map((item) => (
                         <ModuleNode
@@ -541,6 +542,41 @@ export default function JuTanOffice() {
           </FadeIn>
         </div>
       </div>
+      <style jsx>{`
+        .office-connection-path {
+          stroke: rgba(148, 163, 184, 0.26);
+        }
+
+        .office-connection-path-future {
+          stroke: rgba(148, 163, 184, 0.2);
+        }
+
+        .office-connection-path-active {
+          stroke: rgba(134, 239, 172, 0.78);
+        }
+
+        .office-connection-path-future.office-connection-path-active {
+          stroke: rgba(134, 239, 172, 0.66);
+        }
+
+        :global(html.light) .office-connection-path {
+          stroke: rgba(71, 85, 105, 0.55);
+          stroke-width: 0.95;
+        }
+
+        :global(html.light) .office-connection-path-future {
+          stroke: rgba(100, 116, 139, 0.4);
+        }
+
+        :global(html.light) .office-connection-path-active {
+          stroke: rgba(22, 163, 74, 0.78);
+          stroke-width: 1.05;
+        }
+
+        :global(html.light) .office-connection-path-future.office-connection-path-active {
+          stroke: rgba(22, 163, 74, 0.62);
+        }
+      `}</style>
     </Section>
   );
 }

@@ -166,7 +166,11 @@ export default function HeroStage() {
                         <path
                           d={module.path}
                           fill="none"
-                          stroke={dimmed ? "rgba(148,163,184,0.13)" : "rgba(148,163,184,0.22)"}
+                          className={cn(
+                            "hero-stage-path",
+                            dimmed && "hero-stage-path-dimmed",
+                            active && "hero-stage-path-active",
+                          )}
                           strokeWidth={active ? "0.82" : "0.7"}
                           strokeLinecap="round"
                         />
@@ -174,7 +178,6 @@ export default function HeroStage() {
                           <path
                             d={module.path}
                             fill="none"
-                            stroke="rgba(134,239,172,0.88)"
                             strokeWidth="1.05"
                             strokeLinecap="round"
                             strokeDasharray="8 120"
@@ -189,7 +192,7 @@ export default function HeroStage() {
                           <path
                             d={module.path}
                             fill="none"
-                            stroke="rgba(134,239,172,0.72)"
+                            className="hero-stage-path-active-overlay"
                             strokeWidth="1.08"
                             strokeLinecap="round"
                           />
@@ -198,13 +201,16 @@ export default function HeroStage() {
                     );
                   })}
 
-                  <circle cx="50" cy="50" r="18" fill="rgba(22,163,74,0.05)" />
+                  <circle cx="50" cy="50" r="18" className="hero-stage-core-fill" />
                   <circle
                     cx="50"
                     cy="50"
                     r="13.5"
                     fill="none"
-                    stroke={activeNodeId ? "rgba(134,239,172,0.28)" : "rgba(148,163,184,0.18)"}
+                    className={cn(
+                      "hero-stage-ring-inner",
+                      activeNodeId && "hero-stage-ring-active",
+                    )}
                     strokeWidth="0.75"
                   />
                   <circle
@@ -212,7 +218,10 @@ export default function HeroStage() {
                     cy="50"
                     r="26.5"
                     fill="none"
-                    stroke={hovered || activeNodeId ? "rgba(134,239,172,0.22)" : "rgba(148,163,184,0.12)"}
+                    className={cn(
+                      "hero-stage-ring-outer",
+                      (hovered || activeNodeId) && "hero-stage-ring-active",
+                    )}
                     strokeWidth="0.7"
                     strokeDasharray="1.25 3.4"
                   />
@@ -253,16 +262,16 @@ export default function HeroStage() {
                         onFocus={() => setActiveNodeId(module.id)}
                         onBlur={() => setActiveNodeId((current) => (current === module.id ? null : current))}
                         className={cn(
-                          "relative flex min-w-[6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-2 rounded-full border bg-[linear-gradient(180deg,rgba(12,18,30,0.82),rgba(12,18,30,0.7))] px-3 py-2 shadow-[0_16px_28px_rgba(0,0,0,0.2)] backdrop-blur-[3px] transition-[opacity,transform,border-color,background-color,box-shadow] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#86efac]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09111d] light:bg-white/90 light:focus-visible:ring-offset-white sm:min-w-[7.8rem] sm:px-4 sm:py-2.5",
+                          "relative flex min-w-[6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-2 rounded-full border bg-[linear-gradient(180deg,rgba(12,18,30,0.82),rgba(12,18,30,0.7))] px-3 py-2 shadow-[0_16px_28px_rgba(0,0,0,0.2)] backdrop-blur-[3px] transition-[opacity,transform,border-color,background-color,box-shadow] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#86efac]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#09111d] light:bg-[linear-gradient(180deg,#ffffff,#f5f7f6)] light:shadow-[0_10px_24px_rgba(15,23,42,0.08)] light:focus-visible:ring-[#16a34a]/55 light:focus-visible:ring-offset-white sm:min-w-[7.8rem] sm:px-4 sm:py-2.5",
                           module.widthClass,
                           active
-                            ? "border-[#86efac]/58 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(12,18,30,0.8))] shadow-[0_18px_34px_rgba(4,12,24,0.3)] light:border-[#16a34a]/30 light:bg-white"
-                            : "border-white/10 light:border-slate-200",
+                            ? "border-[#86efac]/58 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(12,18,30,0.8))] shadow-[0_18px_34px_rgba(4,12,24,0.3)] light:border-[#16a34a]/35 light:bg-[linear-gradient(180deg,#ffffff,#f0fdf4)] light:shadow-[0_12px_28px_rgba(22,163,74,0.1)]"
+                            : "border-white/10 light:border-slate-200/95",
                         )}
                       >
                         {ambientActive ? (
                           <span
-                            className="hero-stage-node-idle absolute inset-0 rounded-full border border-[#86efac]/35 opacity-0"
+                            className="hero-stage-node-idle absolute inset-0 rounded-full border border-[#86efac]/35 light:border-[#16a34a]/40 opacity-0"
                             style={{ animationDelay: `${1 + index * 1.18}s` }}
                             aria-hidden
                           />
@@ -270,14 +279,16 @@ export default function HeroStage() {
                         <span
                           className={cn(
                             "pointer-events-none absolute inset-0 rounded-full border transition-opacity duration-300",
-                            active ? "border-[#86efac]/48 opacity-100" : "border-transparent opacity-0",
+                            active
+                              ? "border-[#86efac]/48 opacity-100 light:border-[#16a34a]/40"
+                              : "border-transparent opacity-0",
                           )}
                           aria-hidden
                         />
                         <span
                           className={cn(
                             "h-1.5 w-1.5 rounded-full transition-[opacity,transform,background-color] duration-300",
-                            active ? "scale-110 bg-[#86efac]" : "bg-[#16a34a]",
+                            active ? "scale-110 bg-[#86efac] light:bg-[#16a34a]" : "bg-[#16a34a]",
                           )}
                           aria-hidden
                         />
@@ -333,6 +344,106 @@ export default function HeroStage() {
       </div>
 
       <style jsx>{`
+        .hero-stage-path {
+          stroke: rgba(148, 163, 184, 0.22);
+        }
+
+        .hero-stage-path-dimmed {
+          stroke: rgba(148, 163, 184, 0.13);
+        }
+
+        .hero-stage-path-active,
+        .hero-stage-path-active-overlay {
+          stroke: rgba(134, 239, 172, 0.72);
+        }
+
+        .hero-stage-signal {
+          stroke: rgba(134, 239, 172, 0.88);
+        }
+
+        .hero-stage-core-fill {
+          fill: rgba(22, 163, 74, 0.05);
+        }
+
+        .hero-stage-ring-inner {
+          stroke: rgba(148, 163, 184, 0.18);
+        }
+
+        .hero-stage-ring-outer {
+          stroke: rgba(148, 163, 184, 0.12);
+        }
+
+        .hero-stage-ring-active {
+          stroke: rgba(134, 239, 172, 0.28);
+        }
+
+        .hero-stage-ring-outer.hero-stage-ring-active {
+          stroke: rgba(134, 239, 172, 0.22);
+        }
+
+        :global(html.light) .hero-stage-path {
+          stroke: rgba(51, 65, 85, 0.62);
+          stroke-width: 0.95;
+        }
+
+        :global(html.light) .hero-stage-path-dimmed {
+          stroke: rgba(100, 116, 139, 0.32);
+        }
+
+        :global(html.light) .hero-stage-path-active,
+        :global(html.light) .hero-stage-path-active-overlay {
+          stroke: rgba(21, 128, 61, 0.82);
+          stroke-width: 1.18;
+        }
+
+        :global(html.light) .hero-stage-signal {
+          stroke: rgba(22, 163, 74, 0.95);
+          stroke-width: 1.35;
+        }
+
+        :global(html.light) .hero-stage-core-fill {
+          fill: rgba(22, 163, 74, 0.08);
+        }
+
+        :global(html.light) .hero-stage-ring-inner {
+          stroke: rgba(71, 85, 105, 0.36);
+        }
+
+        :global(html.light) .hero-stage-ring-outer {
+          stroke: rgba(71, 85, 105, 0.26);
+        }
+
+        :global(html.light) .hero-stage-ring-active {
+          stroke: rgba(22, 163, 74, 0.5);
+        }
+
+        :global(html.light) .hero-stage-ring-outer.hero-stage-ring-active {
+          stroke: rgba(22, 163, 74, 0.4);
+        }
+
+        :global(html.light) .hero-stage-signal {
+          animation-name: hero-stage-signal-light;
+        }
+
+        @keyframes hero-stage-signal-light {
+          0%,
+          68% {
+            opacity: 0;
+            stroke-dashoffset: 0;
+          }
+          74% {
+            opacity: 0.95;
+          }
+          90% {
+            opacity: 0.78;
+            stroke-dashoffset: -48;
+          }
+          100% {
+            opacity: 0;
+            stroke-dashoffset: -58;
+          }
+        }
+
         @keyframes hero-stage-panel-ambient {
           0%,
           100% {
