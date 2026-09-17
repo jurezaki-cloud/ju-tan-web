@@ -20,7 +20,7 @@ export default function HeroContent() {
       </HeroReveal>
 
       <HeroReveal delay={0.08}>
-        <p className={cn(bodyClass, "mt-6 max-w-[34rem] text-[17px] text-slate-200 md:text-[18px]")}>
+        <p className={cn(bodyClass, "mt-6 max-w-[34rem] text-[17px] text-slate-200 light:text-slate-600 md:text-[18px]")}>
           {heroCopy.description}
         </p>
         <p className={cn(ledeClass, "mt-4 max-w-[34rem] text-slate-400 light:text-slate-600")}>
