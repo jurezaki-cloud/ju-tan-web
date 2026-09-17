@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { marketingOnlyApiResponse } from "@/lib/marketing-surface";
 import { getIdentity } from "@/src/identity";
 import { AuthError } from "@/src/identity/errors";
 import { readAccessToken } from "@/src/identity/adapters/cookies";
 
 export async function GET() {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
   const token = await readAccessToken();
   if (!token) return NextResponse.json({ ok: false, authenticated: false }, { status: 401 });
   try {

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { marketingOnlyApiResponse } from "@/lib/marketing-surface";
 import { inviteService } from "@/src/services/identity";
 import { InviteSecurityGuard } from "@/src/security/invite";
 import { clientIp, GENERIC_LIMIT_MESSAGE } from "@/src/security/rate-limit";
@@ -8,6 +9,8 @@ function generic() {
 }
 
 export async function GET(request: Request, context: { params: Promise<{ token: string }> }) {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
   const { token } = await context.params;
   const limited = InviteSecurityGuard.token(token, "verify", clientIp(request));
   if (limited) return limited;
@@ -17,6 +20,8 @@ export async function GET(request: Request, context: { params: Promise<{ token: 
 }
 
 export async function POST(request: Request, context: { params: Promise<{ token: string }> }) {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
   const { token } = await context.params;
   const limited = InviteSecurityGuard.token(token, "accept", clientIp(request));
   if (limited) return limited;

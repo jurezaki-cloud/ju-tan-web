@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import PlatformShell from "@/components/platform/PlatformShell";
+import { assertPlatformEnabled } from "@/lib/marketing-surface";
 import { readAccessToken } from "@/src/identity/adapters/cookies";
 import { getIdentity } from "@/src/identity";
 import { AuthError } from "@/src/identity/errors";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PlatformLayout({ children }: { children: ReactNode }) {
+  assertPlatformEnabled();
   const token = await readAccessToken();
   let initialUser = null;
   if (token) {

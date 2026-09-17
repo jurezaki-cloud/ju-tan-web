@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { marketingOnlyApiResponse } from "@/lib/marketing-surface";
 import { getIdentity } from "@/src/identity";
 import { readAccessToken } from "@/src/identity/adapters/cookies";
 import { AuthError } from "@/src/identity/errors";
 import type { ProvisioningActor } from "./shared";
 
 export async function requireActor(): Promise<ProvisioningActor | NextResponse> {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
+
   const token = await readAccessToken();
   if (!token) {
     return NextResponse.json({ ok: false, error: "Ni seje." }, { status: 401 });

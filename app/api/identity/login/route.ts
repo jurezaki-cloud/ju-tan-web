@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { marketingOnlyApiResponse } from "@/lib/marketing-surface";
 import { getIdentity } from "@/src/identity";
 import { applyIdentityCookies } from "@/src/identity/adapters/cookies";
 import { identityErrorResponse } from "@/src/identity/http";
@@ -7,6 +8,8 @@ import { identityLog } from "@/src/identity/observability";
 import { resolveIdentityHome } from "@/src/identity/redirects";
 
 export async function POST(request: Request) {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
   try {
     const input = parseLoginBody(await readJsonBody(request));
     const result = await getIdentity().controller.login(input, {

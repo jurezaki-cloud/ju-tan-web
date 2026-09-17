@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { assertPlatformEnabled } from "@/lib/marketing-surface";
 import { clientService } from "@/src/services/ClientService";
 import { leadService } from "@/src/services/LeadService";
 import { contactService } from "@/src/services/ContactService";
@@ -16,6 +17,7 @@ import { AuthError } from "@/src/identity/auth/AuthService";
 import type { Role } from "@/src/config/roles";
 
 async function access() {
+  assertPlatformEnabled();
   const token = await readAccessToken();
   if (!token) return systemCrmAccess;
   try {

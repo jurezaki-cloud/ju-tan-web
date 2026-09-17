@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isMarketingOnlySurface } from "@/lib/marketing-surface";
 import { IDENTITY_COOKIE_ACCESS } from "@/src/identity/config";
 import { TokenService } from "@/src/identity/tokens/TokenService";
 import { hasPermission } from "@/src/config/permissions";
@@ -19,12 +20,32 @@ function isPlatform(pathname: string): boolean {
     pathname.startsWith("/settings") ||
     pathname.startsWith("/profile") ||
     pathname.startsWith("/portal") ||
+    pathname.startsWith("/admin") ||
     pathname.startsWith("/logout")
+  );
+}
+
+function isIsolatedSurface(pathname: string): boolean {
+  return (
+    isPlatform(pathname) ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/access-denied") ||
+    pathname.startsWith("/session-expired") ||
+    pathname.startsWith("/invite") ||
+    pathname.startsWith("/api/identity") ||
+    pathname.startsWith("/api/admin") ||
+    pathname.startsWith("/api/invite")
   );
 }
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Phase 0B: deny-by-default for every non-marketing identity/platform entrypoint.
+  if (isMarketingOnlySurface() && isIsolatedSurface(pathname)) {
+    return new NextResponse(null, { status: 404 });
+  }
+
   if (!isPlatform(pathname) && !pathname.startsWith("/login")) {
     return NextResponse.next();
   }
@@ -77,6 +98,10 @@ export const config = {
   matcher: [
     "/login",
     "/logout",
+    "/access-denied",
+    "/session-expired",
+    "/invite",
+    "/invite/:path*",
     "/profile",
     "/portal",
     "/portal/:path*",
@@ -96,5 +121,13 @@ export const config = {
     "/ai/:path*",
     "/settings",
     "/settings/:path*",
+    "/admin",
+    "/admin/:path*",
+    "/api/identity",
+    "/api/identity/:path*",
+    "/api/admin",
+    "/api/admin/:path*",
+    "/api/invite",
+    "/api/invite/:path*",
   ],
 };

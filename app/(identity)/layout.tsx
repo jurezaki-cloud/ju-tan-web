@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { assertPlatformEnabled } from "@/lib/marketing-surface";
 
 export const metadata: Metadata = {
   title: "Prijava",
@@ -7,5 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function IdentityLayout({ children }: { children: ReactNode }) {
+  assertPlatformEnabled();
   return children;
 }

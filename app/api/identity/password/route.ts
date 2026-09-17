@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { marketingOnlyApiResponse } from "@/lib/marketing-surface";
 import { getIdentity } from "@/src/identity";
 import { AuthError } from "@/src/identity/errors";
 import { readAccessToken } from "@/src/identity/adapters/cookies";
@@ -8,6 +9,8 @@ import { writeAudit } from "@/src/services/identity/shared";
 import { passwordResetDeliveryService } from "@/src/notifications";
 
 export async function POST(request: Request) {
+  const blocked = marketingOnlyApiResponse();
+  if (blocked) return blocked;
   const token = await readAccessToken();
   if (!token) return NextResponse.json({ ok: false }, { status: 401 });
   try {

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { assertPlatformEnabled } from "@/lib/marketing-surface";
 import { readAccessToken } from "@/src/identity/adapters/cookies";
 import { getIdentity } from "@/src/identity";
 import { AuthError } from "@/src/identity/auth/AuthService";
@@ -13,6 +14,7 @@ import { offerLineService } from "./OfferLineService";
 import { offerTemplateService } from "./OfferTemplateService";
 
 async function access() {
+  assertPlatformEnabled();
   const token = await readAccessToken();
   if (!token) return systemOfferAccess;
   try {
