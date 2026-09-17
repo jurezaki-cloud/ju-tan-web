@@ -12,7 +12,7 @@ export default function HeaderCTA({ className, onClick }: HeaderCTAProps) {
 
   return (
     <CTAButton
-      href="/kontakt"
+      href="/#booking"
       size="compact"
       className={cn("w-full sm:w-auto", className)}
       onClick={onClick}

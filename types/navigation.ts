@@ -1,8 +1,10 @@
 export type NavSectionId =
   | "home"
   | "services"
+  | "office"
   | "process"
-  | "projects"
+  | "company"
+  | "booking"
   | "contact";
 
 export type NavItemId = NavSectionId;

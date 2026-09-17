@@ -8,11 +8,11 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-[calc(4rem+0.75rem)] pb-8 lg:pt-[calc(4rem+1.75rem)] lg:pb-10"
+      className="relative overflow-hidden pt-[calc(4rem+0.5rem)] pb-6 lg:pt-[calc(4rem+1.2rem)] lg:pb-8"
     >
       <HeroBackground />
 
-      <div className="container relative z-10 grid items-center gap-10 py-4 sm:gap-12 xl:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] xl:gap-14 xl:py-8">
+      <div className="container relative z-10 grid items-center gap-8 py-3 sm:gap-10 xl:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] xl:gap-10 xl:py-5">
         <div className="min-w-0">
           <HeroContent />
           <HeroButtons />

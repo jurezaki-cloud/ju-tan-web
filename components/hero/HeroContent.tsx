@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 export default function HeroContent() {
   return (
-    <div className="max-w-[37rem] min-w-0">
+    <div className="max-w-[36rem] min-w-0">
       <HeroReveal>
         <HeroBadge />
       </HeroReveal>
@@ -20,10 +20,20 @@ export default function HeroContent() {
       </HeroReveal>
 
       <HeroReveal delay={0.08}>
-        <p className={cn(bodyClass, "mt-6 max-w-[34rem] text-[17px] text-slate-200 light:text-slate-600 md:text-[18px]")}>
+        <p
+          className={cn(
+            bodyClass,
+            "mt-5 max-w-[33rem] text-[17px] leading-[1.58] text-slate-100 light:text-slate-700 md:text-[18px]",
+          )}
+        >
           {heroCopy.description}
         </p>
-        <p className={cn(ledeClass, "mt-4 max-w-[34rem] text-slate-400 light:text-slate-600")}>
+        <p
+          className={cn(
+            ledeClass,
+            "mt-3 max-w-[31rem] text-[15px] leading-[1.68] text-slate-400/90 light:text-slate-600 md:text-[16px]",
+          )}
+        >
           {heroCopy.supporting}
         </p>
       </HeroReveal>

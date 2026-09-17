@@ -7,12 +7,17 @@ export function getHeaderNavigation(): NavItem[] {
   const { nav } = getMessages().header;
 
   return [
-    { id: "home", href: "/#home", sectionId: "home", label: nav.home },
     {
       id: "services",
       href: "/#services",
       sectionId: "services",
       label: nav.solutions,
+    },
+    {
+      id: "office",
+      href: "/#office",
+      sectionId: "office",
+      label: nav.office,
     },
     {
       id: "process",
@@ -21,15 +26,15 @@ export function getHeaderNavigation(): NavItem[] {
       label: nav.process,
     },
     {
-      id: "projects",
-      href: "/#projects",
-      sectionId: "projects",
-      label: nav.references,
+      id: "company",
+      href: "/#company",
+      sectionId: "company",
+      label: nav.company,
     },
     {
-      id: "contact",
-      href: "/kontakt",
-      sectionId: "contact",
+      id: "booking",
+      href: "/#booking",
+      sectionId: "booking",
       label: nav.contact,
     },
   ];
