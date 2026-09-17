@@ -23,7 +23,7 @@ function isPlatform(pathname: string): boolean {
   );
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (!isPlatform(pathname) && !pathname.startsWith("/login")) {
     return NextResponse.next();
