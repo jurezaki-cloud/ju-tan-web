@@ -1,7 +1,8 @@
-import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
 
-export const privacyLastUpdated = "15. 9. 2026";
+export const privacyLastUpdated = "17. 9. 2026";
+
+export const privacyGdprEmail = "zasebnost-gdpr@ju-tan.com";
 
 export const privacyMeta = {
   title: "Politika zasebnosti",
@@ -17,16 +18,27 @@ export const privacyHero = {
     "Varstvo osebnih podatkov jemljemo resno. Na tej strani pojasnjujemo, katere podatke zbiramo, zakaj jih obdelujemo ter kakšne pravice imate.",
 } as const;
 
-export const privacyPlaceholder = "[dopolniti]";
-
 export const controllerFields = [
-  { label: "Blagovna znamka", value: company.name, pending: false },
-  { label: "Naziv podjetja", value: privacyPlaceholder, pending: true },
-  { label: "Naslov", value: privacyPlaceholder, pending: true },
-  { label: "Matična številka", value: privacyPlaceholder, pending: true },
-  { label: "Davčna številka", value: privacyPlaceholder, pending: true },
-  { label: "E-pošta", value: company.contact.email, pending: false },
-  { label: "Telefon", value: company.contact.phone, pending: false },
+  { label: "Blagovna znamka", value: "JU-TAN", pending: false },
+  {
+    label: "Upravljavec",
+    value: "JU-TAN studio, Tanja Hrup s.p.",
+    pending: false,
+  },
+  {
+    label: "Naslov",
+    value: "Turšičeva ulica 07, 1380 Cerknica, Slovenija",
+    pending: false,
+  },
+  { label: "Matična številka", value: "7575556000", pending: false },
+  { label: "Davčna številka", value: "17113130", pending: false },
+  { label: "Status za DDV", value: "Ni zavezanec za DDV.", pending: false },
+  {
+    label: "E-pošta za varstvo podatkov",
+    value: privacyGdprEmail,
+    pending: false,
+  },
+  { label: "Splošna e-pošta", value: "info@ju-tan.com", pending: false },
   { label: "Spletna stran", value: siteConfig.url, pending: false },
 ] as const;
 
@@ -51,15 +63,15 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Upravljavec osebnih podatkov je oseba, ki določa namene in sredstva obdelave. Za podatke, ki jih zberemo prek spletnega mesta in kontaktnega obrazca, je upravljavec JU-TAN.",
+        text: "Upravljavec osebnih podatkov je oseba, ki določa namene in sredstva obdelave. Za osebne podatke, ki jih obdelamo prek spletnega mesta JU-TAN, kontaktnega obrazca in povezanih komunikacij, je upravljavec JU-TAN studio, Tanja Hrup s.p.",
       },
       {
         type: "p",
-        text: "Spodnji podatki so delno že javno navedeni na spletnem mestu. Pravni identifikatorji podjetja (polni naziv, sedež, matična in davčna številka) so označeni kot mesta za dopolnitev, dokler jih JU-TAN ne potrdi.",
+        text: "Pooblaščenec za varstvo podatkov (DPO) ni imenovan. Vprašanja in zahteve v zvezi z varstvom osebnih podatkov naslovite na spodnji e-poštni naslov za varstvo podatkov.",
       },
       {
         type: "note",
-        text: "Če imate imenovanega pooblaščenca za varstvo podatkov (DPO), njegove kontaktne podatke vnesite tukaj. Če DPO ni imenovan, tega polja ne izpolnjujte in te navedbe ne objavljajte.",
+        text: `Kontakt za varstvo osebnih podatkov: ${privacyGdprEmail}.`,
       },
     ],
   },
@@ -70,40 +82,35 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Zbiramo samo podatke, ki so potrebni za odgovor na vaše povpraševanje, izvedbo storitev ali zagotavljanje delovanja spletnega mesta. Obseg je odvisen od tega, kaj nam sami posredujete in katere tehnične zapise ustvari obisk.",
+        text: "Zbiramo le podatke, ki so potrebni za odgovor na vaše povpraševanje, morebitno sodelovanje ali tehnično delovanje spletnega mesta. Obseg je odvisen od tega, kaj nam sami posredujete, in od tehničnih zapisov, ki nastanejo ob obisku.",
       },
       {
         type: "p",
-        text: "Prek kontaktnega obrazca lahko prejmemo:",
+        text: "Prek kontaktnega obrazca (vključno z obrazcem v vodiču JU-TAN agent) lahko prejmemo:",
       },
       {
         type: "list",
         items: [
           "ime in priimek",
-          "podjetje oziroma organizacijo",
+          "podjetje oziroma organizacijo (če jo navedete)",
           "e-poštni naslov",
-          "telefonsko številko, če jo navedete",
+          "telefonsko številko (če jo navedete)",
           "izbrano storitev",
-          "vsebino sporočila",
-          "podatek o soglasju in času oddaje obrazca",
+          "vsebino sporočila (vključno z morebitnimi dodatnimi podatki, ki jih sami vnesete, npr. opis potreb)",
+          "podatek o soglasju k obdelavi in čas oddaje obrazca",
         ],
       },
       {
         type: "p",
-        text: "Ob obisku spletnega mesta se lahko samodejno obdelajo tudi tehnični podatki, ki jih brskalnik ali strežnik običajno zabeleži:",
+        text: "Ob obisku spletnega mesta lahko strežniška infrastruktura za dostavo strani obdela tehnične podatke zahteve (npr. IP-naslov, čas zahteve, zahtevani naslov, podatke o brskalniku oziroma uporabniškem agentu). Natančen nabor in hramba teh zapisov sta odvisna od nastavitev ponudnika gostovanja.",
       },
       {
-        type: "list",
-        items: [
-          "IP-naslov",
-          "čas obiska in zahtevani naslov strani",
-          "vrsta in različica brskalnika ter naprave",
-          "dnevniški zapisi strežnika (access in error logi)",
-        ],
+        type: "p",
+        text: "Če privolite v analitiko, se lahko obdelajo tudi agregirani oziroma anonimizirani podatki o uporabi strani in tehnični kazalniki učinkovitosti (glejte poglavje o analitiki in Politiko piškotkov).",
       },
       {
-        type: "note",
-        text: "Natančen nabor tehničnih dnevnikov je odvisen od gostovanja in orodij, ki jih JU-TAN dejansko uporablja. Seznam ponudnikov dopolnite v poglavju o posredovanju.",
+        type: "p",
+        text: "V lokalni shrambi brskalnika (localStorage) se lahko shranijo tudi nastavitve, ki jih ustvari vaša naprava (npr. izbira teme, odločitev o analitiki, zgodovina pogovora v vodiču). Podrobnosti so v Politiki piškotkov.",
       },
     ],
   },
@@ -114,7 +121,7 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Osebne podatke obdelujemo izključno za namene, ki so povezani z vašim povpraševanjem in morebitnim sodelovanjem:",
+        text: "Osebne podatke obdelujemo za namene, povezane z vašim povpraševanjem in morebitnim sodelovanjem:",
       },
       {
         type: "list",
@@ -122,14 +129,15 @@ export const privacyChapters: PrivacyChapter[] = [
           "odgovor na povpraševanje in dogovor o posvetu",
           "priprava ponudbe, obsega in terminskega okvira",
           "komunikacija po e-pošti ali telefonu",
-          "izvedba dogovorjenih storitev (razvoj, avtomatizacija, infrastruktura, podpora)",
-          "izpolnjevanje zakonskih obveznosti (npr. računovodstvo in davki, če pride do poslovnega razmerja)",
-          "zagotavljanje varnosti spletnega mesta, preprečevanje zlorab in odpravljanje napak",
+          "izvedba dogovorjenih storitev (razvoj, avtomatizacija, infrastruktura, podpora), če se za sodelovanje dogovorimo",
+          "izpolnjevanje zakonskih obveznosti (npr. računovodstvo in davki), če nastane poslovno razmerje",
+          "zagotavljanje delovanja, varnosti in zanesljivosti spletnega mesta ter preprečevanje zlorab",
+          "merjenje obiska in učinkovitosti spletnega mesta — le, če ste privolili v analitiko",
         ],
       },
       {
         type: "p",
-        text: "Podatkov ne uporabljamo za oglaševalsko profiliranje in jih ne posredujemo tretjim osebam za njihovo trženje.",
+        text: "Podatkov ne uporabljamo za oglaševalsko profiliranje in jih ne posredujemo tretjim osebam za njihovo trženje. Marketinških oglaševalskih slikovnih pik (pixelov) na spletnem mestu ne uporabljamo.",
       },
     ],
   },
@@ -145,10 +153,10 @@ export const privacyChapters: PrivacyChapter[] = [
       {
         type: "list",
         items: [
-          "člen 6(1)(a) — privolitev: oddaja kontaktnega obrazca in soglasje k obdelavi za odgovor na povpraševanje; privolitev lahko kadar koli prekličete, kar ne vpliva na zakonitost obdelave pred preklicem",
+          "člen 6(1)(a) — privolitev: oddaja kontaktnega obrazca s soglasjem k obdelavi za odgovor na povpraševanje; privolitev v merjenje obiska/učinkovitosti (analitika); privolitev lahko kadar koli prekličete, kar ne vpliva na zakonitost obdelave pred preklicem",
           "člen 6(1)(b) — pogodba: obdelava, ki je potrebna za pripravo ali izvedbo pogodbe o storitvah, če se za sodelovanje dogovorimo",
           "člen 6(1)(c) — zakonska obveznost: hrambe in obdelave, ki jih zahtevajo davčni, računovodski ali drugi predpisi, kadar nastane poslovno razmerje",
-          "člen 6(1)(f) — zakoniti interes: varnost spletnega mesta, preprečevanje zlorab, tehnični dnevniki in uveljavljanje ali obramba pravnih zahtevkov; pri tem tehtamo vaše interese in pravice",
+          "člen 6(1)(f) — zakoniti interes: varnost in zanesljivost spletnega mesta, tehnično delovanje infrastrukture, preprečevanje zlorab ter uveljavljanje ali obramba pravnih zahtevkov; pri tem tehtamo vaše interese in pravice",
         ],
       },
       {
@@ -164,20 +172,17 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Podatke hranimo le toliko časa, kolikor je potrebno za namen obdelave oziroma kolikor zahteva zakon. Spodnji roki so okvirni in jih mora JU-TAN uskladiti s svojimi dejanskimi postopki, pogodbami in notranjimi pravili.",
+        text: "Podatke hranimo le toliko časa, kolikor je potrebno za namen obdelave oziroma kolikor zahteva zakon.",
       },
       {
         type: "list",
         items: [
-          "Kontaktna povpraševanja: okvirno do 12 mesecev po zadnjem stiku, če sodelovanje ne steče — ali do preklica soglasja, če ni druge podlage za hrambo",
-          "Pogodbena dokumentacija (ponudbe, pogodbe, tehnična specifikacija): okvirno ves čas trajanja pogodbe in nato še zastaralni rok za civilne terjatve; v Sloveniji je to pogosto 5 let, v posameznih primerih drugače — [dopolniti po pravnem pregledu]",
-          "Računovodski in davčni dokumenti: okvirno 10 let, kolikor to zahtevajo davčni in računovodski predpisi, če pride do izdaje računa",
-          "Varnostni in strežniški dnevniki: okvirno od 30 dni do 12 mesecev, odvisno od nastavitev gostovanja — [dopolniti glede na dejanskega ponudnika]",
+          "Kontaktna povpraševanja in z njimi povezano komunikacijo lahko hranimo največ 12 mesecev po zaključku komunikacije, razen če je daljša hramba potrebna zaradi pogodbenega razmerja, zakonske ali pravne obveznosti oziroma uveljavljanja, izvrševanja ali obrambe pravnih zahtevkov.",
+          "Če nastane pogodbeno ali poslovno razmerje, hranimo povezano dokumentacijo toliko časa, kolikor je potrebno za izpolnitev pogodbe, zakonskih obveznosti in morebitnih pravnih zahtevkov.",
+          "Računovodski in davčni dokumenti se, kadar nastanejo, hranijo v skladu z veljavnimi davčnimi in računovodskimi predpisi.",
+          "Tehnični dnevniki gostovanja se hranijo v skladu z nastavitvami ponudnika infrastrukture in le toliko časa, kolikor je potrebno za varnost, odpravljanje napak in zanesljivost storitve.",
+          "Podatki v lokalni shrambi brskalnika ostanejo na vaši napravi, dokler jih ne izbrišete vi ali brskalnik (glejte Politiko piškotkov).",
         ],
-      },
-      {
-        type: "note",
-        text: "Roke hrambe pred objavo potrdite. Če uporabljate dodatne evidence (CRM, projektno orodje, arhiv e-pošte), jih tukaj navedite z dejanskim rokom.",
       },
     ],
   },
@@ -192,61 +197,87 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Obdelovalci in prejemniki, ki jih je treba dopolniti z dejanskimi ponudniki JU-TAN:",
+        text: "Glede na trenutno produkcijsko ureditev lahko pri obdelavi sodelujejo naslednje kategorije prejemnikov oziroma obdelovalcev:",
       },
       {
         type: "list",
         items: [
-          "gostovanje spletnega mesta (hosting) — [dopolniti: ponudnik in država obdelave]",
-          "ponudnik e-pošte za prejem in pošiljanje sporočil — [dopolniti]",
-          "oblačne storitve za delovanje aplikacije ali varnostne kopije — [dopolniti, če se uporabljajo]",
-          "IT partnerji, ki vzdržujejo infrastrukturo, izključno po pogodbi o obdelavi — [dopolniti, če obstajajo]",
+          "ponudnik gostovanja in infrastrukture spletnega mesta (Vercel) — za dostavo strani in tehnično delovanje",
+          "ponudnik dostave e-pošte (Resend) — za pošiljanje sporočil iz kontaktnega obrazca na naš nabiralnik",
+          "ponudnik analitike in merjenja učinkovitosti (Vercel Web Analytics in Vercel Speed Insights) — le, če ste privolili v analitiko",
           "državni organi, če to zahteva zakon ali veljavna odredba",
         ],
       },
       {
         type: "p",
-        text: "Kadar zunanji izvajalec obdeluje podatke v našem imenu, mora biti z njim sklenjena pogodba o obdelavi v skladu s členom 28 GDPR.",
+        text: "Kadar zunanji izvajalec obdeluje podatke v našem imenu, mora biti z njim urejeno razmerje v skladu s členom 28 GDPR. Natančni pravni podatki posameznih ponudnikov (sedež, lokacija strežnikov, certifikati) so objavljeni pri ponudnikih; tukaj jih ne ponavljamo, da ne bi navedli neverificiranih podrobnosti.",
       },
     ],
   },
   {
     id: "prenosi",
     number: "07",
-    title: "Prenosi izven EU",
+    title: "Prenosi izven EU/EGP",
     blocks: [
       {
         type: "p",
-        text: "Prednost dajemo obdelavi v Evropski uniji oziroma Evropskem gospodarskem prostoru. Če kateri od ponudnikov obdeluje podatke v tretji državi, je prenos dopusten le, če je zagotovljena ustrezna raven varstva.",
+        text: "Spletno mesto gostujemo pri ponudniku infrastrukture, e-pošto iz kontaktnega obrazca pa dostavimo prek specializirane storitve. Ti ponudniki lahko obdelujejo podatke tudi zunaj Evropske unije oziroma Evropskega gospodarskega prostora.",
+      },
+      {
+        type: "p",
+        text: "Kadar pride do prenosa v tretjo državo, se prenosi izvajajo le, če so zagotovljeni ustrezni ukrepi iz poglavja V GDPR (npr. sklep o ustreznosti, standardne pogodbene klavzule ali druga jamstva). Natančen mehanizem prenosa določa vsakokratni ponudnik v svojih pogojih in pogodbah o obdelavi.",
+      },
+    ],
+  },
+  {
+    id: "analitika",
+    number: "08",
+    title: "Analitika in privolitev",
+    blocks: [
+      {
+        type: "p",
+        text: "Osnovno delovanje spletnega mesta (prikaz vsebine, tema, kontaktni obrazec) ni pogojeno s privolitvijo v analitiko.",
+      },
+      {
+        type: "p",
+        text: "Ob prvem obisku se prikaže pasica, v kateri lahko izberete »Sprejmem« ali »Samo nujno«. Izbira se shrani v lokalni shrambi brskalnika pod ključem ju-tan-analytics.",
       },
       {
         type: "list",
         items: [
-          "sklep Komisije o ustreznosti za ciljno državo",
-          "standardne pogodbene klavzule (SCC) in, kjer je potrebno, dodatni ukrepi",
-          "druga jamstva iz poglavja V GDPR (npr. zavezujoča poslovna pravila)",
+          "če izberete »Sprejmem«, se aktivirata Vercel Web Analytics in Vercel Speed Insights",
+          "če izberete »Samo nujno«, se ta orodja ne naložijo",
+          "dokler odločitve ne sprejmete, se analitika ne aktivira",
         ],
       },
       {
-        type: "note",
-        text: "Navedite, ali JU-TAN dejansko uporablja ponudnike v ZDA ali drugih tretjih državah (npr. e-pošta, analitika, gostovanje). Če prenosov ni, to izrecno zapišite. Ne objavljajte imen ponudnikov, dokler niso potrjeni.",
+        type: "p",
+        text: "Ločenega nastavitvenega zaslona za spremembo privolitve trenutno ni. Če želite odločitev spremeniti, v nastavitvah brskalnika izbrišite shranjene podatke tega spletnega mesta oziroma ključ ju-tan-analytics; ob naslednjem obisku se pasica znova prikaže.",
+      },
+      {
+        type: "p",
+        text: "Podrobnosti o shrambi v brskalniku so v Politiki piškotkov.",
       },
     ],
   },
   {
     id: "piskotki",
-    number: "08",
-    title: "Piškotki",
+    number: "09",
+    title: "Piškotki in shramba v brskalniku",
     blocks: [
       {
         type: "p",
-        text: "Ta politika ne opisuje posameznih piškotkov. Podrobnosti o vrstah piškotkov, namenu, trajanju in možnostih upravljanja so na ločeni strani.",
+        text: "Javno spletno mesto se v veliki meri opira na lokalno shrambo brskalnika (localStorage), ne na klasične piškotke. Za prijavo v platformo se lahko uporabijo tudi sejni piškotki.",
+      },
+      {
+        type: "p",
+        text: "Podrobnosti o vrstah shrambe, namenih in trajanju so na ločeni strani.",
       },
     ],
   },
   {
     id: "pravice",
-    number: "09",
+    number: "10",
     title: "Vaše pravice",
     blocks: [
       {
@@ -266,7 +297,7 @@ export const privacyChapters: PrivacyChapter[] = [
           },
           {
             title: "Pravica do izbrisa",
-            text: "Zahtevate lahko izbris, kadar podatki niso več potrebni, je privolitev preklicana in ni druge podlage, je obdelava nezakonita ali to zahteva zakon. Pravica ni absolutna, na primer kadar je hramba potrebna za pravne obveznosti (člen 17 GDPR).",
+            text: "Zahtevate lahko izbris, kadar podatki niso več potrebni, je privolitev preklicana in ni druge podlage, je obdelava nezakonita ali to zahteva zakon. Pravica ni absolutna, na primer kadar je hramba potrebna zaradi pravnih obveznosti ali uveljavljanja pravnih zahtevkov (člen 17 GDPR).",
           },
           {
             title: "Pravica do omejitve obdelave",
@@ -274,7 +305,7 @@ export const privacyChapters: PrivacyChapter[] = [
           },
           {
             title: "Pravica do prenosljivosti",
-            text: "Kadar obdelava temelji na privolitvi ali pogodbi in poteka avtomatizirano, lahko zahtevate, da vam podatke posredujemo v strojno berljivi obliki ali — kjer je tehnično izvedljivo — jih prenesemo drugemu upravljavcu (člen 20 GDPR).",
+            text: "Kadar obdelava temelji na privolitvi ali pogodbi in poteka avtomatizirano, lahko zahtevate, da vam podatke posredujemo v strojno berljivi obliki ali — kjer je tehnično izvedljivo — jih prenesemo drugemu upravljavcu. Pravica se uporablja v obsegu, ki ga dopušča člen 20 GDPR.",
           },
           {
             title: "Pravica do ugovora",
@@ -294,12 +325,12 @@ export const privacyChapters: PrivacyChapter[] = [
   },
   {
     id: "uveljavitev",
-    number: "10",
+    number: "11",
     title: "Kako uveljaviti pravice",
     blocks: [
       {
         type: "p",
-        text: `Pravice uveljavite tako, da nam pišete na ${company.contact.email} ali pokličete na ${company.contact.phone}. V sporočilu navedite, katero pravico uveljavljate, in podatke, ki nam omogočajo, da vas zanesljivo prepoznamo.`,
+        text: `Pravice uveljavite tako, da nam pišete na ${privacyGdprEmail}. V sporočilu navedite, katero pravico uveljavljate, in podatke, ki nam omogočajo, da vas zanesljivo prepoznamo.`,
       },
       {
         type: "p",
@@ -310,28 +341,27 @@ export const privacyChapters: PrivacyChapter[] = [
         text: "Če zahteve ne moremo izpolniti, vas obvestimo o razlogih in o možnosti pritožbe pri Informacijskem pooblaščencu.",
       },
       {
-        type: "p",
-        text: `Kontakt za vprašanja o zasebnosti: ${company.contact.email}, ${company.contact.hours}.`,
+        type: "note",
+        text: `Kontakt za varstvo osebnih podatkov: ${privacyGdprEmail}.`,
       },
     ],
   },
   {
     id: "varnost",
-    number: "11",
+    number: "12",
     title: "Varnost",
     blocks: [
       {
         type: "p",
-        text: "Uporabljamo tehnične in organizacijske ukrepe, ki so primerni tveganju obdelave. Ukrepi se lahko spreminjajo z razvojem infrastrukture; navedeni so kot trenutna praksa, ki jo JU-TAN mora uskladiti z dejanskim okoljem.",
+        text: "Uporabljamo tehnične in organizacijske ukrepe, ki so primerni tveganju obdelave. Ukrepi se lahko spreminjajo z razvojem infrastrukture.",
       },
       {
         type: "list",
         items: [
-          "prenos po HTTPS/TLS (SSL) na spletnem mestu",
-          "šifriranje povezav do strežnika in e-pošte, kjer to omogoča ponudnik",
+          "prenos po HTTPS/TLS na spletnem mestu",
           "omejen dostop do podatkov po načelu najmanjših potrebnih pravic",
-          "varnostne kopije glede na nastavitve gostovanja — [dopolniti pogostost in lokacijo]",
           "organizacijski ukrepi: dostop samo za osebe, ki podatke potrebujejo za odgovor ali izvedbo storitve",
+          "zaščita povezav in sistemov v okviru zmožnosti uporabljenih ponudnikov infrastrukture in e-pošte",
         ],
       },
       {
@@ -342,7 +372,7 @@ export const privacyChapters: PrivacyChapter[] = [
   },
   {
     id: "spremembe",
-    number: "12",
+    number: "13",
     title: "Spremembe politike",
     blocks: [
       {
@@ -355,7 +385,7 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Priporočamo, da stran občasno pregledate. Nadaljnja uporaba spletnega mesta po posodobitvi pomeni, da ste seznanjeni z veljavno različico.",
+        text: "Priporočamo, da stran občasno pregledate.",
       },
     ],
   },
@@ -365,9 +395,10 @@ export const privacySupervisor = {
   title: "Nadzorni organ",
   body: "Če menite, da obdelava vaših osebnih podatkov krši GDPR ali ZVOP-2, imate pravico vložiti pritožbo pri Informacijskem pooblaščencu Republike Slovenije. Pritožba pri nadzornem organu ne posega v druga pravna sredstva.",
   authority: "Informacijski pooblaščenec RS",
+  details: "Dunajska cesta 22, 1000 Ljubljana · gp.ip@ip-rs.si",
   url: "https://www.ip-rs.si",
   urlLabel: "www.ip-rs.si",
 } as const;
 
 export const privacyDisclaimer =
-  "Ta politika zasebnosti predstavlja informativno predlogo. Pred objavo priporočamo pregled in potrditev s strani pravnega strokovnjaka, da bo v celoti usklajena z dejanskimi postopki podjetja JU-TAN.";
+  "Ta politika zasebnosti velja za spletno mesto JU-TAN in z njo povezane javne komunikacije, kot so opisane v tem dokumentu. Ob spremembi postopkov obdelave bomo besedilo posodobili.";

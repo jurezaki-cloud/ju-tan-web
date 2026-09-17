@@ -152,6 +152,9 @@ export default function PrivacyPolicyContent() {
                 <p className="mt-3 font-heading text-[20px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
                   {privacySupervisor.authority}
                 </p>
+                <p className="mt-1.5 text-[14px] leading-[1.7] text-slate-400 light:text-slate-600">
+                  {privacySupervisor.details}
+                </p>
                 <p className="mt-3 text-[16px] leading-[1.9] text-[rgba(255,255,255,0.72)] light:text-slate-600">
                   {privacySupervisor.body}
                 </p>
