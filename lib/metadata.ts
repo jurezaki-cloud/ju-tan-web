@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
-import { brandAssets } from "@/brand/theme";
-import { colors } from "@/design";
+import { brandAssets, brandDark, brandLight } from "@/brand/theme";
 import {
   defaultDescription,
   defaultKeywords,
@@ -35,16 +34,25 @@ export const metadata: Metadata = {
   twitter,
   icons: {
     icon: [
-      { url: brandAssets.favicon, type: "image/svg+xml" },
-      { url: brandAssets.favicon16, sizes: "16x16", type: "image/png" },
-      { url: brandAssets.favicon32, sizes: "32x32", type: "image/png" },
+      { url: brandAssets.icons.favicon, sizes: "any", type: "image/x-icon" },
+      { url: brandAssets.icons.favicon16, sizes: "16x16", type: "image/png" },
+      { url: brandAssets.icons.favicon32, sizes: "32x32", type: "image/png" },
+      { url: brandAssets.icons.favicon64, sizes: "64x64", type: "image/png" },
+      { url: brandAssets.icons.favicon128, sizes: "128x128", type: "image/png" },
+      { url: brandAssets.icons.favicon256, sizes: "256x256", type: "image/png" },
     ],
-    apple: [{ url: brandAssets.appleTouch, sizes: "180x180" }],
-    shortcut: [brandAssets.favicon],
+    apple: [
+      {
+        url: brandAssets.icons.appleTouch,
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+    shortcut: [brandAssets.icons.favicon],
   },
   manifest: "/manifest.webmanifest",
   other: {
-    "msapplication-TileColor": colors.background,
+    "msapplication-TileColor": brandDark,
     "msapplication-config": brandAssets.browserconfig,
   },
   robots: {
@@ -62,8 +70,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#050816" },
+    { media: "(prefers-color-scheme: light)", color: brandLight.toLowerCase() },
+    { media: "(prefers-color-scheme: dark)", color: brandDark.toLowerCase() },
   ],
   colorScheme: "dark light",
   width: "device-width",
