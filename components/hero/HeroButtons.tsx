@@ -10,7 +10,7 @@ export default function HeroButtons() {
       <HeroReveal delay={0.2}>
         <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
           <CtaLink
-            href="/#booking"
+            href="/kontakt"
             aria-label={heroCopy.primaryCtaAria}
             className="w-full sm:w-auto"
           >

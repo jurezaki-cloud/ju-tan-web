@@ -32,9 +32,9 @@ export function getHeaderNavigation(): NavItem[] {
       label: nav.company,
     },
     {
-      id: "booking",
-      href: "/#booking",
-      sectionId: "booking",
+      id: "contact",
+      href: "/kontakt",
+      sectionId: "contact",
       label: nav.contact,
     },
   ];

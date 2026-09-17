@@ -12,7 +12,7 @@ const navItems = getHeaderNavigation();
 const companyLinks = [
   { label: "Podjetje", href: "/#company" },
   { label: "Način dela", href: "/#process" },
-  { label: "Kontakt", href: "/#booking" },
+  { label: "Kontakt", href: "/kontakt" },
 ] as const;
 
 function isCompanyLinkActive(
@@ -20,10 +20,10 @@ function isCompanyLinkActive(
   pathname: string,
   section: ReturnType<typeof useActiveSection>,
 ) {
+  if (href === "/kontakt") return pathname === "/kontakt";
   if (pathname !== "/") return false;
   if (href === "/#company") return section === "company";
   if (href === "/#process") return section === "process";
-  if (href === "/#booking") return section === "booking";
   return false;
 }
 
