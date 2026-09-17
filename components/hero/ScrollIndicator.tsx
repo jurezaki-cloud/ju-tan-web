@@ -6,8 +6,8 @@ export default function ScrollIndicator() {
   return (
     <div className="absolute bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] left-1/2 z-20 hidden -translate-x-1/2 sm:block">
       <a
-        href="#services"
-        aria-label="Pomakni se na storitve"
+        href="#podrocja-sodelovanja"
+        aria-label="Pomakni se na področja sodelovanja"
         className={cn(
           "flex min-h-11 min-w-11 flex-col items-center justify-center rounded-lg text-slate-400 hover:text-slate-200",
           colorTransition,

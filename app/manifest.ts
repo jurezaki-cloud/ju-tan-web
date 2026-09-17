@@ -20,27 +20,22 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "sl",
     icons: [
       {
-        src: brandAssets.favicon,
+        src: brandAssets.icons.favicon,
         sizes: "any",
-        type: "image/svg+xml",
+        type: "image/x-icon",
       },
       {
-        src: brandAssets.favicon16,
-        sizes: "16x16",
+        src: brandAssets.icons.android192,
+        sizes: "192x192",
         type: "image/png",
       },
       {
-        src: brandAssets.favicon32,
-        sizes: "32x32",
+        src: brandAssets.icons.android512,
+        sizes: "512x512",
         type: "image/png",
       },
       {
-        src: brandAssets.mark,
-        sizes: "any",
-        type: "image/svg+xml",
-      },
-      {
-        src: brandAssets.appleTouch,
+        src: brandAssets.icons.appleTouch,
         sizes: "180x180",
         type: "image/png",
       },

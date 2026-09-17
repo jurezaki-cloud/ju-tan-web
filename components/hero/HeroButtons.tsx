@@ -5,8 +5,8 @@ import HeroReveal from "./HeroReveal";
 
 export default function HeroButtons() {
   return (
-    <HeroReveal delay={0.14}>
-      <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+    <HeroReveal delay={0.2}>
+      <div className="mt-10 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
         <CtaLink
           href="/kontakt"
           aria-label={heroCopy.primaryCtaAria}
@@ -17,7 +17,7 @@ export default function HeroButtons() {
         </CtaLink>
 
         <CtaLink
-          href="#projects"
+          href="#podrocja-sodelovanja"
           variant="secondary"
           aria-label={heroCopy.secondaryCtaAria}
           className="w-full sm:w-auto"

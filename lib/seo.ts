@@ -34,7 +34,7 @@ export const openGraph = {
   description: defaultDescription,
   images: [
     {
-      url: brandAssets.og,
+      url: "/og-image.jpg",
       width: 1200,
       height: 630,
       alt: `${company.name} — umetna inteligenca in razvoj programske opreme`,
@@ -46,7 +46,7 @@ export const twitter = {
   card: "summary_large_image" as const,
   title: defaultTitle,
   description: defaultDescription,
-  images: [brandAssets.twitter],
+  images: ["/og-image.jpg"],
   ...(process.env.NEXT_PUBLIC_TWITTER_SITE
     ? { site: process.env.NEXT_PUBLIC_TWITTER_SITE }
     : {}),
@@ -156,7 +156,7 @@ export function jsonLdGraph() {
           },
         ],
         logo,
-        image: absoluteUrl(brandAssets.og),
+        image: absoluteUrl("/og-image.jpg"),
         address: postalAddress,
       },
       {
@@ -188,7 +188,7 @@ export function jsonLdGraph() {
         email: company.contact.email,
         telephone: [company.contact.phone, company.contact.phoneSecondary],
         description: company.description,
-        image: absoluteUrl(brandAssets.og),
+        image: absoluteUrl("/og-image.jpg"),
         logo,
         address: postalAddress,
         areaServed: {
