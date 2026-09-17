@@ -1,26 +1,44 @@
 export const heroCopy = {
-  badge: "Razvoj programske opreme · Slovenija",
-  titleLead: "AI agenti, CRM, ERP",
-  titleAccent: "in avtomatizacija",
-  titleRest: "poslovnih sistemov.",
+  badge: "Poslovni sistemi po meri · Slovenija",
+  titleLead: "Poslovni sistemi,",
+  titleAccent: "ki povežejo",
+  titleRest: "vaše podjetje.",
   description:
-    "Za podjetja, ki potrebujejo povezane procese: stranke, dokumente in interne tokove v enem skladu.",
+    "Načrtujemo in razvijamo programsko opremo, ki poveže procese, podatke in obstoječa orodja v enoten sistem.",
   supporting:
-    "Manj ročnega dela, manj napak, hitrejša rast, povezani procesi.",
+    "CRM, ERP, avtomatizacija in AI postanejo del istega delovnega toka — z manj ročnega dela in jasnejšim pregledom nad poslovanjem.",
   primaryCta: "Začnimo projekt",
   primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
-  secondaryCta: "Oglejte si tipe sistemov",
-  secondaryCtaAria: "Oglejte si konceptualne tipe sistemov JU-TAN",
-  pills: ["AI agenti", "CRM", "ERP", "Avtomatizacija"] as const,
+  secondaryCta: "Poglejte področja dela",
+  secondaryCtaAria: "Pomaknite se do področij dela JU-TAN",
+  pills: ["AI agenti", "CRM", "ERP", "Portali", "API integracije"] as const,
+  principles: [
+    "Po meri",
+    "Povezano",
+    "Vaša koda",
+  ] as const,
+  stage: {
+    eyebrow: "Arhitektura sistema",
+    status: "Enoten delovni tok",
+    title: "Eno jedro, več poslovnih procesov.",
+    description:
+      "Ločeni procesi, podatki in orodja so povezani v eno jedro, kjer moduli delujejo na istih pravilih in na istem viru podatkov.",
+    modules: [
+      "Prodaja in CRM",
+      "Operativa in odobritve",
+      "Integracije in API",
+      "Avtomatizacija in AI",
+    ] as const,
+  },
   network: {
     nodes: [
       "CRM",
       "ERP",
+      "Procesi",
       "API",
-      "Avtomatizacija",
-      "AI",
-      "Analitika",
-      "Aplikacije",
+      "Portal",
+      "Tokovi",
+      "Podatki",
     ] as const,
   },
 } as const;
