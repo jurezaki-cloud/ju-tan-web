@@ -3,7 +3,7 @@
   <msapplication>
     <tile>
       <square150x150logo src="/brand/apple-touch-icon.png"/>
-      <TileColor>#050816</TileColor>
+      <TileColor>#080F0E</TileColor>
     </tile>
   </msapplication>
 </browserconfig>
