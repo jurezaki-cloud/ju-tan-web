@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { brandName } from "@/brand/theme";
 import BrandLogo from "@/components/common/BrandLogo";
 import { cardSurface, cardBodyClass } from "@/design";
-import { brandName } from "@/brand/theme";
 
 export default function IdentityFrame({
   title,
