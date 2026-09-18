@@ -101,8 +101,8 @@ export default function Booking({
             align="center"
             className="mb-0"
             index="06"
-            badge="Termin"
-            title="Rezervirajte termin"
+            badge="Povpraševanje"
+            title="Pošljite povpraševanje"
             description={bookingNotice}
           />
         </FadeIn>

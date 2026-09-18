@@ -9,7 +9,7 @@ export const heroCopy = {
     "JU-TAN združuje oblikovanje in programski inženiring v rešitve, ki jih lahko podjetje uporablja, razvija in nadgrajuje dolgoročno.",
   primaryCta: "Začnimo projekt",
   primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
-  secondaryCta: "Spoznajte JU-TAN",
+  secondaryCta: "Spoznajte rešitve",
   secondaryCtaAria: "Pomaknite se do rešitev JU-TAN",
   pills: [
     "Spletne rešitve",

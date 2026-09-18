@@ -9,8 +9,8 @@ export default function BookingWizard() {
         Na spletu ni koledarja. Oddate povpraševanje, termin uskladimo po
         e-pošti ali telefonu.
       </p>
-      <CtaLink href="/kontakt" aria-label="Rezervirajte termin" className="mt-8">
-        Rezerviraj termin
+      <CtaLink href="/kontakt" aria-label="Pošljite povpraševanje" className="mt-8">
+        Pošljite povpraševanje
       </CtaLink>
     </div>
   );
