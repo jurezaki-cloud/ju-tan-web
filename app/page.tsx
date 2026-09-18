@@ -4,7 +4,11 @@ import Header from "@/components/layout/Header";
 import Hero from "@/components/hero/Hero";
 import Services from "@/components/sections/Services";
 import Footer from "@/components/layout/Footer";
-import { createPageMetadata } from "@/lib/seo";
+import {
+  createPageMetadata,
+  homepageJsonLdGraph,
+  serializeJsonLd,
+} from "@/lib/seo";
 
 const JuTanOffice = dynamic(() => import("@/components/sections/JuTanOffice"));
 const Process = dynamic(() => import("@/components/sections/Process"));
@@ -29,6 +33,12 @@ export default function Home() {
         <CreativeProduction />
         <Booking variant="homepage" />
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(homepageJsonLdGraph()),
+        }}
+      />
       <Footer />
     </>
   );

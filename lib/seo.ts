@@ -111,23 +111,37 @@ export function breadcrumbJsonLd(
   };
 }
 
-export function jsonLdGraph() {
+function schemaIds() {
   const url = siteConfig.url.replace(/\/$/, "");
-  const organizationId = `${url}/#organization`;
-  const websiteId = `${url}/#website`;
-  const webpageId = `${url}/#webpage`;
-  const professionalId = `${url}/#professional`;
-  const logo = absoluteUrl(brandAssets.logoPng);
+  return {
+    url,
+    organizationId: `${url}/#organization`,
+    websiteId: `${url}/#website`,
+    webpageId: `${url}/#webpage`,
+    professionalId: `${url}/#professional`,
+  };
+}
+
+function postalAddress() {
   const postalParts = company.contact.address.postal.split(" ");
   const postalCode = postalParts[0] ?? company.contact.address.postal;
-  const addressLocality = postalParts.slice(1).join(" ") || company.contact.address.postal;
-  const postalAddress = {
+  const addressLocality =
+    postalParts.slice(1).join(" ") || company.contact.address.postal;
+
+  return {
     "@type": "PostalAddress",
     streetAddress: company.contact.address.street,
     postalCode,
     addressLocality,
     addressCountry: "SI",
   };
+}
+
+/** Sitewide entity schema — injected from root layout on every route. */
+export function sitewideJsonLdGraph() {
+  const { url, organizationId, websiteId, professionalId } = schemaIds();
+  const logo = absoluteUrl(brandAssets.logoPng);
+  const address = postalAddress();
 
   return {
     "@context": "https://schema.org",
@@ -136,6 +150,7 @@ export function jsonLdGraph() {
         "@type": "Organization",
         "@id": organizationId,
         name: company.name,
+        legalName: company.legalName,
         url,
         description: company.description,
         email: company.contact.email,
@@ -156,7 +171,7 @@ export function jsonLdGraph() {
         ],
         logo,
         image: absoluteUrl("/og-image.jpg"),
-        address: postalAddress,
+        address,
       },
       {
         "@type": "WebSite",
@@ -168,18 +183,6 @@ export function jsonLdGraph() {
         publisher: { "@id": organizationId },
       },
       {
-        "@type": "WebPage",
-        "@id": webpageId,
-        url,
-        name: defaultTitle,
-        description: defaultDescription,
-        inLanguage: "sl",
-        isPartOf: { "@id": websiteId },
-        about: { "@id": organizationId },
-        breadcrumb: { "@id": `${url}/#breadcrumb` },
-      },
-      breadcrumbJsonLd([{ name: "Domov", path: "/" }]),
-      {
         "@type": ["ProfessionalService", "LocalBusiness"],
         "@id": professionalId,
         name: company.name,
@@ -189,7 +192,7 @@ export function jsonLdGraph() {
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
         logo,
-        address: postalAddress,
+        address,
         areaServed: {
           "@type": "Country",
           name: "Slovenia",
@@ -220,6 +223,29 @@ export function jsonLdGraph() {
           })),
         },
       },
+    ],
+  };
+}
+
+/** Homepage-only WebPage + BreadcrumbList — inject from app/page.tsx only. */
+export function homepageJsonLdGraph() {
+  const { url, organizationId, websiteId, webpageId } = schemaIds();
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": webpageId,
+        url,
+        name: defaultTitle,
+        description: defaultDescription,
+        inLanguage: "sl",
+        isPartOf: { "@id": websiteId },
+        about: { "@id": organizationId },
+        breadcrumb: { "@id": `${url}/#breadcrumb` },
+      },
+      breadcrumbJsonLd([{ name: "Domov", path: "/" }]),
     ],
   };
 }

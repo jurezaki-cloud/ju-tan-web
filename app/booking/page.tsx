@@ -4,12 +4,22 @@ import Footer from "@/components/layout/Footer";
 import Booking from "@/components/sections/Booking";
 import { createPageMetadata, breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Povpraševanje",
-  description:
-    "Pošljite povpraševanje ekipi JU-TAN za umetno inteligenco, programsko opremo, avtomatizacijo, splet in IT infrastrukturo.",
-  path: "/booking",
-});
+export const metadata: Metadata = {
+  ...createPageMetadata({
+    title: "Povpraševanje",
+    description:
+      "Pošljite povpraševanje ekipi JU-TAN za umetno inteligenco, programsko opremo, avtomatizacijo, splet in IT infrastrukturo.",
+    path: "/booking",
+  }),
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
+};
 
 export default function BookingPage() {
   return (

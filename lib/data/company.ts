@@ -1,5 +1,6 @@
 export const company = {
   name: "JU-TAN",
+  legalName: "JU-TAN studio, Tanja Hrup s.p.",
   headline: "Programska oprema, avtomatizacija in AI agenti za podjetja",
   description:
     "JU-TAN razvija programsko opremo po meri, avtomatizacije poslovnih procesov, spletne aplikacije in AI agente za podjetja v Sloveniji.",
