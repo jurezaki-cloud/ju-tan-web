@@ -17,7 +17,7 @@ const solutionAreas = [
   { label: "Splet", href: "/#services" },
   { label: "Programska oprema", href: "/#services" },
   { label: "Poslovni sistemi", href: "/#services" },
-  { label: "JU-TAN Office", href: "/#office" },
+  { label: "JU-TAN Office", href: "/ju-tan-office" },
 ] as const;
 
 const brandDescriptor = "Digitalne rešitve in programski inženiring.";

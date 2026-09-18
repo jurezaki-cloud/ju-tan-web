@@ -93,12 +93,12 @@ export default function JuTanOffice() {
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <CtaLink
-                  href="/kontakt"
+                  href="/ju-tan-office"
                   variant="secondary"
-                  aria-label="Spoznajte JU-TAN Office in oddajte povpraševanje"
+                  aria-label="Spoznajte JU-TAN Office"
                   className="border-white/14 bg-white/[0.03] text-white hover:border-[#16a34a]/26 hover:bg-white/[0.05] light:border-slate-200 light:bg-white light:text-slate-800 light:hover:border-[#16a34a]/35 light:hover:bg-[#f0fdf4]"
                 >
-                  Pogovorimo se o JU-TAN Office
+                  Spoznajte JU-TAN Office
                 </CtaLink>
               </div>
             </div>

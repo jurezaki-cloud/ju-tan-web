@@ -15,7 +15,7 @@ export const company = {
     hoursLines: ["Pon–Pet", "08.00–16.00"] as const,
     address: {
       name: "Tanja Hrup s.p.",
-      street: "Turšičeva ulica 7",
+      street: "Turšičeva ulica 07",
       postal: "1380 Cerknica",
       country: "Slovenija",
     },

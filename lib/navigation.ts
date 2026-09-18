@@ -15,7 +15,7 @@ export function getHeaderNavigation(): NavItem[] {
     },
     {
       id: "office",
-      href: "/#office",
+      href: "/ju-tan-office",
       sectionId: "office",
       label: nav.office,
     },

@@ -40,6 +40,7 @@ export function useActiveSection(items: NavItem[]) {
   }, [items, pathname]);
 
   if (pathname === "/kontakt") return "contact";
+  if (pathname === "/ju-tan-office") return "office";
   if (pathname !== "/") return null;
   return sectionId;
 }
