@@ -12,6 +12,8 @@ const solutionGroups = [
     value:
       "Spletne strani, spletne trgovine in uporabniški vmesniki, kjer sta oblikovanje in tehnologija del iste rešitve.",
     labels: ["UI/UX", "Spletne strani", "E-trgovine", "Digitalne platforme"],
+    href: "/spletne-strani-in-ui-ux",
+    linkLabel: "Več o spletnih straneh in UI/UX",
   },
   {
     index: "02",

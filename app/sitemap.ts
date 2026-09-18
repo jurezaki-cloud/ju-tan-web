@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${origin}/spletne-strani-in-ui-ux`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${origin}/kontakt`,
       lastModified: new Date(),
       changeFrequency: "weekly",

@@ -14,7 +14,7 @@ const mapsQuery = encodeURIComponent(
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
 const solutionAreas = [
-  { label: "Splet", href: "/#services" },
+  { label: "Splet", href: "/spletne-strani-in-ui-ux" },
   { label: "Programska oprema", href: "/razvoj-programske-opreme" },
   { label: "Poslovni sistemi", href: "/#services" },
   { label: "JU-TAN Office", href: "/ju-tan-office" },
