@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
-import { services } from "@/lib/data/services";
+import { contactServiceOptions } from "@/lib/data/services";
 import {
   contactSchema,
   flattenContactErrors,
@@ -272,13 +272,13 @@ export default function ContactForm() {
             <option value="" className="bg-[#050816]">
               Izberite storitev
             </option>
-            {services.map((service) => (
+            {contactServiceOptions.map((service) => (
               <option
-                key={service.title}
-                value={service.title}
+                key={service}
+                value={service}
                 className="bg-[#050816]"
               >
-                {service.title}
+                {service}
               </option>
             ))}
           </Select>

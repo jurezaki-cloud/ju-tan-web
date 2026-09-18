@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
-import { services } from "@/lib/data/services";
+import { offerCatalog } from "@/lib/data/services";
 import { brandAssets } from "@/brand/theme";
 
 export function absoluteUrl(path = "/") {
@@ -9,10 +9,10 @@ export function absoluteUrl(path = "/") {
 }
 
 export const defaultTitle =
-  "JU-TAN | Umetna inteligenca, programska oprema in avtomatizacija";
+  "JU-TAN | Digitalne rešitve, programska oprema in poslovni sistemi";
 
 export const defaultDescription =
-  "JU-TAN razvija programsko opremo po meri, avtomatizacije, spletne aplikacije in AI agente za podjetja v Sloveniji.";
+  "JU-TAN povezuje oblikovanje, razvoj in tehnologijo v spletne izkušnje, programsko opremo, poslovne sisteme in AI za podjetja v Sloveniji.";
 
 export const defaultKeywords = [
   "JU-TAN",
@@ -37,7 +37,7 @@ export const openGraph = {
       url: "/og-image.jpg",
       width: 1200,
       height: 630,
-      alt: `${company.name} — umetna inteligenca in razvoj programske opreme`,
+      alt: "JU-TAN — digitalne rešitve in razvoj programske opreme",
     },
   ],
 };
@@ -117,7 +117,6 @@ export function jsonLdGraph() {
   const websiteId = `${url}/#website`;
   const webpageId = `${url}/#webpage`;
   const professionalId = `${url}/#professional`;
-  const faqId = `${url}/#faq`;
   const logo = absoluteUrl(brandAssets.logoPng);
   const postalParts = company.contact.address.postal.split(" ");
   const postalCode = postalParts[0] ?? company.contact.address.postal;
@@ -211,27 +210,15 @@ export function jsonLdGraph() {
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Storitve",
-          itemListElement: services.map((service) => ({
+          itemListElement: offerCatalog.map((group) => ({
             "@type": "Offer",
             itemOffered: {
               "@type": "Service",
-              name: service.title,
-              description: service.description,
+              name: group.name,
+              description: group.description,
             },
           })),
         },
-      },
-      {
-        "@type": "FAQPage",
-        "@id": faqId,
-        mainEntity: services.map((service) => ({
-          "@type": "Question",
-          name: service.title,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: service.description,
-          },
-        })),
       },
     ],
   };

@@ -10,6 +10,47 @@ import {
 } from "lucide-react";
 import type { Service } from "@/lib/types";
 
+/** Contact / lead form service choices. Visible label === submitted value. */
+export const contactServiceOptions = [
+  "Spletne strani / UI-UX",
+  "E-trgovina ali digitalna platforma",
+  "Spletna ali mobilna aplikacija",
+  "Programska oprema po meri / SaaS",
+  "CRM",
+  "ERP",
+  "Integracije in avtomatizacija",
+  "AI (agenti / avtomatizacija dela)",
+  "Svetovanje ali dolgoročna podpora",
+  "JU-TAN Office",
+  "Kreativna produkcija / video",
+  "Nisem prepričan / Drugo",
+] as const;
+
+/** Canonical public OfferCatalog L1 groups (locked homepage taxonomy). */
+export const offerCatalog = [
+  {
+    name: "Splet in digitalne izkušnje",
+    description:
+      "Spletne strani, spletne trgovine in uporabniški vmesniki, kjer sta oblikovanje in tehnologija del iste rešitve.",
+  },
+  {
+    name: "Programska oprema in aplikacije",
+    description:
+      "Spletne in mobilne aplikacije ter programska oprema po meri za procese, ki jih standardna orodja ne rešijo dovolj dobro.",
+  },
+  {
+    name: "Poslovni sistemi in AI",
+    description:
+      "Povežemo podatke, procese in obstoječe sisteme ter avtomatiziramo delo tam, kjer tehnologija prinese dejansko korist.",
+  },
+  {
+    name: "Svetovanje in dolgoročna podpora",
+    description:
+      "Od tehnične usmeritve do vzdrževanja, nadgradenj in nadaljnjega razvoja po uvedbi.",
+  },
+] as const;
+
+/** Legacy card catalog — kept for ServicesGrid compatibility only. */
 export const services: Service[] = [
   {
     icon: Bot,

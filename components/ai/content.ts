@@ -1,4 +1,4 @@
-import { services } from "@/lib/data/services";
+import { contactServiceOptions, services } from "@/lib/data/services";
 import { company } from "@/lib/data/company";
 
 export type AgentRole = "assistant" | "user";
@@ -21,7 +21,7 @@ To je vodič po storitvah JU-TAN — kratki, vnaprej pripravljeni odgovori, ne p
 Izberite temo ali opišite sistem, ki vas ovira.`,
 };
 
-export const serviceOptions = services.map((service) => service.title);
+export const serviceOptions = [...contactServiceOptions];
 
 export const quickActions = [
   ...services.map((service) => ({
