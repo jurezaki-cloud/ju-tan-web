@@ -1,6 +1,9 @@
+import Link from "next/link";
 import Section from "@/components/common/Section";
 import SectionTitle from "@/components/common/SectionTitle";
 import { FadeIn } from "@/components/animations";
+import { textLinkClass } from "@/design";
+import { cn } from "@/lib/utils";
 
 const solutionGroups = [
   {
@@ -16,6 +19,8 @@ const solutionGroups = [
     value:
       "Spletne in mobilne aplikacije ter programska oprema po meri za procese, ki jih standardna orodja ne rešijo dovolj dobro.",
     labels: ["Spletne aplikacije", "Mobilne aplikacije", "Razvoj po meri", "API"],
+    href: "/razvoj-programske-opreme",
+    linkLabel: "Več o razvoju programske opreme",
   },
   {
     index: "03",
@@ -76,6 +81,14 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
+                {"href" in group && group.href ? (
+                  <Link
+                    href={group.href}
+                    className={cn(textLinkClass, "mt-4 text-[13px] light:hover:text-slate-900")}
+                  >
+                    {group.linkLabel}
+                  </Link>
+                ) : null}
               </div>
             </li>
           ))}
