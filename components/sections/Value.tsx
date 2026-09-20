@@ -41,7 +41,7 @@ const outcomes = [
 
 export default function Value() {
   return (
-    <Section id="value" belowFold>
+    <Section id="podrocja-sodelovanja" belowFold>
       <SectionTitle
         badge="Operativni tok"
         title="Največ stroška ne ustvarja delo samo, temveč prehodi med sistemi."
