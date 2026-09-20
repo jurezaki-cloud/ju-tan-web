@@ -98,11 +98,18 @@ export default function OfficePage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink href="/kontakt" variant="primary">
-                Pogovorimo se o JU-TAN Office
+              <CtaLink
+                href="https://github.com/jurezaki-cloud/JU-TAN-Office/releases/latest/download/JU-TAN-Office-Setup.exe"
+                variant="primary"
+                aria-label="Prenesi JU-TAN Office za Windows"
+              >
+                Prenesi JU-TAN Office
               </CtaLink>
               <CtaLink href="#vmesnik" variant="secondary">
                 Oglejte si vmesnik
+              </CtaLink>
+              <CtaLink href="/kontakt" variant="secondary">
+                Pogovorimo se
               </CtaLink>
             </div>
           </FadeIn>
