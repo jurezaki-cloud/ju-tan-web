@@ -1,6 +1,7 @@
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
+import OfficeDownloadCta from "@/components/office-page/OfficeDownloadCta";
 import OfficeInterface from "@/components/office-page/OfficeInterface";
 import { bodyClass, kickerClass } from "@/design";
 import { cn } from "@/lib/utils";
@@ -98,13 +99,7 @@ export default function OfficePage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink
-                href="https://github.com/jurezaki-cloud/JU-TAN-Office/releases/latest/download/JU-TAN-Office-Setup.exe"
-                variant="primary"
-                aria-label="Prenesi JU-TAN Office za Windows"
-              >
-                Prenesi JU-TAN Office
-              </CtaLink>
+              <OfficeDownloadCta />
               <CtaLink href="#vmesnik" variant="secondary">
                 Oglejte si vmesnik
               </CtaLink>
