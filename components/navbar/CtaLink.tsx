@@ -12,6 +12,10 @@ type CtaLinkProps = {
   "aria-label"?: string;
 };
 
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
 export default function CtaLink({
   href,
   children,
@@ -20,11 +24,28 @@ export default function CtaLink({
   size = "default",
   "aria-label": ariaLabel,
 }: CtaLinkProps) {
+  const classNames = cn(ctaBase, ctaSizes[size], ctaVariants[variant], className);
+  const external = isExternalHref(href);
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        aria-label={ariaLabel}
+        className={classNames}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <Link
       href={href}
       aria-label={ariaLabel}
-      className={cn(ctaBase, ctaSizes[size], ctaVariants[variant], className)}
+      className={classNames}
     >
       {children}
     </Link>
