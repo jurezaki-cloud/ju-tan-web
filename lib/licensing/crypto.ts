@@ -2,7 +2,7 @@ import "server-only";
 import { createHash, createHmac, randomBytes } from "node:crypto";
 
 export function normalizeLicenseKey(value: string) {
-  return value.trim().toUpperCase().replace(/\\s+/g, "");
+  return value.trim().toUpperCase().replace(/\s+/g, "");
 }
 export function hashLicenseKey(value: string, pepper: string) {
   return createHmac("sha256", pepper)
