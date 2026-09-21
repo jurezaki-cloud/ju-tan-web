@@ -3,6 +3,9 @@ import {
   OFFICE_DOWNLOAD_SESSION_TTL_MS,
 } from "./constants";
 
+const DEFAULT_OFFICE_INSTALLER_URL =
+  "https://github.com/jurezaki-cloud/JU-TAN-Office/releases/download/v1.0.0/JU-TAN-Office-Setup.exe";
+
 function readSecret(name: string): string | undefined {
   const value = process.env[name]?.trim();
   return value ? value : undefined;
@@ -20,9 +23,10 @@ export type OfficeDownloadConfig = {
 export function getOfficeDownloadConfig(): OfficeDownloadConfig | null {
   const password = readSecret("JU_TAN_DOWNLOAD_PASSWORD");
   const sessionSecret = readSecret("JU_TAN_DOWNLOAD_SESSION_SECRET");
-  const installerUrl = readSecret("JU_TAN_OFFICE_INSTALLER_URL");
+  const installerUrl =
+    readSecret("JU_TAN_OFFICE_INSTALLER_URL") ?? DEFAULT_OFFICE_INSTALLER_URL;
 
-  if (!password || !sessionSecret || !installerUrl) {
+  if (!password || !sessionSecret) {
     return null;
   }
 
