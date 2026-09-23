@@ -12,6 +12,7 @@ import {
   Bot,
   Settings,
   Users,
+  KeyRound,
   Globe,
   type LucideIcon,
 } from "lucide-react";
@@ -33,6 +34,7 @@ const icons: Record<PlatformNavId, LucideIcon> = {
   ai: Bot,
   settings: Settings,
   users: Users,
+  licenses: KeyRound,
   portal: Globe,
 };
 
