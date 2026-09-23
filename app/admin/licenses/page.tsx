@@ -41,6 +41,7 @@ type Device = {
 };
 type AuditEvent = { id: string; action: string; details: Record<string, unknown>; created_at: string };
 type LicenseDetails = { license: Row; devices: Device[]; audit: AuditEvent[] };
+type Backup = { id: string; created_at: string; licenses: number; activations: number; audit: number };
 type Form = {
   company_name: string;
   max_devices: number;
@@ -78,7 +79,9 @@ export default function AdminLicensesPage() {
     [visits, setVisits] = useState<VisitStats | null>(null),
     [busy, setBusy] = useState(false),
     [details, setDetails] = useState<LicenseDetails | null>(null),
-    [detailsBusy, setDetailsBusy] = useState(false);
+    [detailsBusy, setDetailsBusy] = useState(false),
+    [backups, setBackups] = useState<Backup[] | null>(null),
+    [backupBusy, setBackupBusy] = useState(false);
   const load = useCallback(async () => {
     const r = await fetch("/api/admin/licenses"),
       b = (await r.json()) as {
@@ -126,6 +129,31 @@ export default function AdminLicensesPage() {
     } finally {
       setBusy(false);
     }
+  };
+  const loadBackups = async () => {
+    const r = await fetch("/api/admin/license-backups", { cache: "no-store" });
+    const b = (await r.json()) as { items?: Backup[]; error?: string };
+    if (!r.ok) { setError(b.error ?? "Backupov ni bilo mogoče naložiti."); return; }
+    setBackups(b.items ?? []);
+  };
+  const createBackup = async () => {
+    setBackupBusy(true);
+    try {
+      const r = await fetch("/api/admin/license-backups", { method: "POST" });
+      if (!r.ok) throw new Error("Backup ni uspel.");
+      await loadBackups();
+    } catch (e) { setError(e instanceof Error ? e.message : "Backup ni uspel."); }
+    finally { setBackupBusy(false); }
+  };
+  const restoreBackup = async (id: string) => {
+    if (!confirm("Obnovitev bo zamenjala trenutno stanje licenc in naprav. Pred obnovitvijo bo ustvarjena dodatna varnostna kopija. Nadaljujem?")) return;
+    setBackupBusy(true);
+    try {
+      const r = await fetch("/api/admin/license-backups", { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ id, confirm: "OBNOVI" }) });
+      if (!r.ok) throw new Error("Obnovitev ni uspela.");
+      await loadBackups(); await load(); setDetails(null);
+    } catch (e) { setError(e instanceof Error ? e.message : "Obnovitev ni uspela."); }
+    finally { setBackupBusy(false); }
   };
   const openDetails = async (row: Row) => {
     setDetailsBusy(true);
@@ -535,6 +563,13 @@ export default function AdminLicensesPage() {
             </div>
           </section>
         ) : null}
+        <section className="mb-6 rounded-2xl border border-white/10 bg-slate-950/40 p-5 light:border-slate-200 light:bg-white">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div><h2 className="text-lg font-semibold text-white light:text-slate-900">Varnostne kopije</h2><p className="mt-1 text-sm text-slate-400">Licence, naprave in zgodovina sprememb.</p></div>
+            <div className="flex gap-2"><button type="button" className={button} onClick={() => void loadBackups()} disabled={backupBusy}>Prikaži backupe</button><button type="button" className={button} onClick={() => void createBackup()} disabled={backupBusy}>{backupBusy ? "Počakaj…" : "Ustvari backup"}</button></div>
+          </div>
+          {backups ? <div className="mt-4 space-y-2">{backups.map((b) => <div key={b.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-white/5 bg-white/[0.03] p-3"><div><div className="text-sm font-medium text-slate-200 light:text-slate-700">{dt.format(new Date(b.created_at))}</div><div className="text-xs text-slate-400">{b.licenses} licenc · {b.activations} naprav · {b.audit} dogodkov</div></div><button type="button" className={button} onClick={() => void restoreBackup(b.id)} disabled={backupBusy}>Obnovi</button></div>)}{!backups.length ? <p className="text-sm text-slate-400">Backupov še ni.</p> : null}</div> : null}
+        </section>
         {rows ? (
           <DataTable
             rows={rows}
