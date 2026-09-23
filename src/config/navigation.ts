@@ -10,6 +10,7 @@ export type PlatformNavId =
   | "ai"
   | "settings"
   | "users"
+  | "licenses"
   | "portal";
 
 export type PlatformNavItem = {
@@ -59,6 +60,12 @@ export const platformNavigation: PlatformNavItem[] = [
     permission: Permission.UsersRead,
   },
   {
+    id: "licenses",
+    href: "/admin/licenses",
+    label: "Licence",
+    permission: Permission.Licenses,
+  },
+  {
     id: "settings",
     href: "/settings",
     label: "Nastavitve",
@@ -68,6 +75,7 @@ export const platformNavigation: PlatformNavItem[] = [
 ];
 
 export function permissionForPath(pathname: string): Permission | null {
+  if (pathname.startsWith("/admin/licenses")) return Permission.Licenses;
   if (pathname.startsWith("/admin/users") || pathname.startsWith("/admin/invites")) {
     return Permission.UsersRead;
   }
