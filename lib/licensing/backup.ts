@@ -20,7 +20,7 @@ export async function createLicenseBackup() {
     licensingPool().query("SELECT * FROM office_license_audit ORDER BY created_at"),
   ]);
   const snapshot = {
-    version: 1,
+    version: 2,
     created_at: new Date().toISOString(),
     licenses: licenses.rows,
     activations: activations.rows,
@@ -55,14 +55,14 @@ export async function restoreLicenseBackup(id: string) {
   const result = await licensingPool().query<{ snapshot: any }>(
     "SELECT snapshot FROM office_license_backups WHERE id=$1", [id]);
   const snapshot = result.rows[0]?.snapshot;
-  if (!snapshot || snapshot.version !== 1) throw new Error("Backup ni veljaven.");
+  if (!snapshot || ![1, 2].includes(snapshot.version)) throw new Error("Backup ni veljaven.");
   await withLicenseTransaction(async (client) => {
     await client.query("DELETE FROM office_license_audit");
     await client.query("DELETE FROM office_activations");
     await client.query("DELETE FROM office_licenses");
     for (const l of snapshot.licenses ?? []) await client.query(
-      "INSERT INTO office_licenses (id,key_hash,company_name,status,max_devices,valid_until,offline_grace_days,created_at,updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
-      [l.id,l.key_hash,l.company_name,l.status,l.max_devices,l.valid_until,l.offline_grace_days,l.created_at,l.updated_at]);
+      "INSERT INTO office_licenses (id,key_hash,company_name,status,max_devices,valid_until,offline_grace_days,created_at,updated_at,archived_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
+      [l.id,l.key_hash,l.company_name,l.status,l.max_devices,l.valid_until,l.offline_grace_days,l.created_at,l.updated_at,l.archived_at ?? null]);
     for (const a of snapshot.activations ?? []) await client.query(
       "INSERT INTO office_activations (id,license_id,device_hash,token_hash,app_version,activated_at,last_seen_at,deactivated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
       [a.id,a.license_id,a.device_hash,a.token_hash,a.app_version,a.activated_at,a.last_seen_at,a.deactivated_at]);
