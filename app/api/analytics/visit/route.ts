@@ -14,7 +14,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
   try {
-    await recordSiteVisit();
+    const body = await request.json().catch(() => ({}));
+    const path = typeof body?.path === "string" ? body.path : undefined;
+    await recordSiteVisit(path);
     return NextResponse.json(
       { ok: true },
       { headers: { "Cache-Control": "no-store" } },
