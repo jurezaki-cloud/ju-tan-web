@@ -49,11 +49,12 @@ export async function GET() {
               COALESCE(BOOL_OR(
                 a.deactivated_at IS NULL AND a.last_seen_at >= NOW() - INTERVAL '15 minutes'
               ), false) AS online,
-              ARRAY_REMOVE(ARRAY_AGG(DISTINCT a.app_version), NULL) AS app_versions
+              ARRAY_REMOVE(ARRAY_AGG(DISTINCT a.app_version), NULL) AS app_versions,
+              l.archived_at
        FROM office_licenses l
        LEFT JOIN office_activations a ON a.license_id = l.id
        GROUP BY l.id
-       ORDER BY l.created_at DESC`,
+       ORDER BY (l.archived_at IS NOT NULL), l.created_at DESC`,
       ),
       getSiteVisitStats(),
     ]);
@@ -119,7 +120,14 @@ export async function PATCH(request: Request) {
       { status: 400 },
     );
   await ensureLicensingSchema();
-  if (body.action === "deactivate_devices") {
+  if (body.action === "archive") {
+    await licensingPool().query("UPDATE office_licenses SET archived_at=NOW(), status='blocked', updated_at=NOW() WHERE id=$1 AND archived_at IS NULL", [id]);
+    await licensingPool().query("UPDATE office_activations SET deactivated_at=NOW() WHERE license_id=$1 AND deactivated_at IS NULL", [id]);
+    await recordLicenseAudit(id, "license_archived");
+  } else if (body.action === "restore") {
+    await licensingPool().query("UPDATE office_licenses SET archived_at=NULL, status='active', updated_at=NOW() WHERE id=$1 AND archived_at IS NOT NULL", [id]);
+    await recordLicenseAudit(id, "license_restored");
+  } else if (body.action === "deactivate_devices") {
     const reset = await licensingPool().query(
       "UPDATE office_activations SET deactivated_at=NOW() WHERE license_id=$1 AND deactivated_at IS NULL",
       [id],
@@ -161,24 +169,3 @@ export async function PATCH(request: Request) {
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(request: Request) {
-  if (!(await authorized()))
-    return NextResponse.json(
-      { ok: false, error: "Potrebna je prijava." },
-      { status: 401 },
-    );
-  if (!isAllowedOfficeDownloadOrigin(request))
-    return NextResponse.json(
-      { ok: false, error: "Zahteva ni dovoljena." },
-      { status: 403 },
-    );
-  const id = new URL(request.url).searchParams.get("id");
-  if (!id)
-    return NextResponse.json(
-      { ok: false, error: "Licenca ni veljavna." },
-      { status: 400 },
-    );
-  await ensureLicensingSchema();
-  await licensingPool().query("DELETE FROM office_licenses WHERE id=$1", [id]);
-  return NextResponse.json({ ok: true });
-}
