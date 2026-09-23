@@ -4,12 +4,14 @@ import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
 import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { getSiteVisitAnalytics, getSiteVisitStats } from "@/lib/site-visits";
 import { getOfficeDownloadStats } from "@/lib/download-stats";
+import { ensureBackupSchema } from "@/lib/licensing/backup";
 export const runtime = "nodejs";
 async function authorized(){const secret=process.env.JU_TAN_DOWNLOAD_SESSION_SECRET;const token=(await cookies()).get("jt_license_admin")?.value;return Boolean(secret&&verifyOfficeDownloadSessionToken(token,secret));}
 export async function GET(){
  if(!(await authorized())) return NextResponse.json({ok:false,error:"Potrebna je prijava."},{status:401});
  try{
   await ensureLicensingSchema();
+  await ensureBackupSchema();
   const [l,d,v,b,analytics,downloads]=await Promise.all([
    licensingPool().query("SELECT COUNT(*) FILTER (WHERE archived_at IS NULL)::int licenses, COUNT(*) FILTER (WHERE archived_at IS NULL AND status='active')::int active_licenses, COUNT(*) FILTER (WHERE archived_at IS NOT NULL)::int archived FROM office_licenses"),
    licensingPool().query("SELECT COUNT(*) FILTER (WHERE a.deactivated_at IS NULL)::int devices, COUNT(*) FILTER (WHERE a.deactivated_at IS NULL AND a.last_seen_at>=NOW()-INTERVAL '15 minutes')::int online, COUNT(*) FILTER (WHERE a.activated_at>=NOW()-INTERVAL '24 hours')::int new_devices FROM office_activations a JOIN office_licenses l ON l.id=a.license_id WHERE l.archived_at IS NULL"),
