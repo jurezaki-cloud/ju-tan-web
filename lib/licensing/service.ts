@@ -13,6 +13,7 @@ import {
   licensingPool,
   withLicenseTransaction,
 } from "./db";
+import { recordLicenseAudit } from "./audit";
 
 type LicenseRow = {
   id: string;
@@ -107,6 +108,7 @@ export async function activateLicense(input: {
         [tokenHash, input.appVersion, existing.rows[0].id],
       );
     }
+    await recordLicenseAudit(license.id, "device_activated", { app_version: input.appVersion, existing_device: Boolean(existing.rows[0]) }, client);
     return stateResponse(license, token);
   });
 }
