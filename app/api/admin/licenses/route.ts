@@ -58,7 +58,21 @@ export async function GET() {
       ),
       getSiteVisitStats(),
     ]);
-    return NextResponse.json({ ok: true, items: result.rows, visits });
+    const alerts = result.rows.flatMap((license) => {
+      if (license.archived_at) return [];
+      const items: Array<{ type: string; severity: "info" | "warning" | "critical"; license_id: string; company_name: string; message: string }> = [];
+      const active = Number(license.active_devices ?? 0);
+      const max = Number(license.max_devices ?? 0);
+      if (active > max) items.push({ type: "device_limit_exceeded", severity: "critical", license_id: license.id, company_name: license.company_name, message: `Aktivnih je ${active} naprav, dovoljenih pa ${max}.` });
+      else if (max > 0 && active === max) items.push({ type: "device_limit_reached", severity: "warning", license_id: license.id, company_name: license.company_name, message: `Dosežena je omejitev ${max} naprav.` });
+      if (license.valid_until) {
+        const days = Math.ceil((new Date(license.valid_until).getTime() - Date.now()) / 86400000);
+        if (days < 0) items.push({ type: "license_expired", severity: "critical", license_id: license.id, company_name: license.company_name, message: `Licenca je potekla pred ${Math.abs(days)} dnevi.` });
+        else if (days <= 30) items.push({ type: "license_expiring", severity: days <= 7 ? "critical" : "warning", license_id: license.id, company_name: license.company_name, message: `Licenca poteče čez ${days} dni.` });
+      }
+      return items;
+    });
+    return NextResponse.json({ ok: true, items: result.rows, visits, alerts });
   } catch (error) {
     console.error("license dashboard failed", error);
     return NextResponse.json(
