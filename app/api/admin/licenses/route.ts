@@ -64,7 +64,15 @@ export async function GET() {
        WHERE a.activated_at >= NOW() - INTERVAL '24 hours' AND l.archived_at IS NULL
        ORDER BY a.activated_at DESC LIMIT 50`,
     );
-    const alerts = result.rows.flatMap((license) => {
+    type LicenseAlert = {
+      type: string;
+      severity: "info" | "warning" | "critical";
+      license_id: string;
+      company_name: string;
+      message: string;
+      created_at?: string;
+    };
+    const alerts: LicenseAlert[] = result.rows.flatMap((license): LicenseAlert[] => {
       if (license.archived_at) return [];
       const items: Array<{ type: string; severity: "info" | "warning" | "critical"; license_id: string; company_name: string; message: string }> = [];
       const active = Number(license.active_devices ?? 0);
@@ -86,7 +94,7 @@ export async function GET() {
         company_name: device.company_name,
         message: `Nova naprava …${device.device_id} je bila aktivirana${device.app_version ? ` (v${device.app_version})` : ""}.`,
         created_at: device.activated_at,
-      } as (typeof alerts)[number] & { created_at: string });
+      });
     }
     return NextResponse.json({ ok: true, items: result.rows, visits, alerts });
   } catch (error) {
