@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { getLicensingConfig } from "./config";
 import { hashLicenseKey } from "./crypto";
 import { ensureLicensingSchema, licensingPool } from "./db";
+import { recordLicenseAudit } from "./audit";
 
 export async function provisionLicense(input: {
   licenseKey: string;
@@ -28,5 +29,6 @@ export async function provisionLicense(input: {
      RETURNING id`,
     [randomUUID(), keyHash, input.companyName, input.maxDevices, input.validUntil, input.offlineGraceDays],
   );
+  await recordLicenseAudit(result.rows[0].id, "license_created", { company_name: input.companyName, max_devices: input.maxDevices, valid_until: input.validUntil?.toISOString() ?? null });
   return { license_id: result.rows[0].id, created: true };
 }
