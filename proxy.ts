@@ -45,6 +45,10 @@ export function proxy(request: NextRequest) {
   if (
     pathname === "/admin/licenses" ||
     pathname.startsWith("/admin/licenses/") ||
+    pathname === "/admin/dashboard" ||
+    pathname.startsWith("/admin/dashboard/") ||
+    pathname === "/api/admin/dashboard" ||
+    pathname.startsWith("/api/admin/dashboard/") ||
     pathname === "/api/admin/licenses" ||
     pathname.startsWith("/api/admin/licenses/") ||
     pathname === "/api/admin/license-backups" ||
