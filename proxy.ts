@@ -41,8 +41,15 @@ function isIsolatedSurface(pathname: string): boolean {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Standalone license dashboard has its own signed, HttpOnly admin session.
-  if (pathname === "/admin/licenses" || pathname === "/api/admin/licenses") {
+  // Standalone license dashboard and licensing APIs use their own admin session.
+  if (
+    pathname === "/admin/licenses" ||
+    pathname.startsWith("/admin/licenses/") ||
+    pathname === "/api/admin/licenses" ||
+    pathname.startsWith("/api/admin/licenses/") ||
+    pathname === "/api/admin/license-backups" ||
+    pathname.startsWith("/api/admin/license-backups/")
+  ) {
     return NextResponse.next();
   }
 
