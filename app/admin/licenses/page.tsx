@@ -1,194 +1,415 @@
 "use client";
-
 import { KeyRound, Laptop, Radio, ShieldCheck } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import DataTable, { type DataColumn } from "@/components/platform/DataTable";
 import PageHeader from "@/components/platform/PageHeader";
-import PageState from "@/components/platform/PageState";
 import StatsCard from "@/components/platform/StatsCard";
 import StatusBadge, { statusTone } from "@/components/platform/StatusBadge";
-
-type LicenseRow = {
+type Row = {
   id: string;
   company_name: string;
   status: "active" | "expired" | "blocked";
   max_devices: number;
   valid_until: string | null;
   offline_grace_days: number;
-  created_at: string;
-  updated_at: string;
-  total_activations: number;
   active_devices: number;
   last_seen_at: string | null;
   online: boolean;
   app_versions: string[];
 };
-
-const dateTime = new Intl.DateTimeFormat("sl-SI", {
+type Form = {
+  company_name: string;
+  max_devices: number;
+  valid_until: string;
+  offline_grace_days: number;
+};
+const blank: Form = {
+  company_name: "",
+  max_devices: 1,
+  valid_until: "",
+  offline_grace_days: 7,
+};
+const input =
+  "min-h-11 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-white light:border-slate-300 light:bg-white light:text-slate-900";
+const button =
+  "min-h-10 rounded-lg border border-white/10 px-3 text-sm text-slate-200 hover:border-[#16a34a] light:border-slate-300 light:text-slate-700";
+const dt = new Intl.DateTimeFormat("sl-SI", {
   dateStyle: "medium",
   timeStyle: "short",
 });
-
-function formatDate(value: string | null) {
-  return value ? dateTime.format(new Date(value)) : "—";
-}
-
 export default function AdminLicensesPage() {
-  const [rows, setRows] = useState<LicenseRow[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [needsLogin, setNeedsLogin] = useState(false);
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    const controller = new AbortController();
-    void fetch("/api/admin/licenses", { signal: controller.signal })
-      .then(async (response) => {
-        const body = (await response.json()) as {
-          ok?: boolean;
-          items?: LicenseRow[];
-          error?: string;
-        };
-        if (response.status === 401) {
-          setNeedsLogin(true);
-          return;
-        }
-        if (!response.ok || !body.ok || !body.items) {
-          setError(body.error ?? "Licenc ni bilo mogoče naložiti.");
-          return;
-        }
-        setRows(body.items);
-      })
-      .catch((reason: unknown) => {
-        if (reason instanceof DOMException && reason.name === "AbortError") return;
-        setError("Licenc ni bilo mogoče naložiti.");
-      });
-    return () => controller.abort();
+  const [rows, setRows] = useState<Row[] | null>(null),
+    [error, setError] = useState<string | null>(null),
+    [login, setLogin] = useState(false),
+    [password, setPassword] = useState(""),
+    [form, setForm] = useState<Form>(blank),
+    [editing, setEditing] = useState<string | null>(null),
+    [key, setKey] = useState<string | null>(null),
+    [busy, setBusy] = useState(false);
+  const load = useCallback(async () => {
+    const r = await fetch("/api/admin/licenses"),
+      b = (await r.json()) as { items?: Row[]; error?: string };
+    if (r.status === 401) {
+      setLogin(true);
+      return;
+    }
+    if (!r.ok || !b.items) {
+      setError(b.error ?? "Licenc ni bilo mogoče naložiti.");
+      return;
+    }
+    setRows(b.items);
+    setError(null);
   }, []);
-
+  useEffect(() => {
+    const task = window.setTimeout(() => void load(), 0);
+    return () => window.clearTimeout(task);
+  }, [load]);
+  const request = async (
+    method: string,
+    body?: unknown,
+    url = "/api/admin/licenses",
+  ) => {
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await fetch(url, {
+          method,
+          headers: body ? { "content-type": "application/json" } : undefined,
+          body: body ? JSON.stringify(body) : undefined,
+        }),
+        b = (await r.json()) as { error?: string; license_key?: string };
+      if (!r.ok) throw new Error(b.error ?? "Operacija ni uspela.");
+      if (b.license_key) setKey(b.license_key);
+      await load();
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Operacija ni uspela.");
+      return false;
+    } finally {
+      setBusy(false);
+    }
+  };
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    const p = {
+      ...form,
+      valid_until: form.valid_until
+        ? new Date(`${form.valid_until}T23:59:59Z`).toISOString()
+        : null,
+    };
+    if (
+      await request(
+        editing ? "PATCH" : "POST",
+        editing ? { id: editing, ...p } : p,
+      )
+    ) {
+      setForm(blank);
+      setEditing(null);
+    }
+  };
+  const edit = (r: Row) => {
+    setEditing(r.id);
+    setForm({
+      company_name: r.company_name,
+      max_devices: r.max_devices,
+      valid_until: r.valid_until?.slice(0, 10) ?? "",
+      offline_grace_days: r.offline_grace_days,
+    });
+    scrollTo({ top: 0, behavior: "smooth" });
+  };
   const stats = useMemo(() => {
-    const items = rows ?? [];
+    const a = rows ?? [];
     return {
-      licenses: items.length,
-      active: items.filter((item) => item.status === "active").length,
-      devices: items.reduce((sum, item) => sum + item.active_devices, 0),
-      online: items.reduce((sum, item) => sum + (item.online ? 1 : 0), 0),
+      all: a.length,
+      active: a.filter((x) => x.status === "active").length,
+      devices: a.reduce((s, x) => s + x.active_devices, 0),
+      online: a.filter((x) => x.online).length,
     };
   }, [rows]);
-
-  const columns: DataColumn<LicenseRow>[] = [
+  const columns: DataColumn<Row>[] = [
     {
       key: "company_name",
       header: "Imetnik",
       sortable: true,
-      render: (row) => <span className="font-medium text-white light:text-slate-900">{row.company_name}</span>,
+      render: (r) => (
+        <b className="text-white light:text-slate-900">{r.company_name}</b>
+      ),
     },
     {
       key: "status",
       header: "Status",
-      sortable: true,
-      render: (row) => <StatusBadge label={row.status === "active" ? "Aktivna" : row.status} tone={statusTone(row.status)} />,
+      render: (r) => (
+        <StatusBadge
+          label={r.status === "active" ? "Aktivna" : r.status}
+          tone={statusTone(r.status)}
+        />
+      ),
     },
     {
       key: "active_devices",
       header: "Naprave",
-      sortable: true,
-      sortValue: (row) => row.active_devices,
-      render: (row) => `${row.active_devices} / ${row.max_devices}`,
+      render: (r) => `${r.active_devices} / ${r.max_devices}`,
     },
     {
       key: "online",
       header: "Povezava",
-      sortable: true,
-      sortValue: (row) => Number(row.online),
-      render: (row) => <StatusBadge label={row.online ? "Povezano" : "Brez povezave"} tone={row.online ? "success" : "neutral"} />,
-    },
-    {
-      key: "app_versions",
-      header: "Različica",
-      hideOnMobile: true,
-      render: (row) => row.app_versions.length ? row.app_versions.join(", ") : "—",
+      render: (r) => (
+        <StatusBadge
+          label={r.online ? "Povezano" : "Brez povezave"}
+          tone={r.online ? "success" : "neutral"}
+        />
+      ),
     },
     {
       key: "last_seen_at",
       header: "Zadnja povezava",
       hideOnMobile: true,
-      sortable: true,
-      sortValue: (row) => row.last_seen_at ? Date.parse(row.last_seen_at) : 0,
-      render: (row) => formatDate(row.last_seen_at),
+      render: (r) =>
+        r.last_seen_at ? dt.format(new Date(r.last_seen_at)) : "—",
     },
     {
-      key: "valid_until",
-      header: "Veljavnost",
-      hideOnMobile: true,
-      sortable: true,
-      render: (row) => row.valid_until ? formatDate(row.valid_until) : "Neomejeno",
+      key: "actions",
+      header: "Akcije",
+      render: (r) => (
+        <div className="flex flex-wrap gap-2">
+          <button type="button" className={button} onClick={() => edit(r)}>
+            Uredi
+          </button>
+          <button
+            type="button"
+            className={button}
+            disabled={busy}
+            onClick={() =>
+              void request("PATCH", {
+                id: r.id,
+                action: "status",
+                status: r.status === "blocked" ? "active" : "blocked",
+              })
+            }
+          >
+            {r.status === "blocked" ? "Aktiviraj" : "Blokiraj"}
+          </button>
+          <button
+            type="button"
+            className={button}
+            disabled={busy || !r.active_devices}
+            onClick={() =>
+              confirm("Deaktiviram vse naprave?") &&
+              void request("PATCH", { id: r.id, action: "deactivate_devices" })
+            }
+          >
+            Ponastavi naprave
+          </button>
+          <button
+            type="button"
+            className={`${button} text-red-400`}
+            disabled={busy}
+            onClick={() =>
+              confirm(`Trajno odstranim licenco za ${r.company_name}?`) &&
+              void request(
+                "DELETE",
+                undefined,
+                `/api/admin/licenses?id=${encodeURIComponent(r.id)}`,
+              )
+            }
+          >
+            Odstrani
+          </button>
+        </div>
+      ),
     },
   ];
-
-  const status = error ? "error" : !rows ? "loading" : rows.length === 0 ? "empty" : "ready";
-
-  if (needsLogin) {
+  if (login)
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-[#050816] px-4 light:bg-slate-50">
-        <form className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B1220] p-8 light:border-slate-200 light:bg-white" onSubmit={async (event) => {
-          event.preventDefault();
-          setError(null);
-          const response = await fetch("/api/license-admin/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ password }) });
-          const body = await response.json() as { error?: string };
-          if (!response.ok) { setError(body.error ?? "Prijava ni uspela."); return; }
-          window.location.reload();
-        }}>
-          <h1 className="heading-display font-heading font-semibold text-white light:text-slate-900">Administracija licenc</h1>
-          <p className="mt-2 text-sm text-slate-400 light:text-slate-600">Vnesi administratorsko geslo JU-TAN.</p>
-          <label className="mt-6 block text-sm text-slate-300 light:text-slate-700">Geslo
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required className="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-white light:border-slate-300 light:bg-white light:text-slate-900" />
-          </label>
-          {error ? <p className="mt-3 text-sm text-red-400">{error}</p> : null}
-          <button type="submit" className="mt-6 min-h-11 w-full rounded-lg bg-[#16a34a] px-4 font-semibold text-white hover:bg-[#15803d]">Prijava</button>
+      <main className="flex min-h-dvh items-center justify-center bg-[#050816] px-4">
+        <form
+          className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B1220] p-8"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const r = await fetch("/api/license-admin/auth", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ password }),
+            });
+            if (!r.ok) {
+              setError("Geslo ni pravilno.");
+              return;
+            }
+            location.reload();
+          }}
+        >
+          <h1 className="heading-display font-heading font-semibold text-white">
+            Administracija licenc
+          </h1>
+          <input
+            className={`${input} mt-6`}
+            type="password"
+            aria-label="Administratorsko geslo"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Geslo"
+            required
+          />
+          {error ? <p className="mt-3 text-red-400">{error}</p> : null}
+          <button
+            type="submit"
+            className="mt-6 min-h-11 w-full rounded-lg bg-[#16a34a] font-semibold text-white"
+          >
+            Prijava
+          </button>
         </form>
       </main>
     );
-  }
-
   return (
-    <main className="min-h-dvh bg-[#050816] px-4 py-10 light:bg-slate-50 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1200px]">
-      <PageHeader
-        title="Licence JU-TAN Office"
-        description="Pregled veljavnosti, aktiviranih računalnikov in zadnjih povezav. Licenčni ključi zaradi varnosti niso prikazani."
-      />
-
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatsCard label="Vse licence" value={String(stats.licenses)} icon={KeyRound} />
-        <StatsCard label="Aktivne licence" value={String(stats.active)} icon={ShieldCheck} />
-        <StatsCard label="Aktivne naprave" value={String(stats.devices)} icon={Laptop} />
-        <StatsCard label="Trenutno povezane" value={String(stats.online)} hint="Aktivnost v zadnjih 15 minutah" icon={Radio} />
-      </div>
-
-      <PageState
-        status={status}
-        emptyTitle="Ni licenc"
-        emptyDescription="Ko ustvarite prvo licenco, se bo prikazala tukaj."
-        errorDescription={error ?? undefined}
-      >
+    <main className="min-h-dvh bg-[#050816] px-4 py-10 light:bg-slate-50">
+      <div className="mx-auto max-w-[1400px]">
+        <PageHeader
+          title="Licence JU-TAN Office"
+          description="Ustvarjanje, urejanje, blokiranje in nadzor aktivacij."
+        />
+        <form
+          onSubmit={submit}
+          className="mb-8 rounded-2xl border border-white/10 bg-[#0B1220] p-6 light:border-slate-200 light:bg-white"
+        >
+          <h2 className="text-lg font-semibold text-white light:text-slate-900">
+            {editing ? "Uredi licenco" : "Nova licenca in generator ključa"}
+          </h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-4">
+            <label className="text-sm text-slate-400">
+              Imetnik
+              <input
+                className={`${input} mt-1`}
+                value={form.company_name}
+                onChange={(e) =>
+                  setForm({ ...form, company_name: e.target.value })
+                }
+                required
+              />
+            </label>
+            <label className="text-sm text-slate-400">
+              Največ naprav
+              <input
+                className={`${input} mt-1`}
+                type="number"
+                min="1"
+                max="100"
+                value={form.max_devices}
+                onChange={(e) =>
+                  setForm({ ...form, max_devices: Number(e.target.value) })
+                }
+              />
+            </label>
+            <label className="text-sm text-slate-400">
+              Velja do (prazno = neomejeno)
+              <input
+                className={`${input} mt-1`}
+                type="date"
+                value={form.valid_until}
+                onChange={(e) =>
+                  setForm({ ...form, valid_until: e.target.value })
+                }
+              />
+            </label>
+            <label className="text-sm text-slate-400">
+              Dni brez povezave
+              <input
+                className={`${input} mt-1`}
+                type="number"
+                min="0"
+                max="30"
+                value={form.offline_grace_days}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    offline_grace_days: Number(e.target.value),
+                  })
+                }
+              />
+            </label>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button
+              type="submit"
+              disabled={busy}
+              className="min-h-11 rounded-lg bg-[#16a34a] px-5 font-semibold text-white"
+            >
+              {editing ? "Shrani spremembe" : "Ustvari licenco in ključ"}
+            </button>
+            {editing ? (
+              <button
+                type="button"
+                className={button}
+                onClick={() => {
+                  setEditing(null);
+                  setForm(blank);
+                }}
+              >
+                Prekliči
+              </button>
+            ) : null}
+          </div>
+        </form>
+        {key ? (
+          <div className="mb-8 rounded-2xl border border-[#16a34a] bg-[#16a34a]/10 p-6">
+            <p className="text-slate-300">
+              Ključ se prikaže samo zdaj. Takoj ga kopiraj.
+            </p>
+            <code className="mt-3 block break-all text-lg font-semibold text-white">
+              {key}
+            </code>
+            <button
+              type="button"
+              className={`${button} mt-4`}
+              onClick={() => void navigator.clipboard.writeText(key)}
+            >
+              Kopiraj ključ
+            </button>
+          </div>
+        ) : null}
+        {error ? (
+          <p className="mb-6 rounded-lg border border-red-400/40 p-4 text-red-400">
+            {error}
+          </p>
+        ) : null}
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatsCard
+            label="Vse licence"
+            value={String(stats.all)}
+            icon={KeyRound}
+          />
+          <StatsCard
+            label="Aktivne licence"
+            value={String(stats.active)}
+            icon={ShieldCheck}
+          />
+          <StatsCard
+            label="Aktivne naprave"
+            value={String(stats.devices)}
+            icon={Laptop}
+          />
+          <StatsCard
+            label="Povezane"
+            value={String(stats.online)}
+            icon={Radio}
+          />
+        </div>
         {rows ? (
           <DataTable
             rows={rows}
             columns={columns}
-            caption="Licence JU-TAN Office"
-            searchPlaceholder="Išči po imetniku ali različici"
-            searchKeys={["company_name", "status", "app_versions"]}
-            filters={[
-              { id: "all", label: "Vse" },
-              { id: "active", label: "Aktivne" },
-              { id: "expired", label: "Potekle" },
-              { id: "blocked", label: "Blokirane" },
-            ]}
-            filterKey="status"
+            caption="Licence"
+            searchKeys={["company_name", "status"]}
             pageSize={10}
           />
-        ) : null}
-      </PageState>
+        ) : (
+          <p className="text-slate-400">Nalaganje …</p>
+        )}
       </div>
     </main>
   );
