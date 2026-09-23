@@ -84,7 +84,14 @@ export async function GET(request: Request) {
     headers.set("Content-Length", contentLength);
   }
 
-  void recordOfficeDownload().catch((error) => console.error("office download tracking failed", error));
+  // Persist the aggregate counter before returning the streaming response.
+  // Serverless runtimes may freeze background work after the response is returned.
+  try {
+    await recordOfficeDownload();
+  } catch (error) {
+    // Analytics must never block a valid installer download.
+    console.error("office download tracking failed", error);
+  }
 
   const response = new NextResponse(upstream.body, {
     status: 200,
