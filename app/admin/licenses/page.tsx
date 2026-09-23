@@ -7,8 +7,6 @@ import PageHeader from "@/components/platform/PageHeader";
 import PageState from "@/components/platform/PageState";
 import StatsCard from "@/components/platform/StatsCard";
 import StatusBadge, { statusTone } from "@/components/platform/StatusBadge";
-import RoleGuard from "@/components/platform/auth/RoleGuard";
-import { Role } from "@/src/config/roles";
 
 type LicenseRow = {
   id: string;
@@ -38,6 +36,8 @@ function formatDate(value: string | null) {
 export default function AdminLicensesPage() {
   const [rows, setRows] = useState<LicenseRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,6 +48,10 @@ export default function AdminLicensesPage() {
           items?: LicenseRow[];
           error?: string;
         };
+        if (response.status === 401) {
+          setNeedsLogin(true);
+          return;
+        }
         if (!response.ok || !body.ok || !body.items) {
           setError(body.error ?? "Licenc ni bilo mogoče naložiti.");
           return;
@@ -123,8 +127,32 @@ export default function AdminLicensesPage() {
 
   const status = error ? "error" : !rows ? "loading" : rows.length === 0 ? "empty" : "ready";
 
+  if (needsLogin) {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-[#050816] px-4 light:bg-slate-50">
+        <form className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B1220] p-8 light:border-slate-200 light:bg-white" onSubmit={async (event) => {
+          event.preventDefault();
+          setError(null);
+          const response = await fetch("/api/license-admin/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ password }) });
+          const body = await response.json() as { error?: string };
+          if (!response.ok) { setError(body.error ?? "Prijava ni uspela."); return; }
+          window.location.reload();
+        }}>
+          <h1 className="heading-display font-heading font-semibold text-white light:text-slate-900">Administracija licenc</h1>
+          <p className="mt-2 text-sm text-slate-400 light:text-slate-600">Vnesi administratorsko geslo JU-TAN.</p>
+          <label className="mt-6 block text-sm text-slate-300 light:text-slate-700">Geslo
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required className="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-white light:border-slate-300 light:bg-white light:text-slate-900" />
+          </label>
+          {error ? <p className="mt-3 text-sm text-red-400">{error}</p> : null}
+          <button type="submit" className="mt-6 min-h-11 w-full rounded-lg bg-[#16a34a] px-4 font-semibold text-white hover:bg-[#15803d]">Prijava</button>
+        </form>
+      </main>
+    );
+  }
+
   return (
-    <RoleGuard roles={[Role.OWNER, Role.ADMIN]}>
+    <main className="min-h-dvh bg-[#050816] px-4 py-10 light:bg-slate-50 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px]">
       <PageHeader
         title="Licence JU-TAN Office"
         description="Pregled veljavnosti, aktiviranih računalnikov in zadnjih povezav. Licenčni ključi zaradi varnosti niso prikazani."
@@ -161,6 +189,7 @@ export default function AdminLicensesPage() {
           />
         ) : null}
       </PageState>
-    </RoleGuard>
+      </div>
+    </main>
   );
 }

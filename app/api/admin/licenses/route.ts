@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
-import { Role } from "@/src/config/roles";
-import { requireActor } from "@/src/services/identity/http";
+import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 
 export const runtime = "nodejs";
 
+const COOKIE = "jt_license_admin";
+
 export async function GET() {
-  const actor = await requireActor();
-  if (actor instanceof NextResponse) return actor;
-  if (actor.role !== Role.OWNER && actor.role !== Role.ADMIN) {
-    return NextResponse.json({ ok: false, error: "Dostop ni dovoljen." }, { status: 403 });
-  }
+  const secret = process.env.JU_TAN_DOWNLOAD_SESSION_SECRET;
+  const token = (await cookies()).get(COOKIE)?.value;
+  if (!secret || !verifyOfficeDownloadSessionToken(token, secret))
+    return NextResponse.json({ ok: false, error: "Potrebna je prijava." }, { status: 401 });
 
   try {
     await ensureLicensingSchema();
