@@ -12,7 +12,9 @@ export type LicenseAuditAction =
   | "device_removed"
   | "devices_reset"
   | "license_archived"
-  | "license_restored";
+  | "license_restored"
+  | "license_renewed"
+  | "license_rekeyed";
 
 export async function recordLicenseAudit(
   licenseId: string,
