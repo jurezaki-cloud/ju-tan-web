@@ -7,6 +7,7 @@ import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
 import { provisionLicense } from "@/lib/licensing/provision";
 import { getSiteVisitStats } from "@/lib/site-visits";
+import { recordLicenseAudit } from "@/lib/licensing/audit";
 
 export const runtime = "nodejs";
 
@@ -119,10 +120,11 @@ export async function PATCH(request: Request) {
     );
   await ensureLicensingSchema();
   if (body.action === "deactivate_devices") {
-    await licensingPool().query(
+    const reset = await licensingPool().query(
       "UPDATE office_activations SET deactivated_at=NOW() WHERE license_id=$1 AND deactivated_at IS NULL",
       [id],
     );
+    await recordLicenseAudit(id, "devices_reset", { count: reset.rowCount ?? 0 });
   } else if (
     body.action === "status" &&
     ["active", "blocked"].includes(String(body.status))
@@ -131,6 +133,7 @@ export async function PATCH(request: Request) {
       "UPDATE office_licenses SET status=$2, updated_at=NOW() WHERE id=$1",
       [id, body.status],
     );
+    await recordLicenseAudit(id, body.status === "blocked" ? "license_blocked" : "license_activated");
   } else {
     const parsed = mutationSchema.safeParse(body);
     if (!parsed.success)
@@ -148,6 +151,12 @@ export async function PATCH(request: Request) {
         parsed.data.offline_grace_days,
       ],
     );
+    await recordLicenseAudit(id, "license_updated", {
+      company_name: parsed.data.company_name,
+      max_devices: parsed.data.max_devices,
+      valid_until: parsed.data.valid_until,
+      offline_grace_days: parsed.data.offline_grace_days,
+    });
   }
   return NextResponse.json({ ok: true });
 }
