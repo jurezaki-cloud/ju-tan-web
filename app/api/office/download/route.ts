@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { recordOfficeDownload } from "@/lib/download-stats";
 import { getOfficeDownloadConfig } from "@/lib/office-download/config";
 import {
   OFFICE_DOWNLOAD_COOKIE,
@@ -82,6 +83,8 @@ export async function GET(request: Request) {
   if (contentLength && /^\d+$/.test(contentLength)) {
     headers.set("Content-Length", contentLength);
   }
+
+  void recordOfficeDownload().catch((error) => console.error("office download tracking failed", error));
 
   const response = new NextResponse(upstream.body, {
     status: 200,
