@@ -6,6 +6,7 @@ import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
 import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
 import { provisionLicense } from "@/lib/licensing/provision";
+import { getSiteVisitStats } from "@/lib/site-visits";
 
 export const runtime = "nodejs";
 
@@ -37,8 +38,9 @@ export async function GET() {
 
   try {
     await ensureLicensingSchema();
-    const result = await licensingPool().query(
-      `SELECT l.id, l.company_name, l.status, l.max_devices,
+    const [result, visits] = await Promise.all([
+      licensingPool().query(
+        `SELECT l.id, l.company_name, l.status, l.max_devices,
               l.valid_until, l.offline_grace_days, l.created_at, l.updated_at,
               COUNT(a.id)::int AS total_activations,
               COUNT(a.id) FILTER (WHERE a.deactivated_at IS NULL)::int AS active_devices,
@@ -51,8 +53,10 @@ export async function GET() {
        LEFT JOIN office_activations a ON a.license_id = l.id
        GROUP BY l.id
        ORDER BY l.created_at DESC`,
-    );
-    return NextResponse.json({ ok: true, items: result.rows });
+      ),
+      getSiteVisitStats(),
+    ]);
+    return NextResponse.json({ ok: true, items: result.rows, visits });
   } catch (error) {
     console.error("license dashboard failed", error);
     return NextResponse.json(
