@@ -41,6 +41,11 @@ function isIsolatedSurface(pathname: string): boolean {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Standalone license dashboard has its own signed, HttpOnly admin session.
+  if (pathname === "/admin/licenses" || pathname === "/api/admin/licenses") {
+    return NextResponse.next();
+  }
+
   // Phase 0B: deny-by-default for every non-marketing identity/platform entrypoint.
   if (isMarketingOnlySurface() && isIsolatedSurface(pathname)) {
     return new NextResponse(null, { status: 404 });
