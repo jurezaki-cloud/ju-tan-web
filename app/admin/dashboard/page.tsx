@@ -11,9 +11,9 @@ export default function AdminDashboardPage(){
  return <main className="space-y-6"><PageHeader title="JU-TAN nadzorna plošča" description="Pregled licenc, naprav, obiska, opozoril in varnostnih kopij."/>
  {error&&<div className={box}>{error}</div>}{!s?<div className={box}>Nalagam podatke …</div>:<>
  <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
- <StatsCard label="Licence" value={s.licenses} icon={KeyRound}/><StatsCard label="Aktivne licence" value={s.active_licenses} icon={ShieldCheck}/><StatsCard label="Aktivne naprave" value={s.devices} icon={Laptop}/><StatsCard label="Online" value={s.online} icon={Radio}/>
+ <StatsCard label="Licence" value={String(s.licenses)} icon={KeyRound}/><StatsCard label="Aktivne licence" value={String(s.active_licenses)} icon={ShieldCheck}/><StatsCard label="Aktivne naprave" value={String(s.devices)} icon={Laptop}/><StatsCard label="Online" value={String(s.online)} icon={Radio}/>
  </section><section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
- <StatsCard label="Obiski danes" value={s.visits.today} icon={Eye}/><StatsCard label="Obiski 30 dni" value={s.visits.last_30_days} icon={Activity}/><StatsCard label="Nove naprave 24 h" value={s.new_devices} icon={Laptop}/><StatsCard label="Opozorila" value={s.alerts} icon={AlertTriangle}/>
+ <StatsCard label="Obiski danes" value={String(s.visits.today)} icon={Eye}/><StatsCard label="Obiski 30 dni" value={String(s.visits.last_30_days)} icon={Activity}/><StatsCard label="Nove naprave 24 h" value={String(s.new_devices)} icon={Laptop}/><StatsCard label="Opozorila" value={String(s.alerts)} icon={AlertTriangle}/>
  </section><section className="grid gap-4 lg:grid-cols-3">
  <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Obisk strani</h2><p className="mt-3 text-sm text-slate-400">7 dni: {s.visits.last_7_days.toLocaleString("sl-SI")} · skupaj: {s.visits.total.toLocaleString("sl-SI")}</p></div>
  <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Varnostna kopija</h2><p className="mt-3 text-sm text-slate-400">{s.last_backup_at?new Intl.DateTimeFormat("sl-SI",{dateStyle:"medium",timeStyle:"short"}).format(new Date(s.last_backup_at)):"Backup še ni na voljo."}</p></div>
