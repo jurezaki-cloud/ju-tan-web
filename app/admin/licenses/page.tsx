@@ -29,6 +29,7 @@ type Row = {
   last_seen_at: string | null;
   online: boolean;
   app_versions: string[];
+  archived_at: string | null;
 };
 type Device = {
   id: string;
@@ -290,18 +291,14 @@ export default function AdminLicensesPage() {
           </button>
           <button
             type="button"
-            className={`${button} text-red-400`}
+            className={`${button} ${r.archived_at ? "text-emerald-400" : "text-amber-400"}`}
             disabled={busy}
             onClick={() =>
-              confirm(`Trajno odstranim licenco za ${r.company_name}?`) &&
-              void request(
-                "DELETE",
-                undefined,
-                `/api/admin/licenses?id=${encodeURIComponent(r.id)}`,
-              )
+              confirm(r.archived_at ? `Obnovim licenco za ${r.company_name} iz arhiva?` : `Arhiviram licenco za ${r.company_name}? Aktivne naprave bodo deaktivirane.`) &&
+              void request("PATCH", { id: r.id, action: r.archived_at ? "restore" : "archive" })
             }
           >
-            Odstrani
+            {r.archived_at ? "Obnovi" : "Arhiviraj"}
           </button>
         </div>
       ),
@@ -549,6 +546,8 @@ export default function AdminLicensesPage() {
                     license_updated: "Licenca urejena",
                     license_blocked: "Licenca blokirana",
                     license_activated: "Licenca aktivirana",
+                    license_archived: "Licenca arhivirana",
+                    license_restored: "Licenca obnovljena iz arhiva",
                     device_activated: "Naprava aktivirana",
                     device_removed: "Naprava odstranjena",
                     devices_reset: "Vse naprave ponastavljene",
