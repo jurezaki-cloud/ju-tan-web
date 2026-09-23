@@ -49,6 +49,7 @@ type Form = {
   valid_until: string;
   offline_grace_days: number;
 };
+type Alert = { type: string; severity: "info" | "warning" | "critical"; license_id: string; company_name: string; message: string };
 type VisitStats = {
   today: number;
   last_7_days: number;
@@ -82,13 +83,15 @@ export default function AdminLicensesPage() {
     [details, setDetails] = useState<LicenseDetails | null>(null),
     [detailsBusy, setDetailsBusy] = useState(false),
     [backups, setBackups] = useState<Backup[] | null>(null),
-    [backupBusy, setBackupBusy] = useState(false);
+    [backupBusy, setBackupBusy] = useState(false),
+    [alerts, setAlerts] = useState<Alert[]>([]);
   const load = useCallback(async () => {
     const r = await fetch("/api/admin/licenses"),
       b = (await r.json()) as {
         items?: Row[];
         visits?: VisitStats;
         error?: string;
+        alerts?: Alert[];
       };
     if (r.status === 401) {
       setLogin(true);
@@ -100,6 +103,7 @@ export default function AdminLicensesPage() {
     }
     setRows(b.items);
     setVisits(b.visits ?? null);
+    setAlerts(b.alerts ?? []);
     setError(null);
   }, []);
   useEffect(() => {
@@ -562,6 +566,10 @@ export default function AdminLicensesPage() {
             </div>
           </section>
         ) : null}
+        {alerts.length ? <section className="mb-6 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-5">
+          <div className="flex items-center justify-between gap-3"><div><h2 className="text-lg font-semibold text-white light:text-slate-900">Opozorila</h2><p className="mt-1 text-sm text-slate-400">{alerts.length} aktivnih opozoril licenčnega sistema.</p></div><StatusBadge label={String(alerts.length)} tone={alerts.some((a) => a.severity === "critical") ? "caution" : "neutral"} /></div>
+          <div className="mt-4 space-y-2">{alerts.map((a, i) => <button type="button" key={`${a.license_id}-${a.type}-${i}`} onClick={() => { const row = rows?.find((x) => x.id === a.license_id); if (row) void openDetails(row); }} className="block w-full rounded-lg border border-white/5 bg-white/[0.03] p-3 text-left"><div className="text-sm font-semibold text-slate-200 light:text-slate-800">{a.company_name}</div><div className="mt-1 text-sm text-slate-400">{a.message}</div></button>)}</div>
+        </section> : null}
         <section className="mb-6 rounded-2xl border border-white/10 bg-slate-950/40 p-5 light:border-slate-200 light:bg-white">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div><h2 className="text-lg font-semibold text-white light:text-slate-900">Varnostne kopije</h2><p className="mt-1 text-sm text-slate-400">Licence, naprave in zgodovina sprememb.</p></div>
