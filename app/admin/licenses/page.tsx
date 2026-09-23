@@ -197,6 +197,21 @@ export default function AdminLicensesPage() {
       setEditing(null);
     }
   };
+  const renew = async (r: Row) => {
+    const raw = prompt("Za koliko mesecev podaljšam licenco? (1, 3, 6, 12 ali 24)", "12");
+    if (raw === null) return;
+    const months = Number(raw);
+    if (![1, 3, 6, 12, 24].includes(months)) { setError("Izberi 1, 3, 6, 12 ali 24 mesecev."); return; }
+    if (!confirm(`Podaljšam licenco za ${r.company_name} za ${months} mesecev?`)) return;
+    const ok = await request("PATCH", { id: r.id, action: "renew", months });
+    if (ok && details?.license.id === r.id) await openDetails(r);
+  };
+  const rekey = async (r: Row) => {
+    if (!confirm(`Ustvarim nov licenčni ključ za ${r.company_name}? Stari ključ bo takoj prenehal veljati. Novi ključ se bo prikazal samo enkrat.`)) return;
+    setKey(null);
+    const ok = await request("PATCH", { id: r.id, action: "rekey" });
+    if (ok && details?.license.id === r.id) await openDetails(r);
+  };
   const edit = (r: Row) => {
     setEditing(r.id);
     setForm({
@@ -265,9 +280,9 @@ export default function AdminLicensesPage() {
           <button type="button" className={button} disabled={detailsBusy} onClick={() => void openDetails(r)}>
             Podrobnosti
           </button>
-          <button type="button" className={button} onClick={() => edit(r)}>
-            Uredi
-          </button>
+          <button type="button" className={button} onClick={() => edit(r)}>Uredi</button>
+          {!r.archived_at ? <button type="button" className={button} disabled={busy} onClick={() => void renew(r)}>Podaljšaj</button> : null}
+          {!r.archived_at ? <button type="button" className={button} disabled={busy} onClick={() => void rekey(r)}>Nov ključ</button> : null}
           <button
             type="button"
             className={button}
@@ -552,6 +567,8 @@ export default function AdminLicensesPage() {
                     license_activated: "Licenca aktivirana",
                     license_archived: "Licenca arhivirana",
                     license_restored: "Licenca obnovljena iz arhiva",
+                    license_renewed: "Licenca podaljšana",
+                    license_rekeyed: "Licenčni ključ zamenjan",
                     device_activated: "Naprava aktivirana",
                     device_removed: "Naprava odstranjena",
                     devices_reset: "Vse naprave ponastavljene",
