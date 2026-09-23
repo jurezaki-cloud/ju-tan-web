@@ -39,7 +39,8 @@ type Device = {
   deactivated_at: string | null;
   online: boolean;
 };
-type LicenseDetails = { license: Row; devices: Device[] };
+type AuditEvent = { id: string; action: string; details: Record<string, unknown>; created_at: string };
+type LicenseDetails = { license: Row; devices: Device[]; audit: AuditEvent[] };
 type Form = {
   company_name: string;
   max_devices: number;
@@ -510,6 +511,27 @@ export default function AdminLicensesPage() {
                   {!details.devices.length ? <tr><td colSpan={6} className="p-6 text-center text-slate-400">Na tej licenci še ni aktiviranih naprav.</td></tr> : null}
                 </tbody>
               </table>
+            </div>
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold text-white light:text-slate-900">Zgodovina sprememb</h3>
+              <div className="mt-3 space-y-2">
+                {details.audit?.map((event) => {
+                  const labels: Record<string, string> = {
+                    license_created: "Licenca ustvarjena",
+                    license_updated: "Licenca urejena",
+                    license_blocked: "Licenca blokirana",
+                    license_activated: "Licenca aktivirana",
+                    device_activated: "Naprava aktivirana",
+                    device_removed: "Naprava odstranjena",
+                    devices_reset: "Vse naprave ponastavljene",
+                  };
+                  return <div key={event.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-white/5 bg-white/[0.03] p-3">
+                    <span className="text-sm font-medium text-slate-200 light:text-slate-700">{labels[event.action] ?? event.action}</span>
+                    <time className="text-xs text-slate-400">{dt.format(new Date(event.created_at))}</time>
+                  </div>;
+                })}
+                {!details.audit?.length ? <p className="text-sm text-slate-400">Zgodovine še ni.</p> : null}
+              </div>
             </div>
           </section>
         ) : null}

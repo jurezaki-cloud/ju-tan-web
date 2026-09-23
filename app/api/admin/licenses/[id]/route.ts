@@ -4,6 +4,7 @@ import { z } from "zod";
 import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
 import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
+import { recordLicenseAudit } from "@/lib/licensing/audit";
 
 export const runtime = "nodejs";
 const COOKIE = "jt_license_admin";
@@ -29,7 +30,10 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     `SELECT id, RIGHT(device_hash, 12) AS device_id, app_version, activated_at, last_seen_at, deactivated_at,
             (deactivated_at IS NULL AND last_seen_at >= NOW() - INTERVAL '15 minutes') AS online
      FROM office_activations WHERE license_id=$1 ORDER BY last_seen_at DESC`, [id]);
-  return NextResponse.json({ ok: true, license: license.rows[0], devices: devices.rows });
+  const audit = await licensingPool().query(
+    "SELECT id, action, details, created_at FROM office_license_audit WHERE license_id=$1 ORDER BY created_at DESC LIMIT 100",
+    [id]);
+  return NextResponse.json({ ok: true, license: license.rows[0], devices: devices.rows, audit: audit.rows });
 }
 
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
@@ -47,5 +51,6 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     [parsed.data.activation_id, id]);
   if (!result.rowCount)
     return NextResponse.json({ ok: false, error: "Aktivna naprava ne obstaja." }, { status: 404 });
+  await recordLicenseAudit(id, "device_removed", { activation_id: parsed.data.activation_id });
   return NextResponse.json({ ok: true });
 }

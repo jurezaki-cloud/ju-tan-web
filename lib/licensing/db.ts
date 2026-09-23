@@ -27,6 +27,8 @@ const schemaSql = [
   "CREATE TABLE IF NOT EXISTS office_licenses (id UUID PRIMARY KEY, key_hash CHAR(64) NOT NULL UNIQUE, company_name TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','expired','blocked')), max_devices INTEGER NOT NULL DEFAULT 1 CHECK (max_devices > 0), valid_until TIMESTAMPTZ, offline_grace_days INTEGER NOT NULL DEFAULT 7 CHECK (offline_grace_days BETWEEN 0 AND 30), created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())",
   "CREATE TABLE IF NOT EXISTS office_activations (id UUID PRIMARY KEY, license_id UUID NOT NULL REFERENCES office_licenses(id) ON DELETE CASCADE, device_hash CHAR(64) NOT NULL, token_hash CHAR(64) NOT NULL UNIQUE, app_version VARCHAR(40) NOT NULL, activated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), deactivated_at TIMESTAMPTZ, UNIQUE (license_id, device_hash))",
   "CREATE INDEX IF NOT EXISTS office_activations_license_active_idx ON office_activations(license_id) WHERE deactivated_at IS NULL",
+  "CREATE TABLE IF NOT EXISTS office_license_audit (id UUID PRIMARY KEY, license_id UUID NOT NULL REFERENCES office_licenses(id) ON DELETE CASCADE, action VARCHAR(60) NOT NULL, details JSONB NOT NULL DEFAULT '{}'::jsonb, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())",
+  "CREATE INDEX IF NOT EXISTS office_license_audit_license_created_idx ON office_license_audit(license_id, created_at DESC)",
 ].join(";");
 
 export async function ensureLicensingSchema() {
