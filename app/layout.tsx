@@ -5,6 +5,7 @@ import { sitewideJsonLdGraph, serializeJsonLd } from "@/lib/seo";
 import { getMessages } from "@/lib/i18n/messages";
 import Providers from "@/components/common/Providers";
 import JuTanAgentLazy from "@/components/ai/JuTanAgentLazy";
+import SiteVisitTracker from "@/components/common/SiteVisitTracker";
 
 export { metadata, viewport } from "@/lib/metadata";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
             {skipLabel}
           </a>
           {children}
+          <SiteVisitTracker />
           <JuTanAgentLazy />
           <script
             type="application/ld+json"
