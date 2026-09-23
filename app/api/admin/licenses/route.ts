@@ -58,6 +58,12 @@ export async function GET() {
       ),
       getSiteVisitStats(),
     ]);
+    const recentDevices = await licensingPool().query(
+      `SELECT a.id, a.license_id, RIGHT(a.device_hash, 12) AS device_id, a.app_version, a.activated_at, l.company_name
+       FROM office_activations a JOIN office_licenses l ON l.id=a.license_id
+       WHERE a.activated_at >= NOW() - INTERVAL '24 hours' AND l.archived_at IS NULL
+       ORDER BY a.activated_at DESC LIMIT 50`,
+    );
     const alerts = result.rows.flatMap((license) => {
       if (license.archived_at) return [];
       const items: Array<{ type: string; severity: "info" | "warning" | "critical"; license_id: string; company_name: string; message: string }> = [];
@@ -72,6 +78,16 @@ export async function GET() {
       }
       return items;
     });
+    for (const device of recentDevices.rows) {
+      alerts.push({
+        type: "new_device",
+        severity: "info",
+        license_id: device.license_id,
+        company_name: device.company_name,
+        message: `Nova naprava …${device.device_id} je bila aktivirana${device.app_version ? ` (v${device.app_version})` : ""}.`,
+        created_at: device.activated_at,
+      } as (typeof alerts)[number] & { created_at: string });
+    }
     return NextResponse.json({ ok: true, items: result.rows, visits, alerts });
   } catch (error) {
     console.error("license dashboard failed", error);
