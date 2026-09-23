@@ -30,6 +30,16 @@ type Row = {
   online: boolean;
   app_versions: string[];
 };
+type Device = {
+  id: string;
+  device_id: string;
+  app_version: string;
+  activated_at: string;
+  last_seen_at: string;
+  deactivated_at: string | null;
+  online: boolean;
+};
+type LicenseDetails = { license: Row; devices: Device[] };
 type Form = {
   company_name: string;
   max_devices: number;
@@ -65,7 +75,9 @@ export default function AdminLicensesPage() {
     [editing, setEditing] = useState<string | null>(null),
     [key, setKey] = useState<string | null>(null),
     [visits, setVisits] = useState<VisitStats | null>(null),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [details, setDetails] = useState<LicenseDetails | null>(null),
+    [detailsBusy, setDetailsBusy] = useState(false);
   const load = useCallback(async () => {
     const r = await fetch("/api/admin/licenses"),
       b = (await r.json()) as {
@@ -113,6 +125,25 @@ export default function AdminLicensesPage() {
     } finally {
       setBusy(false);
     }
+  };
+  const openDetails = async (row: Row) => {
+    setDetailsBusy(true);
+    setError(null);
+    try {
+      const r = await fetch(`/api/admin/licenses/${encodeURIComponent(row.id)}`);
+      const b = (await r.json()) as LicenseDetails & { error?: string };
+      if (!r.ok) throw new Error(b.error ?? "Podrobnosti ni bilo mogoče naložiti.");
+      setDetails(b);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Podrobnosti ni bilo mogoče naložiti.");
+    } finally {
+      setDetailsBusy(false);
+    }
+  };
+  const removeDevice = async (licenseId: string, activationId: string) => {
+    if (!confirm("Odstranim to napravo iz licence?")) return;
+    const ok = await request("DELETE", { activation_id: activationId }, `/api/admin/licenses/${encodeURIComponent(licenseId)}`);
+    if (ok && details) await openDetails(details.license);
   };
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -197,6 +228,9 @@ export default function AdminLicensesPage() {
       header: "Akcije",
       render: (r) => (
         <div className="flex flex-wrap gap-2">
+          <button type="button" className={button} disabled={detailsBusy} onClick={() => void openDetails(r)}>
+            Podrobnosti
+          </button>
           <button type="button" className={button} onClick={() => edit(r)}>
             Uredi
           </button>
@@ -450,6 +484,35 @@ export default function AdminLicensesPage() {
             icon={Radio}
           />
         </div>
+        {details ? (
+          <section className="mb-8 rounded-2xl border border-[#16a34a]/40 bg-[#0B1220] p-6 light:bg-white">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-semibold text-white light:text-slate-900">Podrobnosti licence — {details.license.company_name}</h2>
+                <p className="mt-1 text-sm text-slate-400">Aktivne naprave {details.devices.filter((d) => !d.deactivated_at).length} / {details.license.max_devices}</p>
+              </div>
+              <button type="button" className={button} onClick={() => setDetails(null)}>Zapri</button>
+            </div>
+            <div className="mt-5 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-white/10 text-slate-400"><tr><th className="p-3">Naprava</th><th className="p-3">Verzija</th><th className="p-3">Aktivirana</th><th className="p-3">Zadnja povezava</th><th className="p-3">Status</th><th className="p-3">Akcija</th></tr></thead>
+                <tbody>
+                  {details.devices.map((d) => (
+                    <tr key={d.id} className="border-b border-white/5 text-slate-200 light:text-slate-700">
+                      <td className="p-3 font-mono">…{d.device_id}</td>
+                      <td className="p-3">{d.app_version}</td>
+                      <td className="p-3">{dt.format(new Date(d.activated_at))}</td>
+                      <td className="p-3">{dt.format(new Date(d.last_seen_at))}</td>
+                      <td className="p-3"><StatusBadge label={d.deactivated_at ? "Odstranjena" : d.online ? "Povezana" : "Brez povezave"} tone={d.deactivated_at ? "neutral" : d.online ? "success" : "neutral"} /></td>
+                      <td className="p-3">{!d.deactivated_at ? <button type="button" className={`${button} text-red-400`} disabled={busy} onClick={() => void removeDevice(details.license.id, d.id)}>Odstrani napravo</button> : "—"}</td>
+                    </tr>
+                  ))}
+                  {!details.devices.length ? <tr><td colSpan={6} className="p-6 text-center text-slate-400">Na tej licenci še ni aktiviranih naprav.</td></tr> : null}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ) : null}
         {rows ? (
           <DataTable
             rows={rows}
