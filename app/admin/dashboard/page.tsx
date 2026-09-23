@@ -1,10 +1,11 @@
 "use client";
 import { useEffect,useState } from "react";
-import { Activity,AlertTriangle,Archive,Eye,KeyRound,Laptop,Radio,ShieldCheck } from "lucide-react";
+import { Activity,AlertTriangle,Archive,CheckCircle2,Database,Download,Eye,KeyRound,Laptop,Radio,ShieldCheck } from "lucide-react";
 import PageHeader from "@/components/platform/PageHeader";
 import StatsCard from "@/components/platform/StatsCard";
 type Stats={licenses:number;active_licenses:number;archived:number;devices:number;online:number;new_devices:number;alerts:number;visits:{today:number;last_7_days:number;last_30_days:number;total:number};last_backup_at:string|null;downloads:{today:number;last_30_days:number;total:number};analytics:{days:number;daily:{day:string;visits:number}[];top_pages:{path:string;visits:number}[]}};
 const box="rounded-xl border border-white/10 bg-white/[0.03] p-5 light:border-slate-200 light:bg-white";
+function backupHealth(last:string|null){if(!last)return {label:"Backup manjka",detail:"Ustvari prvo varnostno kopijo.",tone:"text-amber-400",Icon:AlertTriangle};const age=Date.now()-new Date(last).getTime();if(age>30*60*60*1000)return {label:"Backup je zastarel",detail:"Zadnja kopija je starejša od 30 ur.",tone:"text-amber-400",Icon:AlertTriangle};return {label:"Backup OK",detail:"Samodejne varnostne kopije so ažurne.",tone:"text-emerald-400",Icon:CheckCircle2};}
 export default function AdminDashboardPage(){
  const [s,setS]=useState<Stats|null>(null);const [error,setError]=useState<string|null>(null);
  useEffect(()=>{void(async()=>{const r=await fetch("/api/admin/dashboard",{cache:"no-store"});const b=await r.json();if(!r.ok){setError(b.error??"Napaka pri nalaganju.");return;}setS(b.stats);})()},[]);
@@ -13,10 +14,10 @@ export default function AdminDashboardPage(){
  <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
  <StatsCard label="Licence" value={String(s.licenses)} icon={KeyRound}/><StatsCard label="Aktivne licence" value={String(s.active_licenses)} icon={ShieldCheck}/><StatsCard label="Aktivne naprave" value={String(s.devices)} icon={Laptop}/><StatsCard label="Online" value={String(s.online)} icon={Radio}/>
  </section><section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
- <StatsCard label="Obiski danes" value={String(s.visits.today)} icon={Eye}/><StatsCard label="Obiski 30 dni" value={String(s.visits.last_30_days)} icon={Activity}/><StatsCard label="Nove naprave 24 h" value={String(s.new_devices)} icon={Laptop}/><StatsCard label="Opozorila" value={String(s.alerts)} icon={AlertTriangle}/><StatsCard label="Prenosi danes" value={String(s.downloads.today)} icon={Activity}/><StatsCard label="Prenosi 30 dni" value={String(s.downloads.last_30_days)} icon={Activity}/>
+ <StatsCard label="Obiski danes" value={String(s.visits.today)} icon={Eye}/><StatsCard label="Obiski 30 dni" value={String(s.visits.last_30_days)} icon={Activity}/><StatsCard label="Nove naprave 24 h" value={String(s.new_devices)} icon={Laptop}/><StatsCard label="Opozorila" value={String(s.alerts)} icon={AlertTriangle}/><StatsCard label="Prenosi danes" value={String(s.downloads.today)} icon={Download}/><StatsCard label="Prenosi 30 dni" value={String(s.downloads.last_30_days)} icon={Download}/>
  </section><section className="grid gap-4 lg:grid-cols-3">
  <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Obisk strani</h2><p className="mt-3 text-sm text-slate-400">7 dni: {s.visits.last_7_days.toLocaleString("sl-SI")} · skupaj: {s.visits.total.toLocaleString("sl-SI")}</p></div>
- <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Varnostna kopija</h2><p className="mt-3 text-sm text-slate-400">{s.last_backup_at?new Intl.DateTimeFormat("sl-SI",{dateStyle:"medium",timeStyle:"short"}).format(new Date(s.last_backup_at)):"Backup še ni na voljo."}</p></div>
+ <div className={box}>{(()=>{const h=backupHealth(s.last_backup_at);return <><div className="flex items-center justify-between gap-3"><h2 className="font-semibold text-white light:text-slate-900">Varnostna kopija</h2><Database size={18} className={h.tone}/></div><p className={`mt-3 flex items-center gap-2 text-sm font-semibold ${h.tone}`}><h.Icon size={16}/>{h.label}</p><p className="mt-1 text-xs text-slate-500">{h.detail}</p><p className="mt-3 text-sm text-slate-400">{s.last_backup_at?new Intl.DateTimeFormat("sl-SI",{dateStyle:"medium",timeStyle:"short"}).format(new Date(s.last_backup_at)):"Backup še ni na voljo."}</p></>})()}</div>
  <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Arhiv</h2><p className="mt-3 flex items-center gap-2 text-sm text-slate-400"><Archive size={16}/>{s.archived} arhiviranih licenc</p></div>
  </section>
  <section className="grid gap-4 lg:grid-cols-[2fr_1fr]">
