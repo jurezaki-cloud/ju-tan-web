@@ -8,6 +8,8 @@ import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
 import { provisionLicense } from "@/lib/licensing/provision";
 import { getSiteVisitStats } from "@/lib/site-visits";
 import { recordLicenseAudit } from "@/lib/licensing/audit";
+import { getLicensingConfig } from "@/lib/licensing/config";
+import { hashLicenseKey } from "@/lib/licensing/crypto";
 
 export const runtime = "nodejs";
 
@@ -158,7 +160,22 @@ export async function PATCH(request: Request) {
       { status: 400 },
     );
   await ensureLicensingSchema();
-  if (body.action === "archive") {
+  if (body.action === "renew") {
+    const months = Number(body.months ?? 12);
+    if (![1,3,6,12,24].includes(months)) return NextResponse.json({ok:false,error:"Obdobje podaljšanja ni veljavno."},{status:400});
+    const renewed = await licensingPool().query(`UPDATE office_licenses SET valid_until=GREATEST(COALESCE(valid_until,NOW()),NOW()) + ($2::int * INTERVAL '1 month'), status='active', updated_at=NOW() WHERE id=$1 AND archived_at IS NULL RETURNING valid_until`,[id,months]);
+    if (!renewed.rowCount) return NextResponse.json({ok:false,error:"Aktivna licenca ne obstaja."},{status:404});
+    await recordLicenseAudit(id,"license_renewed",{months,valid_until:renewed.rows[0].valid_until});
+    return NextResponse.json({ok:true,valid_until:renewed.rows[0].valid_until});
+  } else if (body.action === "rekey") {
+    const licenseKey=generatedKey();
+    const {keyPepper}=getLicensingConfig();
+    const keyHash=hashLicenseKey(licenseKey,keyPepper);
+    const changed=await licensingPool().query("UPDATE office_licenses SET key_hash=$2, updated_at=NOW() WHERE id=$1 AND archived_at IS NULL",[id,keyHash]);
+    if (!changed.rowCount) return NextResponse.json({ok:false,error:"Aktivna licenca ne obstaja."},{status:404});
+    await recordLicenseAudit(id,"license_rekeyed");
+    return NextResponse.json({ok:true,license_key:licenseKey});
+  } else if (body.action === "archive") {
     await licensingPool().query("UPDATE office_licenses SET archived_at=NOW(), status='blocked', updated_at=NOW() WHERE id=$1 AND archived_at IS NULL", [id]);
     await licensingPool().query("UPDATE office_activations SET deactivated_at=NOW() WHERE license_id=$1 AND deactivated_at IS NULL", [id]);
     await recordLicenseAudit(id, "license_archived");
