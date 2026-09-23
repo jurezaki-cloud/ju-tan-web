@@ -1,5 +1,12 @@
 "use client";
-import { KeyRound, Laptop, Radio, ShieldCheck } from "lucide-react";
+import {
+  CalendarDays,
+  Eye,
+  KeyRound,
+  Laptop,
+  Radio,
+  ShieldCheck,
+} from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -29,6 +36,12 @@ type Form = {
   valid_until: string;
   offline_grace_days: number;
 };
+type VisitStats = {
+  today: number;
+  last_7_days: number;
+  last_30_days: number;
+  total: number;
+};
 const blank: Form = {
   company_name: "",
   max_devices: 1,
@@ -51,10 +64,15 @@ export default function AdminLicensesPage() {
     [form, setForm] = useState<Form>(blank),
     [editing, setEditing] = useState<string | null>(null),
     [key, setKey] = useState<string | null>(null),
+    [visits, setVisits] = useState<VisitStats | null>(null),
     [busy, setBusy] = useState(false);
   const load = useCallback(async () => {
     const r = await fetch("/api/admin/licenses"),
-      b = (await r.json()) as { items?: Row[]; error?: string };
+      b = (await r.json()) as {
+        items?: Row[];
+        visits?: VisitStats;
+        error?: string;
+      };
     if (r.status === 401) {
       setLogin(true);
       return;
@@ -64,6 +82,7 @@ export default function AdminLicensesPage() {
       return;
     }
     setRows(b.items);
+    setVisits(b.visits ?? null);
     setError(null);
   }, []);
   useEffect(() => {
@@ -273,6 +292,38 @@ export default function AdminLicensesPage() {
           title="Licence JU-TAN Office"
           description="Ustvarjanje, urejanje, blokiranje in nadzor aktivacij."
         />
+        {visits ? (
+          <section className="mb-8" aria-labelledby="site-visits-title">
+            <h2
+              id="site-visits-title"
+              className="mb-4 text-lg font-semibold text-white light:text-slate-900"
+            >
+              Obiski spletne strani
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <StatsCard
+                label="Danes"
+                value={String(visits.today)}
+                icon={Eye}
+              />
+              <StatsCard
+                label="Zadnjih 7 dni"
+                value={String(visits.last_7_days)}
+                icon={CalendarDays}
+              />
+              <StatsCard
+                label="Zadnjih 30 dni"
+                value={String(visits.last_30_days)}
+                icon={CalendarDays}
+              />
+              <StatsCard
+                label="Vsi obiski"
+                value={String(visits.total)}
+                icon={Eye}
+              />
+            </div>
+          </section>
+        ) : null}
         <form
           onSubmit={submit}
           className="mb-8 rounded-2xl border border-white/10 bg-[#0B1220] p-6 light:border-slate-200 light:bg-white"
