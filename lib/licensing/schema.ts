@@ -10,6 +10,7 @@ export const activationSchema = z
     license_key: z.string().trim().min(8).max(120),
     device_id: deviceId,
     app_version: appVersion,
+    device_name: z.string().trim().max(255).optional(),
   })
   .strict();
 export const validationSchema = z
