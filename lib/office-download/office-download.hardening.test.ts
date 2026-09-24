@@ -83,9 +83,6 @@ async function assertMissingConfig() {
   setDownloadEnv({ JU_TAN_DOWNLOAD_SESSION_SECRET: "too-short" });
   assert.equal(getOfficeDownloadConfig(), null);
 
-  setDownloadEnv({ JU_TAN_OFFICE_INSTALLER_URL: "not-a-url" });
-  assert.equal(getOfficeDownloadConfig(), null);
-
   setDownloadEnv();
   const cfg = getOfficeDownloadConfig();
   assert.ok(cfg);
@@ -234,86 +231,34 @@ async function assertDownloadRoute() {
   );
   assert.equal(expired.status, 401);
 
-  const originalFetch = globalThis.fetch;
-  let upstreamUrl = "";
-  let sawAuthHeader = false;
-  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
-    upstreamUrl = String(input);
-    const headers = new Headers(init?.headers);
-    sawAuthHeader = headers.has("authorization");
-    return new Response(Uint8Array.from([1, 2, 3, 4]), {
-      status: 200,
-      headers: {
-        "content-type": "application/octet-stream",
-        "content-length": "4",
-      },
-    });
-  }) as typeof fetch;
+  const denyBody = (await noAuth.clone().json()) as Record<string, unknown>;
+  assert.equal("url" in denyBody, false);
+  restoreEnv(snap);
 
-  try {
-    const token = createOfficeDownloadSessionToken(SECRET, 60_000);
-    const allowed = await GET(
-      new Request("http://localhost/api/office/download", {
-        headers: { cookie: `${OFFICE_DOWNLOAD_COOKIE}=${token}` },
-      }),
-    );
-    assert.equal(allowed.status, 200);
-    assert.equal(
-      allowed.headers.get("content-disposition")?.includes("JU-TAN-Office-Setup.exe"),
-      true,
-    );
-    assert.equal(allowed.headers.get("cache-control")?.includes("no-store"), true);
-    assert.equal(upstreamUrl, "https://example.com/private/JU-TAN-Office-Setup.exe");
-    assert.equal(sawAuthHeader, false);
-    const bytes = new Uint8Array(await allowed.arrayBuffer());
-    assert.deepEqual([...bytes], [1, 2, 3, 4]);
-
-    // Bypass attempt: response must never echo installer URL in JSON body for deny cases
-    const denyBody = (await noAuth.clone().json().catch(() => null)) as {
-      ok?: boolean;
-      error?: string;
-      url?: string;
-    } | null;
-    assert.ok(denyBody);
-    assert.equal("url" in denyBody, false);
-    assert.equal(JSON.stringify(denyBody).includes("example.com"), false);
-  } finally {
-    globalThis.fetch = originalFetch;
-    restoreEnv(snap);
-  }
 }
 
-async function assertAuthorizedFetchWithGithubToken() {
-  const keys = [
-    "JU_TAN_DOWNLOAD_PASSWORD",
-    "JU_TAN_DOWNLOAD_SESSION_SECRET",
-    "JU_TAN_OFFICE_INSTALLER_URL",
-    "JU_TAN_GITHUB_TOKEN",
-  ];
-  const snap = snapshotEnv(keys);
-  setDownloadEnv({ JU_TAN_GITHUB_TOKEN: "ghp_test_token_not_real" });
-
-  const { GET } = await import("@/app/api/office/download/route");
-  const originalFetch = globalThis.fetch;
-  let auth: string | null = null;
-  globalThis.fetch = (async (_input: RequestInfo | URL, init?: RequestInit) => {
-    auth = new Headers(init?.headers).get("authorization");
-    return new Response(Uint8Array.from([9]), { status: 200 });
-  }) as typeof fetch;
-
-  try {
-    const token = createOfficeDownloadSessionToken(SECRET, 60_000);
-    const res = await GET(
-      new Request("http://localhost/api/office/download", {
-        headers: { cookie: `${OFFICE_DOWNLOAD_COOKIE}=${token}` },
-      }),
-    );
-    assert.equal(res.status, 200);
-    assert.equal(auth, "Bearer ghp_test_token_not_real");
-  } finally {
-    globalThis.fetch = originalFetch;
-    restoreEnv(snap);
-  }
+async function assertPrivateBlobSigning() {
+  const { signOfficeInstallerDownload, OFFICE_BLOB_PATHNAME, OFFICE_BLOB_STORE_ID } =
+    await import("@/lib/office-download/private-blob");
+  let issued: Record<string, unknown> | undefined;
+  let signed: Record<string, unknown> | undefined;
+  const url = await signOfficeInstallerDownload({
+    issueSignedToken: async (options) => {
+      issued = { ...options };
+      return { delegationToken: "test", clientSigningToken: "test", validUntil: options.validUntil! };
+    },
+    presignUrl: async (_token, options) => {
+      signed = { ...options };
+      return { presignedUrl: "https://example.private.blob.vercel-storage.com/file?signature=test" };
+    },
+  } as Parameters<typeof signOfficeInstallerDownload>[0]);
+  assert.equal(issued?.storeId, OFFICE_BLOB_STORE_ID);
+  assert.equal(issued?.pathname, OFFICE_BLOB_PATHNAME);
+  assert.deepEqual(issued?.operations, ["get"]);
+  assert.equal(signed?.pathname, OFFICE_BLOB_PATHNAME);
+  assert.equal(signed?.operation, "get");
+  assert.equal(signed?.access, "private");
+  assert.equal(url.includes("signature=test"), true);
 }
 
 export async function assertOfficeDownloadHardening(): Promise<void> {
@@ -323,7 +268,7 @@ export async function assertOfficeDownloadHardening(): Promise<void> {
   await assertOriginGuard();
   await assertAuthorizeRoute();
   await assertDownloadRoute();
-  await assertAuthorizedFetchWithGithubToken();
+  await assertPrivateBlobSigning();
 }
 
 void assertOfficeDownloadHardening()

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { recordOfficeDownload } from "@/lib/download-stats";
+import { signOfficeInstallerDownload } from "@/lib/office-download/private-blob";
 import { getOfficeDownloadConfig } from "@/lib/office-download/config";
 import {
   OFFICE_DOWNLOAD_COOKIE,
@@ -31,11 +32,6 @@ function readCookie(request: Request, name: string): string | undefined {
   return undefined;
 }
 
-function safeContentDisposition(filename: string): string {
-  const ascii = filename.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "_");
-  return `attachment; filename="${ascii}"`;
-}
-
 export async function GET(request: Request) {
   const config = getOfficeDownloadConfig();
   if (!config) {
@@ -50,41 +46,15 @@ export async function GET(request: Request) {
     return denied;
   }
 
-  const upstreamHeaders: HeadersInit = {
-    Accept: "application/octet-stream",
-    "User-Agent": "JU-TAN-Web-Office-Download",
-  };
-  if (config.githubToken) {
-    upstreamHeaders.Authorization = `Bearer ${config.githubToken}`;
-  }
-
-  let upstream: Response;
+  let presignedUrl: string;
   try {
-    upstream = await fetch(config.installerUrl, {
-      method: "GET",
-      headers: upstreamHeaders,
-      redirect: "follow",
-      cache: "no-store",
-    });
-  } catch {
+    presignedUrl = await signOfficeInstallerDownload();
+  } catch (error) {
+    console.error("office private download signing failed", error);
     return officeJson({ ok: false, error: OFFICE_DOWNLOAD_UNAVAILABLE }, 502);
   }
 
-  if (!upstream.ok || !upstream.body) {
-    return officeJson({ ok: false, error: OFFICE_DOWNLOAD_UNAVAILABLE }, 502);
-  }
-
-  const headers = new Headers(OFFICE_DOWNLOAD_NO_STORE);
-  headers.set("Content-Type", "application/octet-stream");
-  headers.set("Content-Disposition", safeContentDisposition(config.filename));
-  headers.set("X-Content-Type-Options", "nosniff");
-
-  const contentLength = upstream.headers.get("content-length");
-  if (contentLength && /^\d+$/.test(contentLength)) {
-    headers.set("Content-Length", contentLength);
-  }
-
-  // Persist the aggregate counter before returning the streaming response.
+  // Persist the aggregate counter before returning the redirect.
   // Serverless runtimes may freeze background work after the response is returned.
   try {
     await recordOfficeDownload();
@@ -93,10 +63,12 @@ export async function GET(request: Request) {
     console.error("office download tracking failed", error);
   }
 
-  const response = new NextResponse(upstream.body, {
-    status: 200,
-    headers,
-  });
+  // Direct Blob delivery avoids the 4.5 MB Vercel Function response limit.
+  const response = NextResponse.redirect(presignedUrl, 302);
+  for (const [name, value] of Object.entries(OFFICE_DOWNLOAD_NO_STORE)) {
+    response.headers.set(name, value);
+  }
+  response.headers.set("Referrer-Policy", "no-referrer");
 
   // One-shot style access: clear cookie after download starts.
   response.cookies.set(OFFICE_DOWNLOAD_COOKIE, "", clearOfficeDownloadCookieOptions());
