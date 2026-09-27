@@ -1,14 +1,13 @@
+import { hasLicenseAdminSession } from "@/lib/license-admin/auth";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
-import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { getSiteVisitAnalytics, getSiteVisitStats } from "@/lib/site-visits";
 import { getOfficeDownloadStats } from "@/lib/download-stats";
 import { ensureBackupSchema } from "@/lib/licensing/backup";
 export const runtime = "nodejs";
-async function authorized(){const secret=process.env.JU_TAN_DOWNLOAD_SESSION_SECRET;const token=(await cookies()).get("jt_license_admin")?.value;return Boolean(secret&&verifyOfficeDownloadSessionToken(token,secret));}
+
 export async function GET(){
- if(!(await authorized())) return NextResponse.json({ok:false,error:"Potrebna je prijava."},{status:401});
+ if(!(await hasLicenseAdminSession())) return NextResponse.json({ok:false,error:"Potrebna je prijava."},{status:401});
  try{
   await ensureLicensingSchema();
   await ensureBackupSchema();

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:hardening": "npx --no-install tsx src/security/rate-limit/cleanup.hardening.test.ts && npx --no-install tsx src/notifications/delivery.hardening.test.ts && npx --no-install tsx lib/office-download/office-download.hardening.test.ts"
+    "test:hardening": "node --import tsx src/security/rate-limit/cleanup.hardening.test.ts && node --import tsx src/notifications/delivery.hardening.test.ts && node --import tsx lib/office-download/office-download.hardening.test.ts && node --import tsx lib/license-admin/auth.hardening.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
