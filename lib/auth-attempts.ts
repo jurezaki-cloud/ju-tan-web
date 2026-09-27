@@ -8,10 +8,27 @@ const shared = globalThis as typeof globalThis & {
   __juTanAuthLimitSchema?: Promise<unknown>;
 };
 
-function clientAddress(request: Request) {
-  return request.headers.get("x-real-ip")?.trim()
-    || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
-    || "unknown";
+/**
+ * Prefer Vercel platform headers that clients cannot spoof.
+ * `x-vercel-forwarded-for` stays authoritative when an outer proxy rewrites
+ * `x-forwarded-for` / `x-real-ip`. Never key rate limits on a client-supplied
+ * leftmost XFF hop when a platform header is present.
+ */
+export function clientAddress(request: Request) {
+  const vercel = request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim();
+  if (vercel) return vercel;
+
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const hops = forwarded.split(",").map((part) => part.trim()).filter(Boolean);
+    // With no platform header, the rightmost hop is what the nearest proxy saw.
+    if (hops.length) return hops[hops.length - 1]!;
+  }
+
+  return "unknown";
 }
 
 function memoryConsume(key: string, limit: number) {
@@ -28,7 +45,10 @@ function memoryConsume(key: string, limit: number) {
 export async function consumeAuthAttempt(request: Request, purpose: "license-admin" | "office-download") {
   const limit = purpose === "license-admin" ? 5 : 8;
   const key = createHash("sha256").update(`${purpose}:${clientAddress(request)}`).digest("hex");
-  const databaseUrl = process.env.JU_TAN_AUTH_RATE_LIMIT_DATABASE_URL || process.env.LICENSING_DATABASE_URL;
+  const databaseUrl =
+    process.env.JU_TAN_AUTH_RATE_LIMIT_DATABASE_URL
+    || process.env.LICENSING_DATABASE_URL
+    || process.env.DATABASE_URL;
   if (!databaseUrl) {
     if (process.env.NODE_ENV === "production") throw new Error("Persistent authentication rate limit is not configured");
     return memoryConsume(key, limit);

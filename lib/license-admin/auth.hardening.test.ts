@@ -10,6 +10,7 @@ const keys = [
   "JU_TAN_DOWNLOAD_SESSION_SECRET",
   "LICENSING_DATABASE_URL",
   "JU_TAN_AUTH_RATE_LIMIT_DATABASE_URL",
+  "DATABASE_URL",
 ] as const;
 const snapshot = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
 const adminPassword = "admin-test-password-distinct";
@@ -31,6 +32,7 @@ async function main() {
 try {
   delete process.env.LICENSING_DATABASE_URL;
   delete process.env.JU_TAN_AUTH_RATE_LIMIT_DATABASE_URL;
+  delete process.env.DATABASE_URL;
   process.env.JU_TAN_DOWNLOAD_PASSWORD = "download-test-password";
   process.env.JU_TAN_DOWNLOAD_SESSION_SECRET = downloadSecret;
   process.env.JU_TAN_LICENSE_ADMIN_PASSWORD = adminPassword;
