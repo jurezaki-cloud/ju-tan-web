@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
+import SeoFaq from "@/components/common/SeoFaq";
 import {
   OFFICE_SHOT_H,
   OFFICE_SHOT_W,
@@ -128,6 +129,21 @@ const phases = [
     title: "Razvijamo naprej",
     description:
       "Vzdrževanje, nadgradnje in nadaljnji razvoj, ko se poslovanje in zahteve spreminjajo.",
+  },
+] as const;
+
+export const seoFaq = [
+  {
+    question: "Kdaj je smiselna programska oprema po meri?",
+    answer: "Ko standardna orodja ne sledijo vašim procesom, zahtevajo podvajanje podatkov ali omejujejo nadaljnji razvoj. Najprej preverimo, ali je razvoj po meri sploh smiselna izbira.",
+  },
+  {
+    question: "Kakšno programsko opremo razvija JU-TAN?",
+    answer: "Razvijamo poslovne, spletne in namizne aplikacije, interna orodja, integracije, API-je ter avtomatizacije poslovnih procesov.",
+  },
+  {
+    question: "Ali razvijate rešitve za podjetja po Sloveniji?",
+    answer: "Da. JU-TAN Studio ima sedež v Cerknici in razvija programske rešitve za podjetja po Sloveniji.",
   },
 ] as const;
 
@@ -435,6 +451,8 @@ export default function SoftwareDevPage() {
           </ol>
         </div>
       </Section>
+
+      <SeoFaq id="software-dev-faq-title" items={seoFaq} />
 
       {/* 7. Final CTA */}
       <Section
