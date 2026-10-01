@@ -1,3 +1,4 @@
+import { consumeAuthAttempt } from "@/lib/auth-attempts";
 import { getOfficeDownloadConfig } from "@/lib/office-download/config";
 import {
   OFFICE_DOWNLOAD_COOKIE,
@@ -39,6 +40,18 @@ export async function POST(request: Request) {
     body = (await request.json()) as AuthorizeBody;
   } catch {
     return officeJson({ ok: false, error: OFFICE_DOWNLOAD_GENERIC_ERROR }, 400);
+  }
+
+  let attempt: Awaited<ReturnType<typeof consumeAuthAttempt>>;
+  try {
+    attempt = await consumeAuthAttempt(request, "office-download");
+  } catch {
+    return officeJson({ ok: false, error: OFFICE_DOWNLOAD_UNAVAILABLE }, 503);
+  }
+  if (!attempt.allowed) {
+    const response = officeJson({ ok: false, error: "Preveč poskusov. Poskusite pozneje." }, 429);
+    response.headers.set("Retry-After", String(attempt.retryAfter));
+    return response;
   }
 
   const password = typeof body.password === "string" ? body.password : "";

@@ -37,3 +37,11 @@ npm run build
 ## Deploy
 
 Vercel. Set `NEXT_PUBLIC_SITE_URL` to the production origin.
+
+## License administration credentials and login limits
+
+Before deploying the isolated license administration login, configure **unique** server-side values in Vercel for `JU_TAN_LICENSE_ADMIN_PASSWORD` (at least 16 characters) and `JU_TAN_LICENSE_ADMIN_SESSION_SECRET` (at least 32 characters). Do not reuse `JU_TAN_DOWNLOAD_PASSWORD` or `JU_TAN_DOWNLOAD_SESSION_SECRET`. Existing admin sessions become invalid after this change. The admin login deliberately returns 503 until the new values are configured.
+
+Authentication attempts use PostgreSQL across serverless instances. In production configure `JU_TAN_AUTH_RATE_LIMIT_DATABASE_URL`, `LICENSING_DATABASE_URL`, or a working `DATABASE_URL`; the login and download authorization routes return 503 if none exists or the rate-limit database is unavailable. The database user needs permission to create and use `ju_tan_auth_attempts`. Client IP bucketing prefers Vercel’s `x-vercel-forwarded-for` so spoofed `x-real-ip` / `x-forwarded-for` values cannot rotate the limit key. Local development without a database uses an in-memory limit. Consider an additional Vercel WAF rate limit at the edge.
+
+Run `npm run lint`, `npm run typecheck`, `npm run test:hardening`, and `npm run build` before deployment.

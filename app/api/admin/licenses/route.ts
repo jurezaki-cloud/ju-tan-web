@@ -1,9 +1,8 @@
+import { hasLicenseAdminSession } from "@/lib/license-admin/auth";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
-import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
 import { provisionLicense } from "@/lib/licensing/provision";
 import { getSiteVisitStats } from "@/lib/site-visits";
@@ -13,7 +12,6 @@ import { hashLicenseKey } from "@/lib/licensing/crypto";
 
 export const runtime = "nodejs";
 
-const COOKIE = "jt_license_admin";
 const mutationSchema = z.object({
   company_name: z.string().trim().min(1).max(200),
   max_devices: z.number().int().min(1).max(100),
@@ -21,11 +19,7 @@ const mutationSchema = z.object({
   offline_grace_days: z.number().int().min(0).max(30),
 });
 
-async function authorized() {
-  const secret = process.env.JU_TAN_DOWNLOAD_SESSION_SECRET;
-  const token = (await cookies()).get(COOKIE)?.value;
-  return Boolean(secret && verifyOfficeDownloadSessionToken(token, secret));
-}
+
 
 function generatedKey() {
   const value = randomBytes(16).toString("hex").toUpperCase();
@@ -33,7 +27,7 @@ function generatedKey() {
 }
 
 export async function GET() {
-  if (!(await authorized()))
+  if (!(await hasLicenseAdminSession()))
     return NextResponse.json(
       { ok: false, error: "Potrebna je prijava." },
       { status: 401 },
@@ -109,7 +103,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!(await authorized()))
+  if (!(await hasLicenseAdminSession()))
     return NextResponse.json(
       { ok: false, error: "Potrebna je prijava." },
       { status: 401 },
@@ -142,7 +136,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  if (!(await authorized()))
+  if (!(await hasLicenseAdminSession()))
     return NextResponse.json(
       { ok: false, error: "Potrebna je prijava." },
       { status: 401 },
