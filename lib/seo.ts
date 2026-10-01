@@ -9,19 +9,23 @@ export function absoluteUrl(path = "/") {
 }
 
 export const defaultTitle =
-  "JU-TAN | Digitalne rešitve, programska oprema in poslovni sistemi";
+  "JU-TAN Studio | Spletne strani in programska oprema po meri";
 
 export const defaultDescription =
-  "JU-TAN povezuje oblikovanje, razvoj in tehnologijo v spletne izkušnje, programsko opremo, poslovne sisteme in AI za podjetja v Sloveniji.";
+  "JU-TAN Studio iz Cerknice razvija profesionalne spletne strani, programsko opremo po meri, poslovne sisteme, avtomatizacije in AI rešitve za podjetja v Sloveniji.";
 
 export const defaultKeywords = [
-  "JU-TAN",
-  "umetna inteligenca",
-  "avtomatizacija",
-  "programska oprema",
-  "spletne strani",
-  "IT infrastruktura",
-  "AI agenti",
+  "JU-TAN Studio",
+  "izdelava spletnih strani",
+  "spletne strani Cerknica",
+  "izdelava spletnih strani za podjetja",
+  "razvoj programske opreme po meri",
+  "poslovni program za mala podjetja",
+  "program za račune in ponudbe",
+  "avtomatizacija poslovnih procesov",
+  "AI rešitve za podjetja",
+  "Cerknica",
+  "Notranjska",
   "Slovenija",
 ] as const;
 
@@ -150,6 +154,7 @@ export function sitewideJsonLdGraph() {
         "@type": "Organization",
         "@id": organizationId,
         name: company.name,
+        alternateName: "JU-TAN Studio",
         legalName: company.legalName,
         url,
         description: company.description,
