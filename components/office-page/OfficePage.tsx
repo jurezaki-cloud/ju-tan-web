@@ -1,6 +1,7 @@
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
+import SeoFaq from "@/components/common/SeoFaq";
 import OfficeDownloadCta from "@/components/office-page/OfficeDownloadCta";
 import OfficeInterface from "@/components/office-page/OfficeInterface";
 import { bodyClass, kickerClass } from "@/design";
@@ -40,6 +41,21 @@ const engineeringSignals = [
   "Lokalni podatkovni sloj",
   "PDF dokumenti",
   "Excel uvoz / izvoz",
+] as const;
+
+export const seoFaq = [
+  {
+    question: "Komu je namenjen JU-TAN Office?",
+    answer: "JU-TAN Office razvijamo kot poslovni program za Windows za s.p. in mala podjetja, ki želijo račune, ponudbe, stranke, plačila in zalogo voditi v enem okolju.",
+  },
+  {
+    question: "Ali JU-TAN Office podpira račune in ponudbe?",
+    answer: "Da. Računi in ponudbe so med osrednjimi poslovnimi področji aplikacije, skupaj s strankami, plačili, artikli in zalogo.",
+  },
+  {
+    question: "Na katerem operacijskem sistemu deluje JU-TAN Office?",
+    answer: "JU-TAN Office je namizna poslovna aplikacija za Windows.",
+  },
 ] as const;
 
 const sectionDecor = (
@@ -278,6 +294,8 @@ export default function OfficePage() {
           </FadeIn>
         </div>
       </Section>
+
+      <SeoFaq id="office-faq-title" items={seoFaq} />
 
       {/* 7. Final CTA */}
       <Section

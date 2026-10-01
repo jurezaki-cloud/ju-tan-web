@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
+import SeoFaq from "@/components/common/SeoFaq";
 import { bodyClass, kickerClass, textLinkClass } from "@/design";
 import { cn } from "@/lib/utils";
 
@@ -158,6 +159,21 @@ const relatedLinks = [
   },
   { label: "JU-TAN Office", href: "/ju-tan-office" },
   { label: "Kontakt", href: "/kontakt" },
+] as const;
+
+export const seoFaq = [
+  {
+    question: "Ali JU-TAN izdeluje spletne strani za podjetja iz Cerknice in drugod po Sloveniji?",
+    answer: "Da. JU-TAN Studio ima sedež v Cerknici, projekte spletnih strani, UI/UX in spletnih rešitev pa izvajamo za podjetja po Sloveniji.",
+  },
+  {
+    question: "Ali je spletna stran izdelana po meri?",
+    answer: "Rešitev načrtujemo glede na vsebino, poslovne cilje in uporabniške poti naročnika. Struktura, oblikovanje in frontend niso omejeni na generično predstavitveno predlogo.",
+  },
+  {
+    question: "Ali po objavi nudite vzdrževanje in nadgradnje?",
+    answer: "Da. Po objavi lahko nadaljujemo s tehničnim vzdrževanjem, vsebinskimi in UX izboljšavami ter funkcionalnimi nadgradnjami.",
+  },
 ] as const;
 
 const sectionDecor = (
@@ -535,6 +551,8 @@ export default function WebUiPage() {
           </ul>
         </div>
       </Section>
+
+      <SeoFaq id="web-ui-faq-title" items={seoFaq} />
 
       {/* 8. Related solutions */}
       <Section
