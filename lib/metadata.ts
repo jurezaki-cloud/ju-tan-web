@@ -27,9 +27,11 @@ export const metadata: Metadata = {
     canonical: "/",
     languages: { sl: "/", "x-default": "/" },
   },
-  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
-    : undefined,
+  verification: {
+    google:
+      process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ??
+      "_UErN7Y5B1bvWpE1ao8VbF30mGQus_XTO",
+  },
   openGraph,
   twitter,
   icons: {
