@@ -1,8 +1,8 @@
-import { issueSignedToken, presignUrl } from "@vercel/blob";
+﻿import { issueSignedToken, presignUrl } from "@vercel/blob";
 
 // The currently connected private store in ju-tan-web, verified in Vercel Storage.
 export const OFFICE_BLOB_STORE_ID = "store_4ECzLVubTgDoVLqy";
-export const OFFICE_BLOB_PATHNAME = "JU-TAN-Office-Setup-1.0.5.exe";
+export const OFFICE_BLOB_PATHNAME = "JU-TAN-Office-Setup-1.0.6.exe";
 
 export async function signOfficeInstallerDownload(
   signer: Pick<typeof import("@vercel/blob"), "issueSignedToken" | "presignUrl"> = {
@@ -25,3 +25,4 @@ export async function signOfficeInstallerDownload(
   });
   return presignedUrl;
 }
+

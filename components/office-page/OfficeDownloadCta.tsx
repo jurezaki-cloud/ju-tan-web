@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { ctaBase, ctaSizes, ctaVariants } from "@/design";
@@ -12,7 +12,7 @@ type OfficeDownloadCtaProps = {
 
 export default function OfficeDownloadCta({
   className,
-  "aria-label": ariaLabel = "Prenesi JU-TAN Office 1.0.5 za Windows",
+  "aria-label": ariaLabel = "Prenesi JU-TAN Office 1.0.6 za Windows",
 }: OfficeDownloadCtaProps) {
   const [open, setOpen] = useState(false);
 
@@ -24,10 +24,11 @@ export default function OfficeDownloadCta({
         className={cn(ctaBase, ctaSizes.default, ctaVariants.primary, className)}
         onClick={() => setOpen(true)}
       >
-        Prenesi JU-TAN Office 1.0.5
+        Prenesi JU-TAN Office 1.0.6
       </button>
       <OfficeDownloadDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
 }
+
 
