@@ -11,9 +11,9 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/spletne-strani-in-ui-ux";
-const pageTitle = "Spletne strani in UI/UX | JU-TAN";
+const pageTitle = "Izdelava spletnih strani za podjetja | JU-TAN Studio";
 const pageDescription =
-  "JU-TAN načrtuje in razvija spletne strani, digitalne izkušnje ter UI/UX z inženirsko izvedbo — za podjetja, ki potrebujejo jasno, vzdržljivo in poslovno usmerjeno spletno rešitev.";
+  "Profesionalna izdelava spletnih strani, UI/UX in spletnih rešitev za podjetja. JU-TAN Studio iz Cerknice načrtuje hitre, odzivne in poslovno usmerjene spletne strani po meri.";
 
 const baseMetadata = createPageMetadata({
   title: "Spletne strani in UI/UX",

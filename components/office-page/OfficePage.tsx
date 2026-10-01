@@ -93,9 +93,9 @@ export default function OfficePage() {
             </div>
 
             <p className={`${bodyClass} mt-6 max-w-[38rem] text-slate-300 light:text-slate-600`}>
-              Namizna poslovna aplikacija, ki jo razvijamo sami. Združuje pregled
-              poslovanja, stranke, dokumente in skladišče v enem okolju — konkreten
-              primer programske izvedbe JU-TAN.
+              Slovenski poslovni program za Windows, ki ga razvijamo sami. Združuje
+              račune, ponudbe, stranke, plačila, zalogo in pregled poslovanja v enem
+              okolju za s.p. in mala podjetja.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

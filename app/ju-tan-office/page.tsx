@@ -11,9 +11,9 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/ju-tan-office";
-const pageTitle = "JU-TAN Office | Namizna poslovna aplikacija";
+const pageTitle = "JU-TAN Office | Poslovni program za račune, ponudbe in zalogo";
 const pageDescription =
-  "JU-TAN Office je lastna namizna poslovna aplikacija JU-TAN. Pregled, stranke, računi in skladišče v enem okolju — v aktivnem razvoju.";
+  "JU-TAN Office je slovenski poslovni program za Windows: računi, ponudbe, stranke, plačila, zaloga in poslovni pregled v enem okolju za s.p. in mala podjetja.";
 
 const baseMetadata = createPageMetadata({
   title: "JU-TAN Office",

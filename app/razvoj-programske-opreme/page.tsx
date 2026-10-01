@@ -11,9 +11,9 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/razvoj-programske-opreme";
-const pageTitle = "Razvoj programske opreme po meri | JU-TAN";
+const pageTitle = "Razvoj programske opreme po meri za podjetja | JU-TAN";
 const pageDescription =
-  "JU-TAN razvija programsko opremo po meri za podjetja: poslovne in spletne aplikacije, interna orodja, integracije in dolgoročno vzdrževanje. Pogovorimo se o vašem projektu.";
+  "Razvoj programske opreme po meri za podjetja v Sloveniji: poslovne, spletne in namizne aplikacije, interna orodja, integracije, avtomatizacija in dolgoročna podpora.";
 
 const baseMetadata = createPageMetadata({
   title: "Razvoj programske opreme po meri",
