@@ -16,38 +16,11 @@ const businessFlow = [
 ] as const;
 
 const coreAreas = [
-  {
-    title: "Računi, ponudbe in predračuni",
-    body: "Profesionalni poslovni dokumenti, PDF izpis, QR plačilo ter pregled odprtih in zapadlih obveznosti.",
-  },
-  {
-    title: "Plačila in Mail Center",
-    body: "Evidenca delnih in celotnih plačil ter pošiljanje poslovnih dokumentov neposredno po e-pošti.",
-  },
-  {
-    title: "Artikli, nabava in skladišče",
-    body: "Artikli, dobavitelji, nabava in zaloga povezani v enem poslovnem toku.",
-  },
-  {
-    title: "Analitika in poročila",
-    body: "Pregled prihodkov, odprtih računov, prodaje in ključnih informacij za hitrejše poslovne odločitve.",
-  },
-  {
-    title: "Pregled",
-    body: "Pregled ključnih poslovnih informacij in aktivnosti na enem mestu.",
-  },
-  {
-    title: "Stranke",
-    body: "Urejeni podatki o strankah in kontaktih v skupnem poslovnem okolju.",
-  },
-  {
-    title: "Računi in ponudbe",
-    body: "Priprava in pregled poslovnih dokumentov z možnostjo PDF izpisa.",
-  },
-  {
-    title: "Skladišče",
-    body: "Pregled artiklov, zaloge in osnovnih skladiščnih informacij.",
-  },
+  { title: "Računi, ponudbe in predračuni", body: "Profesionalni poslovni dokumenti, PDF izpis, QR plačilo ter pregled odprtih in zapadlih obveznosti." },
+  { title: "Plačila in Mail Center", body: "Evidenca delnih in celotnih plačil ter pošiljanje poslovnih dokumentov neposredno po e-pošti." },
+  { title: "Stranke in poslovni pregled", body: "Urejeni podatki o strankah ter ključne poslovne informacije in aktivnosti na enem mestu." },
+  { title: "Artikli, nabava in skladišče", body: "Artikli, dobavitelji, nabava in zaloga povezani v enem poslovnem toku." },
+  { title: "Analitika in poročila", body: "Pregled prihodkov, odprtih računov in prodaje za hitrejše poslovne odločitve." },
 ] as const;
 
 const engineeringSignals = [
