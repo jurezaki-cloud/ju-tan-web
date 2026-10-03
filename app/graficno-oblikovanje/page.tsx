@@ -4,12 +4,17 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Section from "@/components/common/Section";
 import SeoFaq from "@/components/common/SeoFaq";
-import { createPageMetadata } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, createPageMetadata, serializeJsonLd } from "@/lib/seo";
+import { siteConfig } from "@/lib/config";
+
+const path = "/graficno-oblikovanje";
+const pageTitle = "Grafično oblikovanje | Logotipi, celostne podobe, letaki in dizajn";
+const pageDescription = "Profesionalno in hitro grafično oblikovanje JU-TAN Studio: logotipi, celostne grafične podobe, letaki, vizitke, predloge, promocijski materiali in digitalni dizajn.";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Grafično oblikovanje | Logotipi, celostne podobe, letaki in dizajn",
-  description: "Profesionalno in hitro grafično oblikovanje JU-TAN Studio: logotipi, celostne grafične podobe, letaki, vizitke, predloge, promocijski materiali in digitalni dizajn.",
-  path: "/graficno-oblikovanje",
+  title: pageTitle,
+  description: pageDescription,
+  path,
 });
 
 const portfolio = [
@@ -36,6 +41,11 @@ const faq = [
 ] as const;
 
 export default function GraphicDesignPage() {
+  const origin = siteConfig.url.replace(/\/$/, "");
+  const pageUrl = absoluteUrl(path);
+  const breadcrumbId = "breadcrumb-graphic-design";
+  const serviceId = `${origin}/graficno-oblikovanje#service`;
+
   return (
     <>
       <Header />
@@ -128,6 +138,40 @@ export default function GraphicDesignPage() {
           </div>
         </Section>
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd({
+            "@context": "https://schema.org",
+            "@graph": [
+              breadcrumbJsonLd([
+                { name: "Domov", path: "/" },
+                { name: "Grafično oblikovanje", path },
+              ], breadcrumbId),
+              {
+                "@type": "WebPage",
+                "@id": `${origin}/graficno-oblikovanje#webpage`,
+                url: pageUrl,
+                name: pageTitle,
+                description: pageDescription,
+                inLanguage: "sl",
+                isPartOf: { "@id": `${origin}/#website` },
+                about: { "@id": serviceId },
+                breadcrumb: { "@id": `${origin}/#${breadcrumbId}` },
+              },
+              {
+                "@type": "Service",
+                "@id": serviceId,
+                name: "Grafično oblikovanje, logotipi in celostne podobe",
+                description: pageDescription,
+                provider: { "@id": `${origin}/#organization` },
+                url: pageUrl,
+                areaServed: { "@type": "Country", name: "Slovenia" },
+              },
+            ],
+          }),
+        }}
+      />
       <Footer />
     </>
   );
