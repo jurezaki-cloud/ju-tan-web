@@ -26,13 +26,22 @@ const solutionGroups = [
   },
   {
     index: "03",
+    title: "Grafično oblikovanje in identiteta",
+    value:
+      "Logotipi, celostne grafične podobe, letaki, vizitke in digitalni materiali za prepoznaven in usklajen nastop podjetja.",
+    labels: ["Logotipi", "CGP", "Letaki", "Vizitke", "Digitalni dizajn"],
+    href: "/graficno-oblikovanje",
+    linkLabel: "Več o grafičnem oblikovanju",
+  },
+  {
+    index: "04",
     title: "Poslovni sistemi in AI",
     value:
       "Povežemo podatke, procese in obstoječe sisteme ter avtomatiziramo delo tam, kjer tehnologija prinese dejansko korist.",
     labels: ["CRM", "ERP", "Avtomatizacija", "AI", "Integracije"],
   },
   {
-    index: "04",
+    index: "05",
     title: "Svetovanje in dolgoročna podpora",
     value:
       "Od tehnične usmeritve do vzdrževanja, nadgradenj in nadaljnjega razvoja po uvedbi.",
