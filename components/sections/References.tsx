@@ -2,19 +2,20 @@ import Link from "next/link";
 import Section from "@/components/common/Section";
 
 const projects = [
-  { title: "Tanjina lučka upanja", type: "Spletna stran fundacije", text: "Celostna digitalna predstavitev fundacije za pomoč družinam in posameznikom v stiski — od uporabniške izkušnje do objave.", href: "https://tanjinaluckaupanja.si", tags: ["UI/UX", "Spletni razvoj", "Responsive"] },
-  { title: "KampRadar", type: "Spletni portal", text: "Sodoben večjezični portal za raziskovanje kampov z iskanjem, zemljevidi, profili kampov in zaupanja vredno predstavitvijo podatkov.", href: "https://kampradar.si", tags: ["Portal", "UI/UX", "Zemljevidi", "Več jezikov"] },
-  { title: "JU-TAN Office", type: "Lasten programski izdelek", text: "Slovenski poslovni program za Windows za račune, ponudbe, stranke, plačila, artikle, zalogo in pregled poslovanja.", href: "/ju-tan-office", tags: ["Windows", "Python", "PySide6", "Poslovanje"] },
+  { title: "Tanjina lučka upanja", type: "Spletna predstavitev pobude", text: "Digitalna predstavitev pobude Tanje Hrup za podporo družinam in posameznikom v stiski, zasnovana okoli človečnosti, bližine in jasnega prvega stika.", href: "https://tanjinaluckaupanja.si", tags: ["UI/UX", "Spletni razvoj", "Responsive"], accent: "ČLOVEČNOST · BLIŽINA · UPANJE", metric: "Pobuda Tanje Hrup" },
+  { title: "KampRadar", type: "Spletni portal", text: "Portal za iskanje kampov v Sloveniji in na Hrvaškem z jasnimi viri podatkov, primerjavo lokacij in možnostjo shranjevanja priljubljenih kampov.", href: "https://kampradar.si", tags: ["Portal", "UI/UX", "Iskanje", "Primerjava"], accent: "NAJDI SVOJ KAMP", metric: "Slovenija + Hrvaška" },
+  { title: "JU-TAN Office", type: "Lasten programski izdelek", text: "Slovenski poslovni program za Windows za račune, ponudbe, stranke, plačila, artikle, zalogo in pregled poslovanja.", href: "/ju-tan-office", tags: ["Windows", "Python", "PySide6", "Poslovanje"], accent: "POSLOVANJE NA ENEM MESTU", metric: "JU-TAN produkt" },
 ] as const;
 
 export default function References({ full = false }: { full?: boolean }) {
+  const titleClass = `${full ? "heading-hero" : "heading-display"} font-heading font-semibold`;
   return (
     <Section labelledBy="references-title" className="bg-[#050816] light:bg-slate-50">
       <div className="mx-auto max-w-6xl">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-500">REFERENCE JU-TAN</p>
         <div className="mt-4 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <h1 id="references-title" className={`${full ? "heading-hero" : "heading-display"} font-heading font-semibold`}>{full ? "Projekti, ki govorijo za naše delo." : "Izbrani projekti"}</h1>
+            {full ? <h1 id="references-title" className={titleClass}>Projekti, ki govorijo za naše delo.</h1> : <h2 id="references-title" className={titleClass}>Izbrani projekti</h2>}
             <p className="mt-4 max-w-2xl text-slate-400 light:text-slate-600">Od spletnih strani in portalov do lastne poslovne programske opreme. Načrtujemo, oblikujemo, razvijamo in objavimo celotno rešitev.</p>
           </div>
           {!full && <Link href="/reference" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300">Vse reference →</Link>}
@@ -23,13 +24,19 @@ export default function References({ full = false }: { full?: boolean }) {
           {projects.map((project) => {
             const body = (
               <>
-                <div className="flex items-center justify-between gap-3"><span className="text-xs uppercase tracking-[0.16em] text-emerald-400">{project.type}</span><span aria-hidden>↗</span></div>
-                <h2 className="mt-6 font-heading text-2xl font-semibold">{project.title}</h2>
+                <div className="relative mb-7 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/15 via-cyan-500/5 to-transparent p-5 light:border-slate-200">
+                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
+                  <p className="relative text-[10px] font-semibold tracking-[0.22em] text-emerald-400">{project.accent}</p>
+                  <p className="relative mt-8 font-heading text-xl font-semibold">{project.title}</p>
+                  <p className="relative mt-1 text-xs text-slate-400 light:text-slate-600">{project.metric}</p>
+                </div>
+                <div className="flex items-center justify-between gap-3"><span className="text-xs uppercase tracking-[0.16em] text-emerald-400">{project.type}</span><span className="transition group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden>↗</span></div>
+                <h3 className="mt-5 font-heading text-2xl font-semibold">{project.title}</h3>
                 <p className="mt-3 min-h-24 text-sm leading-6 text-slate-400 light:text-slate-600">{project.text}</p>
                 <div className="mt-6 flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300 light:border-slate-200 light:text-slate-600">{tag}</span>)}</div>
               </>
             );
-            const cls = "group rounded-3xl border border-white/10 bg-white/[0.035] p-7 transition hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] light:border-slate-200 light:bg-white";
+            const cls = "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] light:border-slate-200 light:bg-white";
             return project.href.startsWith("http")
               ? <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className={cls}>{body}</a>
               : <Link key={project.title} href={project.href} className={cls}>{body}</Link>;
