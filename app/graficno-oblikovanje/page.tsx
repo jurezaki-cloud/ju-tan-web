@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Section from "@/components/common/Section";
+import SeoFaq from "@/components/common/SeoFaq";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -24,6 +25,14 @@ const services = [
   ["Vizitke in poslovne predloge", "Usklajeni dokumenti, predstavitve in materiali za profesionalen vsakodnevni nastop."],
   ["Digitalni dizajn", "Grafike za splet, družbena omrežja, oglase, pasice in druge digitalne formate."],
   ["Priprava za tisk", "Pravilni formati, dimenzije in izvoz datotek za zanesljivo izvedbo pri tiskarju."],
+] as const;
+
+const faq = [
+  { question: "Ali izdelujete logotipe za nova podjetja?", answer: "Da. JU-TAN Creative pripravi logotip in vizualno smer za novo podjetje ali blagovno znamko ter uporabne različice za splet in tisk." },
+  { question: "Kaj vključuje celostna grafična podoba?", answer: "Obseg prilagodimo projektu. Celostna podoba lahko vključuje logotip, barvni sistem, tipografijo, osnovna pravila uporabe ter predloge za poslovne in promocijske materiale." },
+  { question: "Ali oblikujete letake, vizitke in promocijske materiale?", answer: "Da. Oblikujemo letake, vizitke, oglase, poslovne predloge, predstavitve in druge tiskane ali digitalne promocijske materiale." },
+  { question: "Ali pripravite datoteke za tisk?", answer: "Da. Končne materiale lahko pripravimo v ustreznih formatih in dimenzijah za predajo tiskarju ter ločeno za digitalno uporabo." },
+  { question: "Ali lahko osvežite obstoječi logotip ali grafično podobo?", answer: "Da. Obstoječo identiteto lahko vizualno osvežimo in poenotimo, pri tem pa po potrebi ohranimo prepoznavne elemente znamke." },
 ] as const;
 
 export default function GraphicDesignPage() {
@@ -82,6 +91,23 @@ export default function GraphicDesignPage() {
             </div>
           </div>
         </Section>
+        <Section labelledBy="graphics-seo" className="bg-[#050816] light:bg-slate-50">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-500">GRAFIČNO OBLIKOVANJE JU-TAN</p>
+              <h2 id="graphics-seo" className="heading-display mt-4 font-heading font-semibold text-white light:text-slate-900">Logotip, celostna podoba in promocijski materiali v enem studiu.</h2>
+            </div>
+            <div className="space-y-4 text-sm leading-7 text-slate-400 light:text-slate-600">
+              <p>JU-TAN Studio združuje izdelavo logotipov, celostnih grafičnih podob in oblikovanje materialov za tisk ter digitalne kanale. Tako lahko podjetje dobi usklajen vizualni nastop brez sestavljanja različnih izvajalcev.</p>
+              <p>Pri oblikovanju iščemo ravnotežje med prepoznavnostjo, preglednostjo in praktično uporabo. Končni dizajn mora delovati na spletni strani, dokumentu, vizitki, letaku, oglasu in drugih formatih, kjer se vaša znamka sreča s stranko.</p>
+            </div>
+          </div>
+        </Section>
+        <SeoFaq
+          id="graficno-oblikovanje-faq"
+          title="Pogosta vprašanja o grafičnem oblikovanju"
+          items={faq}
+        />
         <Section labelledBy="graphics-process" className="bg-[#050816] light:bg-slate-50">
           <div className="mx-auto max-w-4xl rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-transparent p-7 sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400">HITRO · UREJENO · PROFESIONALNO</p>
