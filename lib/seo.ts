@@ -9,16 +9,20 @@ export function absoluteUrl(path = "/") {
 }
 
 export const defaultTitle =
-  "JU-TAN Studio | Spletne strani in programska oprema po meri";
+  "JU-TAN Studio | Spletne strani, grafično oblikovanje in programska oprema";
 
 export const defaultDescription =
-  "JU-TAN Studio iz Cerknice razvija profesionalne spletne strani, programsko opremo po meri, poslovne sisteme, avtomatizacije in AI rešitve za podjetja v Sloveniji.";
+  "JU-TAN Studio iz Cerknice izdeluje spletne strani, logotipe in celostne grafične podobe ter razvija programsko opremo, poslovne sisteme, avtomatizacije in AI rešitve za podjetja v Sloveniji.";
 
 export const defaultKeywords = [
   "JU-TAN Studio",
   "izdelava spletnih strani",
   "spletne strani Cerknica",
   "izdelava spletnih strani za podjetja",
+  "grafično oblikovanje Cerknica",
+  "izdelava logotipa",
+  "celostna grafična podoba",
+  "oblikovanje letakov in vizitk",
   "razvoj programske opreme po meri",
   "poslovni program za mala podjetja",
   "program za račune in ponudbe",
@@ -41,7 +45,7 @@ export const openGraph = {
       url: "/og-image.jpg",
       width: 1200,
       height: 630,
-      alt: "JU-TAN — digitalne rešitve in razvoj programske opreme",
+      alt: "JU-TAN Studio — grafično oblikovanje, spletne strani in programska oprema",
     },
   ],
 };
