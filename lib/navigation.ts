@@ -20,6 +20,12 @@ export function getHeaderNavigation(): NavItem[] {
       label: nav.office,
     },
     {
+      id: "references",
+      href: "/reference",
+      sectionId: "references",
+      label: nav.references,
+    },
+    {
       id: "process",
       href: "/#process",
       sectionId: "process",

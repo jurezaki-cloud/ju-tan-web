@@ -2,6 +2,7 @@ export type NavSectionId =
   | "home"
   | "services"
   | "office"
+  | "references"
   | "process"
   | "company"
   | "booking"
