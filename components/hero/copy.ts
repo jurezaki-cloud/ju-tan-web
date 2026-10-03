@@ -26,11 +26,11 @@ export const heroCopy = {
   stage: {
     eyebrow: "Digitalni ekosistem",
     status: "Zasnovano za rast",
-    title: "Ena os za splet, sisteme in AI.",
+    title: "Ena os za design, splet, sisteme in AI.",
     description:
-      "JU-TAN poveže ključne digitalne zmogljivosti v miren, razširljiv sistem.",
+      "JU-TAN poveže identiteto, digitalne izkušnje in tehnologijo v miren, razširljiv sistem.",
     modules: [
-      "Splet",
+      "Design",
       "Aplikacije",
       "Podatki",
       "Poslovni sistemi",

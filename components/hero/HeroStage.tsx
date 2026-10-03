@@ -9,8 +9,8 @@ import { heroCopy } from "./copy";
 
 const stageModules = [
   {
-    id: "splet",
-    label: "Splet",
+    id: "design",
+    label: "Design",
     left: "27%",
     top: "28%",
     path: "M50 50 C43 45 35 38 28 30",
