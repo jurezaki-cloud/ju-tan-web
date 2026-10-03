@@ -11,6 +11,12 @@ export const metadata: Metadata = createPageMetadata({
   path: "/graficno-oblikovanje",
 });
 
+const portfolio = [
+  { kind: "LOGOTIP", title: "Znak, ki ostane v spominu", text: "Čist koncept, premišljena tipografija in različice za svetlo, temno ter enobarvno uporabo.", mark: "JT" },
+  { kind: "CELOSTNA PODOBA", title: "Enoten obraz podjetja", text: "Barvni sistem, tipografija in vizualna pravila, ki držijo skupaj splet, tisk in poslovne materiale.", mark: "Aa" },
+  { kind: "PROMOCIJA", title: "Materiali z jasnim sporočilom", text: "Letaki, oglasi in grafike z močno hierarhijo, pripravljeni za hitro uporabo v kampanji.", mark: "→" },
+] as const;
+
 const services = [
   ["Logotipi", "Prepoznaven znak in tipografski sistem, pripravljen za splet, tisk in družbena omrežja."],
   ["Celostna grafična podoba", "Barve, tipografija, pravila uporabe in vizualni jezik, ki podjetje poveže v prepoznavno celoto."],
@@ -41,6 +47,29 @@ export default function GraphicDesignPage() {
             </div>
             <div className="mt-14 grid gap-3 sm:grid-cols-3">
               {["LOGOTIP · IDENTITETA", "TISK · PROMOCIJA", "DIGITAL · DESIGN"].map((x) => <div key={x} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-center text-xs font-semibold tracking-[0.18em] text-emerald-400 light:border-slate-200 light:bg-white">{x}</div>)}
+            </div>
+          </div>
+        </Section>
+        <Section labelledBy="graphics-portfolio" className="bg-[#050816] light:bg-slate-50">
+          <div className="mx-auto max-w-6xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-500">VIZUALNI SISTEM</p>
+            <h2 id="graphics-portfolio" className="heading-display mt-4 max-w-3xl font-heading font-semibold text-white light:text-slate-900">Dizajn, ki ni samo lep. Je prepoznaven.</h2>
+            <p className="mt-4 max-w-2xl text-slate-400 light:text-slate-600">Vsak projekt gradimo kot uporaben sistem. Spodnji prikazi predstavljajo vrste rešitev, ki jih JU-TAN Creative pripravlja za blagovne znamke.</p>
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              {portfolio.map((item, i) => (
+                <article key={item.kind} className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] light:border-slate-200 light:bg-white">
+                  <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-white/10 bg-gradient-to-br from-emerald-500/20 via-cyan-500/5 to-[#050816] light:border-slate-200">
+                    <div className="absolute h-44 w-44 rounded-full border border-emerald-400/20 transition duration-500 group-hover:scale-110" />
+                    <div className="absolute h-28 w-28 rotate-45 rounded-3xl border border-white/10 transition duration-500 group-hover:rotate-[55deg]" />
+                    <span className="relative font-heading text-5xl font-semibold tracking-[-0.08em] text-white light:text-slate-900">{item.mark}</span>
+                    <span className="absolute left-5 top-5 text-[10px] font-semibold tracking-[0.22em] text-emerald-400">0{i + 1} · {item.kind}</span>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-xl font-semibold text-white light:text-slate-900">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">{item.text}</p>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </Section>
