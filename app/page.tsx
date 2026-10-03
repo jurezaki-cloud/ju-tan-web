@@ -11,6 +11,7 @@ import {
 } from "@/lib/seo";
 
 const JuTanOffice = dynamic(() => import("@/components/sections/JuTanOffice"));
+const References = dynamic(() => import("@/components/sections/References"));
 const Process = dynamic(() => import("@/components/sections/Process"));
 const Trust = dynamic(() => import("@/components/sections/Trust"));
 const CreativeProduction = dynamic(
@@ -28,6 +29,7 @@ export default function Home() {
         <Hero />
         <Services />
         <JuTanOffice />
+        <References />
         <Process />
         <Trust />
         <CreativeProduction />

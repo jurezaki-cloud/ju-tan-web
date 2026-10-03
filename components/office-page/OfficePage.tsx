@@ -17,6 +17,22 @@ const businessFlow = [
 
 const coreAreas = [
   {
+    title: "Računi, ponudbe in predračuni",
+    body: "Profesionalni poslovni dokumenti, PDF izpis, QR plačilo ter pregled odprtih in zapadlih obveznosti.",
+  },
+  {
+    title: "Plačila in Mail Center",
+    body: "Evidenca delnih in celotnih plačil ter pošiljanje poslovnih dokumentov neposredno po e-pošti.",
+  },
+  {
+    title: "Artikli, nabava in skladišče",
+    body: "Artikli, dobavitelji, nabava in zaloga povezani v enem poslovnem toku.",
+  },
+  {
+    title: "Analitika in poročila",
+    body: "Pregled prihodkov, odprtih računov, prodaje in ključnih informacij za hitrejše poslovne odločitve.",
+  },
+  {
     title: "Pregled",
     body: "Pregled ključnih poslovnih informacij in aktivnosti na enem mestu.",
   },
@@ -55,6 +71,14 @@ export const seoFaq = [
   {
     question: "Na katerem operacijskem sistemu deluje JU-TAN Office?",
     answer: "JU-TAN Office je namizna poslovna aplikacija za Windows.",
+  },
+  {
+    question: "Ali je JU-TAN Office primeren za s.p. in mala podjetja?",
+    answer: "Da. Zasnovan je za s.p. in mala podjetja, ki želijo izdajo računov, ponudbe, plačila, stranke, artikle in zalogo voditi pregledno v enem programu.",
+  },
+  {
+    question: "Ali program omogoča spremljanje plačil in zaloge?",
+    answer: "Da. JU-TAN Office povezuje evidenco plačil z računi ter artikle, nabavo in skladiščne informacije.",
   },
 ] as const;
 
@@ -168,8 +192,7 @@ export default function OfficePage() {
               Kaj povezuje
             </h2>
             <p className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}>
-              Eno okolje za pregled, stranke, račune in zalogo — brez ločenih orodij
-              za vsak korak.
+              Od ponudbe do računa, plačila, zaloge in poročila — eno povezano okolje brez prepisovanja med ločenimi orodji.
             </p>
           </FadeIn>
 
