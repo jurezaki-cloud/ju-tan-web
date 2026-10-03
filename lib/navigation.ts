@@ -26,6 +26,12 @@ export function getHeaderNavigation(): NavItem[] {
       label: nav.references,
     },
     {
+      id: "graphics",
+      href: "/graficno-oblikovanje",
+      sectionId: "graphics",
+      label: nav.graphics,
+    },
+    {
       id: "process",
       href: "/#process",
       sectionId: "process",

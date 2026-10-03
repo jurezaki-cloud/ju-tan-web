@@ -5,6 +5,7 @@ const projects = [
   { title: "Tanjina lučka upanja", type: "Spletna predstavitev pobude", text: "Digitalna predstavitev pobude Tanje Hrup za podporo družinam in posameznikom v stiski, zasnovana okoli človečnosti, bližine in jasnega prvega stika.", href: "https://tanjinaluckaupanja.si", tags: ["UI/UX", "Spletni razvoj", "Responsive"], accent: "ČLOVEČNOST · BLIŽINA · UPANJE", metric: "Pobuda Tanje Hrup" },
   { title: "KampRadar", type: "Spletni portal", text: "Portal za iskanje kampov v Sloveniji in na Hrvaškem z jasnimi viri podatkov, primerjavo lokacij in možnostjo shranjevanja priljubljenih kampov.", href: "https://kampradar.si", tags: ["Portal", "UI/UX", "Iskanje", "Primerjava"], accent: "NAJDI SVOJ KAMP", metric: "Slovenija + Hrvaška" },
   { title: "JU-TAN Office", type: "Lasten programski izdelek", text: "Slovenski poslovni program za Windows za račune, ponudbe, stranke, plačila, artikle, zalogo in pregled poslovanja.", href: "/ju-tan-office", tags: ["Windows", "Python", "PySide6", "Poslovanje"], accent: "POSLOVANJE NA ENEM MESTU", metric: "JU-TAN produkt" },
+  { title: "JU-TAN Creative", type: "Grafično oblikovanje", text: "Profesionalna izdelava logotipov, celostnih grafičnih podob, letakov, vizitk, predlog, promocijskih materialov in digitalnih dizajnov.", href: "/graficno-oblikovanje", tags: ["Logotipi", "CGP", "Tisk", "Digitalni dizajn"], accent: "IDEJA · IDENTITETA · UČINEK", metric: "Grafika od A do Ž" },
 ] as const;
 
 export default function References({ full = false }: { full?: boolean }) {
@@ -20,7 +21,7 @@ export default function References({ full = false }: { full?: boolean }) {
           </div>
           {!full && <Link href="/reference" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300">Vse reference →</Link>}
         </div>
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
           {projects.map((project) => {
             const body = (
               <>
