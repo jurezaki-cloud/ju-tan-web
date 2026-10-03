@@ -1,17 +1,18 @@
 export const heroCopy = {
-  badge: "DIGITALNE REŠITVE · PROGRAMSKI INŽENIRING",
+  badge: "DIGITALNE REŠITVE · DESIGN · PROGRAMSKI INŽENIRING",
   titleLead: "Digitalne rešitve,",
   titleAccent: "zgrajene za",
   titleRest: "resnično poslovanje.",
   description:
-    "Od spletnih izkušenj in aplikacij do poslovnih sistemov, avtomatizacije in umetne inteligence.",
+    "Od logotipa in spletne izkušnje do aplikacij, poslovnih sistemov, avtomatizacije in umetne inteligence.",
   supporting:
-    "JU-TAN združuje oblikovanje in programski inženiring v rešitve, ki jih lahko podjetje uporablja, razvija in nadgrajuje dolgoročno.",
+    "JU-TAN združuje grafično oblikovanje, digitalni dizajn in programski inženiring v rešitve, ki jih lahko podjetje uporablja, razvija in nadgrajuje dolgoročno.",
   primaryCta: "Začnimo projekt",
   primaryCtaAria: "Začnite projekt z ekipo JU-TAN",
   secondaryCta: "Spoznajte rešitve",
   secondaryCtaAria: "Pomaknite se do rešitev JU-TAN",
   pills: [
+    "Grafično oblikovanje",
     "Spletne rešitve",
     "Programska oprema",
     "Poslovni sistemi",
