@@ -13,6 +13,7 @@ import type { Service } from "@/lib/types";
 /** Contact / lead form service choices. Visible label === submitted value. */
 export const contactServiceOptions = [
   "Spletne strani / UI-UX",
+  "Grafično oblikovanje / logotip / celostna podoba",
   "E-trgovina ali digitalna platforma",
   "Spletna ali mobilna aplikacija",
   "Programska oprema po meri / SaaS",
@@ -37,6 +38,11 @@ export const offerCatalog = [
     name: "Programska oprema in aplikacije",
     description:
       "Spletne in mobilne aplikacije ter programska oprema po meri za procese, ki jih standardna orodja ne rešijo dovolj dobro.",
+  },
+  {
+    name: "Grafično oblikovanje in identiteta",
+    description:
+      "Logotipi, celostne grafične podobe, letaki, vizitke in digitalni materiali za prepoznaven nastop podjetja.",
   },
   {
     name: "Poslovni sistemi in AI",
