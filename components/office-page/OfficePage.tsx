@@ -91,7 +91,7 @@ export default function OfficePage() {
         className="scroll-mt-28 bg-[#050816] light:bg-slate-50"
         decorate={sectionDecor}
       >
-        <div className="mx-auto max-w-[46rem] pt-4 sm:pt-6 lg:pt-8">
+        <div className="mx-auto max-w-[52rem] pt-4 sm:pt-6 lg:pt-8">
           <FadeIn>
             <p className={cn(kickerClass, "light:text-slate-500")}>IZDELEK JU-TAN</p>
 
@@ -108,7 +108,7 @@ export default function OfficePage() {
               </span>
             </div>
 
-            <p className={`${bodyClass} mt-6 max-w-[38rem] text-slate-300 light:text-slate-600`}>
+            <p className={`${bodyClass} mt-6 max-w-[44rem] text-slate-300 light:text-slate-600`}>
               Računi, ponudbe, plačila, stranke, nabava, zaloga in poslovni pregled
               v enem slovenskem programu za Windows. Zasnovan za s.p. in mala podjetja,
               ki želijo manj prepisovanja in bolj urejeno poslovanje.
@@ -213,15 +213,15 @@ export default function OfficePage() {
             </h2>
           </FadeIn>
 
-          <ul className="mt-9 divide-y divide-white/8 border-y border-white/8 light:divide-slate-200/80 light:border-slate-200/80">
+          <ul className="mt-9 grid gap-4 md:grid-cols-2">
             {coreAreas.map((area, index) => (
               <li key={area.title}>
                 <FadeIn delay={0.04 + index * 0.04}>
-                  <div className="grid gap-2 py-7 sm:grid-cols-[minmax(10rem,14rem)_minmax(0,1fr)] sm:gap-8 md:py-8">
+                  <div className="h-full rounded-2xl border border-white/8 bg-white/[0.025] p-6 transition-colors hover:border-emerald-500/20 hover:bg-white/[0.04] light:border-slate-200 light:bg-white light:hover:border-emerald-200 md:p-7">
                     <h3 className="font-heading text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#16a34a]/90 light:text-[#15803d]">
                       {area.title}
                     </h3>
-                    <p className={`${bodyClass} text-slate-400 light:text-slate-600`}>
+                    <p className={`${bodyClass} mt-3 text-slate-400 light:text-slate-600`}>
                       {area.body}
                     </p>
                   </div>
