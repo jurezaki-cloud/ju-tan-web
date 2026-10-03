@@ -310,15 +310,16 @@ export default function OfficePage() {
               id="office-cta-title"
               className="heading-display mt-3.5 font-heading font-semibold text-white light:text-slate-900"
             >
-              Pogovorimo se o JU-TAN Office.
+              JU-TAN Office 1.0.7 je pripravljen za prenos.
             </h2>
             <p className={`${bodyClass} mt-4 light:text-slate-600`}>
-              Če vas zanima, kako bi se JU-TAN Office lahko vključil v vaše
-              poslovno okolje, nam opišite svoje procese in potrebe.
+              Prenesite aktualno različico za Windows. Če želite pred uporabo preveriti,
+              ali ustreza vašemu načinu dela, nam opišite svoje procese in potrebe.
             </p>
-            <div className="mt-8">
-              <CtaLink href="/kontakt" variant="primary">
-                Pogovorimo se
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <OfficeDownloadCta />
+              <CtaLink href="/kontakt" variant="secondary">
+                Vprašajte nas
               </CtaLink>
             </div>
           </FadeIn>
