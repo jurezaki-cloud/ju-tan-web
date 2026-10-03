@@ -103,12 +103,15 @@ export default function OfficePage() {
                 JU-TAN Office
               </h1>
               <ActiveBadge />
+              <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">
+                Verzija 1.0.7
+              </span>
             </div>
 
             <p className={`${bodyClass} mt-6 max-w-[38rem] text-slate-300 light:text-slate-600`}>
-              Slovenski poslovni program za Windows, ki ga razvijamo sami. Združuje
-              račune, ponudbe, stranke, plačila, zalogo in pregled poslovanja v enem
-              okolju za s.p. in mala podjetja.
+              Računi, ponudbe, plačila, stranke, nabava, zaloga in poslovni pregled
+              v enem slovenskem programu za Windows. Zasnovan za s.p. in mala podjetja,
+              ki želijo manj prepisovanja in bolj urejeno poslovanje.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
