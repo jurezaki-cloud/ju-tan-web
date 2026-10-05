@@ -104,7 +104,7 @@ export default function OfficePage() {
               </h1>
               <ActiveBadge />
               <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">
-                Verzija 1.0.7
+                Verzija 1.0.8
               </span>
             </div>
 
@@ -310,7 +310,7 @@ export default function OfficePage() {
               id="office-cta-title"
               className="heading-display mt-3.5 font-heading font-semibold text-white light:text-slate-900"
             >
-              JU-TAN Office 1.0.7 je pripravljen za prenos.
+              JU-TAN Office 1.0.8 je pripravljen za prenos.
             </h2>
             <p className={`${bodyClass} mt-4 light:text-slate-600`}>
               Prenesite aktualno različico za Windows. Če želite pred uporabo preveriti,
