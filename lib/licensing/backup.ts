@@ -1,6 +1,14 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
+import { z } from "zod";
 import { ensureLicensingSchema, licensingPool, withLicenseTransaction } from "./db";
+
+const backupSnapshotSchema = z.object({
+  version: z.union([z.literal(1), z.literal(2)]),
+  licenses: z.array(z.record(z.string(), z.unknown())),
+  activations: z.array(z.record(z.string(), z.unknown())),
+  audit: z.array(z.record(z.string(), z.unknown())),
+});
 
 export async function ensureBackupSchema() {
   await ensureLicensingSchema();
@@ -52,10 +60,11 @@ export async function listLicenseBackups() {
 
 export async function restoreLicenseBackup(id: string) {
   await ensureBackupSchema();
-  const result = await licensingPool().query<{ snapshot: any }>(
+  const result = await licensingPool().query<{ snapshot: unknown }>(
     "SELECT snapshot FROM office_license_backups WHERE id=$1", [id]);
-  const snapshot = result.rows[0]?.snapshot;
-  if (!snapshot || ![1, 2].includes(snapshot.version)) throw new Error("Backup ni veljaven.");
+  const parsed = backupSnapshotSchema.safeParse(result.rows[0]?.snapshot);
+  if (!parsed.success) throw new Error("Backup ni veljaven.");
+  const snapshot = parsed.data;
   await withLicenseTransaction(async (client) => {
     await client.query("DELETE FROM office_license_audit");
     await client.query("DELETE FROM office_activations");

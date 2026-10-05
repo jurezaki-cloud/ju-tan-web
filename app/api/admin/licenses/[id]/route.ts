@@ -1,23 +1,17 @@
-import { cookies } from "next/headers";
+import { hasLicenseAdminSession } from "@/lib/license-admin/auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { ensureLicensingSchema, licensingPool } from "@/lib/licensing/db";
-import { verifyOfficeDownloadSessionToken } from "@/lib/office-download";
 import { isAllowedOfficeDownloadOrigin } from "@/lib/office-download/origin";
 import { recordLicenseAudit } from "@/lib/licensing/audit";
 
 export const runtime = "nodejs";
-const COOKIE = "jt_license_admin";
 const deviceSchema = z.object({ activation_id: z.string().uuid() }).strict();
 
-async function authorized() {
-  const secret = process.env.JU_TAN_DOWNLOAD_SESSION_SECRET;
-  const token = (await cookies()).get(COOKIE)?.value;
-  return Boolean(secret && verifyOfficeDownloadSessionToken(token, secret));
-}
+
 
 export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
-  if (!(await authorized()))
+  if (!(await hasLicenseAdminSession()))
     return NextResponse.json({ ok: false, error: "Potrebna je prijava." }, { status: 401 });
   await ensureLicensingSchema();
   const { id } = await context.params;
@@ -37,7 +31,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
 }
 
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
-  if (!(await authorized()))
+  if (!(await hasLicenseAdminSession()))
     return NextResponse.json({ ok: false, error: "Potrebna je prijava." }, { status: 401 });
   if (!isAllowedOfficeDownloadOrigin(request))
     return NextResponse.json({ ok: false, error: "Zahteva ni dovoljena." }, { status: 403 });

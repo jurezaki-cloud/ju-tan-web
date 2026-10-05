@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { recordOfficeDownload } from "@/lib/download-stats";
 import { signOfficeInstallerDownload } from "@/lib/office-download/private-blob";
 import { getOfficeDownloadConfig } from "@/lib/office-download/config";
 import {
@@ -57,6 +56,7 @@ export async function GET(request: Request) {
   // Persist the aggregate counter before returning the redirect.
   // Serverless runtimes may freeze background work after the response is returned.
   try {
+    const { recordOfficeDownload } = await import("@/lib/download-stats");
     await recordOfficeDownload();
   } catch (error) {
     // Analytics must never block a valid installer download.
