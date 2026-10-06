@@ -80,7 +80,7 @@ export function createPageMetadata({
     title: title ?? { absolute: defaultTitle },
     description: pageDescription,
     alternates: {
-      canonical,
+      canonical: url,
       languages: { sl: url, "x-default": url },
     },
     openGraph: {
@@ -159,11 +159,12 @@ export function sitewideJsonLdGraph() {
         "@id": organizationId,
         name: company.name,
         alternateName: "JU-TAN Studio",
+        sameAs: [siteConfig.github, siteConfig.linkedin].filter(Boolean),
         legalName: company.legalName,
         url,
         description: company.description,
         email: company.contact.email,
-        telephone: [company.contact.phone, company.contact.phoneSecondary],
+        telephone: company.contact.phone,
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -197,15 +198,15 @@ export function sitewideJsonLdGraph() {
         name: company.name,
         url,
         email: company.contact.email,
-        telephone: [company.contact.phone, company.contact.phoneSecondary],
+        telephone: company.contact.phone,
         description: company.description,
         image: absoluteUrl("/og-image.jpg"),
         logo,
         address,
-        areaServed: {
-          "@type": "Country",
-          name: "Slovenia",
-        },
+        areaServed: [
+          { "@type": "City", name: "Cerknica" },
+          { "@type": "Country", name: "Slovenia" },
+        ],
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
           dayOfWeek: [

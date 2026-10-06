@@ -11,7 +11,7 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/spletne-strani-in-ui-ux";
-const pageTitle = "Izdelava spletnih strani za podjetja | JU-TAN Studio";
+const pageTitle = "Izdelava spletnih strani Cerknica in Slovenija | JU-TAN Studio";
 const pageDescription =
   "Profesionalna izdelava spletnih strani, UI/UX in spletnih rešitev za podjetja. JU-TAN Studio iz Cerknice načrtuje hitre, odzivne in poslovno usmerjene spletne strani po meri.";
 
