@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { projectStudies } from "@/lib/data/project-studies";
 import { siteConfig } from "@/lib/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -6,6 +7,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Omit lastModified until a reliable per-page content timestamp is available.
   return [
+    { url: `${origin}/izdelava-logotipa` },
+    ...projectStudies.map(({ slug }) => ({
+      url: `${origin}/reference/${slug}`,
+    })),
     {
       url: `${origin}/`,
       changeFrequency: "weekly",
