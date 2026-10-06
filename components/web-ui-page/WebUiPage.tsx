@@ -212,13 +212,13 @@ export default function WebUiPage() {
               id="web-ui-hero-title"
               className="heading-hero mt-5 font-heading font-semibold break-words text-white light:text-slate-900"
             >
-              Spletne izkušnje, zgrajene za poslovanje — ne le za videz
+              Izdelava spletnih strani za podjetja
             </h1>
 
             <p
               className={`${bodyClass} mt-6 max-w-[42rem] text-slate-300 light:text-slate-600`}
             >
-              Za podjetja, ki potrebujejo profesionalno spletno prisotnost z
+              Iz Cerknice za podjetja na Notranjskem in po Sloveniji. Za profesionalno spletno prisotnost z
               jasno strukturo, uporabniško izkušnjo in tehnično izvedbo.
               Načrtujemo in gradimo spletne strani, digitalne izkušnje ter
               uporabniške vmesnike, kjer sta oblikovanje in frontend del iste

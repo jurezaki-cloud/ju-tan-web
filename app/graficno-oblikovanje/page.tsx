@@ -8,8 +8,8 @@ import { absoluteUrl, breadcrumbJsonLd, createPageMetadata, serializeJsonLd } fr
 import { siteConfig } from "@/lib/config";
 
 const path = "/graficno-oblikovanje";
-const pageTitle = "Grafično oblikovanje | Logotipi, celostne podobe, letaki in dizajn";
-const pageDescription = "Profesionalno in hitro grafično oblikovanje JU-TAN Studio: logotipi, celostne grafične podobe, letaki, vizitke, predloge, promocijski materiali in digitalni dizajn.";
+const pageTitle = "Grafično oblikovanje Cerknica – logotipi in celostne podobe";
+const pageDescription = "JU-TAN Studio iz Cerknice: izdelava logotipov, celostne grafične podobe, letaki, vizitke in digitalni dizajn za podjetja na Notranjskem in po Sloveniji.";
 
 export const metadata: Metadata = createPageMetadata({
   title: pageTitle,
@@ -55,7 +55,7 @@ export default function GraphicDesignPage() {
             <div className="pointer-events-none absolute -right-24 top-0 h-80 w-80 rounded-full bg-emerald-500/15 blur-3xl" />
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-400">JU-TAN CREATIVE STUDIO</p>
             <h1 id="graphics-title" className="heading-hero mt-5 max-w-4xl font-heading font-semibold text-white light:text-slate-900">
-              Grafika, ki podjetju da obraz.
+              Grafično oblikovanje, ki podjetju da obraz.
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 light:text-slate-600">
               Profesionalna in hitra izdelava logotipov, celostnih grafičnih podob, letakov, vizitk, predlog in digitalnih dizajnov. Od prve ideje do datotek, pripravljenih za splet ali tisk.
@@ -108,7 +108,7 @@ export default function GraphicDesignPage() {
               <h2 id="graphics-seo" className="heading-display mt-4 font-heading font-semibold text-white light:text-slate-900">Logotip, celostna podoba in promocijski materiali v enem studiu.</h2>
             </div>
             <div className="space-y-4 text-sm leading-7 text-slate-400 light:text-slate-600">
-              <p>JU-TAN Studio združuje izdelavo logotipov, celostnih grafičnih podob in oblikovanje materialov za tisk ter digitalne kanale. Tako lahko podjetje dobi usklajen vizualni nastop brez sestavljanja različnih izvajalcev.</p>
+              <p>JU-TAN Studio iz Cerknice za podjetja na Notranjskem in po Sloveniji združuje izdelavo logotipov, celostnih grafičnih podob in oblikovanje materialov za tisk ter digitalne kanale. Tako lahko podjetje dobi usklajen vizualni nastop brez sestavljanja različnih izvajalcev.</p>
               <p>Pri oblikovanju iščemo ravnotežje med prepoznavnostjo, preglednostjo in praktično uporabo. Končni dizajn mora delovati na spletni strani, dokumentu, vizitki, letaku, oglasu in drugih formatih, kjer se vaša znamka sreča s stranko.</p>
             </div>
           </div>
