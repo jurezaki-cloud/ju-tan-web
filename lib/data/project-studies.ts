@@ -1,6 +1,42 @@
+export type ProjectStudy = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  kind: string;
+  challenge: string;
+  solution: string;
+  work: string;
+  outcome: string;
+  href: string;
+  service: string;
+  serviceName: string;
+  audience?: string;
+  capabilities?: readonly { title: string; description: string }[];
+};
+
 export const projectStudies = [
   {
     slug: "veli-joze",
+    audience:
+      "Pavšalisti in obiskovalci kampa Veli Jože, ki želijo informacije o bivanju, dogajanju in okolici Savudrije najti na enem mestu.",
+    capabilities: [
+      {
+        title: "Informacije za bivanje",
+        description:
+          "Obvestila, dogodki in zemljevid kampa povezujejo vsakodnevne informacije v pregledne vsebinske sklope.",
+      },
+      {
+        title: "Skupnost in sodelovanje",
+        description:
+          "Klepet skupnosti, mali oglasi in prijava težav ponujajo poti za izmenjavo informacij med člani.",
+      },
+      {
+        title: "Raziskovanje Savudrije",
+        description:
+          "Galerija in predlogi za okolico dopolnjujejo informacije o kampu ter pomagajo pri načrtovanju prostega časa.",
+      },
+    ],
     name: "Veli Jože",
     title: "Veli Jože – razvoj neuradnega portala pavšalistov",
     description:
@@ -19,6 +55,30 @@ export const projectStudies = [
   },
   {
     slug: "kampradar",
+    audience:
+      "Popotniki, družine in ljubitelji kampiranja, ki raziskujejo kampe v Sloveniji in na Hrvaškem ter želijo primerjati več možnosti pred odločitvijo.",
+    capabilities: [
+      {
+        title: "Iskanje in lokacije",
+        description:
+          "Iskanje kampov in prikaz lokacij pomagata povezati ponudbo z območjem, ki ga uporabnik raziskuje.",
+      },
+      {
+        title: "Primerjava kampov",
+        description:
+          "Primerjava več izbir v istem okolju omogoča pregled razlik brez nenehnega prehajanja med posameznimi predstavitvami.",
+      },
+      {
+        title: "Priljubljene izbire",
+        description:
+          "Shranjevanje priljubljenih kampov omogoča, da se uporabnik vrne k izbranemu ožjemu naboru.",
+      },
+      {
+        title: "Preglednost podatkov",
+        description:
+          "Jasno označevanje virov pomaga razumeti, od kod prihajajo informacije o posameznem kampu.",
+      },
+    ],
     name: "KampRadar",
     title: "KampRadar – razvoj portala za iskanje kampov",
     description:
@@ -37,6 +97,25 @@ export const projectStudies = [
   },
   {
     slug: "tanjina-lucka-upanja",
+    audience:
+      "Družine in posamezniki v stiski ter obiskovalci, ki želijo spoznati pobudo Tanje Hrup in poiskati kontakt za prvi pogovor.",
+    capabilities: [
+      {
+        title: "Razumljiv namen pobude",
+        description:
+          "Vsebinska struktura obiskovalcu predstavi namen pobude in mu pomaga razumeti, komu je namenjena.",
+      },
+      {
+        title: "Jasna pot do stika",
+        description:
+          "Navigacija povezuje predstavitev pobude s kontaktnimi informacijami, da je naslednji korak preprost.",
+      },
+      {
+        title: "Topla vizualna podoba",
+        description:
+          "Prijazen vizualni jezik in pregledna hierarhija vsebin podpirata mirno, razumljivo spletno predstavitev.",
+      },
+    ],
     name: "Tanjina lučka upanja",
     title: "Tanjina lučka upanja – oblikovanje in razvoj spletne strani",
     description:
@@ -71,4 +150,4 @@ export const projectStudies = [
     service: "/razvoj-programske-opreme",
     serviceName: "Razvoj programske opreme po meri",
   },
-] as const;
+] as const satisfies readonly ProjectStudy[];
