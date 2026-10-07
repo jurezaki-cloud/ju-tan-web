@@ -13,7 +13,7 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/graficno-oblikovanje";
-const pageTitle = "Grafično oblikovanje Cerknica – logotipi in celostne podobe";
+const pageTitle = "Grafično oblikovanje Cerknica – logotipi in CGP";
 const pageDescription =
   "JU-TAN Studio iz Cerknice: izdelava logotipov, celostne grafične podobe, letaki, vizitke in digitalni dizajn za podjetja na Notranjskem in po Sloveniji.";
 
@@ -73,6 +73,16 @@ const services = [
 
 const faq = [
   {
+    question: "Ali nudite grafično oblikovanje v Cerknici in po Sloveniji?",
+    answer:
+      "JU-TAN Studio ima sedež v Cerknici. Izdelavo logotipov, celostnih grafičnih podob in promocijskih materialov izvajamo za podjetja na Notranjskem in po Sloveniji.",
+  },
+  {
+    question: "Kako poteka izdelava logotipa?",
+    answer:
+      "Najprej spoznamo podjetje, njegovo ponudbo in ciljne stranke. Nato določimo vizualno smer, oblikujemo znak in tipografijo ter pripravimo dogovorjene različice za splet in tisk.",
+  },
+  {
     question: "Ali izdelujete logotipe za nova podjetja?",
     answer:
       "Da. JU-TAN Creative pripravi logotip in vizualno smer za novo podjetje ali blagovno znamko ter uporabne različice za splet in tisk.",
@@ -122,7 +132,7 @@ export default function GraphicDesignPage() {
               id="graphics-title"
               className="heading-hero mt-5 max-w-4xl font-heading font-semibold text-white light:text-slate-900"
             >
-              Grafično oblikovanje, ki podjetju da obraz.
+              Grafično oblikovanje v Cerknici za vaše podjetje.
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 light:text-slate-600">
               Profesionalna in hitra izdelava logotipov, celostnih grafičnih
@@ -255,7 +265,7 @@ export default function GraphicDesignPage() {
                 id="graphics-seo"
                 className="heading-display mt-4 font-heading font-semibold text-white light:text-slate-900"
               >
-                Logotip, celostna podoba in promocijski materiali v enem studiu.
+                Izdelava logotipa in celostna grafična podoba.
               </h2>
             </div>
             <div className="space-y-4 text-sm leading-7 text-slate-400 light:text-slate-600">
