@@ -157,22 +157,40 @@ const relatedLinks = [
     label: "Razvoj programske opreme po meri",
     href: "/razvoj-programske-opreme",
   },
-  { label: "JU-TAN Office", href: "/ju-tan-office" },
+  { label: "Poslovni program za s.p. – JU-TAN Office", href: "/ju-tan-office" },
+  {
+    label: "Grafično oblikovanje in celostna grafična podoba",
+    href: "/graficno-oblikovanje",
+  },
   { label: "Kontakt", href: "/kontakt" },
 ] as const;
 
 export const seoFaq = [
   {
-    question: "Ali JU-TAN izdeluje spletne strani za podjetja iz Cerknice in drugod po Sloveniji?",
-    answer: "Da. JU-TAN Studio ima sedež v Cerknici, projekte spletnih strani, UI/UX in spletnih rešitev pa izvajamo za podjetja po Sloveniji.",
+    question:
+      "Ali JU-TAN izdeluje spletne strani za podjetja iz Cerknice in drugod po Sloveniji?",
+    answer:
+      "Da. JU-TAN Studio ima sedež v Cerknici, projekte spletnih strani, UI/UX in spletnih rešitev pa izvajamo za podjetja po Sloveniji.",
   },
   {
     question: "Ali je spletna stran izdelana po meri?",
-    answer: "Rešitev načrtujemo glede na vsebino, poslovne cilje in uporabniške poti naročnika. Struktura, oblikovanje in frontend niso omejeni na generično predstavitveno predlogo.",
+    answer:
+      "Rešitev načrtujemo glede na vsebino, poslovne cilje in uporabniške poti naročnika. Struktura, oblikovanje in frontend niso omejeni na generično predstavitveno predlogo.",
   },
   {
     question: "Ali po objavi nudite vzdrževanje in nadgradnje?",
-    answer: "Da. Po objavi lahko nadaljujemo s tehničnim vzdrževanjem, vsebinskimi in UX izboljšavami ter funkcionalnimi nadgradnjami.",
+    answer:
+      "Da. Po objavi lahko nadaljujemo s tehničnim vzdrževanjem, vsebinskimi in UX izboljšavami ter funkcionalnimi nadgradnjami.",
+  },
+  {
+    question: "Kaj vključuje izdelava spletnih strani za podjetja?",
+    answer:
+      "Obseg določimo po pogovoru o ponudbi in ciljih podjetja. Projekt lahko vključuje strukturo vsebin, UI/UX, odzivno izvedbo, kontaktne obrazce in osnovno tehnično SEO pripravo.",
+  },
+  {
+    question: "Koliko stane izdelava spletne strani in koliko časa traja?",
+    answer:
+      "Cena in rok sta odvisna od števila strani, vsebine, oblikovanja in integracij. Po pregledu zahtev pripravimo ponudbo z dogovorjenim obsegom in časovnico.",
   },
 ] as const;
 
@@ -218,11 +236,12 @@ export default function WebUiPage() {
             <p
               className={`${bodyClass} mt-6 max-w-[42rem] text-slate-300 light:text-slate-600`}
             >
-              Iz Cerknice za podjetja na Notranjskem in po Sloveniji. Za profesionalno spletno prisotnost z
-              jasno strukturo, uporabniško izkušnjo in tehnično izvedbo.
-              Načrtujemo in gradimo spletne strani, digitalne izkušnje ter
-              uporabniške vmesnike, kjer sta oblikovanje in frontend del iste
-              rešitve — pripravljene na vzdrževanje in nadaljnji razvoj.
+              Iz Cerknice za podjetja na Notranjskem in po Sloveniji. Za
+              profesionalno spletno prisotnost z jasno strukturo, uporabniško
+              izkušnjo in tehnično izvedbo. Načrtujemo in gradimo spletne
+              strani, digitalne izkušnje ter uporabniške vmesnike, kjer sta
+              oblikovanje in frontend del iste rešitve — pripravljene na
+              vzdrževanje in nadaljnji razvoj.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -301,7 +320,9 @@ export default function WebUiPage() {
             >
               Dober vmesnik uporabnika ne ustavlja.
             </h2>
-            <p className={`${bodyClass} mt-5 max-w-[34rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-5 max-w-[34rem] light:text-slate-600`}
+            >
               UI/UX ni okras. Je način, kako spletna rešitev vodi obiskovalca —
               od prvega vtisa do jasnega naslednjega koraka.
             </p>
@@ -393,7 +414,9 @@ export default function WebUiPage() {
             >
               Kar načrtujemo, mora dobro delovati tudi v kodi.
             </h2>
-            <p className={`${bodyClass} mt-5 max-w-[40rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-5 max-w-[40rem] light:text-slate-600`}
+            >
               Frontend ni samo izvedba dizajna. Je del uporabniške izkušnje in
               dolgoročne kakovosti produkta.
             </p>
@@ -458,7 +481,9 @@ export default function WebUiPage() {
               >
                 Od cilja do objavljene rešitve.
               </h2>
-              <p className={`${bodyClass} mt-4 max-w-[34rem] light:text-slate-600`}>
+              <p
+                className={`${bodyClass} mt-4 max-w-[34rem] light:text-slate-600`}
+              >
                 Od poslovnega cilja do objave — in naprej, ko se zahteve
                 razvijajo.
               </p>
@@ -519,9 +544,11 @@ export default function WebUiPage() {
             >
               Spletna rešitev se z objavo ne konča.
             </h2>
-            <p className={`${bodyClass} mt-4 max-w-[40rem] light:text-slate-600`}>
-              Po objavi ostane prostor za vzdrževanje, izboljšave in rast —
-              z lastništvom kode in brez nepotrebne vezave.
+            <p
+              className={`${bodyClass} mt-4 max-w-[40rem] light:text-slate-600`}
+            >
+              Po objavi ostane prostor za vzdrževanje, izboljšave in rast — z
+              lastništvom kode in brez nepotrebne vezave.
             </p>
           </FadeIn>
 
