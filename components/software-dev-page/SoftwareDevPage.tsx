@@ -200,10 +200,11 @@ export default function SoftwareDevPage() {
             <p
               className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
             >
-              Za podjetja, kjer standardna orodja ne pokrijejo procesov dovolj
-              dobro. Načrtujemo in zgradimo programsko opremo po meri — spletne
-              in namizne aplikacije, interna orodja, integracije in sisteme, ki
-              jih je mogoče vzdrževati in razvijati naprej.
+              Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
+              pokrijejo procesov dovolj dobro. Načrtujemo in zgradimo programsko
+              opremo po meri — spletne in namizne aplikacije, interna orodja,
+              integracije in sisteme, ki jih je mogoče vzdrževati in razvijati
+              naprej.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

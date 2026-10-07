@@ -71,9 +71,7 @@ export function createPageMetadata({
 } = {}): Metadata {
   const canonical = path.startsWith("/") ? path : `/${path}`;
   const url = absoluteUrl(canonical);
-  const pageTitle = title
-    ? `${title} | ${company.name}`
-    : defaultTitle;
+  const pageTitle = title ? `${title} | ${company.name}` : defaultTitle;
   const pageDescription = description ?? defaultDescription;
 
   return {
@@ -130,6 +128,12 @@ function schemaIds() {
   };
 }
 
+export const serviceAreas = [
+  { "@type": "City", name: "Cerknica" },
+  { "@type": "Place", name: "Notranjska" },
+  { "@type": "Country", name: "Slovenija" },
+];
+
 function postalAddress() {
   const postalParts = company.contact.address.postal.split(" ");
   const postalCode = postalParts[0] ?? company.contact.address.postal;
@@ -162,7 +166,7 @@ export function sitewideJsonLdGraph() {
         sameAs: [siteConfig.github, siteConfig.linkedin].filter(Boolean),
         legalName: company.legalName,
         url,
-        description: company.description,
+        description: defaultDescription,
         email: company.contact.email,
         telephone: company.contact.phone,
         contactPoint: [
@@ -199,23 +203,15 @@ export function sitewideJsonLdGraph() {
         url,
         email: company.contact.email,
         telephone: company.contact.phone,
-        description: company.description,
+        description: defaultDescription,
         image: absoluteUrl("/og-image.jpg"),
         logo,
         address,
-        areaServed: [
-          { "@type": "City", name: "Cerknica" },
-          { "@type": "Country", name: "Slovenia" },
-        ],
+        areaServed: serviceAreas,
+        legalName: company.legalName,
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
-          dayOfWeek: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-          ],
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
           opens: "08:00",
           closes: "16:00",
         },
@@ -229,6 +225,8 @@ export function sitewideJsonLdGraph() {
               "@type": "Service",
               name: group.name,
               description: group.description,
+              provider: { "@id": professionalId },
+              areaServed: serviceAreas,
             },
           })),
         },

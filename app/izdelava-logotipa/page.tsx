@@ -8,10 +8,11 @@ import {
   breadcrumbJsonLd,
   createPageMetadata,
   serializeJsonLd,
+  serviceAreas,
 } from "@/lib/seo";
 
 const path = "/izdelava-logotipa";
-const title = "Izdelava logotipa in celostne grafične podobe";
+const title = "Izdelava logotipa – Cerknica in Slovenija";
 const description =
   "JU-TAN Studio iz Cerknice oblikuje logotipe in celostne grafične podobe za podjetja po Sloveniji. Od zasnove do uporabnih datotek za splet in tisk.";
 export const metadata = createPageMetadata({ title, description, path });
@@ -200,7 +201,7 @@ export default function LogoPage() {
                 description,
                 url: absoluteUrl(path),
                 provider: { "@id": absoluteUrl("/#organization") },
-                areaServed: { "@type": "Country", name: "Slovenia" },
+                areaServed: serviceAreas,
               },
             ],
           }),

@@ -7,11 +7,12 @@ import {
   breadcrumbJsonLd,
   createPageMetadata,
   serializeJsonLd,
+  serviceAreas,
 } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";
 
 const path = "/spletne-strani-in-ui-ux";
-const pageTitle = "Izdelava spletnih strani Cerknica – za podjetja | JU-TAN";
+const pageTitle = "Izdelava spletnih strani – Cerknica in Slovenija | JU-TAN";
 const pageDescription =
   "Profesionalna izdelava spletnih strani, UI/UX in spletnih rešitev za podjetja. JU-TAN Studio iz Cerknice načrtuje hitre, odzivne in poslovno usmerjene spletne strani po meri.";
 
@@ -80,10 +81,7 @@ export default function SpletneStraniInUiUxPage() {
                 description: pageDescription,
                 provider: { "@id": organizationId },
                 url: pageUrl,
-                areaServed: {
-                  "@type": "Country",
-                  name: "Slovenia",
-                },
+                areaServed: serviceAreas,
               },
             ],
           }),

@@ -9,6 +9,7 @@ import {
   breadcrumbJsonLd,
   createPageMetadata,
   serializeJsonLd,
+  serviceAreas,
 } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";
 
@@ -426,7 +427,7 @@ export default function GraphicDesignPage() {
                 description: pageDescription,
                 provider: { "@id": `${origin}/#organization` },
                 url: pageUrl,
-                areaServed: { "@type": "Country", name: "Slovenia" },
+                areaServed: serviceAreas,
               },
             ],
           }),

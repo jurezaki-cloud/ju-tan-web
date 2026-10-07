@@ -7,11 +7,12 @@ import {
   breadcrumbJsonLd,
   createPageMetadata,
   serializeJsonLd,
+  serviceAreas,
 } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";
 
 const path = "/razvoj-programske-opreme";
-const pageTitle = "Razvoj programske opreme po meri za podjetja | JU-TAN";
+const pageTitle = "Programska oprema po meri – Slovenija | JU-TAN";
 const pageDescription =
   "Razvoj programske opreme po meri za podjetja v Sloveniji: poslovne, spletne in namizne aplikacije, interna orodja, integracije, avtomatizacija in dolgoročna podpora.";
 
@@ -80,10 +81,7 @@ export default function RazvojProgramskeOpremePage() {
                 description: pageDescription,
                 provider: { "@id": organizationId },
                 url: pageUrl,
-                areaServed: {
-                  "@type": "Country",
-                  name: "Slovenia",
-                },
+                areaServed: serviceAreas,
               },
             ],
           }),
