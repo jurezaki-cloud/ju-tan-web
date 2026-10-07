@@ -10,7 +10,7 @@ const optionalText = z
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Vnesite ime in priimek.").max(120),
   company: optionalText,
-  email: z.email("Vnesite veljaven e-poštni naslov."),
+  email: z.string().trim().pipe(z.email("Vnesite veljaven e-poštni naslov.")),
   phone: z
     .string()
     .trim()

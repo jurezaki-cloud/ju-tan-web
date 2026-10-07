@@ -47,15 +47,8 @@ export async function POST(req: Request) {
     }
 
     const resend = new Resend(mail.apiKey);
-    const {
-      name,
-      email,
-      message,
-      company,
-      phone,
-      service,
-      consentAt,
-    } = parsed.data;
+    const { name, email, message, company, phone, service, consentAt } =
+      parsed.data;
     const recordedAt = new Date().toISOString();
 
     const result = await resend.emails.send({
@@ -77,7 +70,7 @@ export async function POST(req: Request) {
   `,
     });
 
-    if (result.error) {
+    if (result.error || !result.data?.id) {
       return jsonError(500);
     }
 
