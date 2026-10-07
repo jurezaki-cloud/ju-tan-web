@@ -12,15 +12,15 @@ export { metadata, viewport } from "@/lib/metadata";
 const geist = Geist({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
-  display: "swap",
-  preload: false,
+  display: "optional",
+  preload: true,
   adjustFontFallback: true,
 });
 
 const syne = Syne({
   subsets: ["latin", "latin-ext"],
   variable: "--font-heading",
-  display: "swap",
+  display: "optional",
   preload: true,
   adjustFontFallback: true,
 });
