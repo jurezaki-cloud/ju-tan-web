@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -43,12 +44,26 @@ export default async function ProjectPage({ params }: Props) {
           className="bg-[#050816] light:bg-slate-50"
         >
           <article className="mx-auto max-w-4xl">
-            <Link
-              href="/reference"
-              className="text-sm font-semibold text-emerald-500"
+            <nav
+              aria-label="Drobtinice"
+              className="text-sm text-slate-400 light:text-slate-600"
             >
-              ← Vse reference
-            </Link>
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href="/" className="text-emerald-500">
+                    Domov
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <Link href="/reference" className="text-emerald-500">
+                    Reference
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page">{project.name}</li>
+              </ol>
+            </nav>
             <p className="mt-8 text-xs font-semibold uppercase tracking-widest text-emerald-500">
               {project.kind}
             </p>
@@ -61,6 +76,21 @@ export default async function ProjectPage({ params }: Props) {
             <p className="mt-6 text-lg leading-8 text-slate-300 light:text-slate-600">
               {project.description}
             </p>
+            {project.slug === "ju-tan-office" ? (
+              <figure className="mt-8">
+                <Image
+                  src="/products/office/office-dashboard.webp"
+                  alt="Nadzorna plošča poslovnega programa JU-TAN Office"
+                  width={1896}
+                  height={1001}
+                  sizes="(max-width: 896px) 100vw, 896px"
+                  className="h-auto w-full rounded-2xl border border-white/10 light:border-slate-200"
+                />
+                <figcaption className="mt-3 text-sm text-slate-400 light:text-slate-600">
+                  Pregled poslovanja v programu JU-TAN Office.
+                </figcaption>
+              </figure>
+            ) : null}
             <div className="mt-12 grid gap-5 md:grid-cols-2">
               {[
                 ["Cilj projekta", project.challenge],
