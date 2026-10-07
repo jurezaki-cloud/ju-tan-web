@@ -42,9 +42,27 @@ export function useHeroRadarMotion(
   const reduce = usePrefersReducedMotion();
   const [armed, setArmed] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
   const pointerX = useSpring(0, SPRING);
   const pointerY = useSpring(0, SPRING);
-  const live = !reduce && armed;
+  const live = !reduce && armed && visible && pageVisible;
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
+    });
+    observer.observe(stage);
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updateVisibility);
+    };
+  }, [stageRef]);
 
   useEffect(() => {
     if (reduce) return;
