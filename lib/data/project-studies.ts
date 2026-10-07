@@ -11,6 +11,13 @@ export type ProjectStudy = {
   href: string;
   service: string;
   serviceName: string;
+  screenshot: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption: string;
+  };
   audience?: string;
   capabilities?: readonly { title: string; description: string }[];
 };
@@ -18,6 +25,13 @@ export type ProjectStudy = {
 export const projectStudies = [
   {
     slug: "veli-joze",
+    screenshot: {
+      src: "/reference/veli-joze.webp",
+      alt: "Začetna stran neuradnega portala pavšalistov Veli Jože",
+      width: 1348,
+      height: 926,
+      caption: "Portal Veli Jože z obvestili, dogodki in hitrimi povezavami.",
+    },
     audience:
       "Pavšalisti in obiskovalci kampa Veli Jože, ki želijo informacije o bivanju, dogajanju in okolici Savudrije najti na enem mestu.",
     capabilities: [
@@ -55,6 +69,13 @@ export const projectStudies = [
   },
   {
     slug: "kampradar",
+    screenshot: {
+      src: "/reference/kampradar.webp",
+      alt: "Začetna stran portala KampRadar z iskalnikom kampov",
+      width: 1348,
+      height: 926,
+      caption: "KampRadar: iskanje kampov v Sloveniji in na Hrvaškem.",
+    },
     audience:
       "Popotniki, družine in ljubitelji kampiranja, ki raziskujejo kampe v Sloveniji in na Hrvaškem ter želijo primerjati več možnosti pred odločitvijo.",
     capabilities: [
@@ -97,6 +118,13 @@ export const projectStudies = [
   },
   {
     slug: "tanjina-lucka-upanja",
+    screenshot: {
+      src: "/reference/tanjina-lucka-upanja.webp",
+      alt: "Začetna stran pobude Tanjina lučka upanja",
+      width: 1348,
+      height: 926,
+      caption: "Spletna predstavitev pobude Tanjina lučka upanja.",
+    },
     audience:
       "Družine in posamezniki v stiski ter obiskovalci, ki želijo spoznati pobudo Tanje Hrup in poiskati kontakt za prvi pogovor.",
     capabilities: [
@@ -134,6 +162,13 @@ export const projectStudies = [
   },
   {
     slug: "ju-tan-office",
+    screenshot: {
+      src: "/products/office/office-dashboard.webp",
+      alt: "Nadzorna plošča poslovnega programa JU-TAN Office",
+      width: 1896,
+      height: 1001,
+      caption: "Pregled poslovanja v programu JU-TAN Office.",
+    },
     name: "JU-TAN Office",
     title: "JU-TAN Office – razvoj slovenskega poslovnega programa",
     description:

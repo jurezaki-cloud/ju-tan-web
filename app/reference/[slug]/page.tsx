@@ -76,18 +76,18 @@ export default async function ProjectPage({ params }: Props) {
             <p className="mt-6 text-lg leading-8 text-slate-300 light:text-slate-600">
               {project.description}
             </p>
-            {project.slug === "ju-tan-office" ? (
+            {project.screenshot ? (
               <figure className="mt-8">
                 <Image
-                  src="/products/office/office-dashboard.webp"
-                  alt="Nadzorna plošča poslovnega programa JU-TAN Office"
-                  width={1896}
-                  height={1001}
+                  src={project.screenshot.src}
+                  alt={project.screenshot.alt}
+                  width={project.screenshot.width}
+                  height={project.screenshot.height}
                   sizes="(max-width: 896px) 100vw, 896px"
                   className="h-auto w-full rounded-2xl border border-white/10 light:border-slate-200"
                 />
                 <figcaption className="mt-3 text-sm text-slate-400 light:text-slate-600">
-                  Pregled poslovanja v programu JU-TAN Office.
+                  {project.screenshot.caption}
                 </figcaption>
               </figure>
             ) : null}
