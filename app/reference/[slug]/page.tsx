@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Section from "@/components/common/Section";
-import { projectStudies } from "@/lib/data/project-studies";
+import { projectStudies, type ProjectStudy } from "@/lib/data/project-studies";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
@@ -17,7 +17,7 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   return projectStudies.map(({ slug }) => ({ slug }));
 }
-function findProject(slug: string) {
+function findProject(slug: string): ProjectStudy | undefined {
   return projectStudies.find((project) => project.slug === slug);
 }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -81,6 +81,44 @@ export default async function ProjectPage({ params }: Props) {
                 </section>
               ))}
             </div>
+            {project.audience ? (
+              <section className="mt-12" aria-labelledby="project-audience">
+                <h2
+                  id="project-audience"
+                  className="font-heading text-2xl font-semibold"
+                >
+                  Za koga je projekt?
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-400 light:text-slate-600">
+                  {project.audience}
+                </p>
+              </section>
+            ) : null}
+            {project.capabilities ? (
+              <section className="mt-12" aria-labelledby="project-capabilities">
+                <h2
+                  id="project-capabilities"
+                  className="font-heading text-2xl font-semibold"
+                >
+                  Kaj rešitev omogoča?
+                </h2>
+                <ul className="mt-6 grid gap-5 md:grid-cols-2">
+                  {project.capabilities.map((feature) => (
+                    <li
+                      key={feature.title}
+                      className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 light:border-slate-200 light:bg-white"
+                    >
+                      <h3 className="font-heading text-lg font-semibold">
+                        {feature.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-7 text-slate-400 light:text-slate-600">
+                        {feature.description}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
             <div className="mt-10 flex flex-wrap gap-5">
               {project.href.startsWith("https:") ? (
                 <a
@@ -106,6 +144,28 @@ export default async function ProjectPage({ params }: Props) {
                 {project.serviceName} →
               </Link>
             </div>
+            <section className="mt-12" aria-labelledby="related-projects">
+              <h2
+                id="related-projects"
+                className="font-heading text-2xl font-semibold"
+              >
+                Oglejte si še druge projekte JU-TAN
+              </h2>
+              <ul className="mt-5 flex flex-wrap gap-5">
+                {projectStudies
+                  .filter((item) => item.slug !== project.slug)
+                  .map((item) => (
+                    <li key={item.slug}>
+                      <Link
+                        href={`/reference/${item.slug}`}
+                        className="font-semibold text-emerald-500"
+                      >
+                        {item.name} →
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </section>
             <section className="mt-12 rounded-3xl border border-emerald-500/20 p-7">
               <h2 className="font-heading text-2xl font-semibold">
                 Načrtujete podoben projekt?
