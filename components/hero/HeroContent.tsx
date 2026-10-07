@@ -11,13 +11,11 @@ export default function HeroContent() {
         <HeroBadge />
       </HeroReveal>
 
-      <HeroReveal delay={0.04}>
-        <h1 className="heading-hero max-w-[12ch] font-heading font-semibold break-words text-white light:text-slate-900">
-          {heroCopy.titleLead}{" "}
-          <span className="text-[#16a34a] light:text-[#15803d]">{heroCopy.titleAccent}</span>{" "}
-          {heroCopy.titleRest}
-        </h1>
-      </HeroReveal>
+      <h1 className="heading-hero max-w-[12ch] font-heading font-semibold break-words text-white light:text-slate-900">
+        {heroCopy.titleLead}{" "}
+        <span className="text-[#16a34a] light:text-[#15803d]">{heroCopy.titleAccent}</span>{" "}
+        {heroCopy.titleRest}
+      </h1>
 
       <HeroReveal delay={0.08}>
         <p

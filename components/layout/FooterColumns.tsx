@@ -107,7 +107,7 @@ export default function FooterColumns() {
           <nav aria-labelledby="footer-company-nav-heading">
             <p
               id="footer-company-nav-heading"
-              className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 light:text-slate-500"
+              className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400 light:text-slate-600"
             >
               JU-TAN
             </p>
@@ -117,7 +117,7 @@ export default function FooterColumns() {
           <nav aria-labelledby="footer-solutions-nav-heading">
             <p
               id="footer-solutions-nav-heading"
-              className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500 light:text-slate-500"
+              className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400 light:text-slate-600"
             >
               Rešitve
             </p>
@@ -173,7 +173,7 @@ function ContactLine({ row }: { row: ContactRow }) {
         <Icon className={iconClass} strokeWidth={1.75} aria-hidden />
       </span>
       <span className="min-w-0">
-        <span className="block text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
+        <span className="block text-[12px] font-medium uppercase tracking-[0.14em] text-slate-400 light:text-slate-600">
           {row.label}
         </span>
         <span className="mt-0.5 block whitespace-pre-line text-[14px] leading-[1.55] text-slate-200 group-hover:text-white light:text-slate-800 light:group-hover:text-slate-900">
