@@ -1,5 +1,3 @@
-"use client";
-
 export default function HeroBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -15,37 +13,7 @@ export default function HeroBackground() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_42%_38%_at_16%_18%,rgba(15,23,42,0.72),transparent_60%)] light:opacity-0" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_56%,rgba(0,0,0,0.34)_100%)] light:opacity-0" />
 
-      <style jsx>{`
-        @keyframes hero-background-orb-a {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-          50% {
-            transform: translate3d(10px, -8px, 0) scale(1.02);
-          }
-        }
-
-        @keyframes hero-background-orb-b {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-          50% {
-            transform: translate3d(-12px, 10px, 0) scale(1.03);
-          }
-        }
-
-        @media (prefers-reduced-motion: no-preference) {
-          .hero-background-orb-a {
-            animation: hero-background-orb-a 34s ease-in-out infinite;
-          }
-
-          .hero-background-orb-b {
-            animation: hero-background-orb-b 40s ease-in-out infinite;
-          }
-        }
-      `}</style>
+      
     </div>
   );
 }
