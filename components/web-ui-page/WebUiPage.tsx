@@ -194,6 +194,16 @@ export const seoFaq = [
       "Da. Na strani Reference predstavljamo izbrane spletne projekte JU-TAN Studio. Tako lahko preverite različne vrste rešitev, od predstavitvenih strani do spletnih portalov.",
   },
   {
+    question: "Kaj potrebujem za začetek izdelave spletne strani?",
+    answer:
+      "Za prvi pogovor zadostujejo kratek opis podjetja, cilji spletne strani, okviren seznam vsebin in primeri strani, ki so vam všeč. Če že imate domeno, gostovanje ali obstoječo stran, navedite tudi to. Obseg in tehnične zahteve določimo skupaj.",
+  },
+  {
+    question: "Ali lahko prenovite obstoječo spletno stran?",
+    answer:
+      "Da. Najprej pregledamo obstoječo strukturo, vsebino, uporabniško izkušnjo in tehnične omejitve. Nato predlagamo, katere dele je smiselno ohraniti, izboljšati ali razviti na novo.",
+  },
+  {
     question: "Koliko stane izdelava spletne strani in koliko časa traja?",
     answer:
       "Cena in rok sta odvisna od števila strani, vsebine, oblikovanja in integracij. Po pregledu zahtev pripravimo ponudbo z dogovorjenim obsegom in časovnico.",
