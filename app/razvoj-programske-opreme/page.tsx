@@ -69,6 +69,17 @@ export default function RazvojProgramskeOpremePage() {
                 <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">Povezovanje sistemov</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Manj podvajanja podatkov med orodji, kjer so integracije tehnično izvedljive.</p></li>
               </ul>
             </section>
+            <section aria-labelledby="implementacija-programske-opreme" className="mt-12">
+              <h2 id="implementacija-programske-opreme" className="font-heading text-2xl font-semibold">Kako poteka implementacija poslovne programske opreme?</h2>
+              <p className="mt-4 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Implementacija ni samo namestitev programa. Pomembno je, da rešitev ustreza dejanskemu delu ekipe, da so podatki urejeni in da uporabniki razumejo nov način dela. Pri vsakem projektu določimo obseg glede na obstoječe procese in tehnične možnosti.</p>
+              <ol className="mt-6 grid gap-4 md:grid-cols-2">
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">1. Analiza procesov</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Pregledamo naloge, uporabnike, podatke in težave, ki jih želimo odpraviti.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">2. Načrt rešitve</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Opredelimo funkcije, potrebne povezave, način uvajanja in merila uspeha.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">3. Razvoj in preizkus</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Funkcionalnosti preverimo na dogovorjenih primerih uporabe pred uvedbo.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">4. Uvedba in izboljšave</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Načrtujemo prehod, podporo uporabnikom in nadaljnje nadgradnje po potrebi.</p></li>
+              </ol>
+              <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 light:text-slate-700">Za manjša podjetja je lahko primernejša prilagoditev obstoječega orodja kot razvoj novega. Če potrebujete povezavo med več sistemi, pred odločitvijo preverimo razpoložljive vmesnike in omejitve.</p>
+            </section>
             <p className="mt-8 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Oglejte si <Link href="/ju-tan-office" className="font-semibold underline underline-offset-4">JU-TAN Office</Link>, preverite <Link href="/reference" className="font-semibold underline underline-offset-4">reference</Link> ali pošljite <Link href="/kontakt" className="font-semibold underline underline-offset-4">povpraševanje za razvoj po meri</Link>.</p>
           </div>
         </section>
