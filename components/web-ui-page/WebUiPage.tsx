@@ -162,6 +162,7 @@ const relatedLinks = [
     label: "Grafično oblikovanje in celostna grafična podoba",
     href: "/graficno-oblikovanje",
   },
+  { label: "Primeri naših spletnih projektov", href: "/reference" },
   { label: "Kontakt", href: "/kontakt" },
 ] as const;
 
@@ -186,6 +187,11 @@ export const seoFaq = [
     question: "Kaj vključuje izdelava spletnih strani za podjetja?",
     answer:
       "Obseg določimo po pogovoru o ponudbi in ciljih podjetja. Projekt lahko vključuje strukturo vsebin, UI/UX, odzivno izvedbo, kontaktne obrazce in osnovno tehnično SEO pripravo.",
+  },
+  {
+    question: "Ali lahko vidim primere spletnih strani, ki ste jih izdelali?",
+    answer:
+      "Da. Na strani Reference predstavljamo izbrane spletne projekte JU-TAN Studio. Tako lahko preverite različne vrste rešitev, od predstavitvenih strani do spletnih portalov.",
   },
   {
     question: "Koliko stane izdelava spletne strani in koliko časa traja?",
