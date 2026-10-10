@@ -99,6 +99,16 @@ const faq = [
       "Da. Oblikujemo letake, vizitke, oglase, poslovne predloge, predstavitve in druge tiskane ali digitalne promocijske materiale.",
   },
   {
+    question: "Koliko stane grafično oblikovanje?",
+    answer:
+      "Cena je odvisna od vrste projekta, obsega materialov, števila dogovorjenih predlogov in usklajevanj ter zahtevanih formatov. Za logotip, celostno podobo ali promocijske materiale pripravimo ponudbo po pregledu potreb.",
+  },
+  {
+    question: "Kaj naj vključim v povpraševanje za grafično oblikovanje?",
+    answer:
+      "Opišite podjetje, vrsto materiala, predvideno uporabo (splet ali tisk), okvirni rok in morebitne obstoječe smernice znamke. Tako lahko lažje določimo obseg in pripravimo primerljivo ponudbo.",
+  },
+  {
     question: "Ali pripravite datoteke za tisk?",
     answer:
       "Da. Končne materiale lahko pripravimo v ustreznih formatih in dimenzijah za predajo tiskarju ter ločeno za digitalno uporabo.",
