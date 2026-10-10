@@ -59,6 +59,16 @@ export default function RazvojProgramskeOpremePage() {
               <div><h3 className="font-semibold">Avtomatizacija in integracije</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Povezovanje podatkov, zmanjšanje ročnega dela in prilagoditev procesom.</p></div>
               <div><h3 className="font-semibold">Spletne in namizne aplikacije</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Razvoj orodij z možnostjo vzdrževanja in nadaljnjih nadgradenj.</p></div>
             </div>
+            <section aria-labelledby="primeri-uporabe" className="mt-12">
+              <h2 id="primeri-uporabe" className="font-heading text-2xl font-semibold">Kdaj podjetje potrebuje programsko opremo po meri?</h2>
+              <p className="mt-4 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Razvoj po meri je smiseln, kadar obstoječa orodja ne sledijo delovnemu procesu ali zahtevajo večkratno ročno vnašanje istih podatkov. Najprej preverimo potrebe, obstoječe sisteme in možnosti povezovanja, šele nato predlagamo rešitev.</p>
+              <ul className="mt-6 grid gap-4 md:grid-cols-2">
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">Ponudbe, naročila in računi</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Povezovanje dokumentov in podatkov o strankah v enoten delovni tok.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">Zaloga in nabava</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Bolj pregleden pregled artiklov, dobaviteljev in zalog.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">CRM in delo s strankami</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Zgodovina sodelovanja, naloge in ključne informacije na enem mestu.</p></li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">Povezovanje sistemov</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Manj podvajanja podatkov med orodji, kjer so integracije tehnično izvedljive.</p></li>
+              </ul>
+            </section>
             <p className="mt-8 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Oglejte si <Link href="/ju-tan-office" className="font-semibold underline underline-offset-4">JU-TAN Office</Link>, preverite <Link href="/reference" className="font-semibold underline underline-offset-4">reference</Link> ali pošljite <Link href="/kontakt" className="font-semibold underline underline-offset-4">povpraševanje za razvoj po meri</Link>.</p>
           </div>
         </section>
