@@ -73,6 +73,16 @@ export const seoFaq = [
       "Da. JU-TAN Office povezuje evidenco plačil z računi ter artikle, nabavo in skladiščne informacije.",
   },
   {
+    question: "Kako JU-TAN Office pomaga pri vsakodnevnem poslovanju?",
+    answer:
+      "Podatke o strankah, ponudbah, računih, plačilih in artiklih povezuje v en delovni tok. Tako lahko podjetje na enem mestu spremlja dokumente, obveznosti in zalogo, namesto da iste informacije vodi v več ločenih evidencah.",
+  },
+  {
+    question: "Ali je JU-TAN Office spletni program ali namizna aplikacija?",
+    answer:
+      "JU-TAN Office je namizna aplikacija za Windows z lokalnim podatkovnim slojem. Ni predstavljena kot spletna storitev, ki bi jo uporabljali samo v brskalniku.",
+  },
+  {
     question: "Kaj omogoča program za izdajo računov JU-TAN Office?",
     answer:
       "JU-TAN Office združuje pripravo računov, ponudb in predračunov, PDF izpise, QR plačilo ter evidenco delnih in celotnih plačil. Ob tem vodi stranke, artikle in zalogo.",
