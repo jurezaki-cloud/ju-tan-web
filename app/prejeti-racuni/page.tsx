@@ -11,7 +11,7 @@ const path = "/prejeti-racuni";
 const downloadPath = "/downloads/ju-tan-prejeti-racuni.apk";
 const features = [
   { icon: ScanLine, title: "Več strani v enem računu", text: "Fotografiraj vse strani zaporedoma in shrani račun kot en večstranski PDF." },
-  { icon: Files, title: "Mesečna zbirka", text: "Račune razvrsti po mesecih, jih odpri za predogled in označi kot pregledane." },
+  { icon: Files, title: "Mesečna zbirka", text: "Račune razvrsti po mesecih, odpri v PDF predogledu, uredi podatke ali odstrani iz zbirke." },
   { icon: FileArchive, title: "ZIP za računovodstvo", text: "Pripravi mesečni paket z računi in pregledno CSV evidenco." },
   { icon: Mail, title: "Pošlji po e-pošti", text: "Izberi e-poštno aplikacijo in pošlji račune računovodstvu neposredno iz telefona." },
 ] as const;
