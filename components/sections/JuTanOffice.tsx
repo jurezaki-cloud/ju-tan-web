@@ -100,6 +100,14 @@ export default function JuTanOffice() {
                 >
                   Spoznajte JU-TAN Office
                 </CtaLink>
+                <CtaLink
+                  href="/prejeti-racuni"
+                  variant="secondary"
+                  aria-label="Odprite JU-TAN aplikacijo za prejete račune za Android"
+                  className="border-white/14 bg-white/[0.03] text-white hover:border-[#16a34a]/26 hover:bg-white/[0.05] light:border-slate-200 light:bg-white light:text-slate-800 light:hover:border-[#16a34a]/35 light:hover:bg-[#f0fdf4]"
+                >
+                  Prejeti računi za Android
+                </CtaLink>
               </div>
             </div>
           </FadeIn>

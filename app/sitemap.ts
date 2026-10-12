@@ -17,6 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${origin}/prejeti-racuni`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${origin}/ju-tan-office`,
       changeFrequency: "weekly",
       priority: 0.8,
