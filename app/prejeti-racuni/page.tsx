@@ -39,10 +39,10 @@ export default function PrejetiRacuniPage() {
                   Fotografiraj račune, združi več strani v en dokument in jih ob koncu meseca pripravi za računovodstvo — vse v telefonu.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <a href={downloadPath} download="JU-TAN-Prejeti-Racuni-1.3.0.apk" className={cn(ctaBase, ctaSizes.default, ctaVariants.primary)}>
+                  <a href={downloadPath} download="JU-TAN-Prejeti-Racuni-1.4.0.apk" className={cn(ctaBase, ctaSizes.default, ctaVariants.primary)}>
                     <ArrowDownToLine aria-hidden="true" className="h-4 w-4" /> Prenesi APK za Android
                   </a>
-                  <span className="text-[12px] text-slate-500">Različica 1.3.0 · 2,4 MB</span>
+                  <span className="text-[12px] text-slate-500">Različica 1.4.0 · 2,3 MB</span>
                 </div>
                 <p className="mt-4 max-w-[45rem] text-[12px] leading-6 text-slate-500">
                   Aplikacija je namenjena telefonu Android. Po prenosu odpri datoteko APK in potrdi namestitev, če telefon to zahteva.
