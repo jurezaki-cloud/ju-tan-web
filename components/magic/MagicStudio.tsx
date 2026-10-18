@@ -242,8 +242,8 @@ export default function MagicStudio() {
               </h1>
               <p>
                 Besede spremeni v doživetje. Ustvari nekaj osebnega
-                <br className={styles.desktopBreak} /> in pošlji malo čarovnije
-                in z malo čarovnije polepšaj nekomu povsem običajen dan.
+                <br className={styles.desktopBreak} /> in polepšaj nekomu
+                povsem običajen dan.
               </p>
               <div className={styles.benefits}>
                 <span>
