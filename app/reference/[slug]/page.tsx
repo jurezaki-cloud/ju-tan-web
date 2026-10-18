@@ -93,6 +93,20 @@ export default async function ProjectPage({ params }: Props) {
             <p className="mt-6 text-lg leading-8 text-slate-300 light:text-slate-600">
               {project.description}
             </p>
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              <Link
+                href="/kontakt"
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+              >
+                Povpraševanje za podoben projekt →
+              </Link>
+              <Link
+                href={project.service}
+                className="text-sm font-semibold text-emerald-500 underline-offset-4 hover:underline"
+              >
+                Več o storitvi: {project.serviceName}
+              </Link>
+            </div>
             {project.screenshot ? (
               <figure className="mt-8">
                 <Image
