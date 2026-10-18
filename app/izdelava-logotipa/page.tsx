@@ -64,7 +64,7 @@ export default function LogoPage() {
               in po Sloveniji.
             </p>
             <Link
-              href="/kontakt"
+              href="/kontakt?service=graphic"
               className="mt-8 inline-block rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white"
             >
               Pošljite povpraševanje za logotip
