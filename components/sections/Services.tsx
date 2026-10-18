@@ -39,6 +39,8 @@ const solutionGroups = [
     value:
       "Povežemo podatke, procese in obstoječe sisteme ter avtomatiziramo delo tam, kjer tehnologija prinese dejansko korist.",
     labels: ["CRM", "ERP", "Avtomatizacija", "AI", "Integracije"],
+    href: "/razvoj-programske-opreme",
+    linkLabel: "Oglejte si razvoj rešitev po meri",
   },
   {
     index: "05",
@@ -46,6 +48,8 @@ const solutionGroups = [
     value:
       "Od tehnične usmeritve do vzdrževanja, nadgradenj in nadaljnjega razvoja po uvedbi.",
     labels: ["Svetovanje", "Vzdrževanje", "Nadgradnje", "Podpora"],
+    href: "/kontakt",
+    linkLabel: "Pogovorimo se o vašem projektu",
   },
 ] as const;
 
@@ -104,6 +108,23 @@ export default function Services() {
             </li>
           ))}
         </ol>
+      </div>
+      <div className="mx-auto mt-10 flex w-full max-w-[1200px] flex-col gap-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div>
+          <h3 className="font-heading text-xl font-semibold text-white light:text-slate-900">
+            Digitalne rešitve iz Cerknice za podjetja po Sloveniji
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-700">
+            Delujemo v Cerknici, sodelujemo s podjetji na Notranjskem in po Sloveniji.
+            Predstavite nam svojo idejo, izziv ali obstoječo rešitev, ki jo želite izboljšati.
+          </p>
+        </div>
+        <Link
+          href="/kontakt"
+          className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500 px-6 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+        >
+          Pošljite povpraševanje →
+        </Link>
       </div>
     </Section>
   );
