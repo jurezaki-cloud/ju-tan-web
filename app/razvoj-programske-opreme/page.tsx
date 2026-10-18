@@ -80,7 +80,7 @@ export default function RazvojProgramskeOpremePage() {
               </ol>
               <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 light:text-slate-700">Za manjša podjetja je lahko primernejša prilagoditev obstoječega orodja kot razvoj novega. Če potrebujete povezavo med več sistemi, pred odločitvijo preverimo razpoložljive vmesnike in omejitve.</p>
             </section>
-            <p className="mt-8 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Oglejte si <Link href="/ju-tan-office" className="font-semibold underline underline-offset-4">JU-TAN Office</Link>, preverite <Link href="/reference" className="font-semibold underline underline-offset-4">reference</Link> ali pošljite <Link href="/kontakt" className="font-semibold underline underline-offset-4">povpraševanje za razvoj po meri</Link>.</p>
+            <p className="mt-8 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Oglejte si <Link href="/ju-tan-office" className="font-semibold underline underline-offset-4">JU-TAN Office</Link>, preverite <Link href="/reference" className="font-semibold underline underline-offset-4">reference</Link> ali pošljite <Link href="/kontakt?service=software" className="font-semibold underline underline-offset-4">povpraševanje za razvoj po meri</Link>.</p>
           </div>
         </section>
       </main>
