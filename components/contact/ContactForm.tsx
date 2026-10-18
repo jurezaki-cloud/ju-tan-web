@@ -2,6 +2,7 @@
 
 import { useId, useState, useRef, useEffect, type FormEvent } from "react";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
@@ -9,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
 import { company } from "@/lib/data/company";
 import { contactServiceOptions } from "@/lib/data/services";
+import { getAnalyticsConsentSnapshot } from "@/lib/consent";
 import {
   contactSchema,
   flattenContactErrors,
@@ -137,6 +139,15 @@ export default function ContactForm() {
         return;
       }
 
+      // Record a conversion only after the API confirms delivery and only
+      // when the visitor has opted in to analytics. Never send contact details.
+      if (getAnalyticsConsentSnapshot() === "accepted") {
+        try {
+          track("Inquiry Submitted", { service: parsed.data.service });
+        } catch {
+          // Analytics must never interfere with a successful inquiry.
+        }
+      }
       setSuccess(true);
       setForm(emptyForm);
       setConsent(false);
