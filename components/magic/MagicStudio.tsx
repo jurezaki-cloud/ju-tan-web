@@ -243,7 +243,7 @@ export default function MagicStudio() {
               <p>
                 Besede spremeni v doživetje. Ustvari nekaj osebnega
                 <br className={styles.desktopBreak} /> in pošlji malo čarovnije
-                v nekomu čisto običajen dan.
+                in z malo čarovnije polepšaj nekomu povsem običajen dan.
               </p>
               <div className={styles.benefits}>
                 <span>
@@ -478,3 +478,4 @@ export default function MagicStudio() {
     </div>
   );
 }
+
