@@ -3,13 +3,21 @@ import { useEffect,useState } from "react";
 import { Activity,AlertTriangle,Archive,CheckCircle2,Database,Download,Eye,KeyRound,Laptop,Radio,ShieldCheck } from "lucide-react";
 import PageHeader from "@/components/platform/PageHeader";
 import StatsCard from "@/components/platform/StatsCard";
-type Stats={licenses:number;active_licenses:number;archived:number;devices:number;online:number;new_devices:number;alerts:number;visits:{today:number;last_7_days:number;last_30_days:number;total:number};last_backup_at:string|null;downloads:{today:number;last_30_days:number;total:number};analytics:{days:number;daily:{day:string;visits:number}[];top_pages:{path:string;visits:number}[]}};
+type InquiryStats = {
+  today: number;
+  last_7_days: number;
+  last_30_days: number;
+  total: number;
+  daily: { day: string; confirmed: number }[];
+  services: { service: string; confirmed: number }[];
+};
+type Stats={licenses:number;active_licenses:number;archived:number;devices:number;online:number;new_devices:number;alerts:number;visits:{today:number;last_7_days:number;last_30_days:number;total:number};last_backup_at:string|null;downloads:{today:number;last_30_days:number;total:number};analytics:{days:number;daily:{day:string;visits:number}[];top_pages:{path:string;visits:number}[]};inquiries:InquiryStats|null};
 const box="rounded-xl border border-white/10 bg-white/[0.03] p-5 light:border-slate-200 light:bg-white";
 function backupHealth(last:string|null){if(!last)return {label:"Backup manjka",detail:"Ustvari prvo varnostno kopijo.",tone:"text-amber-400",Icon:AlertTriangle};const age=Date.now()-new Date(last).getTime();if(age>30*60*60*1000)return {label:"Backup je zastarel",detail:"Zadnja kopija je starejša od 30 ur.",tone:"text-amber-400",Icon:AlertTriangle};return {label:"Backup OK",detail:"Samodejne varnostne kopije so ažurne.",tone:"text-emerald-400",Icon:CheckCircle2};}
 export default function AdminDashboardPage(){
  const [s,setS]=useState<Stats|null>(null);const [error,setError]=useState<string|null>(null);
  useEffect(()=>{void(async()=>{const r=await fetch("/api/admin/dashboard",{cache:"no-store"});const b=await r.json();if(!r.ok){setError(b.error??"Napaka pri nalaganju.");return;}setS(b.stats);})()},[]);
- return <main className="space-y-6"><PageHeader title="JU-TAN nadzorna plošča" description="Pregled licenc, naprav, obiska, opozoril in varnostnih kopij."/>
+ return <main className="space-y-6"><PageHeader title="JU-TAN nadzorna plošča" description="Pregled licenc, naprav, obiska, potrjenih povpraševanj, opozoril in varnostnih kopij."/>
  {error&&<div className={box}>{error}</div>}{!s?<div className={box}>Nalagam podatke …</div>:<>
  <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
  <StatsCard label="Licence" value={String(s.licenses)} icon={KeyRound}/><StatsCard label="Aktivne licence" value={String(s.active_licenses)} icon={ShieldCheck}/><StatsCard label="Aktivne naprave" value={String(s.devices)} icon={Laptop}/><StatsCard label="Online" value={String(s.online)} icon={Radio}/>
@@ -25,5 +33,51 @@ export default function AdminDashboardPage(){
    <div className="mt-5 flex h-48 items-end gap-[2px]">{s.analytics.daily.length?s.analytics.daily.map((d)=>{const max=Math.max(...s.analytics.daily.map(x=>x.visits),1);return <div key={d.day} className="group relative min-w-0 flex-1 rounded-t bg-[#16a34a]/70" style={{height:`${Math.max(4,(d.visits/max)*100)}%`}} title={`${d.day}: ${d.visits}`}><span className="sr-only">{d.day}: {d.visits}</span></div>}):<p className="self-center text-sm text-slate-400">Podatki se bodo prikazali po prvih obiskih.</p>}</div>
   </div>
   <div className={box}><h2 className="font-semibold text-white light:text-slate-900">Najbolj obiskane strani</h2><div className="mt-4 space-y-3">{s.analytics.top_pages.length?s.analytics.top_pages.map((p,i)=><div key={p.path} className="flex items-center justify-between gap-3 text-sm"><span className="min-w-0 truncate text-slate-300 light:text-slate-700">{i+1}. {p.path}</span><strong className="tabular-nums text-white light:text-slate-900">{p.visits.toLocaleString("sl-SI")}</strong></div>):<p className="text-sm text-slate-400">Statistika strani se od uvedbe naprej šele zbira.</p>}</div></div>
- </section><a href="/admin/licenses" className="inline-flex min-h-11 items-center rounded-lg border border-white/10 px-4 text-sm text-slate-200 hover:border-[#16a34a] light:border-slate-300 light:text-slate-700">Odpri upravljanje licenc →</a></>}</main>
+ </section>
+ {s.inquiries ? (
+  <>
+   <section aria-labelledby="inquiries-title" className="space-y-3">
+    <div>
+     <h2 id="inquiries-title" className="font-heading text-xl font-semibold text-white light:text-slate-900">Potrjena povpraševanja</h2>
+     <p className="mt-1 text-sm text-slate-400 light:text-slate-600">Štejemo samo uspešno poslana povpraševanja prek spletnega obrazca od uvedbe tega števca. Podatki so zbirni, brez osebnih podatkov.</p>
+    </div>
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+     <StatsCard label="Povpraševanja danes" value={String(s.inquiries.today)} icon={CheckCircle2}/>
+     <StatsCard label="Povpraševanja 7 dni" value={String(s.inquiries.last_7_days)} icon={Activity}/>
+     <StatsCard label="Povpraševanja 30 dni" value={String(s.inquiries.last_30_days)} icon={Activity}/>
+     <StatsCard label="Povpraševanja skupaj" value={String(s.inquiries.total)} icon={CheckCircle2}/>
+    </div>
+   </section>
+   <section className="grid gap-4 lg:grid-cols-[2fr_1fr]" aria-label="Podrobnosti potrjenih povpraševanj">
+    <div className={box}>
+     <h3 className="font-semibold text-white light:text-slate-900">Povpraševanja zadnjih 30 dni</h3>
+     <div className="mt-5 flex h-44 items-end gap-[3px]" role="img" aria-label={`Potrjena povpraševanja zadnjih 30 dni, skupaj ${s.inquiries.last_30_days}`}>
+      {s.inquiries.daily.map((day) => {
+       const max = Math.max(1, ...s.inquiries!.daily.map((item) => item.confirmed));
+       return (
+        <div key={day.day} className="group relative min-w-0 flex-1 rounded-t bg-emerald-500/75" style={{height:`${Math.max(2, (day.confirmed / max) * 100)}%`}} title={`${day.day}: ${day.confirmed}`}>
+         <span className="sr-only">{day.day}: {day.confirmed}</span>
+        </div>
+       );
+      })}
+     </div>
+     <p className="mt-3 text-xs text-slate-500">Prikaz je od začetka zbiranja statistike; starejših oddaj ni mogoče naknadno vključiti.</p>
+    </div>
+    <div className={box}>
+     <h3 className="font-semibold text-white light:text-slate-900">Po storitvah · 30 dni</h3>
+     <div className="mt-4 space-y-3">
+      {s.inquiries.services.length ? s.inquiries.services.map((item) => (
+       <div key={item.service} className="flex items-start justify-between gap-3 text-sm">
+        <span className="min-w-0 text-slate-300 light:text-slate-700">{item.service}</span>
+        <strong className="shrink-0 tabular-nums text-white light:text-slate-900">{item.confirmed.toLocaleString("sl-SI")}</strong>
+       </div>
+      )) : <p className="text-sm text-slate-400">V zadnjih 30 dneh še ni zabeleženih potrjenih povpraševanj.</p>}
+     </div>
+    </div>
+   </section>
+  </>
+ ) : (
+  <div className={box} role="status">Statistika povpraševanj trenutno ni dosegljiva. Oddaja obrazca še naprej deluje neodvisno od statistike.</div>
+ )}
+ <a href="/admin/licenses" className="inline-flex min-h-11 items-center rounded-lg border border-white/10 px-4 text-sm text-slate-200 hover:border-[#16a34a] light:border-slate-300 light:text-slate-700">Odpri upravljanje licenc →</a></>}</main>
 }
