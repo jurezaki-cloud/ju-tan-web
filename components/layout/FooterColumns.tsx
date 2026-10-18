@@ -14,6 +14,7 @@ const mapsQuery = encodeURIComponent(
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
 const solutionAreas = [
+  { label: "Magic Surprise · brezplačno", href: "/magic" },
   { label: "Splet", href: "/spletne-strani-in-ui-ux" },
   { label: "Grafično oblikovanje", href: "/graficno-oblikovanje" },
   { label: "Programska oprema", href: "/razvoj-programske-opreme" },

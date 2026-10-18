@@ -41,7 +41,7 @@ function isPlatformPath(pathname: string) {
 export default function JuTanAgentLazy() {
   const pathname = usePathname();
   const [activated, setActivated] = useState(false);
-  if (isPlatformPath(pathname)) return null;
+  if (pathname === "/magic" || isPlatformPath(pathname)) return null;
   if (activated) return <JuTanAgent initialOpen />;
   return (
     <div
