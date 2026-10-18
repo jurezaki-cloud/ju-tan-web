@@ -101,7 +101,9 @@ export default function References({ full = false }: { full?: boolean }) {
                       alt={study.screenshot.alt}
                       width={study.screenshot.width}
                       height={study.screenshot.height}
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 640px) calc(100vw - 4rem), (max-width: 768px) calc(100vw - 5rem), (max-width: 1280px) 45vw, 540px"
+                      loading="lazy"
+                      quality={75}
                       className="relative mb-5 aspect-[16/10] w-full rounded-xl object-cover object-top"
                     />
                   ) : null}
