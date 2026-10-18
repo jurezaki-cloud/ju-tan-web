@@ -122,6 +122,15 @@ export default function MagicStudio() {
   const [url, setUrl] = useState("");
   const [status, setStatus] = useState("");
   useEffect(() => {
+    // Keep the share payload intact when the site's skip link moves focus.
+    const skipLink = document.querySelector<HTMLAnchorElement>("a.skip-link");
+    const skip = (event: MouseEvent) => {
+      event.preventDefault();
+      const main = document.getElementById("main");
+      main?.focus();
+      main?.scrollIntoView();
+    };
+    skipLink?.addEventListener("click", skip);
     const load = () => {
       setOpened(false);
       setReceived(null);
@@ -143,7 +152,10 @@ export default function MagicStudio() {
     };
     load();
     window.addEventListener("hashchange", load);
-    return () => window.removeEventListener("hashchange", load);
+    return () => {
+      window.removeEventListener("hashchange", load);
+      skipLink?.removeEventListener("click", skip);
+    };
   }, []);
   function update<K extends keyof Magic>(key: K, next: Magic[K]) {
     setValue((previous) => ({ ...previous, [key]: next }));
@@ -194,7 +206,7 @@ export default function MagicStudio() {
           <ArrowUpRight size={16} />
         </a>
       </header>
-      <main id="main" className={styles.main}>
+      <main id="main" tabIndex={-1} className={styles.main}>
         {received ? (
           <section className={styles.recipient}>
             <p className={styles.eyebrow}>NEKAJ LEPEGA TE ČAKA</p>
