@@ -9,10 +9,10 @@ export function absoluteUrl(path = "/") {
 }
 
 export const defaultTitle =
-  "JU-TAN Studio | Spletne strani, grafično oblikovanje in programska oprema";
+  "Izdelava spletnih strani in grafično oblikovanje | JU-TAN";
 
 export const defaultDescription =
-  "JU-TAN Studio iz Cerknice izdeluje spletne strani, logotipe in celostne grafične podobe ter razvija programsko opremo, poslovne sisteme, avtomatizacije in AI rešitve za podjetja v Sloveniji.";
+  "JU-TAN Studio, Cerknica: izdelava spletnih strani, logotipov in celostnih grafičnih podob ter razvoj programske opreme po meri. Pošljite povpraševanje.";
 
 export const defaultKeywords = [
   "JU-TAN Studio",
