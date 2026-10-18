@@ -24,11 +24,28 @@ function findProject(slug: string): ProjectStudy | undefined {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = findProject((await params).slug);
   if (!project) notFound();
-  return createPageMetadata({
+  const base = createPageMetadata({
     title: project.title,
     description: project.description,
     path: `/reference/${project.slug}`,
   });
+  const previewImage = {
+    url: absoluteUrl(project.screenshot.src),
+    width: project.screenshot.width,
+    height: project.screenshot.height,
+    alt: project.screenshot.alt,
+  };
+  return {
+    ...base,
+    openGraph: {
+      ...base.openGraph,
+      images: [previewImage],
+    },
+    twitter: {
+      ...base.twitter,
+      images: [previewImage.url],
+    },
+  };
 }
 export default async function ProjectPage({ params }: Props) {
   const project = findProject((await params).slug);
