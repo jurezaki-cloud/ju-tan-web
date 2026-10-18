@@ -1,16 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
+import {
+  subscribeAnalyticsConsent,
+  getAnalyticsConsentSnapshot,
+  getAnalyticsConsentServerSnapshot,
+} from "@/lib/consent";
 
 const SESSION_KEY = "ju-tan-site-visit-counted";
 const PAGE_KEY = "ju-tan-page-visit:";
 
 export default function SiteVisitTracker() {
   const pathname = usePathname();
+  const consent = useSyncExternalStore(
+    subscribeAnalyticsConsent,
+    getAnalyticsConsentSnapshot,
+    getAnalyticsConsentServerSnapshot,
+  );
 
   useEffect(() => {
-    if (pathname.startsWith("/admin")) return;
+    // Honor the same analytics choice used by Vercel Analytics.
+    // Do not access sessionStorage or send visits without opt-in.
+    if (consent !== "accepted" || pathname.startsWith("/admin")) return;
     try {
       const pageKey = PAGE_KEY + pathname;
       if (sessionStorage.getItem(pageKey)) return;
@@ -25,7 +37,7 @@ export default function SiteVisitTracker() {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ path: pathname }),
     });
-  }, [pathname]);
+  }, [pathname, consent]);
 
   return null;
 }
