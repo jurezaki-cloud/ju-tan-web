@@ -68,11 +68,16 @@ export async function getConfirmedInquiryStats() {
       COALESCE(SUM(confirmed), 0)::text total
     FROM site_inquiry_daily`),
     licensingPool().query<{ day: string; confirmed: string }>(`
-      SELECT day::text, SUM(confirmed)::text confirmed
-      FROM site_inquiry_daily
-      WHERE day >= (NOW() AT TIME ZONE 'Europe/Ljubljana')::date - 29
-      GROUP BY day
-      ORDER BY day ASC
+      SELECT days.day::date::text day,
+        COALESCE(SUM(inquiries.confirmed), 0)::text confirmed
+      FROM generate_series(
+        (NOW() AT TIME ZONE 'Europe/Ljubljana')::date - 29,
+        (NOW() AT TIME ZONE 'Europe/Ljubljana')::date,
+        INTERVAL '1 day'
+      ) AS days(day)
+      LEFT JOIN site_inquiry_daily inquiries ON inquiries.day = days.day::date
+      GROUP BY days.day
+      ORDER BY days.day ASC
     `),
     licensingPool().query<{ service: string; confirmed: string }>(`
       SELECT service, SUM(confirmed)::text confirmed
