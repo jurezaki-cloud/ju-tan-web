@@ -595,6 +595,62 @@ export default function WebUiPage() {
         </div>
       </Section>
 
+      {/* Real project examples strengthen the service-to-portfolio journey. */}
+      <Section
+        belowFold
+        labelledBy="web-ui-projects-title"
+        className="bg-[#050816] light:bg-slate-50"
+      >
+        <div className="mx-auto max-w-[56rem]">
+          <h2
+            id="web-ui-projects-title"
+            className="heading-display font-heading font-semibold text-white light:text-slate-900"
+          >
+            Primeri spletnih rešitev iz naše prakse
+          </h2>
+          <p className={`${bodyClass} mt-4 max-w-[44rem] text-slate-400 light:text-slate-600`}>
+            Oglejte si, kako smo zasnovali spletne portale in predstavitveno stran
+            z različnimi cilji, vsebinami in uporabniki.
+          </p>
+          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                href: "/reference/kampradar",
+                title: "KampRadar",
+                description: "Portal za iskanje in primerjavo kampov.",
+              },
+              {
+                href: "/reference/veli-joze",
+                title: "Veli Jože",
+                description: "Neuradni spletni portal skupnosti pavšalistov.",
+              },
+              {
+                href: "/reference/tanjina-lucka-upanja",
+                title: "Tanjina lučka upanja",
+                description: "Spletna predstavitev pobude z jasno potjo do stika.",
+              },
+            ].map((project) => (
+              <li key={project.href}>
+                <Link
+                  href={project.href}
+                  className="block h-full rounded-2xl border border-white/10 bg-white/[0.035] p-6 transition hover:border-emerald-500/40 light:border-slate-200 light:bg-white"
+                >
+                  <h3 className="font-heading text-lg font-semibold text-white light:text-slate-900">
+                    {project.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
+                    {project.description}
+                  </p>
+                  <span className="mt-5 inline-block text-sm font-semibold text-emerald-500">
+                    Oglejte si projekt →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
       <SeoFaq id="web-ui-faq-title" items={seoFaq} />
 
       {/* 8. Related solutions */}
