@@ -20,14 +20,21 @@ export default function SiteVisitTracker() {
   );
 
   useEffect(() => {
-    // Honor the same analytics choice used by Vercel Analytics.
-    // Do not access sessionStorage or send visits without opt-in.
+    // Visits are opt-in. Honor browser privacy signals on the Magic page too.
     if (consent !== "accepted" || pathname.startsWith("/admin")) return;
+    if (
+      pathname === "/magic" &&
+      (navigator.doNotTrack === "1" ||
+        (navigator as Navigator & { globalPrivacyControl?: boolean })
+          .globalPrivacyControl)
+    )
+      return;
     try {
       const pageKey = PAGE_KEY + pathname;
       if (sessionStorage.getItem(pageKey)) return;
       sessionStorage.setItem(pageKey, "1");
-      if (!sessionStorage.getItem(SESSION_KEY)) sessionStorage.setItem(SESSION_KEY, "1");
+      if (!sessionStorage.getItem(SESSION_KEY))
+        sessionStorage.setItem(SESSION_KEY, "1");
     } catch {
       return;
     }
@@ -36,7 +43,7 @@ export default function SiteVisitTracker() {
       keepalive: true,
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ path: pathname }),
-    });
+    }).catch(() => {});
   }, [pathname, consent]);
 
   return null;

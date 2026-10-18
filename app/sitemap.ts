@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Omit lastModified until a reliable per-page content timestamp is available.
   return [
+    { url: `${origin}/magic`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${origin}/izdelava-logotipa` },
     ...projectStudies.map(({ slug }) => ({
       url: `${origin}/reference/${slug}`,

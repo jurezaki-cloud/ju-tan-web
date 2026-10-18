@@ -12,6 +12,7 @@ import {
   writeAnalyticsConsent,
 } from "@/lib/consent";
 import { colors } from "@/design";
+import { usePathname } from "next/navigation";
 
 const subscribeNoop = () => () => {};
 const getClientTrue = () => true;
@@ -30,6 +31,7 @@ function ThemeColorMeta() {
 }
 
 export default function Providers({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const hydrated = useSyncExternalStore(
     subscribeNoop,
     getClientTrue,
@@ -50,7 +52,7 @@ export default function Providers({ children }: { children: ReactNode }) {
     >
       <ThemeColorMeta />
       {children}
-      {consent === "accepted" ? (
+      {consent === "accepted" && pathname !== "/magic" ? (
         <>
           <Analytics />
           <SpeedInsights />
