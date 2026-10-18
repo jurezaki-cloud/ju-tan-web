@@ -51,6 +51,10 @@ export default async function ProjectPage({ params }: Props) {
   const project = findProject((await params).slug);
   if (!project) notFound();
   const path = `/reference/${project.slug}`;
+  const inquiryHref =
+    project.service === "/razvoj-programske-opreme"
+      ? "/kontakt?service=software"
+      : "/kontakt?service=web";
   const breadcrumbId = `breadcrumb-${project.slug}`;
   return (
     <>
@@ -93,6 +97,20 @@ export default async function ProjectPage({ params }: Props) {
             <p className="mt-6 text-lg leading-8 text-slate-300 light:text-slate-600">
               {project.description}
             </p>
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              <Link
+                href={inquiryHref}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+              >
+                Povpraševanje za podoben projekt →
+              </Link>
+              <Link
+                href={project.service}
+                className="text-sm font-semibold text-emerald-500 underline-offset-4 hover:underline"
+              >
+                Več o storitvi: {project.serviceName}
+              </Link>
+            </div>
             {project.screenshot ? (
               <figure className="mt-8">
                 <Image
@@ -222,7 +240,7 @@ export default async function ProjectPage({ params }: Props) {
                 Skupaj določimo obseg rešitve.
               </p>
               <Link
-                href="/kontakt"
+                href={inquiryHref}
                 className="mt-5 inline-block font-semibold text-emerald-500"
               >
                 Pogovorimo se o projektu →

@@ -30,7 +30,7 @@ export default function Contact() {
             index="07"
             badge="Kontakt"
             title="Pošljite povpraševanje"
-            description="Opišite sistem, projekt ali poslovni izziv."
+            description="Za začetek zadostuje kratek opis vaše ideje. Sporočite nam, kaj potrebujete, za koga je rešitev in kakšen je okvirni rok."
           />
         </FadeIn>
 
@@ -60,6 +60,16 @@ export default function Contact() {
               aria-hidden
             />
             <div className="relative">
+              <div className="mb-6 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4 text-sm leading-6 text-slate-300 light:text-slate-700">
+                <p className="font-semibold text-white light:text-slate-900">
+                  Kaj napisati v povpraševanje?
+                </p>
+                <p className="mt-2">
+                  Na kratko opišite želeno storitev, cilj projekta in okvirni
+                  rok. Če že imate spletno stran ali primere, ki so vam všeč,
+                  lahko dodate tudi povezave. Vse podrobnosti uskladimo kasneje.
+                </p>
+              </div>
               <ContactForm />
             </div>
           </div>

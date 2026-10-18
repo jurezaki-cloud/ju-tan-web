@@ -2,6 +2,7 @@
 
 import { useId, useState, useRef, useEffect, type FormEvent } from "react";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
@@ -9,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
 import { company } from "@/lib/data/company";
 import { contactServiceOptions } from "@/lib/data/services";
+import { getAnalyticsConsentSnapshot } from "@/lib/consent";
 import {
   contactSchema,
   flattenContactErrors,
@@ -26,6 +28,16 @@ const emptyForm = {
   message: "",
 };
 
+/** Whitelisted, non-personal context from links on service pages. */
+const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = {
+  web: "Spletne strani / UI-UX",
+  graphic: "Grafično oblikovanje / logotip / celostna podoba",
+  software: "Programska oprema po meri / SaaS",
+  app: "Spletna ali mobilna aplikacija",
+  office: "JU-TAN Office",
+  support: "Svetovanje ali dolgoročna podpora",
+};
+
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
@@ -38,6 +50,16 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  useEffect(() => {
+    const key = new URLSearchParams(window.location.search).get("service");
+    const linkedService = key ? serviceFromLink[key] : undefined;
+    if (linkedService) {
+      setForm((current) =>
+        current.service ? current : { ...current, service: linkedService },
+      );
+    }
+  }, []);
 
   const update =
     (key: keyof typeof emptyForm) =>
@@ -117,6 +139,15 @@ export default function ContactForm() {
         return;
       }
 
+      // Record a conversion only after the API confirms delivery and only
+      // when the visitor has opted in to analytics. Never send contact details.
+      if (getAnalyticsConsentSnapshot() === "accepted") {
+        try {
+          track("Inquiry Submitted", { service: parsed.data.service });
+        } catch {
+          // Analytics must never interfere with a successful inquiry.
+        }
+      }
       setSuccess(true);
       setForm(emptyForm);
       setConsent(false);

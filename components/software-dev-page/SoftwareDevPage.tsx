@@ -208,7 +208,7 @@ export default function SoftwareDevPage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=software" variant="primary">
                 Začnimo projekt
               </CtaLink>
               <CtaLink href="#primer" variant="secondary">
@@ -504,7 +504,7 @@ export default function SoftwareDevPage() {
               želite izboljšati. Skupaj preverimo, kaj ima smisel zgraditi.
             </p>
             <div className="mt-8 pb-16 sm:pb-8">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=software" variant="primary">
                 Pošljite povpraševanje
               </CtaLink>
             </div>

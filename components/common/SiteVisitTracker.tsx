@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import {
+  subscribeAnalyticsConsent,
   getAnalyticsConsentSnapshot,
   getAnalyticsConsentServerSnapshot,
-  subscribeAnalyticsConsent,
 } from "@/lib/consent";
-import { usePathname } from "next/navigation";
 
 const SESSION_KEY = "ju-tan-site-visit-counted";
 const PAGE_KEY = "ju-tan-page-visit:";
@@ -20,11 +20,11 @@ export default function SiteVisitTracker() {
   );
 
   useEffect(() => {
-    if (pathname.startsWith("/admin")) return;
+    // Visits are opt-in. Honor browser privacy signals on the Magic page too.
+    if (consent !== "accepted" || pathname.startsWith("/admin")) return;
     if (
       pathname === "/magic" &&
-      (consent !== "accepted" ||
-        navigator.doNotTrack === "1" ||
+      (navigator.doNotTrack === "1" ||
         (navigator as Navigator & { globalPrivacyControl?: boolean })
           .globalPrivacyControl)
     )
