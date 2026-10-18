@@ -48,7 +48,7 @@ const solutionGroups = [
     value:
       "Od tehnične usmeritve do vzdrževanja, nadgradenj in nadaljnjega razvoja po uvedbi.",
     labels: ["Svetovanje", "Vzdrževanje", "Nadgradnje", "Podpora"],
-    href: "/kontakt",
+    href: "/kontakt?service=support",
     linkLabel: "Pogovorimo se o vašem projektu",
   },
 ] as const;
