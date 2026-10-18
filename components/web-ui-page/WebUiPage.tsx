@@ -261,7 +261,7 @@ export default function WebUiPage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=web" variant="primary">
                 Začnimo projekt
               </CtaLink>
               <CtaLink href="#proces" variant="secondary">
@@ -710,7 +710,7 @@ export default function WebUiPage() {
               smisla.
             </p>
             <div className="mt-8 pb-16 sm:pb-8">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=web" variant="primary">
                 Pošljite povpraševanje
               </CtaLink>
             </div>

@@ -26,6 +26,16 @@ const emptyForm = {
   message: "",
 };
 
+/** Whitelisted, non-personal context from links on service pages. */
+const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = {
+  web: "Spletne strani / UI-UX",
+  graphic: "Grafično oblikovanje / logotip / celostna podoba",
+  software: "Programska oprema po meri / SaaS",
+  app: "Spletna ali mobilna aplikacija",
+  office: "JU-TAN Office",
+  support: "Svetovanje ali dolgoročna podpora",
+};
+
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
@@ -38,6 +48,16 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  useEffect(() => {
+    const key = new URLSearchParams(window.location.search).get("service");
+    const linkedService = key ? serviceFromLink[key] : undefined;
+    if (linkedService) {
+      setForm((current) =>
+        current.service ? current : { ...current, service: linkedService },
+      );
+    }
+  }, []);
 
   const update =
     (key: keyof typeof emptyForm) =>

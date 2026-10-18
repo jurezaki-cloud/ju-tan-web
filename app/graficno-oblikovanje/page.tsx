@@ -152,7 +152,7 @@ export default function GraphicDesignPage() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
-                href="/kontakt"
+                href="/kontakt?service=graphic"
                 className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
               >
                 Želim grafično rešitev
@@ -394,7 +394,7 @@ export default function GraphicDesignPage() {
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <Link
-                href="/kontakt"
+                href="/kontakt?service=graphic"
                 className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
               >
                 Pošljite povpraševanje
