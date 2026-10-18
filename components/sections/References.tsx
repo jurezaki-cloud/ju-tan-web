@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { projectStudies } from "@/lib/data/project-studies";
 import Section from "@/components/common/Section";
 
 const projects = [
@@ -89,9 +91,20 @@ export default function References({ full = false }: { full?: boolean }) {
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {projects.map((project) => {
+            const study = projectStudies.find((item) => `/reference/${item.slug}` === project.href);
             const body = (
               <>
                 <div className="relative mb-7 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/15 via-cyan-500/5 to-transparent p-5 light:border-slate-200">
+                  {study ? (
+                    <Image
+                      src={study.screenshot.src}
+                      alt={study.screenshot.alt}
+                      width={study.screenshot.width}
+                      height={study.screenshot.height}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="relative mb-5 aspect-[16/10] w-full rounded-xl object-cover object-top"
+                    />
+                  ) : null}
                   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
                   <p className="relative text-[10px] font-semibold tracking-[0.22em] text-emerald-400">
                     {project.accent}

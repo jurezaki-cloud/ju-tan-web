@@ -44,6 +44,24 @@ export default function ReferencePage() {
             </nav>
           </div>
         </section>
+        <section aria-labelledby="reference-cta-title" className="bg-[#050816] px-6 pb-20 text-white light:bg-slate-50 light:text-slate-900">
+          <div className="mx-auto max-w-5xl rounded-3xl border border-emerald-500/25 bg-emerald-500/10 px-6 py-10 sm:px-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400 light:text-emerald-700">Od ideje do izvedbe</p>
+            <h2 id="reference-cta-title" className="mt-3 font-heading text-3xl font-semibold">Imate podoben projekt v mislih?</h2>
+            <p className="mt-4 max-w-2xl leading-7 text-slate-300 light:text-slate-700">
+              Potrebujete spletno stran, uporabniški portal, prepoznavno grafično podobo ali poslovno programsko opremo?
+              Opišite nam svoj cilj in skupaj bomo določili primeren naslednji korak.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-5">
+              <Link href="/kontakt" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-emerald-500 px-6 font-semibold text-slate-950 transition hover:bg-emerald-400">
+                Pošljite povpraševanje →
+              </Link>
+              <Link href="/spletne-strani-in-ui-ux" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">
+                Oglejte si naše storitve
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <script
         type="application/ld+json"
