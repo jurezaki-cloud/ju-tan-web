@@ -51,7 +51,7 @@ const solutions = [
   {
     index: "01",
     title: "Poslovne spletne strani",
-    body: "Jasna predstavitev podjetja, ponudbe in kontakta — z strukturo, ki podpira zaupanje in nadaljnji razvoj.",
+    body: "Jasna predstavitev podjetja, ponudbe in kontakta — s strukturo, ki podpira zaupanje in nadaljnji razvoj.",
   },
   {
     index: "02",
