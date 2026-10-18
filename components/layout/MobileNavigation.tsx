@@ -31,12 +31,14 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const reduceMotion = usePrefersReducedMotion();
   const copy = getMessages().header;
 
   useEffect(() => {
     if (!open) return;
 
+    previouslyFocusedRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     closeRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -66,7 +68,11 @@ export default function MobileNavigation({
     };
 
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocusedRef.current?.focus();
+      previouslyFocusedRef.current = null;
+    };
   }, [open, onClose]);
 
   return (
@@ -79,7 +85,7 @@ export default function MobileNavigation({
             role="dialog"
             aria-modal="true"
             aria-label={copy.menuAria}
-            className="fixed inset-0 z-overlay flex h-dvh flex-col bg-[#050816]/96 px-4 pt-[max(4.75rem,calc(env(safe-area-inset-top,0px)+3.5rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
+            className="fixed inset-0 z-overlay flex h-dvh flex-col overflow-y-auto overscroll-contain bg-[#050816]/96 px-4 pt-[max(4.75rem,calc(env(safe-area-inset-top,0px)+3.5rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
             initial={reduceMotion ? false : { opacity: 0, x: 28 }}
             animate={{ opacity: 1, x: 0 }}
             exit={reduceMotion ? undefined : { opacity: 0, x: 16 }}
@@ -100,7 +106,7 @@ export default function MobileNavigation({
 
             <nav
               aria-label={copy.navAria}
-              className="flex flex-1 flex-col items-center justify-center gap-4"
+              className="flex flex-1 flex-col items-center justify-center gap-2 py-4 sm:gap-4"
             >
               {items.map((item) => {
                 const active = activeSection === item.sectionId;
