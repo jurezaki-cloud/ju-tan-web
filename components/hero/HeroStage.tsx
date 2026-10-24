@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import CoreMark from "@/components/common/CoreMark";
 import { useHeroRadarMotion } from "@/hooks/useHeroRadarMotion";
@@ -67,11 +66,7 @@ const stageModules = [
 export default function HeroStage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
-  const { hovered, live, pointerX, pointerY, reduce } = useHeroRadarMotion(stageRef);
-  const frameX = useTransform(pointerX, (value) => value * 0.9);
-  const frameY = useTransform(pointerY, (value) => value * 0.9);
-  const networkX = useTransform(pointerX, (value) => value * 1.6);
-  const networkY = useTransform(pointerY, (value) => value * 1.6);
+  const { hovered, live, reduce } = useHeroRadarMotion(stageRef);
   const ambientActive = live && !reduce && activeNodeId === null;
   const enterClassName = "hero-stage-enter";
 
@@ -139,9 +134,11 @@ export default function HeroStage() {
 
           <div className="relative mx-auto mt-4 aspect-[1.08/1] w-full max-w-[18rem] sm:mt-5 sm:max-w-[21.8rem]">
             <div className={cn(enterClassName, "absolute inset-0")} style={reduce ? undefined : { animationDelay: "0.5s" }}>
-              <motion.div
-                className="pointer-events-none absolute inset-0"
-                style={reduce ? undefined : { x: frameX, y: frameY }}
+              <div
+                className={cn(
+                  "pointer-events-none absolute inset-0",
+                  !reduce && "hero-parallax-frame",
+                )}
               >
                 <div className="hero-stage-panel-ambient absolute inset-x-[7.5%] top-[8%] h-[84%] rounded-[2rem] border border-white/6 bg-[linear-gradient(180deg,rgba(15,23,42,0.14),rgba(15,23,42,0.05))] light:border-slate-200/70 light:bg-[linear-gradient(180deg,rgba(255,255,255,0.66),rgba(248,250,252,0.78))]" />
                 <div className="absolute inset-[21%] rounded-[1.75rem] bg-[radial-gradient(circle_at_center,rgba(22,163,74,0.06),transparent_66%)] light:bg-[radial-gradient(circle_at_center,rgba(22,163,74,0.04),transparent_66%)]" />
@@ -149,13 +146,15 @@ export default function HeroStage() {
                 <div className="absolute inset-x-[24%] bottom-[18%] h-px bg-[linear-gradient(to_right,transparent,rgba(148,163,184,0.2),transparent)]" />
                 <div className="absolute inset-y-[24%] left-[18%] w-px bg-[linear-gradient(to_bottom,transparent,rgba(148,163,184,0.16),transparent)]" />
                 <div className="absolute inset-y-[24%] right-[18%] w-px bg-[linear-gradient(to_bottom,transparent,rgba(148,163,184,0.16),transparent)]" />
-              </motion.div>
+              </div>
             </div>
 
             <div className={cn(enterClassName, "absolute inset-0")} style={reduce ? undefined : { animationDelay: "0.58s" }}>
-              <motion.div
-                className="pointer-events-none absolute inset-0"
-                style={reduce ? undefined : { x: networkX, y: networkY }}
+              <div
+                className={cn(
+                  "pointer-events-none absolute inset-0",
+                  !reduce && "hero-parallax-network",
+                )}
               >
                 <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
                   {stageModules.map((module) => {
@@ -227,11 +226,13 @@ export default function HeroStage() {
                     strokeDasharray="1.25 3.4"
                   />
                 </svg>
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="absolute inset-0 z-20 pointer-events-none"
-                style={reduce ? undefined : { x: networkX, y: networkY }}
+              <div
+                className={cn(
+                  "absolute inset-0 z-20 pointer-events-none",
+                  !reduce && "hero-parallax-network",
+                )}
               >
                 {stageModules.map((module, index) => {
                   const active = activeNodeId === module.id;
@@ -305,11 +306,13 @@ export default function HeroStage() {
                     </div>
                   );
                 })}
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="pointer-events-none absolute inset-0 z-10"
-                style={reduce ? undefined : { x: networkX, y: networkY }}
+              <div
+                className={cn(
+                  "pointer-events-none absolute inset-0 z-10",
+                  !reduce && "hero-parallax-network",
+                )}
               >
                 <div
                   className={cn(enterClassName, "pointer-events-none absolute left-1/2 top-1/2 z-10")}
@@ -338,223 +341,12 @@ export default function HeroStage() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx>{`
-        .hero-stage-path {
-          stroke: rgba(148, 163, 184, 0.22);
-        }
-
-        .hero-stage-path-dimmed {
-          stroke: rgba(148, 163, 184, 0.13);
-        }
-
-        .hero-stage-path-active,
-        .hero-stage-path-active-overlay {
-          stroke: rgba(134, 239, 172, 0.72);
-        }
-
-        .hero-stage-signal {
-          stroke: rgba(134, 239, 172, 0.88);
-        }
-
-        .hero-stage-core-fill {
-          fill: rgba(22, 163, 74, 0.05);
-        }
-
-        .hero-stage-ring-inner {
-          stroke: rgba(148, 163, 184, 0.18);
-        }
-
-        .hero-stage-ring-outer {
-          stroke: rgba(148, 163, 184, 0.12);
-        }
-
-        .hero-stage-ring-active {
-          stroke: rgba(134, 239, 172, 0.28);
-        }
-
-        .hero-stage-ring-outer.hero-stage-ring-active {
-          stroke: rgba(134, 239, 172, 0.22);
-        }
-
-        :global(html.light) .hero-stage-path {
-          stroke: rgba(51, 65, 85, 0.62);
-          stroke-width: 0.95;
-        }
-
-        :global(html.light) .hero-stage-path-dimmed {
-          stroke: rgba(100, 116, 139, 0.32);
-        }
-
-        :global(html.light) .hero-stage-path-active,
-        :global(html.light) .hero-stage-path-active-overlay {
-          stroke: rgba(21, 128, 61, 0.82);
-          stroke-width: 1.18;
-        }
-
-        :global(html.light) .hero-stage-signal {
-          stroke: rgba(22, 163, 74, 0.95);
-          stroke-width: 1.35;
-        }
-
-        :global(html.light) .hero-stage-core-fill {
-          fill: rgba(22, 163, 74, 0.08);
-        }
-
-        :global(html.light) .hero-stage-ring-inner {
-          stroke: rgba(71, 85, 105, 0.36);
-        }
-
-        :global(html.light) .hero-stage-ring-outer {
-          stroke: rgba(71, 85, 105, 0.26);
-        }
-
-        :global(html.light) .hero-stage-ring-active {
-          stroke: rgba(22, 163, 74, 0.5);
-        }
-
-        :global(html.light) .hero-stage-ring-outer.hero-stage-ring-active {
-          stroke: rgba(22, 163, 74, 0.4);
-        }
-
-        :global(html.light) .hero-stage-signal {
-          animation-name: hero-stage-signal-light;
-        }
-
-        @keyframes hero-stage-signal-light {
-          0%,
-          68% {
-            opacity: 0;
-            stroke-dashoffset: 0;
-          }
-          74% {
-            opacity: 0.95;
-          }
-          90% {
-            opacity: 0.78;
-            stroke-dashoffset: -48;
-          }
-          100% {
-            opacity: 0;
-            stroke-dashoffset: -58;
-          }
-        }
-
-        @keyframes hero-stage-panel-ambient {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
-          50% {
-            transform: translate3d(0, -4px, 0);
-          }
-        }
-
-        @keyframes hero-stage-enter {
-          from {
-            opacity: 0.72;
-            transform: translate3d(0, 6px, 0);
-          }
-          to {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-          }
-        }
-
-        @keyframes hero-stage-core-breathe {
-          0%,
-          100% {
-            box-shadow:
-              0 22px 44px rgba(0, 0, 0, 0.28),
-              inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            opacity: 0.98;
-          }
-          50% {
-            box-shadow:
-              0 24px 48px rgba(0, 0, 0, 0.3),
-              0 0 0 1px rgba(134, 239, 172, 0.07),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            opacity: 1;
-          }
-        }
-
-        @keyframes hero-stage-node-idle {
-          0%,
-          100% {
-            opacity: 0;
-          }
-          8% {
-            opacity: 0;
-          }
-          15% {
-            opacity: 0.85;
-          }
-          24% {
-            opacity: 0;
-          }
-        }
-
-        @keyframes hero-stage-signal {
-          0%,
-          72% {
-            opacity: 0;
-            stroke-dashoffset: 0;
-          }
-          78% {
-            opacity: 0.82;
-          }
-          92% {
-            opacity: 0.64;
-            stroke-dashoffset: -48;
-          }
-          100% {
-            opacity: 0;
-            stroke-dashoffset: -58;
-          }
-        }
-
-        @media (prefers-reduced-motion: no-preference) {
-          .hero-stage-enter {
-            animation: hero-stage-enter 0.34s var(--ease-premium) both;
-          }
-
-          .hero-stage-panel-ambient {
-            animation: hero-stage-panel-ambient 18s ease-in-out infinite;
-          }
-
-          .hero-stage-core-breathe {
-            animation: hero-stage-core-breathe 6.4s ease-in-out infinite;
-          }
-
-          .hero-stage-node-idle {
-            animation: hero-stage-node-idle 14s ease-in-out infinite;
-          }
-
-          .hero-stage-signal {
-            animation-name: hero-stage-signal;
-            animation-timing-function: ease-out;
-            animation-iteration-count: infinite;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero-stage-enter {
-            animation: none !important;
-          }
-        }
-
-        [data-animation-active="false"] .hero-stage-panel-ambient,
-        [data-animation-active="false"] .hero-stage-core-breathe,
-        [data-animation-active="false"] .hero-stage-node-idle,
-        [data-animation-active="false"] .hero-stage-signal {
-          animation-play-state: paused;
-        }
-      `}</style>
     </div>
   );
 }

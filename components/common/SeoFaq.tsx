@@ -1,5 +1,5 @@
-import { serializeJsonLd } from "@/lib/seo";
 import { bodyClass } from "@/design";
+import { faqPageJsonLd, serializeJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export type SeoFaqItem = {
@@ -24,16 +24,7 @@ export default function SeoFaq({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: serializeJsonLd({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            inLanguage: "sl",
-            mainEntity: items.map((item) => ({
-              "@type": "Question",
-              name: item.question,
-              acceptedAnswer: { "@type": "Answer", text: item.answer },
-            })),
-          }),
+          __html: serializeJsonLd(faqPageJsonLd(items, id)),
         }}
       />
       <div className="container mx-auto max-w-[52rem]">

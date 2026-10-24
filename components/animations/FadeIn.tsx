@@ -1,9 +1,5 @@
-"use client";
-
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
-import { duration, easeOut } from "@/design";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import type { CSSProperties, ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type FadeInProps = {
   children: ReactNode;
@@ -14,35 +10,23 @@ type FadeInProps = {
   className?: string;
 };
 
+/**
+ * Server-rendered reveal. Opacity stays high enough to paint immediately,
+ * so the largest text is not held until a client animation library hydrates.
+ */
 export default function FadeIn({
   children,
   delay = 0,
-  duration: durationProp = duration.reveal,
-  y = 12,
-  once = true,
+  duration: durationProp,
   className,
 }: FadeInProps) {
-  const reduceMotion = usePrefersReducedMotion();
+  const style: CSSProperties = {};
+  if (delay > 0) style.animationDelay = `${delay}s`;
+  if (durationProp) style.animationDuration = `${durationProp}s`;
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-      }}
-      viewport={{
-        once,
-        amount: 0.2,
-      }}
-      transition={{
-        duration: reduceMotion ? 0.01 : durationProp,
-        delay: reduceMotion ? 0 : delay,
-        ease: easeOut,
-      }}
-    >
+    <div className={cn("content-reveal", className)} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }

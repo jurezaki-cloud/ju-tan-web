@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { siteConfig } from "@/lib/config";
-import { offerCatalog } from "@/lib/data/services";
+import { offerCatalog } from "@/lib/data/service-catalog";
 import { brandAssets } from "@/brand/theme";
 
 export function absoluteUrl(path = "/") {
@@ -12,19 +12,24 @@ export const defaultTitle =
   "Izdelava spletnih strani in grafično oblikovanje | JU-TAN";
 
 export const defaultDescription =
-  "JU-TAN Studio, Cerknica: izdelava spletnih strani, logotipov in celostnih grafičnih podob ter razvoj programske opreme po meri. Pošljite povpraševanje.";
+  "JU-TAN Studio, Cerknica: izdelava spletnih strani, logotipov, celostnih grafičnih podob in promocijskih videov ter razvoj programske opreme po meri. Pošljite povpraševanje.";
 
 export const defaultKeywords = [
   "JU-TAN Studio",
   "izdelava spletnih strani",
   "spletne strani Cerknica",
   "izdelava spletnih strani za podjetja",
+  "grafično oblikovanje",
   "grafično oblikovanje Cerknica",
   "izdelava logotipa",
   "celostna grafična podoba",
   "oblikovanje letakov in vizitk",
+  "videoprodukcija",
+  "izdelava promocijskih videov",
   "razvoj programske opreme po meri",
+  "izdelava spletnih aplikacij",
   "poslovni program za mala podjetja",
+  "poslovni program za podjetja",
   "program za račune in ponudbe",
   "avtomatizacija poslovnih procesov",
   "AI rešitve za podjetja",
@@ -45,7 +50,7 @@ export const openGraph = {
       url: "/og-image.jpg",
       width: 1200,
       height: 630,
-      alt: "JU-TAN Studio — grafično oblikovanje, spletne strani in programska oprema",
+      alt: "JU-TAN Studio — splet, grafično oblikovanje, videoprodukcija in programska oprema",
     },
   ],
 };
@@ -97,6 +102,28 @@ export function createPageMetadata({
 
 export function serializeJsonLd(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+export function faqPageJsonLd(
+  items: readonly { question: string; answer: string }[],
+  id: string,
+) {
+  const origin = siteConfig.url.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${origin}/#${id}`,
+    inLanguage: "sl",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
 }
 
 export function breadcrumbJsonLd(
@@ -154,6 +181,9 @@ export function sitewideJsonLdGraph() {
   const { url, organizationId, websiteId, professionalId } = schemaIds();
   const logo = absoluteUrl(brandAssets.logoPng);
   const address = postalAddress();
+  const sameAs = [siteConfig.github, siteConfig.linkedin].filter(
+    (value): value is string => Boolean(value),
+  );
 
   return {
     "@context": "https://schema.org",
@@ -163,7 +193,6 @@ export function sitewideJsonLdGraph() {
         "@id": organizationId,
         name: company.name,
         alternateName: "JU-TAN Studio",
-        sameAs: [siteConfig.github, siteConfig.linkedin].filter(Boolean),
         legalName: company.legalName,
         url,
         description: defaultDescription,
@@ -186,6 +215,7 @@ export function sitewideJsonLdGraph() {
         logo,
         image: absoluteUrl("/og-image.jpg"),
         address,
+        ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
         "@type": "WebSite",

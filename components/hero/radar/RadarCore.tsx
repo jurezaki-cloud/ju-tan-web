@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useTransform, type MotionValue } from "framer-motion";
 import { CENTER_ATTR } from "./geometry";
 import { RADAR_CORE_PULSE_S } from "@/hooks/useHeroRadarMotion";
 
@@ -8,26 +7,17 @@ type RadarCoreProps = {
   live: boolean;
   hovered: boolean;
   reduce: boolean;
-  pointerX: MotionValue<number>;
-  pointerY: MotionValue<number>;
 };
 
 export default function RadarCore({
   live,
   hovered,
   reduce,
-  pointerX,
-  pointerY,
 }: RadarCoreProps) {
-  const x = useTransform(pointerX, (value) => value * 4);
-  const y = useTransform(pointerY, (value) => value * 4);
   const animate = live && !reduce;
 
   return (
-    <motion.div
-      className="pointer-events-none absolute inset-0 will-change-transform"
-      style={{ x, y }}
-    >
+    <div className="radar-parallax-core pointer-events-none absolute inset-0 will-change-transform">
       <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
         <circle
           cx={CENTER_ATTR}
@@ -73,6 +63,6 @@ export default function RadarCore({
           />
         </div>
       ) : null}
-    </motion.div>
+    </div>
   );
 }

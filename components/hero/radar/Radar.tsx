@@ -24,16 +24,9 @@ export default function Radar() {
         live={radar.live}
         hovered={radar.hovered}
         reduce={radar.reduce}
-        pointerX={radar.pointerX}
-        pointerY={radar.pointerY}
       />
 
-      <RadarParallax
-        pointerX={radar.pointerX}
-        pointerY={radar.pointerY}
-        amount={10}
-        reduce={radar.reduce}
-      >
+      <RadarParallax reduce={radar.reduce}>
         <div className="absolute inset-0">
           <RadarRings />
           <RadarSweep active={radar.live && !radar.reduce} />
@@ -41,12 +34,7 @@ export default function Radar() {
         </div>
       </RadarParallax>
 
-      <RadarParallax
-        pointerX={radar.pointerX}
-        pointerY={radar.pointerY}
-        amount={10}
-        reduce={radar.reduce}
-      >
+      <RadarParallax reduce={radar.reduce}>
         <RadarLabels hovered={radar.hovered} />
       </RadarParallax>
 
@@ -54,8 +42,6 @@ export default function Radar() {
         live={radar.live}
         hovered={radar.hovered}
         reduce={radar.reduce}
-        pointerX={radar.pointerX}
-        pointerY={radar.pointerY}
       />
     </div>
   );

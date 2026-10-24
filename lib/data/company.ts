@@ -1,9 +1,9 @@
 export const company = {
   name: "JU-TAN",
   legalName: "JU-TAN studio, Tanja Hrup s.p.",
-  headline: "Programska oprema, avtomatizacija in AI agenti za podjetja",
+  headline: "Splet, oblikovanje, video in programska oprema za podjetja",
   description:
-    "JU-TAN razvija programsko opremo po meri, avtomatizacije poslovnih procesov, spletne aplikacije in AI agente za podjetja v Sloveniji.",
+    "JU-TAN Studio iz Cerknice izdeluje spletne strani, logotipe, celostne grafične podobe in promocijske videe ter razvija programsko opremo, poslovne sisteme in AI rešitve za podjetja v Sloveniji.",
   contact: {
     phone: "+386 69 907 803",
     phoneLabel: "Razvoj",

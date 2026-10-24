@@ -48,6 +48,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${origin}/videoprodukcija`,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${origin}/kontakt`,
       changeFrequency: "weekly",
       priority: 0.8,

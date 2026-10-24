@@ -152,7 +152,7 @@ export default function JuTanAgent({ initialOpen = false }: { initialOpen?: bool
       className={`pointer-events-none fixed z-overlay ${
         open
           ? "inset-0 md:inset-auto md:right-6 md:bottom-6"
-          : "right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] md:right-6 md:bottom-6"
+          : "right-4 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+var(--cookie-banner-offset,0px))] md:right-6 md:bottom-6"
       }`}
     >
       <div className="flex h-full min-h-0 flex-col items-end justify-end gap-3">

@@ -64,3 +64,12 @@ export async function assertIdentityLoginHardening(): Promise<void> {
   if (!logs.some((item) => item.type === "LoginSuccess")) throw new Error("missing LoginSuccess log");
   if (logs.some((item) => JSON.stringify(item).includes("\"password\""))) throw new Error("password in logs");
 }
+
+void assertIdentityLoginHardening()
+  .then(() => {
+    console.log("login hardening ok");
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

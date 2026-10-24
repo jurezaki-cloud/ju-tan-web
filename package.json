@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:hardening": "node --conditions=react-server --import tsx src/security/rate-limit/cleanup.hardening.test.ts && node --conditions=react-server --import tsx src/notifications/delivery.hardening.test.ts && node --conditions=react-server --import tsx lib/office-download/office-download.hardening.test.ts"
+    "test:hardening": "node --conditions=react-server --import tsx src/security/rate-limit/cleanup.hardening.test.ts && node --conditions=react-server --import tsx src/notifications/delivery.hardening.test.ts && node --conditions=react-server --import tsx lib/office-download/office-download.hardening.test.ts && node --import tsx lib/public-surface.test.ts && node --conditions=react-server --import tsx tests/contact.test.ts && node --conditions=react-server --import tsx src/identity/login.hardening.test.ts && node --import tsx tests/magic.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

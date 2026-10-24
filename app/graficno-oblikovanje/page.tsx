@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CtaLink from "@/components/navbar/CtaLink";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Section from "@/components/common/Section";
@@ -151,12 +152,9 @@ export default function GraphicDesignPage() {
               ideje do datotek, pripravljenih za splet ali tisk.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                href="/kontakt?service=graphic"
-                className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
-              >
+              <CtaLink href="/kontakt?service=graphic">
                 Želim grafično rešitev
-              </Link>
+              </CtaLink>
               <Link
                 href="/izdelava-logotipa"
                 className="rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-emerald-400/50 light:border-slate-300 light:text-slate-900"
@@ -315,7 +313,7 @@ export default function GraphicDesignPage() {
             >
               Ko grafična podoba postane del celotne digitalne zgodbe.
             </h2>
-            <div className="mt-9 grid gap-4 md:grid-cols-3">
+            <div className="mt-9 grid gap-4 md:grid-cols-2">
               <Link
                 href="/spletne-strani-in-ui-ux"
                 className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"
@@ -370,6 +368,24 @@ export default function GraphicDesignPage() {
                   Oglejte si reference →
                 </span>
               </Link>
+              <Link
+                href="/videoprodukcija"
+                className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
+                  Video
+                </span>
+                <h3 className="mt-4 font-heading text-xl font-semibold text-white light:text-slate-900">
+                  Videoprodukcija
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
+                  Promocijski videi, Reels in predstavitve, usklajeni z novo ali
+                  obstoječo grafično podobo.
+                </p>
+                <span className="mt-5 inline-block text-sm font-semibold text-emerald-400">
+                  Poglejte video →
+                </span>
+              </Link>
             </div>
           </div>
         </Section>
@@ -393,12 +409,9 @@ export default function GraphicDesignPage() {
               promocijski material.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-4">
-              <Link
-                href="/kontakt?service=graphic"
-                className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
-              >
+              <CtaLink href="/kontakt?service=graphic">
                 Pošljite povpraševanje
-              </Link>
+              </CtaLink>
               <span className="text-sm text-slate-400 light:text-slate-600">
                 Logotip · CGP · letak · vizitka · digitalni dizajn
               </span>

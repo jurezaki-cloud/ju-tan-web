@@ -12,8 +12,8 @@
     "menuAria": "Meni",
     "openMenu": "Odpri meni",
     "closeMenu": "Zapri meni",
-    "cta": "Začnimo projekt",
-    "ctaAria": "Začnite projekt z ekipo JU-TAN",
+    "cta": "Zahtevajte ponudbo",
+    "ctaAria": "Zahtevajte ponudbo za projekt z ekipo JU-TAN",
     "themeLight": "Vklopi svetlo temo",
     "themeDark": "Vklopi temno temo",
     "nav": {
@@ -22,6 +22,7 @@
       "office": "JU-TAN Office",
       "references": "Reference",
       "graphics": "Grafično oblikovanje",
+      "video": "Videoprodukcija",
       "process": "Način dela",
       "company": "Podjetje",
       "contact": "Kontakt"

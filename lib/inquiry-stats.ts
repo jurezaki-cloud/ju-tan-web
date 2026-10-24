@@ -1,6 +1,6 @@
 import "server-only";
 import { licensingPool } from "@/lib/licensing/db";
-import { contactServiceOptions } from "@/lib/data/services";
+import { contactServiceOptions } from "@/lib/data/service-catalog";
 
 const shared = globalThis as typeof globalThis & {
   __juTanInquiryStatsSchema?: Promise<void>;

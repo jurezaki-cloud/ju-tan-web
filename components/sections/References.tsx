@@ -83,7 +83,7 @@ export default function References({ full = false }: { full?: boolean }) {
           {!full && (
             <Link
               href="/reference"
-              className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
+              className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
             >
               Vse reference →
             </Link>
@@ -129,9 +129,15 @@ export default function References({ full = false }: { full?: boolean }) {
                     ↗
                   </span>
                 </div>
-                <h3 className="mt-5 font-heading text-2xl font-semibold">
-                  {project.title}
-                </h3>
+                {full ? (
+                  <h2 className="mt-5 font-heading text-2xl font-semibold">
+                    {project.title}
+                  </h2>
+                ) : (
+                  <h3 className="mt-5 font-heading text-2xl font-semibold">
+                    {project.title}
+                  </h3>
+                )}
                 <p className="mt-3 min-h-24 text-sm leading-6 text-slate-400 light:text-slate-600">
                   {project.text}
                 </p>
@@ -148,7 +154,7 @@ export default function References({ full = false }: { full?: boolean }) {
               </>
             );
             const cls =
-              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] light:border-slate-200 light:bg-white";
+              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 light:border-slate-200 light:bg-white";
             return project.href.startsWith("http") ? (
               <a
                 key={project.title}

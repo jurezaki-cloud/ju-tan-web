@@ -15,7 +15,7 @@ import { siteConfig } from "@/lib/config";
 export const metadata: Metadata = createPageMetadata({
   title: "Kontakt – JU-TAN Studio v Cerknici",
   description:
-    "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, logotipe in celostne podobe, izdelavo spletnih strani, razvoj programske opreme, avtomatizacijo in AI rešitve.",
+    "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, videoprodukcijo, izdelavo spletnih strani, razvoj programske opreme in AI rešitve.",
   path: "/kontakt",
 });
 
@@ -37,16 +37,17 @@ export default function KontaktPage() {
             JU-TAN Studio v Cerknici
           </h2>
           <p className="mt-4 leading-7">
-            Spletne strani, grafično oblikovanje in programsko opremo po meri
-            pripravljamo za podjetja v Cerknici, na Notranjskem in po Sloveniji.
+            Spletne strani, grafično oblikovanje, videoprodukcijo in programsko
+            opremo po meri pripravljamo za podjetja v Cerknici, na Notranjskem
+            in po Sloveniji.
             Povejte nam, kaj potrebujete, in dogovorili se bomo o obsegu ter
             izvedbi projekta.
           </p>
           <address className="mt-6 space-y-2 not-italic">
             <p>{company.legalName}</p>
             <p>
-              {company.contact.address.street}, {company.contact.address.postal}
-              , {company.contact.address.country}
+              {company.contact.address.street}, {company.contact.address.postal},{" "}
+              {company.contact.address.country}
             </p>
             <p>
               <a href={company.contact.phoneTel}>{company.contact.phone}</a> ·{" "}
@@ -73,6 +74,7 @@ export default function KontaktPage() {
               Izdelava spletnih strani
             </Link>
             <Link href="/graficno-oblikovanje">Grafično oblikovanje</Link>
+            <Link href="/videoprodukcija">Videoprodukcija</Link>
             <Link href="/izdelava-logotipa">Izdelava logotipa</Link>
             <Link href="/razvoj-programske-opreme">
               Programska oprema po meri
@@ -100,7 +102,7 @@ export default function KontaktPage() {
                 url: absoluteUrl("/kontakt"),
                 name: "Kontakt",
                 description:
-                  "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, logotipe in celostne podobe, izdelavo spletnih strani, razvoj programske opreme, avtomatizacijo in AI rešitve.",
+                  "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, videoprodukcijo, izdelavo spletnih strani, razvoj programske opreme in AI rešitve.",
                 inLanguage: "sl",
                 isPartOf: { "@id": `${origin}/#website` },
                 about: { "@id": `${origin}/#organization` },

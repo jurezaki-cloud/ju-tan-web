@@ -9,13 +9,9 @@ import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
 import { company } from "@/lib/data/company";
-import { contactServiceOptions } from "@/lib/data/services";
+import { contactServiceOptions } from "@/lib/data/service-catalog";
 import { getAnalyticsConsentSnapshot } from "@/lib/consent";
-import {
-  contactSchema,
-  flattenContactErrors,
-  type ContactFieldKey,
-} from "@/lib/validation/contact";
+import { type ContactFieldKey } from "@/lib/validation/contact";
 import ContactSuccess from "./ContactSuccess";
 import { labelClass } from "@/design";
 
@@ -36,6 +32,7 @@ const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = 
   app: "Spletna ali mobilna aplikacija",
   office: "JU-TAN Office",
   support: "Svetovanje ali dolgoročna podpora",
+  video: "Videoprodukcija",
 };
 
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
@@ -52,11 +49,19 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
 
   useEffect(() => {
-    const key = new URLSearchParams(window.location.search).get("service");
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("service");
     const linkedService = key ? serviceFromLink[key] : undefined;
-    if (linkedService) {
+    const requested = params.get("storitev");
+    const exactService = requested
+      ? contactServiceOptions.find((option) => option === requested)
+      : undefined;
+    const service = linkedService ?? exactService;
+    if (service) {
+      // Query is read after hydration so the server render stays stable.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time service preselect
       setForm((current) =>
-        current.service ? current : { ...current, service: linkedService },
+        current.service ? current : { ...current, service },
       );
     }
   }, []);
@@ -86,6 +91,9 @@ export default function ContactForm() {
     if (loading) return;
     setErrors({});
 
+    const { contactSchema, flattenContactErrors } = await import(
+      "@/lib/validation/contact"
+    );
     const parsed = contactSchema.safeParse({
       name: form.name,
       company: form.company,

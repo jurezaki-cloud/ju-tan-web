@@ -11,7 +11,7 @@ const JuTanAgent = dynamic(() => import("./JuTanAgent"), {
     <div
       data-nosnippet="true"
       role="status"
-      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-overlay flex h-12 w-12 items-center justify-center rounded-lg border border-white/12 bg-[#0b1220] text-slate-100 md:right-6 md:bottom-6 light:border-slate-200 light:bg-white light:text-slate-800"
+      className="fixed right-4 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+var(--cookie-banner-offset,0px))] z-overlay flex h-12 w-12 items-center justify-center rounded-lg border border-white/12 bg-[#0b1220] text-slate-100 md:right-6 md:bottom-6 light:border-slate-200 light:bg-white light:text-slate-800"
     >
       <span className="sr-only">Nalaganje vodiča storitev …</span>
       <span aria-hidden="true">…</span>
@@ -46,7 +46,7 @@ export default function JuTanAgentLazy() {
   return (
     <div
       data-nosnippet="true"
-      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-overlay md:right-6 md:bottom-6"
+      className="fixed right-4 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+var(--cookie-banner-offset,0px))] z-overlay md:right-6 md:bottom-6"
     >
       <AgentButton open={false} onToggle={() => setActivated(true)} />
     </div>

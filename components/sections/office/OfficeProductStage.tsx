@@ -1,10 +1,5 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { FadeIn } from "@/components/animations";
-import { easeOut } from "@/design";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
 const SHOT_W = 1896;
@@ -69,76 +64,47 @@ function Frame({
 }
 
 export default function OfficeProductStage() {
-  const reduceMotion = usePrefersReducedMotion();
-
   return (
     <div className="relative mx-auto w-full max-w-[52rem] xl:max-w-[47rem] xl:pt-2">
-      <motion.div
-        className="pointer-events-none absolute inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_66%)] blur-3xl light:bg-[radial-gradient(circle,rgba(22,163,74,0.07),transparent_66%)]"
+      <div
+        className="office-stage-glow pointer-events-none absolute inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(22,163,74,0.1),transparent_66%)] blur-3xl light:bg-[radial-gradient(circle,rgba(22,163,74,0.07),transparent_66%)]"
         aria-hidden
-        animate={reduceMotion ? undefined : { opacity: [0.18, 0.3, 0.18] }}
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
       />
 
       {/* Desktop >= 1280: layered editorial stage */}
       <div className="relative hidden min-h-[34rem] xl:block">
-        <motion.div
+        <FadeIn
+          delay={0.18}
           className="absolute bottom-[6%] left-0 z-[1] w-[46%] max-w-[19rem]"
-          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{
-            duration: reduceMotion ? 0.01 : 0.5,
-            delay: reduceMotion ? 0 : 0.18,
-            ease: easeOut,
-          }}
         >
           <Frame
             shot={shots.warehouse}
             sizes="(min-width: 1280px) 360px, 280px"
             imageClassName="aspect-[16/10] object-[center_28%]"
           />
-        </motion.div>
+        </FadeIn>
 
-        <motion.div
+        <FadeIn
+          delay={0.1}
           className="absolute bottom-[10%] right-0 z-[2] w-[60%] max-w-[26rem]"
-          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{
-            duration: reduceMotion ? 0.01 : 0.5,
-            delay: reduceMotion ? 0 : 0.1,
-            ease: easeOut,
-          }}
         >
           <Frame
             shot={shots.invoices}
             sizes="(min-width: 1280px) 480px, 380px"
             imageClassName="aspect-[16/10] object-[center_42%]"
           />
-        </motion.div>
+        </FadeIn>
 
-        <motion.div
+        <FadeIn
+          delay={0.04}
           className="relative z-[3] ml-[6%] w-[88%] max-w-[38rem]"
-          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{
-            duration: reduceMotion ? 0.01 : 0.5,
-            delay: reduceMotion ? 0 : 0.04,
-            ease: easeOut,
-          }}
         >
           <Frame
             shot={shots.dashboard}
             sizes="(min-width: 1280px) 720px, 560px"
             imageClassName="aspect-[16/10.2] object-[center_18%]"
           />
-        </motion.div>
+        </FadeIn>
       </div>
 
       {/* Tablet 768–1279: dashboard dominant, reduced overlap */}

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   ...createPageMetadata({
     title: "Povpraševanje",
     description:
-      "Pošljite povpraševanje ekipi JU-TAN za umetno inteligenco, programsko opremo, avtomatizacijo, splet in IT infrastrukturo.",
+      "Pošljite povpraševanje ekipi JU-TAN za grafično oblikovanje, videoprodukcijo, spletne strani, programsko opremo in AI rešitve.",
     path: "/booking",
   }),
   robots: {

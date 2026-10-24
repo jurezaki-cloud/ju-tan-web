@@ -71,7 +71,7 @@ export const surfacePanelCompact =
   "relative overflow-hidden rounded-card border border-white/10 bg-white/[0.04] px-5 py-4 light:border-slate-200/80 light:bg-white/70";
 
 export const numberBadgeClass =
-  "inline-flex h-8 min-w-8 items-center justify-center rounded-lg border border-[#16a34a] bg-white text-[12px] font-semibold tabular-nums text-[#16a34a]";
+  "inline-flex h-8 min-w-8 items-center justify-center rounded-lg border border-[#166534] bg-white text-[12px] font-semibold tabular-nums text-[#166534]";
 
 export const ctaBase = [
   "group inline-flex min-h-11 items-center justify-center gap-2 rounded-lg font-semibold tracking-[-0.01em]",

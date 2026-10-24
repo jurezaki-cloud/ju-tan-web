@@ -39,6 +39,7 @@ export default function ReferencePage() {
             <nav aria-label="Storitve JU-TAN" className="mt-6 flex flex-wrap gap-4">
               <Link href="/spletne-strani-in-ui-ux" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">Izdelava spletnih strani in portalov</Link>
               <Link href="/graficno-oblikovanje" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">Grafično oblikovanje</Link>
+              <Link href="/videoprodukcija" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">Videoprodukcija</Link>
               <Link href="/razvoj-programske-opreme" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">Razvoj programske opreme</Link>
               <Link href="/kontakt" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">Povpraševanje</Link>
             </nav>
@@ -49,7 +50,7 @@ export default function ReferencePage() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400 light:text-emerald-700">Od ideje do izvedbe</p>
             <h2 id="reference-cta-title" className="mt-3 font-heading text-3xl font-semibold">Imate podoben projekt v mislih?</h2>
             <p className="mt-4 max-w-2xl leading-7 text-slate-300 light:text-slate-700">
-              Potrebujete spletno stran, uporabniški portal, prepoznavno grafično podobo ali poslovno programsko opremo?
+              Potrebujete spletno stran, uporabniški portal, prepoznavno grafično podobo, promocijski video ali poslovno programsko opremo?
               Opišite nam svoj cilj in skupaj bomo določili primeren naslednji korak.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-5">
