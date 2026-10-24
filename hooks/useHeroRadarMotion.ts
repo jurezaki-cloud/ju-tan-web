@@ -1,20 +1,13 @@
 "use client";
 
 /**
- * Radar motion.
- *
- * Why the previous implementation was static:
- * 1. `framer-motion@13` does not export `useAnimationFrame`. Importing it
- *    aborted the client module, so rotate never wrote a transform.
- * 2. Core rings used Tailwind `-translate-x/y-1/2` plus Framer `scale`.
- *    Framer replaces `transform`, so rings jumped off-center and looked dead.
- * 3. Data pulses animated SVG `cx`/`cy` (or Framer SVG x/y), not transform.
- *
- * This hook uses native rAF + element.style.transform only.
+ * Desktop pointer parallax for the hero stage.
+ * Values are written as CSS variables so the stage does not depend on
+ * Framer Motion. Pointer tracking stays off for coarse pointers and
+ * viewports below 768px.
  */
 
 import { useEffect, useState, type RefObject } from "react";
-import { useSpring, type MotionValue } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export const RADAR_BOOT_MS = 500;
@@ -26,15 +19,16 @@ export const RADAR_PULSE_MIN_MS = 6000;
 export const RADAR_PULSE_SPAN_MS = 4000;
 export const RADAR_PARTICLE_S = 1.2;
 
-const SPRING = { stiffness: 70, damping: 26, mass: 0.8 } as const;
-
 export type HeroRadarMotion = {
   reduce: boolean;
   live: boolean;
   hovered: boolean;
-  pointerX: MotionValue<number>;
-  pointerY: MotionValue<number>;
 };
+
+function writePointer(stage: HTMLElement, x: number, y: number) {
+  stage.style.setProperty("--hero-nx", x.toFixed(3));
+  stage.style.setProperty("--hero-ny", y.toFixed(3));
+}
 
 export function useHeroRadarMotion(
   stageRef: RefObject<HTMLElement | null>,
@@ -44,8 +38,6 @@ export function useHeroRadarMotion(
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
-  const pointerX = useSpring(0, SPRING);
-  const pointerY = useSpring(0, SPRING);
   const live = !reduce && armed && visible && pageVisible;
 
   useEffect(() => {
@@ -74,10 +66,7 @@ export function useHeroRadarMotion(
     const stage = stageRef.current;
     if (!stage) return;
 
-    const reset = () => {
-      pointerX.set(0);
-      pointerY.set(0);
-    };
+    const reset = () => writePointer(stage, 0, 0);
 
     if (reduce) {
       reset();
@@ -87,37 +76,48 @@ export function useHeroRadarMotion(
     const fine = window.matchMedia("(pointer: fine)");
     const wide = window.matchMedia("(min-width: 768px)");
 
-    let pendingFrame = 0;
-    let lastPointer: { x: number; y: number } | null = null;
+    let frame = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let targetX = 0;
+    let targetY = 0;
 
-    const updatePointer = () => {
-      pendingFrame = 0;
-      if (!lastPointer) return;
-      const { x, y } = lastPointer;
-      const rect = stage.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      const nx = (x - rect.left) / rect.width - 0.5;
-      const ny = (y - rect.top) / rect.height - 0.5;
-      pointerX.set(Math.max(-1, Math.min(1, nx * 2)));
-      pointerY.set(Math.max(-1, Math.min(1, ny * 2)));
+    const tick = () => {
+      frame = 0;
+      currentX += (targetX - currentX) * 0.18;
+      currentY += (targetY - currentY) * 0.18;
+      writePointer(stage, currentX, currentY);
+      if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+        frame = window.requestAnimationFrame(tick);
+      }
+    };
+
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(tick);
     };
 
     const onMove = (event: PointerEvent) => {
       if (!fine.matches || !wide.matches) {
-        reset();
+        targetX = 0;
+        targetY = 0;
+        schedule();
         return;
       }
-      lastPointer = { x: event.clientX, y: event.clientY };
-      if (!pendingFrame) pendingFrame = window.requestAnimationFrame(updatePointer);
+      const rect = stage.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const nx = (event.clientX - rect.left) / rect.width - 0.5;
+      const ny = (event.clientY - rect.top) / rect.height - 0.5;
+      targetX = Math.max(-1, Math.min(1, nx * 2));
+      targetY = Math.max(-1, Math.min(1, ny * 2));
+      schedule();
     };
 
     const onEnter = () => setHovered(true);
     const onLeave = () => {
       setHovered(false);
-      lastPointer = null;
-      if (pendingFrame) window.cancelAnimationFrame(pendingFrame);
-      pendingFrame = 0;
-      reset();
+      targetX = 0;
+      targetY = 0;
+      schedule();
     };
 
     stage.addEventListener("pointermove", onMove, { passive: true });
@@ -128,11 +128,10 @@ export function useHeroRadarMotion(
       stage.removeEventListener("pointermove", onMove);
       stage.removeEventListener("pointerenter", onEnter);
       stage.removeEventListener("pointerleave", onLeave);
-      if (pendingFrame) window.cancelAnimationFrame(pendingFrame);
-      lastPointer = null;
+      if (frame) window.cancelAnimationFrame(frame);
       reset();
     };
-  }, [pointerX, pointerY, reduce, stageRef]);
+  }, [reduce, stageRef]);
 
-  return { reduce, live, hovered, pointerX, pointerY };
+  return { reduce, live, hovered };
 }

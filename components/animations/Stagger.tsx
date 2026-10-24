@@ -1,40 +1,27 @@
-"use client";
-
-import { motion, type HTMLMotionProps } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type StaggerProps = {
   children: ReactNode;
   delay?: number;
   stagger?: number;
   className?: string;
-} & Omit<HTMLMotionProps<"div">, "children">;
+};
 
 export default function Stagger({
   children,
   delay = 0,
   stagger = 0.08,
   className,
-  ...props
 }: StaggerProps) {
+  const style = {
+    "--stagger-delay": `${delay}s`,
+    "--stagger-step": `${stagger}s`,
+  } as CSSProperties;
+
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.15 }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: {
-            delayChildren: delay,
-            staggerChildren: stagger,
-          },
-        },
-      }}
-      className={className}
-      {...props}
-    >
+    <div className={cn("stagger-group", className)} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }

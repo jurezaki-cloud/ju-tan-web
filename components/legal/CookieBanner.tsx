@@ -39,7 +39,7 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
       ref={bannerRef}
       aria-labelledby="cookie-banner-title"
       aria-describedby="cookie-banner-copy"
-      className="fixed inset-x-0 bottom-0 z-banner border-t border-white/10 bg-[#050816]/97 px-[max(0.875rem,env(safe-area-inset-left,0px))] py-2.5 pr-[max(0.875rem,env(safe-area-inset-right,0px))] pb-[max(0.625rem,env(safe-area-inset-bottom,0px))] backdrop-blur-md light:border-slate-200 light:bg-white/97"
+      className="fixed inset-x-0 bottom-0 z-banner border-t border-white/10 bg-[#050816]/97 px-[max(0.875rem,env(safe-area-inset-left,0px))] py-2.5 pr-[max(0.875rem,env(safe-area-inset-right,0px))] pb-[max(0.625rem,env(safe-area-inset-bottom,0px))] light:border-slate-200 light:bg-white/97"
     >
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p
@@ -55,6 +55,7 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
           {copy.message}{" "}
           <Link
             href="/politika-piskotkov"
+            prefetch={false}
             className={cn(
               "font-medium text-slate-100 underline-offset-4 hover:underline light:text-slate-900",
               focusRing,

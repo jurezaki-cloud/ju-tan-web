@@ -127,7 +127,7 @@ export default function VideoPage() {
           <nav aria-label="Drobtinice">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-400 light:text-slate-600">
               <li>
-                <Link href="/" className={textLinkClass}>
+                <Link href="/" prefetch={false} className={textLinkClass}>
                   Domov
                 </Link>
               </li>

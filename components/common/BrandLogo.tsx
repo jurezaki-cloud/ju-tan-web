@@ -78,7 +78,7 @@ export default function BrandLogo({
         height={height}
         unoptimized
         {...(isHeader
-          ? { fetchPriority: "high" as const, loading: "eager" as const }
+          ? { loading: "eager" as const }
           : { loading: "lazy" as const })}
         className={cn("block w-auto light:hidden", getHeightClass(variant, asset))}
       />

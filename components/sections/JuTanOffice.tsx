@@ -1,5 +1,3 @@
-"use client";
-
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
