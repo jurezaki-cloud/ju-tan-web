@@ -19,7 +19,7 @@ function DesktopNavigation({
 }: DesktopNavigationProps) {
   return (
     <nav
-      className="hidden min-w-0 items-center justify-center gap-6 xl:flex xl:gap-8"
+      className="hidden min-w-0 items-center justify-center gap-3 xl:flex xl:gap-4 2xl:gap-6"
       aria-label={ariaLabel}
     >
       {items.map((item) => {
@@ -30,8 +30,9 @@ function DesktopNavigation({
             key={item.id}
             href={item.href}
             aria-current={active ? "page" : undefined}
+            aria-label={item.shortLabel ? item.label : undefined}
             className={cn(
-              "group relative inline-flex min-h-11 items-center text-[14px] font-medium tracking-[0.02em] text-slate-400",
+              "group relative inline-flex min-h-11 items-center whitespace-nowrap text-[13px] font-medium tracking-[0.01em] text-slate-400 2xl:text-[14px]",
               colorTransition,
               "hover:text-white",
               "focus-visible:text-white",
@@ -41,7 +42,7 @@ function DesktopNavigation({
             )}
           >
             <span className="relative inline-block">
-              {item.label}
+              {item.shortLabel ?? item.label}
               <span
                 className={cn(
                   "absolute inset-x-0 -bottom-1 h-px bg-[#16a34a] opacity-0 transition-opacity duration-hover ease-out",

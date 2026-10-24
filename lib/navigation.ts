@@ -18,6 +18,7 @@ export function getHeaderNavigation(): NavItem[] {
       href: "/ju-tan-office",
       sectionId: "office",
       label: nav.office,
+      shortLabel: "Office",
     },
     {
       id: "references",
@@ -30,12 +31,21 @@ export function getHeaderNavigation(): NavItem[] {
       href: "/graficno-oblikovanje",
       sectionId: "graphics",
       label: nav.graphics,
+      shortLabel: "Grafika",
+    },
+    {
+      id: "video",
+      href: "/videoprodukcija",
+      sectionId: "video",
+      label: nav.video,
+      shortLabel: "Video",
     },
     {
       id: "process",
       href: "/#process",
       sectionId: "process",
       label: nav.process,
+      shortLabel: "Proces",
     },
     {
       id: "company",

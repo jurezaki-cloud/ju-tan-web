@@ -8,6 +8,9 @@ import { absoluteUrl, breadcrumbJsonLd, createPageMetadata, serializeJsonLd } fr
 import { siteConfig } from "@/lib/config";
 
 const path = "/graficno-oblikovanje";
+const inquiryHref =
+  "/kontakt?storitev=" +
+  encodeURIComponent("Grafično oblikovanje / logotip / celostna podoba");
 const pageTitle = "Grafično oblikovanje | Logotipi, celostne podobe, letaki in dizajn";
 const pageDescription = "Profesionalno in hitro grafično oblikovanje JU-TAN Studio: logotipi, celostne grafične podobe, letaki, vizitke, predloge, promocijski materiali in digitalni dizajn.";
 
@@ -61,7 +64,7 @@ export default function GraphicDesignPage() {
               Profesionalna in hitra izdelava logotipov, celostnih grafičnih podob, letakov, vizitk, predlog in digitalnih dizajnov. Od prve ideje do datotek, pripravljenih za splet ali tisk.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/kontakt" className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400">Želim grafično rešitev</Link>
+              <Link href={inquiryHref} className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400">Želim grafično rešitev</Link>
               <Link href="#storitve" className="rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-emerald-400/50 light:border-slate-300 light:text-slate-900">Poglejte možnosti</Link>
             </div>
             <div className="mt-14 grid gap-3 sm:grid-cols-3">
@@ -122,10 +125,11 @@ export default function GraphicDesignPage() {
           <div className="mx-auto max-w-6xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-500">POVEZANE REŠITVE</p>
             <h2 id="graphics-next" className="heading-display mt-4 max-w-3xl font-heading font-semibold text-white light:text-slate-900">Ko grafična podoba postane del celotne digitalne zgodbe.</h2>
-            <div className="mt-9 grid gap-4 md:grid-cols-3">
+            <div className="mt-9 grid gap-4 md:grid-cols-2">
               <Link href="/spletne-strani-in-ui-ux" className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">Splet</span><h3 className="mt-4 font-heading text-xl font-semibold text-white light:text-slate-900">Spletne strani & UI/UX</h3><p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">Novo identiteto prenesemo v sodobno spletno izkušnjo, prilagojeno telefonu in računalniku.</p><span className="mt-5 inline-block text-sm font-semibold text-emerald-400">Poglejte rešitev →</span></Link>
               <Link href="/razvoj-programske-opreme" className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">Razvoj</span><h3 className="mt-4 font-heading text-xl font-semibold text-white light:text-slate-900">Programske rešitve</h3><p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">Vizualni sistem lahko nadaljujemo v uporabniške vmesnike in poslovne rešitve po meri.</p><span className="mt-5 inline-block text-sm font-semibold text-emerald-400">Poglejte razvoj →</span></Link>
               <Link href="/reference" className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">Delo</span><h3 className="mt-4 font-heading text-xl font-semibold text-white light:text-slate-900">Reference JU-TAN</h3><p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">Oglejte si spletne projekte, portale, JU-TAN Office in druge rešitve našega studia.</p><span className="mt-5 inline-block text-sm font-semibold text-emerald-400">Oglejte si reference →</span></Link>
+              <Link href="/videoprodukcija" className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-emerald-500/40 light:border-slate-200 light:bg-white"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">Video</span><h3 className="mt-4 font-heading text-xl font-semibold text-white light:text-slate-900">Videoprodukcija</h3><p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">Promocijski videi, Reels in predstavitve, usklajeni z novo ali obstoječo grafično podobo.</p><span className="mt-5 inline-block text-sm font-semibold text-emerald-400">Poglejte video →</span></Link>
             </div>
           </div>
         </Section>
@@ -134,7 +138,7 @@ export default function GraphicDesignPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400">HITRO · UREJENO · PROFESIONALNO</p>
             <h2 id="graphics-process" className="heading-display mt-4 font-heading font-semibold text-white light:text-slate-900">Povejte, kaj potrebujete. Mi oblikujemo vizualno rešitev.</h2>
             <p className="mt-4 max-w-2xl text-slate-300 light:text-slate-600">Pripravimo smer, oblikujemo rešitev in jo predamo v uporabnih formatih. Za nov logotip, osvežitev podobe ali posamezen promocijski material.</p>
-            <div className="mt-7 flex flex-wrap items-center gap-4"><Link href="/kontakt" className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400">Pošljite povpraševanje</Link><span className="text-sm text-slate-400 light:text-slate-600">Logotip · CGP · letak · vizitka · digitalni dizajn</span></div>
+            <div className="mt-7 flex flex-wrap items-center gap-4"><Link href={inquiryHref} className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400">Pošljite povpraševanje</Link><span className="text-sm text-slate-400 light:text-slate-600">Logotip · CGP · letak · vizitka · digitalni dizajn</span></div>
           </div>
         </Section>
       </main>

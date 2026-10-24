@@ -41,7 +41,7 @@ export default function Booking({
               <div>
                 <p className={kickerClass}>NASLEDNJI KORAK</p>
                 <Heading className="heading-display mt-3.5 font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-semibold tracking-[-0.05em] text-white light:text-slate-900">
-                  Potrebujete logotip, spletno stran ali poslovno rešitev,
+                  Potrebujete logotip, video, spletno stran ali poslovno rešitev,
                   <br className="hidden md:block" /> ki bo podjetje premaknila naprej?
                 </Heading>
                 <p
@@ -50,8 +50,8 @@ export default function Booking({
                     "mt-4 max-w-[36rem] text-slate-300 light:text-slate-600",
                   )}
                 >
-                  Povejte nam, kaj potrebujete — od grafične podobe in spleta do programske rešitve. Skupaj bomo preverili,
-                  kakšna izvedba ima največ smisla.
+                  Povejte nam, kaj potrebujete — od grafične podobe in videa do spleta
+                  ali programske rešitve. Skupaj preverimo, kakšna izvedba ima največ smisla.
                 </p>
               </div>
             </FadeIn>

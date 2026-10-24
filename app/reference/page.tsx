@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import References from "@/components/sections/References";
+import { portfolioProjects } from "@/lib/data/portfolio";
 import { absoluteUrl, breadcrumbJsonLd, createPageMetadata, serializeJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";
 
@@ -18,6 +19,41 @@ export const metadata: Metadata = createPageMetadata({
 export default function ReferencePage() {
   const origin = siteConfig.url.replace(/\/$/, "");
   const breadcrumbId = "breadcrumb-references";
+  const works = portfolioProjects.map((project) => {
+    const url = project.href.startsWith("http") ? project.href : absoluteUrl(project.href);
+    const base = {
+      name: project.title,
+      url,
+      description: project.summary,
+    };
+
+    if (project.kind === "software") {
+      return {
+        "@type": "SoftwareApplication",
+        ...base,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Windows",
+        author: { "@id": `${origin}/#organization` },
+      };
+    }
+
+    if (project.kind === "service") {
+      return {
+        "@type": "Service",
+        ...base,
+        provider: { "@id": `${origin}/#organization` },
+        areaServed: { "@type": "Country", name: "Slovenia" },
+      };
+    }
+
+    return {
+      "@type": "WebSite",
+      ...base,
+      inLanguage: "sl",
+      creator: { "@id": `${origin}/#organization` },
+    };
+  });
+
   return (
     <>
       <Header />
@@ -27,6 +63,16 @@ export default function ReferencePage() {
         "@graph": [
           breadcrumbJsonLd([{ name: "Domov", path: "/" }, { name: "Reference", path }], breadcrumbId),
           { "@type": "CollectionPage", "@id": `${origin}/reference#webpage`, url: absoluteUrl(path), name: pageTitle, description: pageDescription, inLanguage: "sl", isPartOf: { "@id": `${origin}/#website` }, about: { "@id": `${origin}/#organization` }, breadcrumb: { "@id": `${origin}/#${breadcrumbId}` } },
+          {
+            "@type": "ItemList",
+            "@id": `${origin}/reference#projects`,
+            name: "Izbrane reference JU-TAN",
+            itemListElement: works.map((work, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: work,
+            })),
+          },
         ],
       }) }} />
       <Footer />

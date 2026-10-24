@@ -16,14 +16,15 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 const solutionAreas = [
   { label: "Splet", href: "/spletne-strani-in-ui-ux" },
   { label: "Grafično oblikovanje", href: "/graficno-oblikovanje" },
+  { label: "Videoprodukcija", href: "/videoprodukcija" },
   { label: "Programska oprema", href: "/razvoj-programske-opreme" },
-  { label: "Poslovni sistemi", href: "/#services" },
+  { label: "Poslovni sistemi", href: "/razvoj-programske-opreme" },
   { label: "JU-TAN Office", href: "/ju-tan-office" },
 ] as const;
 
-const brandDescriptor = "Design, digitalne rešitve in programski inženiring.";
+const brandDescriptor = "Design, video, digitalne rešitve in inženiring.";
 const brandCopy =
-  "Grafično oblikovanje, razvoj in tehnologijo povezujemo v prepoznavne identitete, spletne rešitve, programsko opremo in poslovne sisteme za dolgoročno uporabo.";
+  "Grafično oblikovanje, videoprodukcijo, razvoj in tehnologijo povezujemo v prepoznavne identitete, spletne rešitve, promocijske vsebine in poslovne sisteme.";
 
 type ContactRow = {
   icon: LucideIcon;

@@ -39,8 +39,17 @@ export function useActiveSection(items: NavItem[]) {
     return () => observer.disconnect();
   }, [items, pathname]);
 
-  if (pathname === "/kontakt") return "contact";
-  if (pathname === "/ju-tan-office") return "office";
+  const routeSection: Partial<Record<string, NavSectionId>> = {
+    "/kontakt": "contact",
+    "/ju-tan-office": "office",
+    "/videoprodukcija": "video",
+    "/graficno-oblikovanje": "graphics",
+    "/reference": "references",
+    "/spletne-strani-in-ui-ux": "services",
+    "/razvoj-programske-opreme": "services",
+  };
+
+  if (routeSection[pathname]) return routeSection[pathname];
   if (pathname !== "/") return null;
   return sectionId;
 }

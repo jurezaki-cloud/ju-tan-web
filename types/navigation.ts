@@ -4,6 +4,7 @@ export type NavSectionId =
   | "office"
   | "references"
   | "graphics"
+  | "video"
   | "process"
   | "company"
   | "booking"
@@ -15,5 +16,7 @@ export type NavItem = {
   id: NavItemId;
   href: string;
   label: string;
+  /** Compact desktop label. Screen readers still use `label`. */
+  shortLabel?: string;
   sectionId: NavSectionId;
 };

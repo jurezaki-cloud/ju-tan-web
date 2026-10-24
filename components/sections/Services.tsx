@@ -10,10 +10,10 @@ const solutionGroups = [
     index: "01",
     title: "Splet in digitalne izkušnje",
     value:
-      "Spletne strani, spletne trgovine in uporabniški vmesniki, kjer sta oblikovanje in tehnologija del iste rešitve.",
+      "Izdelava spletnih strani, spletnih trgovin in uporabniških vmesnikov, kjer sta oblikovanje in tehnologija del iste rešitve.",
     labels: ["UI/UX", "Spletne strani", "E-trgovine", "Digitalne platforme"],
     href: "/spletne-strani-in-ui-ux",
-    linkLabel: "Več o spletnih straneh in UI/UX",
+    linkLabel: "Več o izdelavi spletnih strani",
   },
   {
     index: "02",
@@ -28,24 +28,37 @@ const solutionGroups = [
     index: "03",
     title: "Grafično oblikovanje in identiteta",
     value:
-      "Logotipi, celostne grafične podobe, letaki, vizitke in digitalni materiali za prepoznaven in usklajen nastop podjetja.",
-    labels: ["Logotipi", "CGP", "Letaki", "Vizitke", "Digitalni dizajn"],
+      "Izdelava logotipov, celostnih grafičnih podob, letakov, vizitk in digitalnih materialov za prepoznaven nastop podjetja.",
+    labels: ["Logotipi", "Celostna grafična podoba", "Letaki", "Vizitke"],
     href: "/graficno-oblikovanje",
     linkLabel: "Več o grafičnem oblikovanju",
   },
   {
     index: "04",
-    title: "Poslovni sistemi in AI",
+    title: "Videoprodukcija",
     value:
-      "Povežemo podatke, procese in obstoječe sisteme ter avtomatiziramo delo tam, kjer tehnologija prinese dejansko korist.",
-    labels: ["CRM", "ERP", "Avtomatizacija", "AI", "Integracije"],
+      "Promocijski videi, kratke vsebine za družbena omrežja, video oglasi in predstavitve izdelkov ali podjetja. Kjer je smiselno, produkcijo podpremo z AI orodji.",
+    labels: ["Promocijski video", "Reels", "Oglasi", "Predstavitve"],
+    href: "/videoprodukcija",
+    linkLabel: "Več o videoprodukciji",
   },
   {
     index: "05",
+    title: "Poslovni sistemi in AI",
+    value:
+      "Povežemo podatke, procese in obstoječe sisteme ter avtomatiziramo delo tam, kjer tehnologija prinese dejansko korist.",
+    labels: ["CRM", "ERP", "Avtomatizacija", "AI rešitve", "Integracije"],
+    href: "/razvoj-programske-opreme",
+    linkLabel: "Več o poslovnih sistemih in AI",
+  },
+  {
+    index: "06",
     title: "Svetovanje in dolgoročna podpora",
     value:
       "Od tehnične usmeritve do vzdrževanja, nadgradenj in nadaljnjega razvoja po uvedbi.",
     labels: ["Svetovanje", "Vzdrževanje", "Nadgradnje", "Podpora"],
+    href: "/kontakt?storitev=Svetovanje%20ali%20dolgoro%C4%8Dna%20podpora",
+    linkLabel: "Pošljite povpraševanje",
   },
 ] as const;
 
@@ -56,7 +69,7 @@ export default function Services() {
         <SectionTitle
           badge="REŠITVE"
           title="Od ideje do sistema, ki dela."
-          description="Oblikovanje, razvoj in tehnologijo povezujemo v eno izvedbo. Tako digitalni produkt ni le dobro videti — ampak deluje, se povezuje in lahko raste skupaj s podjetjem."
+          description="Oblikovanje, videoprodukcijo, razvoj in tehnologijo povezujemo v eno izvedbo. Digitalni produkt ni le dobro videti — deluje, se povezuje in lahko raste skupaj s podjetjem."
           className="max-w-[60rem] mb-12 lg:mb-14"
           titleClassName="max-w-[48rem]"
           descriptionClassName="max-w-[46rem] light:text-slate-600"

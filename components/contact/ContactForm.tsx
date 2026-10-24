@@ -38,6 +38,16 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("storitev");
+    if (!requested) return;
+    const match = contactServiceOptions.find((option) => option === requested);
+    if (!match) return;
+    // The query string is read after hydration so the server render stays stable.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time service preselect
+    setForm((current) => (current.service ? current : { ...current, service: match }));
+  }, []);
+
   const update =
     (key: keyof typeof emptyForm) =>
     (
