@@ -19,7 +19,7 @@ function contentSecurityPolicy(development: boolean) {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
-    ...(development ? ["'unsafe-eval'"] as const : []),
+    ...(development ? (["'unsafe-eval'"] as const) : []),
     ...vercelScripts,
   ];
 
@@ -46,7 +46,8 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()",
   },
   {
     key: "Strict-Transport-Security",
@@ -68,7 +69,9 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    deviceSizes: [320, 360, 375, 390, 412, 430, 640, 750, 768, 828, 1080, 1200, 1920],
+    deviceSizes: [
+      320, 360, 375, 390, 412, 430, 640, 750, 768, 828, 1080, 1200, 1920,
+    ],
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -84,6 +87,26 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: "/fonts/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      ...[
+        "/api/admin/:path*",
+        "/api/v1/admin/:path*",
+        "/api/license-admin/:path*",
+      ].map((source) => ({
+        source,
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      })),
       {
         source: "/(.*)",
         headers: [

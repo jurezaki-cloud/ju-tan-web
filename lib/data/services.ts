@@ -10,22 +10,7 @@ import {
 } from "lucide-react";
 import type { Service } from "@/lib/types";
 
-/** Contact / lead form service choices. Visible label === submitted value. */
-export const contactServiceOptions = [
-  "Spletne strani / UI-UX",
-  "Grafično oblikovanje / logotip / celostna podoba",
-  "E-trgovina ali digitalna platforma",
-  "Spletna ali mobilna aplikacija",
-  "Programska oprema po meri / SaaS",
-  "CRM",
-  "ERP",
-  "Integracije in avtomatizacija",
-  "AI (agenti / avtomatizacija dela)",
-  "Svetovanje ali dolgoročna podpora",
-  "JU-TAN Office",
-  "Kreativna produkcija / video",
-  "Nisem prepričan / Drugo",
-] as const;
+export { contactServiceOptions } from "./contact-services";
 
 /** Canonical public OfferCatalog L1 groups (locked homepage taxonomy). */
 export const offerCatalog = [
@@ -62,7 +47,8 @@ export const services: Service[] = [
     icon: Bot,
     title: "AI",
     problem: "Ponavljajoča opravila v podpori in administraciji.",
-    solution: "Agent, ki bere obstoječe sisteme in pripravi osnutke ali prenose.",
+    solution:
+      "Agent, ki bere obstoječe sisteme in pripravi osnutke ali prenose.",
     result: "Manj ročnega prepisovanja med orodji.",
     description:
       "AI agenti za ponavljajoča opravila v podpori in administraciji, povezani z obstoječimi sistemi.",
@@ -91,7 +77,8 @@ export const services: Service[] = [
   {
     icon: Globe,
     title: "Portali",
-    problem: "Stranke ali partnerji nimajo urejenega dostopa do ponudbe in zahtevkov.",
+    problem:
+      "Stranke ali partnerji nimajo urejenega dostopa do ponudbe in zahtevkov.",
     solution: "Portal z prijavo, vlogami in povezavo na notranje sisteme.",
     result: "Krajša pot od zahteve do obdelave.",
     description:
@@ -111,7 +98,8 @@ export const services: Service[] = [
   {
     icon: Cloud,
     title: "SaaS",
-    problem: "Izdelek za več strank potrebuje račune, vloge in merjenje uporabe.",
+    problem:
+      "Izdelek za več strank potrebuje račune, vloge in merjenje uporabe.",
     solution: "Večnajemniška aplikacija z jasno ločitvijo podatkov.",
     result: "Eno jedro kode, ločeni računi strank.",
     description:

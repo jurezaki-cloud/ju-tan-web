@@ -1,6 +1,6 @@
 import "server-only";
 import { licensingPool } from "@/lib/licensing/db";
-import { contactServiceOptions } from "@/lib/data/services";
+import { contactServiceOptions } from "@/lib/data/contact-services";
 
 const shared = globalThis as typeof globalThis & {
   __juTanInquiryStatsSchema?: Promise<void>;
@@ -13,12 +13,14 @@ const shared = globalThis as typeof globalThis & {
 async function ensureInquiryStatsSchema() {
   if (!shared.__juTanInquiryStatsSchema) {
     shared.__juTanInquiryStatsSchema = licensingPool()
-      .query(`CREATE TABLE IF NOT EXISTS site_inquiry_daily (
+      .query(
+        `CREATE TABLE IF NOT EXISTS site_inquiry_daily (
         day DATE NOT NULL,
         service TEXT NOT NULL,
         confirmed BIGINT NOT NULL DEFAULT 0 CHECK (confirmed >= 0),
         PRIMARY KEY (day, service)
-      )`)
+      )`,
+      )
       .then(() => undefined)
       .catch((error: unknown) => {
         // A transient database failure should not poison future attempts.

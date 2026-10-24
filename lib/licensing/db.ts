@@ -10,14 +10,15 @@ const shared = globalThis as typeof globalThis & {
 export function licensingPool() {
   if (!shared.__juTanLicensingPool) {
     const { databaseUrl } = getLicensingConfig();
+    const databaseHost = new URL(databaseUrl).hostname;
     shared.__juTanLicensingPool = new Pool({
       connectionString: databaseUrl,
       max: 5,
       connectionTimeoutMillis: 5000,
       idleTimeoutMillis: 30000,
-      ssl: databaseUrl.includes("localhost")
+      ssl: ["localhost", "127.0.0.1", "[::1]"].includes(databaseHost)
         ? false
-        : { rejectUnauthorized: false },
+        : { rejectUnauthorized: true },
     });
   }
   return shared.__juTanLicensingPool;

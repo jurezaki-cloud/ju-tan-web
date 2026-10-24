@@ -6,6 +6,8 @@ import { clientKey, isRateLimited } from "@/lib/rate-limit";
 import { getMailConfig } from "@/lib/mail";
 import { recordConfirmedInquiry } from "@/lib/inquiry-stats";
 
+import { readContactBody } from "@/lib/read-contact-body";
+
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: extra });
 }
@@ -23,9 +25,9 @@ export async function POST(req: Request) {
 
     let json: unknown;
     try {
-      json = await req.json();
-    } catch {
-      return jsonError(400);
+      json = await readContactBody(req);
+    } catch (error) {
+      return jsonError(error instanceof RangeError ? 413 : 400);
     }
 
     const parsed = contactSchema.safeParse(json);

@@ -16,8 +16,22 @@ const LIMIT = 8;
 export class MemoryRateLimitStore implements RateLimitStore {
   private readonly hits = new Map<string, number[]>();
 
+  private nextSweep = 0;
+
+  constructor(private readonly maxKeys = 10000) {}
+
   isLimited(key: string) {
     const now = Date.now();
+    if (now >= this.nextSweep) {
+      for (const [storedKey, stamps] of this.hits) {
+        if (now - stamps[stamps.length - 1] >= WINDOW_MS) {
+          this.hits.delete(storedKey);
+        }
+      }
+      this.nextSweep = now + 60000;
+    }
+    // Fail closed at capacity instead of allowing arbitrary key growth.
+    if (!this.hits.has(key) && this.hits.size >= this.maxKeys) return true;
     const recent = (this.hits.get(key) ?? []).filter(
       (stamp) => now - stamp < WINDOW_MS,
     );

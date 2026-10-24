@@ -1,6 +1,13 @@
 "use client";
 
-import { useId, useState, useRef, useEffect, type FormEvent } from "react";
+import {
+  useId,
+  useSyncExternalStore,
+  useState,
+  useRef,
+  useEffect,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { Input } from "@/components/ui/input";
@@ -9,7 +16,7 @@ import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
 import { company } from "@/lib/data/company";
-import { contactServiceOptions } from "@/lib/data/services";
+import { contactServiceOptions } from "@/lib/data/contact-services";
 import { getAnalyticsConsentSnapshot } from "@/lib/consent";
 import {
   contactSchema,
@@ -24,19 +31,30 @@ const emptyForm = {
   company: "",
   email: "",
   phone: "",
-  service: "",
+  service: null as string | null,
   message: "",
 };
 
 /** Whitelisted, non-personal context from links on service pages. */
-const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = {
-  web: "Spletne strani / UI-UX",
-  graphic: "Grafično oblikovanje / logotip / celostna podoba",
-  software: "Programska oprema po meri / SaaS",
-  app: "Spletna ali mobilna aplikacija",
-  office: "JU-TAN Office",
-  support: "Svetovanje ali dolgoročna podpora",
-};
+const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> =
+  {
+    web: "Spletne strani / UI-UX",
+    graphic: "Grafično oblikovanje / logotip / celostna podoba",
+    software: "Programska oprema po meri / SaaS",
+    app: "Spletna ali mobilna aplikacija",
+    office: "JU-TAN Office",
+    support: "Svetovanje ali dolgoročna podpora",
+  };
+
+function subscribeLocation(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+}
+
+function getLinkedService() {
+  const key = new URLSearchParams(window.location.search).get("service");
+  return (key && serviceFromLink[key]) || "";
+}
 
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
@@ -51,15 +69,12 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  useEffect(() => {
-    const key = new URLSearchParams(window.location.search).get("service");
-    const linkedService = key ? serviceFromLink[key] : undefined;
-    if (linkedService) {
-      setForm((current) =>
-        current.service ? current : { ...current, service: linkedService },
-      );
-    }
-  }, []);
+  const linkedService = useSyncExternalStore(
+    subscribeLocation,
+    getLinkedService,
+    () => "",
+  );
+  const selectedService = form.service ?? linkedService;
 
   const update =
     (key: keyof typeof emptyForm) =>
@@ -91,7 +106,7 @@ export default function ContactForm() {
       company: form.company,
       email: form.email,
       phone: form.phone,
-      service: form.service,
+      service: selectedService,
       message: form.message,
       consent,
       consentAt: consent ? consentAt || new Date().toISOString() : "",
@@ -204,7 +219,7 @@ export default function ContactForm() {
           ref={summaryRef}
           tabIndex={-1}
           role="alert"
-          className="mb-4 rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-3 text-[14px] text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
+          className="mb-4 rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-3 text-[14px] text-red-300 light:text-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
         >
           <p className="font-semibold">
             {errors.form
@@ -246,7 +261,7 @@ export default function ContactForm() {
           {errors.name ? (
             <p
               id={`${formId}-name-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.name}
             </p>
@@ -270,7 +285,7 @@ export default function ContactForm() {
           {errors.company ? (
             <p
               id={`${formId}-company-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.company}
             </p>
@@ -297,7 +312,7 @@ export default function ContactForm() {
           {errors.email ? (
             <p
               id={`${formId}-email-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.email}
             </p>
@@ -323,7 +338,7 @@ export default function ContactForm() {
           {errors.phone ? (
             <p
               id={`${formId}-phone-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.phone}
             </p>
@@ -339,7 +354,7 @@ export default function ContactForm() {
             name="service"
             autoComplete="off"
             required
-            value={form.service}
+            value={selectedService}
             onChange={update("service")}
             aria-invalid={Boolean(errors.service)}
             aria-describedby={describedBy(`${formId}-service-error`, "service")}
@@ -356,7 +371,7 @@ export default function ContactForm() {
           {errors.service ? (
             <p
               id={`${formId}-service-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.service}
             </p>
@@ -381,7 +396,7 @@ export default function ContactForm() {
           {errors.message ? (
             <p
               id={`${formId}-message-error`}
-              className="mt-1 text-[13px] text-red-400"
+              className="mt-1 text-[13px] text-red-400 light:text-red-700"
             >
               {errors.message}
             </p>
@@ -390,7 +405,7 @@ export default function ContactForm() {
       </div>
 
       <div className="mt-5">
-        <label className="flex items-start gap-3 text-[14px] leading-[1.55] text-slate-300">
+        <label className="flex items-start gap-3 text-[14px] leading-[1.55] text-slate-300 light:text-slate-700">
           <Checkbox
             required
             checked={consent}
@@ -415,7 +430,7 @@ export default function ContactForm() {
             Soglašam z obdelavo osebnih podatkov skladno s{" "}
             <Link
               href="/politika-zasebnosti"
-              className="font-medium text-slate-200 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
+              className="font-medium text-slate-200 light:text-slate-800 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
             >
               Politiko zasebnosti
             </Link>
@@ -425,7 +440,7 @@ export default function ContactForm() {
         {errors.consent ? (
           <p
             id={`${formId}-consent-error`}
-            className="mt-1 text-[13px] text-red-400"
+            className="mt-1 text-[13px] text-red-400 light:text-red-700"
           >
             {errors.consent}
           </p>
@@ -436,7 +451,7 @@ export default function ContactForm() {
         Raje pišete neposredno?{" "}
         <a
           href={`mailto:${company.contact.email}`}
-          className="font-medium text-emerald-500 underline"
+          className="font-medium text-emerald-500 light:text-emerald-700 underline"
         >
           {company.contact.email}
         </a>

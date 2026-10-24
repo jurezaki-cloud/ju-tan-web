@@ -50,6 +50,37 @@ async function main() {
     assert.match(String(providerBody.html), /&lt;script&gt;/);
     const baseline = calls;
     assert.equal(
+      (await POST(request({ ...payload, message: "x".repeat(33000) }))).status,
+      413,
+    );
+    assert.equal(
+      (
+        await POST(
+          new Request("https://example.com/api/contact", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Content-Length": "33000",
+            },
+            body: "{}",
+          }),
+        )
+      ).status,
+      413,
+    );
+    assert.equal(
+      (
+        await POST(
+          new Request("https://example.com/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: "{",
+          }),
+        )
+      ).status,
+      400,
+    );
+    assert.equal(
       (await POST(request({ ...payload, consent: false }))).status,
       400,
     );
