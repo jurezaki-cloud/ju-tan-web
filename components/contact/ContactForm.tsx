@@ -11,11 +11,7 @@ import CTAButton from "@/components/navbar/CTAButton";
 import { company } from "@/lib/data/company";
 import { contactServiceOptions } from "@/lib/data/service-catalog";
 import { getAnalyticsConsentSnapshot } from "@/lib/consent";
-import {
-  contactSchema,
-  flattenContactErrors,
-  type ContactFieldKey,
-} from "@/lib/validation/contact";
+import { type ContactFieldKey } from "@/lib/validation/contact";
 import ContactSuccess from "./ContactSuccess";
 import { labelClass } from "@/design";
 
@@ -95,6 +91,9 @@ export default function ContactForm() {
     if (loading) return;
     setErrors({});
 
+    const { contactSchema, flattenContactErrors } = await import(
+      "@/lib/validation/contact"
+    );
     const parsed = contactSchema.safeParse({
       name: form.name,
       company: form.company,

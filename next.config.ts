@@ -83,7 +83,22 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    const staticAssetCache = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=31536000, immutable",
+      },
+    ];
+
     return [
+      {
+        source: "/fonts/:path*",
+        headers: staticAssetCache,
+      },
+      {
+        source: "/brand/:path*",
+        headers: staticAssetCache,
+      },
       {
         source: "/(.*)",
         headers: [

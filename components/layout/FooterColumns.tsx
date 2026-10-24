@@ -123,6 +123,7 @@ export default function FooterColumns() {
                 <li key={area.label}>
                   <Link
                     href={area.href}
+                    prefetch={area.href === "/magic" ? false : undefined}
                     className={cn(
                       "group flex min-h-10 items-center gap-3 rounded-lg py-2.5 text-[15px] leading-[1.5] text-slate-300",
                       hoverTransition,
@@ -186,7 +187,6 @@ function ContactLine({ row }: { row: ContactRow }) {
       <a
         href={row.href}
         className={lineClass}
-        aria-label={`${row.label.toLocaleUpperCase("sl-SI")} ${row.value.replace(/\n/g, " ")}`}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {content}

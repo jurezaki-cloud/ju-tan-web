@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { contactSchema } from "@/lib/validation/contact";
 import {
   budgetOptions,
   deadlineOptions,
@@ -81,6 +80,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       description: form.description.trim(),
     };
 
+    const { contactSchema } = await import("@/lib/validation/contact");
     const parsed = contactSchema.safeParse({
       name: payload.name,
       company: payload.company || undefined,

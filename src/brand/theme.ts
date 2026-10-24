@@ -14,8 +14,8 @@ export const markSize = 24;
 export const brandAssets = {
   logos: {
     horizontal: {
-      dark: "/brand/logo-horizontal-dark.svg",
-      light: "/brand/logo-horizontal-light.svg",
+      dark: "/brand/logo-horizontal-dark.webp",
+      light: "/brand/logo-horizontal-light.webp",
       darkPng: "/brand/logo-horizontal-dark.png",
       lightPng: "/brand/logo-horizontal-light.png",
     },
