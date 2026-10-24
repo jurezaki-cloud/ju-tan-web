@@ -16,11 +16,26 @@ const businessFlow = [
 ] as const;
 
 const coreAreas = [
-  { title: "Računi, ponudbe in predračuni", body: "Profesionalni poslovni dokumenti, PDF izpis, QR plačilo ter pregled odprtih in zapadlih obveznosti." },
-  { title: "Plačila in Mail Center", body: "Evidenca delnih in celotnih plačil ter pošiljanje poslovnih dokumentov neposredno po e-pošti." },
-  { title: "Stranke in poslovni pregled", body: "Urejeni podatki o strankah ter ključne poslovne informacije in aktivnosti na enem mestu." },
-  { title: "Artikli, nabava in skladišče", body: "Artikli, dobavitelji, nabava in zaloga povezani v enem poslovnem toku." },
-  { title: "Analitika in poročila", body: "Pregled prihodkov, odprtih računov in prodaje za hitrejše poslovne odločitve." },
+  {
+    title: "Računi, ponudbe in predračuni",
+    body: "Profesionalni poslovni dokumenti, PDF izpis, QR plačilo ter pregled odprtih in zapadlih obveznosti.",
+  },
+  {
+    title: "Plačila in Mail Center",
+    body: "Evidenca delnih in celotnih plačil ter pošiljanje poslovnih dokumentov neposredno po e-pošti.",
+  },
+  {
+    title: "Stranke in poslovni pregled",
+    body: "Urejeni podatki o strankah ter ključne poslovne informacije in aktivnosti na enem mestu.",
+  },
+  {
+    title: "Artikli, nabava in skladišče",
+    body: "Artikli, dobavitelji, nabava in zaloga povezani v enem poslovnem toku.",
+  },
+  {
+    title: "Analitika in poročila",
+    body: "Pregled prihodkov, odprtih računov in prodaje za hitrejše poslovne odločitve.",
+  },
 ] as const;
 
 const engineeringSignals = [
@@ -35,11 +50,13 @@ const engineeringSignals = [
 export const seoFaq = [
   {
     question: "Komu je namenjen JU-TAN Office?",
-    answer: "JU-TAN Office razvijamo kot poslovni program za Windows za s.p. in mala podjetja, ki želijo račune, ponudbe, stranke, plačila in zalogo voditi v enem okolju.",
+    answer:
+      "JU-TAN Office razvijamo kot poslovni program za Windows za s.p. in mala podjetja, ki želijo račune, ponudbe, stranke, plačila in zalogo voditi v enem okolju.",
   },
   {
     question: "Ali JU-TAN Office podpira račune in ponudbe?",
-    answer: "Da. Računi in ponudbe so med osrednjimi poslovnimi področji aplikacije, skupaj s strankami, plačili, artikli in zalogo.",
+    answer:
+      "Da. Računi in ponudbe so med osrednjimi poslovnimi področji aplikacije, skupaj s strankami, plačili, artikli in zalogo.",
   },
   {
     question: "Na katerem operacijskem sistemu deluje JU-TAN Office?",
@@ -47,11 +64,28 @@ export const seoFaq = [
   },
   {
     question: "Ali je JU-TAN Office primeren za s.p. in mala podjetja?",
-    answer: "Da. Zasnovan je za s.p. in mala podjetja, ki želijo izdajo računov, ponudbe, plačila, stranke, artikle in zalogo voditi pregledno v enem programu.",
+    answer:
+      "Da. Zasnovan je za s.p. in mala podjetja, ki želijo izdajo računov, ponudbe, plačila, stranke, artikle in zalogo voditi pregledno v enem programu.",
   },
   {
     question: "Ali program omogoča spremljanje plačil in zaloge?",
-    answer: "Da. JU-TAN Office povezuje evidenco plačil z računi ter artikle, nabavo in skladiščne informacije.",
+    answer:
+      "Da. JU-TAN Office povezuje evidenco plačil z računi ter artikle, nabavo in skladiščne informacije.",
+  },
+  {
+    question: "Kako JU-TAN Office pomaga pri vsakodnevnem poslovanju?",
+    answer:
+      "Podatke o strankah, ponudbah, računih, plačilih in artiklih povezuje v en delovni tok. Tako lahko podjetje na enem mestu spremlja dokumente, obveznosti in zalogo, namesto da iste informacije vodi v več ločenih evidencah.",
+  },
+  {
+    question: "Ali je JU-TAN Office spletni program ali namizna aplikacija?",
+    answer:
+      "JU-TAN Office je namizna aplikacija za Windows z lokalnim podatkovnim slojem. Ni predstavljena kot spletna storitev, ki bi jo uporabljali samo v brskalniku.",
+  },
+  {
+    question: "Kaj omogoča program za izdajo računov JU-TAN Office?",
+    answer:
+      "JU-TAN Office združuje pripravo računov, ponudb in predračunov, PDF izpise, QR plačilo ter evidenco delnih in celotnih plačil. Ob tem vodi stranke, artikle in zalogo.",
   },
 ] as const;
 
@@ -93,25 +127,30 @@ export default function OfficePage() {
       >
         <div className="mx-auto max-w-[52rem] pt-4 sm:pt-6 lg:pt-8">
           <FadeIn>
-            <p className={cn(kickerClass, "light:text-slate-500")}>IZDELEK JU-TAN</p>
+            <p className={cn(kickerClass, "light:text-slate-500")}>
+              IZDELEK JU-TAN
+            </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <h1
                 id="office-page-title"
                 className="heading-hero font-heading font-semibold text-white light:text-slate-900"
               >
-                JU-TAN Office
+                JU-TAN Office – poslovni program za s.p.
               </h1>
               <ActiveBadge />
               <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">
-                Verzija 1.0.7
+                Verzija 1.0.8
               </span>
             </div>
 
-            <p className={`${bodyClass} mt-6 max-w-[44rem] text-slate-300 light:text-slate-600`}>
-              Računi, ponudbe, plačila, stranke, nabava, zaloga in poslovni pregled
-              v enem slovenskem programu za Windows. Zasnovan za s.p. in mala podjetja,
-              ki želijo manj prepisovanja in bolj urejeno poslovanje.
+            <p
+              className={`${bodyClass} mt-6 max-w-[44rem] text-slate-300 light:text-slate-600`}
+            >
+              Računi, ponudbe, plačila, stranke, nabava, zaloga in poslovni
+              pregled v enem slovenskem programu za Windows. Zasnovan za s.p. in
+              mala podjetja, ki želijo manj prepisovanja in bolj urejeno
+              poslovanje.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -145,7 +184,8 @@ export default function OfficePage() {
                 Resnični vmesnik
               </h2>
               <p className={`${bodyClass} mt-3.5 light:text-slate-600`}>
-                Prikazani zasloni so iz dejanske aplikacije. Podatki so demonstracijski.
+                Prikazani zasloni so iz dejanske aplikacije. Podatki so
+                demonstracijski.
               </p>
             </div>
           </FadeIn>
@@ -165,10 +205,13 @@ export default function OfficePage() {
               id="office-flow-title"
               className="heading-display font-heading font-semibold text-white light:text-slate-900"
             >
-              Kaj povezuje
+              Program za izdajo računov, ponudbe in plačila
             </h2>
-            <p className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}>
-              Od ponudbe do računa, plačila, zaloge in poročila — eno povezano okolje brez prepisovanja med ločenimi orodji.
+            <p
+              className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}
+            >
+              Od ponudbe do računa, plačila, zaloge in poročila — eno povezano
+              okolje brez prepisovanja med ločenimi orodji.
             </p>
           </FadeIn>
 
@@ -209,7 +252,7 @@ export default function OfficePage() {
               id="office-areas-title"
               className="heading-display font-heading font-semibold text-white light:text-slate-900"
             >
-              Ključna poslovna področja
+              Poslovni program za mala podjetja
             </h2>
           </FadeIn>
 
@@ -221,7 +264,9 @@ export default function OfficePage() {
                     <h3 className="font-heading text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#16a34a]/90 light:text-[#15803d]">
                       {area.title}
                     </h3>
-                    <p className={`${bodyClass} mt-3 text-slate-400 light:text-slate-600`}>
+                    <p
+                      className={`${bodyClass} mt-3 text-slate-400 light:text-slate-600`}
+                    >
                       {area.body}
                     </p>
                   </div>
@@ -246,7 +291,9 @@ export default function OfficePage() {
             >
               Inženirska izvedba
             </h2>
-            <p className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}
+            >
               JU-TAN Office ni predstavitveni koncept, temveč lasten programski
               izdelek, ki ga razvijamo in nadgrajujemo sami.
             </p>
@@ -287,8 +334,8 @@ export default function OfficePage() {
               <ActiveBadge />
             </div>
             <p className={`${bodyClass} mt-4 light:text-slate-600`}>
-              JU-TAN Office se razvija naprej. Trenutno stanje pokažemo iskreno —
-              z resničnim vmesnikom, ne s tržnimi obljubami.
+              JU-TAN Office se razvija naprej. Trenutno stanje pokažemo iskreno
+              — z resničnim vmesnikom, ne s tržnimi obljubami.
             </p>
           </FadeIn>
         </div>
@@ -305,19 +352,25 @@ export default function OfficePage() {
       >
         <div className="mx-auto max-w-[40rem] pb-4 sm:pb-6">
           <FadeIn>
-            <p className={cn(kickerClass, "light:text-slate-500")}>NASLEDNJI KORAK</p>
+            <p className={cn(kickerClass, "light:text-slate-500")}>
+              NASLEDNJI KORAK
+            </p>
             <h2
               id="office-cta-title"
               className="heading-display mt-3.5 font-heading font-semibold text-white light:text-slate-900"
             >
-              JU-TAN Office 1.0.7 je pripravljen za prenos.
+              JU-TAN Office 1.0.8 je pripravljen za prenos.
             </h2>
             <p className={`${bodyClass} mt-4 light:text-slate-600`}>
-              Prenesite aktualno različico za Windows. Če želite pred uporabo preveriti,
-              ali ustreza vašemu načinu dela, nam opišite svoje procese in potrebe.
+              Prenesite aktualno različico za Windows. Če želite pred uporabo
+              preveriti, ali ustreza vašemu načinu dela, nam opišite svoje
+              procese in potrebe.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <OfficeDownloadCta />
+              <CtaLink href="/razvoj-programske-opreme" variant="secondary">
+                Programska oprema po meri
+              </CtaLink>
               <CtaLink href="/kontakt" variant="secondary">
                 Vprašajte nas
               </CtaLink>

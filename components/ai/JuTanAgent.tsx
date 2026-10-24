@@ -40,7 +40,7 @@ function readState(raw: string): AgentState {
   }
 }
 
-export default function JuTanAgent() {
+export default function JuTanAgent({ initialOpen = false }: { initialOpen?: boolean }) {
   const inputId = useId();
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -50,8 +50,8 @@ export default function JuTanAgent() {
     getAgentServerSnapshot,
   );
   const state = readState(raw);
-  const [open, setOpen] = useState(false);
-  const [windowReady, setWindowReady] = useState(false);
+  const [open, setOpen] = useState(initialOpen);
+  const [windowReady, setWindowReady] = useState(initialOpen);
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
   const [panelHeight, setPanelHeight] = useState<number | null>(null);

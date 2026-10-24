@@ -83,6 +83,7 @@ export default function HeroStage() {
 
       <div
         ref={stageRef}
+        data-animation-active={live}
         className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,16,28,0.96),rgba(6,10,20,0.92))] p-3 shadow-[0_24px_80px_rgba(0,0,0,0.36)] light:border-slate-200 light:bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.92))] sm:p-4"
       >
         <div
@@ -545,6 +546,13 @@ export default function HeroStage() {
           .hero-stage-enter {
             animation: none !important;
           }
+        }
+
+        [data-animation-active="false"] .hero-stage-panel-ambient,
+        [data-animation-active="false"] .hero-stage-core-breathe,
+        [data-animation-active="false"] .hero-stage-node-idle,
+        [data-animation-active="false"] .hero-stage-signal {
+          animation-play-state: paused;
         }
       `}</style>
     </div>

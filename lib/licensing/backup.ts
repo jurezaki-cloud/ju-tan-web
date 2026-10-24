@@ -1,6 +1,10 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { ensureLicensingSchema, licensingPool, withLicenseTransaction } from "./db";
+import {
+  ensureLicensingSchema,
+  licensingPool,
+  withLicenseTransaction,
+} from "./db";
 
 export async function ensureBackupSchema() {
   await ensureLicensingSchema();
@@ -16,8 +20,12 @@ export async function createLicenseBackup() {
   await ensureBackupSchema();
   const [licenses, activations, audit] = await Promise.all([
     licensingPool().query("SELECT * FROM office_licenses ORDER BY created_at"),
-    licensingPool().query("SELECT * FROM office_activations ORDER BY activated_at"),
-    licensingPool().query("SELECT * FROM office_license_audit ORDER BY created_at"),
+    licensingPool().query(
+      "SELECT * FROM office_activations ORDER BY activated_at",
+    ),
+    licensingPool().query(
+      "SELECT * FROM office_license_audit ORDER BY created_at",
+    ),
   ]);
   const snapshot = {
     version: 2,
@@ -31,11 +39,15 @@ export async function createLicenseBackup() {
     "INSERT INTO office_license_backups (id, snapshot) VALUES ($1,$2::jsonb)",
     [id, JSON.stringify(snapshot)],
   );
-  return { id, created_at: snapshot.created_at, counts: {
-    licenses: licenses.rowCount ?? 0,
-    activations: activations.rowCount ?? 0,
-    audit: audit.rowCount ?? 0,
-  }};
+  return {
+    id,
+    created_at: snapshot.created_at,
+    counts: {
+      licenses: licenses.rowCount ?? 0,
+      activations: activations.rowCount ?? 0,
+      audit: audit.rowCount ?? 0,
+    },
+  };
 }
 
 export async function listLicenseBackups() {
@@ -52,23 +64,62 @@ export async function listLicenseBackups() {
 
 export async function restoreLicenseBackup(id: string) {
   await ensureBackupSchema();
-  const result = await licensingPool().query<{ snapshot: any }>(
-    "SELECT snapshot FROM office_license_backups WHERE id=$1", [id]);
+  const result = await licensingPool().query<{
+    snapshot: {
+      version: number;
+      licenses?: Record<string, unknown>[];
+      activations?: Record<string, unknown>[];
+      audit?: Record<string, unknown>[];
+    };
+  }>("SELECT snapshot FROM office_license_backups WHERE id=$1", [id]);
   const snapshot = result.rows[0]?.snapshot;
-  if (!snapshot || ![1, 2].includes(snapshot.version)) throw new Error("Backup ni veljaven.");
+  if (!snapshot || ![1, 2].includes(snapshot.version))
+    throw new Error("Backup ni veljaven.");
   await withLicenseTransaction(async (client) => {
     await client.query("DELETE FROM office_license_audit");
     await client.query("DELETE FROM office_activations");
     await client.query("DELETE FROM office_licenses");
-    for (const l of snapshot.licenses ?? []) await client.query(
-      "INSERT INTO office_licenses (id,key_hash,company_name,status,max_devices,valid_until,offline_grace_days,created_at,updated_at,archived_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
-      [l.id,l.key_hash,l.company_name,l.status,l.max_devices,l.valid_until,l.offline_grace_days,l.created_at,l.updated_at,l.archived_at ?? null]);
-    for (const a of snapshot.activations ?? []) await client.query(
-      "INSERT INTO office_activations (id,license_id,device_hash,token_hash,app_version,activated_at,last_seen_at,deactivated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
-      [a.id,a.license_id,a.device_hash,a.token_hash,a.app_version,a.activated_at,a.last_seen_at,a.deactivated_at]);
-    for (const e of snapshot.audit ?? []) await client.query(
-      "INSERT INTO office_license_audit (id,license_id,action,details,created_at) VALUES ($1,$2,$3,$4::jsonb,$5)",
-      [e.id,e.license_id,e.action,JSON.stringify(e.details ?? {}),e.created_at]);
+    for (const l of snapshot.licenses ?? [])
+      await client.query(
+        "INSERT INTO office_licenses (id,key_hash,company_name,status,max_devices,valid_until,offline_grace_days,created_at,updated_at,archived_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
+        [
+          l.id,
+          l.key_hash,
+          l.company_name,
+          l.status,
+          l.max_devices,
+          l.valid_until,
+          l.offline_grace_days,
+          l.created_at,
+          l.updated_at,
+          l.archived_at ?? null,
+        ],
+      );
+    for (const a of snapshot.activations ?? [])
+      await client.query(
+        "INSERT INTO office_activations (id,license_id,device_hash,token_hash,app_version,activated_at,last_seen_at,deactivated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+        [
+          a.id,
+          a.license_id,
+          a.device_hash,
+          a.token_hash,
+          a.app_version,
+          a.activated_at,
+          a.last_seen_at,
+          a.deactivated_at,
+        ],
+      );
+    for (const e of snapshot.audit ?? [])
+      await client.query(
+        "INSERT INTO office_license_audit (id,license_id,action,details,created_at) VALUES ($1,$2,$3,$4::jsonb,$5)",
+        [
+          e.id,
+          e.license_id,
+          e.action,
+          JSON.stringify(e.details ?? {}),
+          e.created_at,
+        ],
+      );
   });
   return { ok: true };
 }

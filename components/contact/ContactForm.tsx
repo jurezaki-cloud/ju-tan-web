@@ -2,12 +2,15 @@
 
 import { useId, useState, useRef, useEffect, type FormEvent } from "react";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import CTAButton from "@/components/navbar/CTAButton";
-import { contactServiceOptions } from "@/lib/data/services";
+import { company } from "@/lib/data/company";
+import { contactServiceOptions } from "@/lib/data/service-catalog";
+import { getAnalyticsConsentSnapshot } from "@/lib/consent";
 import {
   contactSchema,
   flattenContactErrors,
@@ -25,6 +28,17 @@ const emptyForm = {
   message: "",
 };
 
+/** Whitelisted, non-personal context from links on service pages. */
+const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = {
+  web: "Spletne strani / UI-UX",
+  graphic: "Grafično oblikovanje / logotip / celostna podoba",
+  software: "Programska oprema po meri / SaaS",
+  app: "Spletna ali mobilna aplikacija",
+  office: "JU-TAN Office",
+  support: "Svetovanje ali dolgoročna podpora",
+  video: "Videoprodukcija",
+};
+
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
@@ -39,13 +53,21 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
 
   useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("storitev");
-    if (!requested) return;
-    const match = contactServiceOptions.find((option) => option === requested);
-    if (!match) return;
-    // The query string is read after hydration so the server render stays stable.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time service preselect
-    setForm((current) => (current.service ? current : { ...current, service: match }));
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("service");
+    const linkedService = key ? serviceFromLink[key] : undefined;
+    const requested = params.get("storitev");
+    const exactService = requested
+      ? contactServiceOptions.find((option) => option === requested)
+      : undefined;
+    const service = linkedService ?? exactService;
+    if (service) {
+      // Query is read after hydration so the server render stays stable.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time service preselect
+      setForm((current) =>
+        current.service ? current : { ...current, service },
+      );
+    }
   }, []);
 
   const update =
@@ -70,6 +92,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (loading) return;
     setErrors({});
 
     const parsed = contactSchema.safeParse({
@@ -112,20 +135,44 @@ export default function ContactForm() {
         return;
       }
 
+      const result: unknown = await response.json();
+      if (
+        !result ||
+        typeof result !== "object" ||
+        !("success" in result) ||
+        result.success !== true
+      ) {
+        setErrors({
+          form: "Oddaja ni potrjena. Pišite nam neposredno po e-pošti.",
+        });
+        return;
+      }
+
+      // Record a conversion only after the API confirms delivery and only
+      // when the visitor has opted in to analytics. Never send contact details.
+      if (getAnalyticsConsentSnapshot() === "accepted") {
+        try {
+          track("Inquiry Submitted", { service: parsed.data.service });
+        } catch {
+          // Analytics must never interfere with a successful inquiry.
+        }
+      }
       setSuccess(true);
       setForm(emptyForm);
       setConsent(false);
       setConsentAt("");
       setHoneypot("");
     } catch {
-      setErrors({ form: "Priprava povpraševanja ni uspela." });
+      setErrors({
+        form: "Oddaje ni bilo mogoče potrditi. Vneseni podatki so ohranjeni. Pred ponovno oddajo nas lahko kontaktirate po e-pošti.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const summaryItems = Object.entries(errors).filter(
-    ([, message]) => Boolean(message),
+  const summaryItems = Object.entries(errors).filter(([, message]) =>
+    Boolean(message),
   );
 
   useEffect(() => {
@@ -146,7 +193,10 @@ export default function ContactForm() {
       aria-busy={loading}
       className="relative"
     >
-      <div className="pointer-events-none absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
+      <div
+        className="pointer-events-none absolute left-[-10000px] h-px w-px overflow-hidden"
+        aria-hidden="true"
+      >
         <input
           id={`${formId}-website`}
           tabIndex={-1}
@@ -165,12 +215,24 @@ export default function ContactForm() {
           role="alert"
           className="mb-4 rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-3 text-[14px] text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
         >
-          <p className="font-semibold">Obrazec vsebuje napake:</p>
+          <p className="font-semibold">
+            {errors.form
+              ? "Povpraševanje ni potrjeno:"
+              : "Preverite vnesena polja:"}
+          </p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             {summaryItems.map(([key, message]) => (
               <li key={key}>{message}</li>
             ))}
           </ul>
+          {errors.form ? (
+            <a
+              href={`mailto:${company.contact.email}`}
+              className="mt-3 inline-block font-semibold underline"
+            >
+              Pišite na {company.contact.email}
+            </a>
+          ) : null}
         </div>
       ) : null}
 
@@ -191,7 +253,10 @@ export default function ContactForm() {
             aria-describedby={describedBy(`${formId}-name-error`, "name")}
           />
           {errors.name ? (
-            <p id={`${formId}-name-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-name-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.name}
             </p>
           ) : null}
@@ -199,7 +264,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor={`${formId}-company`} className={labelClass}>
-            Podjetje
+            Podjetje (neobvezno)
           </label>
           <Input
             id={`${formId}-company`}
@@ -212,7 +277,10 @@ export default function ContactForm() {
             aria-describedby={describedBy(`${formId}-company-error`, "company")}
           />
           {errors.company ? (
-            <p id={`${formId}-company-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-company-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.company}
             </p>
           ) : null}
@@ -236,7 +304,10 @@ export default function ContactForm() {
             aria-describedby={describedBy(`${formId}-email-error`, "email")}
           />
           {errors.email ? (
-            <p id={`${formId}-email-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-email-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.email}
             </p>
           ) : null}
@@ -244,7 +315,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor={`${formId}-phone`} className={labelClass}>
-            Telefon
+            Telefon (neobvezno)
           </label>
           <Input
             id={`${formId}-phone`}
@@ -259,7 +330,10 @@ export default function ContactForm() {
             aria-describedby={describedBy(`${formId}-phone-error`, "phone")}
           />
           {errors.phone ? (
-            <p id={`${formId}-phone-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-phone-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.phone}
             </p>
           ) : null}
@@ -283,17 +357,16 @@ export default function ContactForm() {
               Izberite storitev
             </option>
             {contactServiceOptions.map((service) => (
-              <option
-                key={service}
-                value={service}
-                className="bg-[#050816]"
-              >
+              <option key={service} value={service} className="bg-[#050816]">
                 {service}
               </option>
             ))}
           </Select>
           {errors.service ? (
-            <p id={`${formId}-service-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-service-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.service}
             </p>
           ) : null}
@@ -307,7 +380,7 @@ export default function ContactForm() {
             id={`${formId}-message`}
             required
             name="message"
-            placeholder="Sistem, število uporabnikov, rok."
+            placeholder="Kaj potrebujete, kakšen je cilj projekta in želeni rok?"
             enterKeyHint="send"
             value={form.message}
             onChange={update("message")}
@@ -315,7 +388,10 @@ export default function ContactForm() {
             aria-describedby={describedBy(`${formId}-message-error`, "message")}
           />
           {errors.message ? (
-            <p id={`${formId}-message-error`} className="mt-1 text-[13px] text-red-400">
+            <p
+              id={`${formId}-message-error`}
+              className="mt-1 text-[13px] text-red-400"
+            >
               {errors.message}
             </p>
           ) : null}
@@ -356,11 +432,24 @@ export default function ContactForm() {
           </span>
         </label>
         {errors.consent ? (
-          <p id={`${formId}-consent-error`} className="mt-1 text-[13px] text-red-400">
+          <p
+            id={`${formId}-consent-error`}
+            className="mt-1 text-[13px] text-red-400"
+          >
             {errors.consent}
           </p>
         ) : null}
       </div>
+
+      <p className="mt-5 text-sm text-slate-400 light:text-slate-600">
+        Raje pišete neposredno?{" "}
+        <a
+          href={`mailto:${company.contact.email}`}
+          className="font-medium text-emerald-500 underline"
+        >
+          {company.contact.email}
+        </a>
+      </p>
 
       <div className="mt-6 flex justify-center pb-[env(safe-area-inset-bottom,0px)]">
         <CTAButton

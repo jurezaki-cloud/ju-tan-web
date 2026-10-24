@@ -87,7 +87,7 @@ export const ctaSizes = {
 
 export const ctaVariants = {
   primary:
-    "bg-[#16a34a] text-white shadow-cta hover:bg-[#15803d] hover:shadow-cta-hover",
+    "bg-[#15803d] text-white shadow-cta hover:bg-[#166534] hover:shadow-cta-hover",
   secondary:
     "border border-white/12 bg-transparent text-slate-100 hover:border-white/20 hover:bg-white/[0.04] light:border-slate-200 light:text-slate-800 light:hover:border-slate-300 light:hover:bg-slate-50",
   ghost:

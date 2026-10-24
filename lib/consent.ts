@@ -12,7 +12,11 @@ function parseConsent(value: string | null): AnalyticsConsent | null {
 
 export function readAnalyticsConsent(): AnalyticsConsent | null {
   if (typeof window === "undefined") return null;
-  return parseConsent(window.localStorage.getItem(ANALYTICS_CONSENT_KEY));
+  try {
+    return parseConsent(window.localStorage.getItem(ANALYTICS_CONSENT_KEY));
+  } catch {
+    return null;
+  }
 }
 
 export function subscribeAnalyticsConsent(onStoreChange: () => void) {
@@ -35,7 +39,11 @@ export function getAnalyticsConsentServerSnapshot(): AnalyticsConsent | null {
 }
 
 export function writeAnalyticsConsent(value: AnalyticsConsent) {
-  window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+  try {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+  } catch {
+    /* Keep the choice in memory when storage is unavailable. */
+  }
   snapshot = value;
   listeners.forEach((listener) => listener());
 }

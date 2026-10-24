@@ -34,7 +34,7 @@ const whenCustom = [
 const systems = [
   {
     index: "01",
-    title: "Poslovne aplikacije",
+    title: "Izdelava aplikacij za podjetja",
     body: "Aplikacije, zasnovane okoli konkretnih poslovnih procesov in vlog v podjetju.",
   },
   {
@@ -135,15 +135,28 @@ const phases = [
 export const seoFaq = [
   {
     question: "Kdaj je smiselna programska oprema po meri?",
-    answer: "Ko standardna orodja ne sledijo vašim procesom, zahtevajo podvajanje podatkov ali omejujejo nadaljnji razvoj. Najprej preverimo, ali je razvoj po meri sploh smiselna izbira.",
+    answer:
+      "Ko standardna orodja ne sledijo vašim procesom, zahtevajo podvajanje podatkov ali omejujejo nadaljnji razvoj. Najprej preverimo, ali je razvoj po meri sploh smiselna izbira.",
   },
   {
     question: "Kakšno programsko opremo razvija JU-TAN?",
-    answer: "Razvijamo poslovne, spletne in namizne aplikacije, interna orodja, integracije, API-je ter avtomatizacije poslovnih procesov.",
+    answer:
+      "Razvijamo poslovne, spletne in namizne aplikacije, interna orodja, integracije, API-je ter avtomatizacije poslovnih procesov.",
   },
   {
     question: "Ali razvijate rešitve za podjetja po Sloveniji?",
-    answer: "Da. JU-TAN Studio ima sedež v Cerknici in razvija programske rešitve za podjetja po Sloveniji.",
+    answer:
+      "Da. JU-TAN Studio ima sedež v Cerknici in razvija programske rešitve za podjetja po Sloveniji.",
+  },
+  {
+    question: "Kako poteka izdelava aplikacij za podjetja?",
+    answer:
+      "Najprej pregledamo poslovni proces in zahteve, nato določimo obseg, uporabniške poti in povezave z obstoječimi sistemi. Razvoj izvajamo v preverljivih korakih z dogovorjeno podporo.",
+  },
+  {
+    question: "Ali potrebujem razvoj po meri ali JU-TAN Office?",
+    answer:
+      "Za povezano vodenje računov, ponudb, strank, plačil in zaloge najprej preverimo JU-TAN Office. Kadar potrebujete posebne procese ali integracije, ocenimo smiselnost razvoja po meri.",
   },
 ] as const;
 
@@ -181,20 +194,21 @@ export default function SoftwareDevPage() {
               id="software-dev-hero-title"
               className="heading-hero mt-5 font-heading font-semibold break-words text-white light:text-slate-900"
             >
-              Razvoj programske opreme za resnične poslovne zahteve
+              Razvoj programske opreme po meri za podjetja
             </h1>
 
             <p
               className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
             >
-              Za podjetja, kjer standardna orodja ne pokrijejo procesov dovolj
-              dobro. Načrtujemo in zgradimo programsko opremo po meri — spletne
-              in namizne aplikacije, interna orodja, integracije in sisteme, ki
-              jih je mogoče vzdrževati in razvijati naprej.
+              Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
+              pokrijejo procesov dovolj dobro. Načrtujemo in zgradimo programsko
+              opremo po meri — spletne in namizne aplikacije, interna orodja,
+              integracije in sisteme, ki jih je mogoče vzdrževati in razvijati
+              naprej.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=software" variant="primary">
                 Začnimo projekt
               </CtaLink>
               <CtaLink href="#primer" variant="secondary">
@@ -219,7 +233,9 @@ export default function SoftwareDevPage() {
             >
               Kdaj ima smisel programska oprema po meri
             </h2>
-            <p className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}
+            >
               Po meri ima smisel, ko standardna orodja ne sledijo dovolj dobro
               temu, kako podjetje dejansko dela.
             </p>
@@ -233,7 +249,9 @@ export default function SoftwareDevPage() {
                     <h3 className="font-heading text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#16a34a]/90 light:text-[#15803d]">
                       {item.title}
                     </h3>
-                    <p className={`${bodyClass} text-slate-400 light:text-slate-600`}>
+                    <p
+                      className={`${bodyClass} text-slate-400 light:text-slate-600`}
+                    >
                       {item.body}
                     </p>
                   </div>
@@ -259,7 +277,9 @@ export default function SoftwareDevPage() {
             >
               Kakšne sisteme razvijamo
             </h2>
-            <p className={`${bodyClass} mt-3.5 max-w-[42rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-3.5 max-w-[42rem] light:text-slate-600`}
+            >
               Gradimo programske sisteme okoli poslovnih zahtev — ne prodajamo
               zaključenega ERP paketa.
             </p>
@@ -304,7 +324,9 @@ export default function SoftwareDevPage() {
             >
               Inženirski pristop
             </h2>
-            <p className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}>
+            <p
+              className={`${bodyClass} mt-3.5 max-w-[40rem] light:text-slate-600`}
+            >
               Programska oprema mora biti razumljiva, vzdržljiva in pripravljena
               na rast — ne le objavljena.
             </p>
@@ -318,7 +340,9 @@ export default function SoftwareDevPage() {
                     <h3 className="font-heading text-[1.05rem] font-semibold tracking-[-0.03em] text-white light:text-slate-900 md:text-[1.15rem]">
                       {item.title}
                     </h3>
-                    <p className={`${bodyClass} text-slate-400 light:text-slate-600`}>
+                    <p
+                      className={`${bodyClass} text-slate-400 light:text-slate-600`}
+                    >
                       {item.body}
                     </p>
                   </div>
@@ -348,10 +372,11 @@ export default function SoftwareDevPage() {
               </h2>
               <p className={`${bodyClass} mt-3.5 light:text-slate-600`}>
                 JU-TAN Office je lastna namizna poslovna aplikacija JU-TAN za
-                Windows — razvita v Pythonu in PySide6. Modularna je in vključuje
-                področja, kot so stranke, računi, ponudbe in skladišče, ter
-                podporo za PDF dokumente in Excel uvoz/izvoz. Aplikacija je v
-                aktivnem razvoju. Prikazani podatki so demonstracijski.
+                Windows — razvita v Pythonu in PySide6. Modularna je in
+                vključuje področja, kot so stranke, računi, ponudbe in
+                skladišče, ter podporo za PDF dokumente in Excel uvoz/izvoz.
+                Aplikacija je v aktivnem razvoju. Prikazani podatki so
+                demonstracijski.
               </p>
             </div>
           </FadeIn>
@@ -407,7 +432,9 @@ export default function SoftwareDevPage() {
               >
                 Kako poteka razvoj
               </h2>
-              <p className={`${bodyClass} mt-3.5 max-w-[38rem] light:text-slate-600`}>
+              <p
+                className={`${bodyClass} mt-3.5 max-w-[38rem] light:text-slate-600`}
+              >
                 Od razumevanja zahtev do nadaljnjega razvoja — v jasnih,
                 preverljivih korakih.
               </p>
@@ -473,11 +500,11 @@ export default function SoftwareDevPage() {
               Začnimo z vašim projektom.
             </h2>
             <p className={`${bodyClass} mt-4 light:text-slate-600`}>
-              Opišite programsko opremo, sistem ali poslovni proces, ki ga želite
-              izboljšati. Skupaj preverimo, kaj ima smisel zgraditi.
+              Opišite programsko opremo, sistem ali poslovni proces, ki ga
+              želite izboljšati. Skupaj preverimo, kaj ima smisel zgraditi.
             </p>
             <div className="mt-8 pb-16 sm:pb-8">
-              <CtaLink href="/kontakt" variant="primary">
+              <CtaLink href="/kontakt?service=software" variant="primary">
                 Pošljite povpraševanje
               </CtaLink>
             </div>

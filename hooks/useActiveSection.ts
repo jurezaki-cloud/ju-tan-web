@@ -49,7 +49,8 @@ export function useActiveSection(items: NavItem[]) {
     "/razvoj-programske-opreme": "services",
   };
 
-  if (routeSection[pathname]) return routeSection[pathname];
+  const activeRoute = routeSection[pathname];
+  if (activeRoute) return activeRoute;
   if (pathname !== "/") return null;
   return sectionId;
 }

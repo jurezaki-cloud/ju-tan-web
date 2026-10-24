@@ -4,6 +4,7 @@ import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
 import { getMailConfig } from "@/lib/mail";
+import { recordConfirmedInquiry } from "@/lib/inquiry-stats";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: extra });
@@ -47,15 +48,8 @@ export async function POST(req: Request) {
     }
 
     const resend = new Resend(mail.apiKey);
-    const {
-      name,
-      email,
-      message,
-      company,
-      phone,
-      service,
-      consentAt,
-    } = parsed.data;
+    const { name, email, message, company, phone, service, consentAt } =
+      parsed.data;
     const recordedAt = new Date().toISOString();
 
     const result = await resend.emails.send({
@@ -77,8 +71,16 @@ export async function POST(req: Request) {
   `,
     });
 
-    if (result.error) {
+    if (result.error || !result.data?.id) {
       return jsonError(500);
+    }
+
+    // Count only an accepted delivery. Counter failures must never prompt a
+    // visitor to resend an already accepted inquiry.
+    try {
+      await recordConfirmedInquiry(service);
+    } catch {
+      console.error("Confirmed inquiry counter unavailable");
     }
 
     return NextResponse.json({

@@ -23,10 +23,6 @@ export const metadata: Metadata = {
   publisher: company.name,
   applicationName: company.name,
   category: "technology",
-  alternates: {
-    canonical: "/",
-    languages: { sl: "/", "x-default": "/" },
-  },
   verification: {
     google:
       process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ??
@@ -58,10 +54,10 @@ export const metadata: Metadata = {
     "msapplication-config": brandAssets.browserconfig,
   },
   robots: {
-    index: true,
+    index: process.env.VERCEL_ENV !== "preview",
     follow: true,
     googleBot: {
-      index: true,
+      index: process.env.VERCEL_ENV !== "preview",
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,

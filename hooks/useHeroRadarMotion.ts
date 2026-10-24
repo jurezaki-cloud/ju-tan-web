@@ -42,9 +42,27 @@ export function useHeroRadarMotion(
   const reduce = usePrefersReducedMotion();
   const [armed, setArmed] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
   const pointerX = useSpring(0, SPRING);
   const pointerY = useSpring(0, SPRING);
-  const live = !reduce && armed;
+  const live = !reduce && armed && visible && pageVisible;
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
+    });
+    observer.observe(stage);
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updateVisibility);
+    };
+  }, [stageRef]);
 
   useEffect(() => {
     if (reduce) return;
@@ -69,21 +87,36 @@ export function useHeroRadarMotion(
     const fine = window.matchMedia("(pointer: fine)");
     const wide = window.matchMedia("(min-width: 768px)");
 
+    let pendingFrame = 0;
+    let lastPointer: { x: number; y: number } | null = null;
+
+    const updatePointer = () => {
+      pendingFrame = 0;
+      if (!lastPointer) return;
+      const { x, y } = lastPointer;
+      const rect = stage.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const nx = (x - rect.left) / rect.width - 0.5;
+      const ny = (y - rect.top) / rect.height - 0.5;
+      pointerX.set(Math.max(-1, Math.min(1, nx * 2)));
+      pointerY.set(Math.max(-1, Math.min(1, ny * 2)));
+    };
+
     const onMove = (event: PointerEvent) => {
       if (!fine.matches || !wide.matches) {
         reset();
         return;
       }
-      const rect = stage.getBoundingClientRect();
-      const nx = (event.clientX - rect.left) / rect.width - 0.5;
-      const ny = (event.clientY - rect.top) / rect.height - 0.5;
-      pointerX.set(Math.max(-1, Math.min(1, nx * 2)));
-      pointerY.set(Math.max(-1, Math.min(1, ny * 2)));
+      lastPointer = { x: event.clientX, y: event.clientY };
+      if (!pendingFrame) pendingFrame = window.requestAnimationFrame(updatePointer);
     };
 
     const onEnter = () => setHovered(true);
     const onLeave = () => {
       setHovered(false);
+      lastPointer = null;
+      if (pendingFrame) window.cancelAnimationFrame(pendingFrame);
+      pendingFrame = 0;
       reset();
     };
 
@@ -95,6 +128,8 @@ export function useHeroRadarMotion(
       stage.removeEventListener("pointermove", onMove);
       stage.removeEventListener("pointerenter", onEnter);
       stage.removeEventListener("pointerleave", onLeave);
+      if (pendingFrame) window.cancelAnimationFrame(pendingFrame);
+      lastPointer = null;
       reset();
     };
   }, [pointerX, pointerY, reduce, stageRef]);

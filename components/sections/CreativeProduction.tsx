@@ -27,7 +27,7 @@ const formats = [
   },
 ] as const;
 
-const inquiryHref = "/kontakt?storitev=Videoprodukcija";
+const inquiryHref = "/kontakt?service=video";
 
 export default function CreativeProduction() {
   return (

@@ -5,7 +5,7 @@ import CtaLink from "@/components/navbar/CtaLink";
 import { bodyClass, kickerClass, textLinkClass } from "@/design";
 import { cn } from "@/lib/utils";
 
-const inquiryHref = "/kontakt?storitev=Videoprodukcija";
+const inquiryHref = "/kontakt?service=video";
 
 const services = [
   [
