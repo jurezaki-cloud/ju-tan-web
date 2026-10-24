@@ -30,7 +30,6 @@ function DesktopNavigation({
             key={item.id}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            aria-label={item.shortLabel ? item.label : undefined}
             className={cn(
               "group relative inline-flex min-h-11 items-center whitespace-nowrap text-[13px] font-medium tracking-[0.01em] text-slate-400 2xl:text-[14px]",
               colorTransition,

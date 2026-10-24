@@ -8,7 +8,7 @@ export default function HeroButtons() {
   return (
     <>
       <HeroReveal delay={0.2}>
-        <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <div className="mt-5 flex w-full flex-col gap-2.5 sm:mt-8 sm:flex-row sm:flex-wrap sm:gap-3">
           <CtaLink
             href="/kontakt"
             aria-label={heroCopy.primaryCtaAria}

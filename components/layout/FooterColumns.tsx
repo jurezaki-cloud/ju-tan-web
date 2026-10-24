@@ -33,7 +33,6 @@ type ContactRow = {
   label: string;
   value: string;
   href?: string;
-  ariaLabel: string;
 };
 
 const contactRows: ContactRow[] = [
@@ -42,27 +41,23 @@ const contactRows: ContactRow[] = [
     label: "E-pošta",
     value: company.contact.email,
     href: `mailto:${company.contact.email}`,
-    ariaLabel: `Pošlji e-pošto na ${company.contact.email}`,
   },
   {
     icon: Phone,
     label: company.contact.phoneLabel,
     value: company.contact.phone,
     href: company.contact.phoneTel,
-    ariaLabel: `Pokliči ${company.contact.phoneLabel}: ${company.contact.phone}`,
   },
   {
     icon: Briefcase,
     label: company.contact.phoneSecondaryLabel,
     value: company.contact.phoneSecondary,
     href: company.contact.phoneSecondaryTel,
-    ariaLabel: `Pokliči ${company.contact.phoneSecondaryLabel}: ${company.contact.phoneSecondary}`,
   },
   {
     icon: Clock,
     label: "Delovni čas",
     value: company.contact.hoursLines.join("\n"),
-    ariaLabel: `Delovni čas: ${company.contact.hoursLines.join(", ")}`,
   },
   {
     icon: MapPin,
@@ -74,7 +69,6 @@ const contactRows: ContactRow[] = [
       company.contact.address.country,
     ].join("\n"),
     href: mapsHref,
-    ariaLabel: `Odpri naslov v Google Zemljevidih: ${company.contact.address.street}, ${company.contact.address.postal}`,
   },
 ];
 
@@ -92,7 +86,7 @@ export default function FooterColumns() {
       <div className="border-b border-white/10 pb-8 light:border-slate-200 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-10">
         <article aria-labelledby="footer-brand-heading">
           <BrandLogo variant="footer" alt="JU-TAN logotip" />
-          <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a]">
+          <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a] light:text-[#15803d]">
             JU-TAN
           </p>
           <h2
@@ -152,7 +146,7 @@ export default function FooterColumns() {
       <article aria-labelledby="footer-contact-heading">
         <p
           id="footer-contact-heading"
-          className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a]"
+          className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a] light:text-[#15803d]"
         >
           Kontakt
         </p>
@@ -192,7 +186,7 @@ function ContactLine({ row }: { row: ContactRow }) {
       <a
         href={row.href}
         className={lineClass}
-        aria-label={row.ariaLabel}
+        aria-label={`${row.label.toLocaleUpperCase("sl-SI")} ${row.value.replace(/\n/g, " ")}`}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {content}

@@ -10,7 +10,7 @@ export const heroCopy = {
   primaryCta: "Zahtevajte ponudbo",
   primaryCtaAria: "Zahtevajte ponudbo za projekt z ekipo JU-TAN",
   secondaryCta: "Spoznajte rešitve",
-  secondaryCtaAria: "Pomaknite se do rešitev JU-TAN",
+  secondaryCtaAria: "Spoznajte rešitve JU-TAN",
   pills: [
     "Grafično oblikovanje",
     "Videoprodukcija",

@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: Props) {
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <Link
                 href={inquiryHref}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#15803d] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#166534]"
               >
                 Povpraševanje za podoben projekt →
               </Link>

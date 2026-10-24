@@ -129,9 +129,15 @@ export default function References({ full = false }: { full?: boolean }) {
                     ↗
                   </span>
                 </div>
-                <h3 className="mt-5 font-heading text-2xl font-semibold">
-                  {project.title}
-                </h3>
+                {full ? (
+                  <h2 className="mt-5 font-heading text-2xl font-semibold">
+                    {project.title}
+                  </h2>
+                ) : (
+                  <h3 className="mt-5 font-heading text-2xl font-semibold">
+                    {project.title}
+                  </h3>
+                )}
                 <p className="mt-3 min-h-24 text-sm leading-6 text-slate-400 light:text-slate-600">
                   {project.text}
                 </p>

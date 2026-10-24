@@ -10,7 +10,7 @@ export const footerCardClass = cn(
 
 export function FooterCardKicker({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a]">
+    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#16a34a] light:text-[#15803d]">
       {children}
     </p>
   );
