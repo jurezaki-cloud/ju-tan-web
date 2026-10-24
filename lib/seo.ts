@@ -12,19 +12,24 @@ export const defaultTitle =
   "JU-TAN Studio | Spletne strani, grafično oblikovanje in programska oprema";
 
 export const defaultDescription =
-  "JU-TAN Studio iz Cerknice izdeluje spletne strani, logotipe in celostne grafične podobe ter razvija programsko opremo, poslovne sisteme, avtomatizacije in AI rešitve za podjetja v Sloveniji.";
+  "JU-TAN Studio iz Cerknice: spletne strani, logotipi, celostna grafična podoba, promocijski videi, programska oprema in AI rešitve za podjetja v Sloveniji.";
 
 export const defaultKeywords = [
   "JU-TAN Studio",
   "izdelava spletnih strani",
   "spletne strani Cerknica",
   "izdelava spletnih strani za podjetja",
+  "grafično oblikovanje",
   "grafično oblikovanje Cerknica",
   "izdelava logotipa",
   "celostna grafična podoba",
   "oblikovanje letakov in vizitk",
+  "videoprodukcija",
+  "izdelava promocijskih videov",
   "razvoj programske opreme po meri",
+  "izdelava spletnih aplikacij",
   "poslovni program za mala podjetja",
+  "poslovni program za podjetja",
   "program za račune in ponudbe",
   "avtomatizacija poslovnih procesov",
   "AI rešitve za podjetja",
@@ -45,7 +50,7 @@ export const openGraph = {
       url: "/og-image.jpg",
       width: 1200,
       height: 630,
-      alt: "JU-TAN Studio — grafično oblikovanje, spletne strani in programska oprema",
+      alt: "JU-TAN Studio — splet, grafično oblikovanje, videoprodukcija in programska oprema",
     },
   ],
 };
@@ -101,6 +106,28 @@ export function serializeJsonLd(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
+export function faqPageJsonLd(
+  items: readonly { question: string; answer: string }[],
+  id: string,
+) {
+  const origin = siteConfig.url.replace(/\/$/, "");
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${origin}/#${id}`,
+    inLanguage: "sl",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 export function breadcrumbJsonLd(
   items: readonly { name: string; path: string }[],
   id = "breadcrumb",
@@ -150,6 +177,9 @@ export function sitewideJsonLdGraph() {
   const { url, organizationId, websiteId, professionalId } = schemaIds();
   const logo = absoluteUrl(brandAssets.logoPng);
   const address = postalAddress();
+  const sameAs = [siteConfig.github, siteConfig.linkedin].filter(
+    (value): value is string => Boolean(value),
+  );
 
   return {
     "@context": "https://schema.org",
@@ -181,6 +211,7 @@ export function sitewideJsonLdGraph() {
         logo,
         image: absoluteUrl("/og-image.jpg"),
         address,
+        ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
         "@type": "WebSite",
@@ -202,10 +233,19 @@ export function sitewideJsonLdGraph() {
         image: absoluteUrl("/og-image.jpg"),
         logo,
         address,
-        areaServed: {
-          "@type": "Country",
-          name: "Slovenia",
-        },
+        areaServed: [
+          {
+            "@type": "City",
+            name: "Cerknica",
+            containedInPlace: { "@type": "Country", name: "Slovenia" },
+          },
+          {
+            "@type": "AdministrativeArea",
+            name: "Notranjska",
+            containedInPlace: { "@type": "Country", name: "Slovenia" },
+          },
+          { "@type": "Country", name: "Slovenia" },
+        ],
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
           dayOfWeek: [

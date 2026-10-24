@@ -23,7 +23,7 @@ export const contactServiceOptions = [
   "AI (agenti / avtomatizacija dela)",
   "Svetovanje ali dolgoročna podpora",
   "JU-TAN Office",
-  "Kreativna produkcija / video",
+  "Videoprodukcija",
   "Nisem prepričan / Drugo",
 ] as const;
 
@@ -43,6 +43,11 @@ export const offerCatalog = [
     name: "Grafično oblikovanje in identiteta",
     description:
       "Logotipi, celostne grafične podobe, letaki, vizitke in digitalni materiali za prepoznaven nastop podjetja.",
+  },
+  {
+    name: "Videoprodukcija",
+    description:
+      "Promocijski videi, kratke vsebine za družbena omrežja, video oglasi in predstavitve izdelkov ali podjetja, tudi s podporo AI produkcije.",
   },
   {
     name: "Poslovni sistemi in AI",

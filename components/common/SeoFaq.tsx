@@ -1,4 +1,5 @@
 import { bodyClass } from "@/design";
+import { faqPageJsonLd, serializeJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export type SeoFaqItem = {
@@ -17,6 +18,12 @@ export default function SeoFaq({
 }) {
   return (
     <section aria-labelledby={id} className="bg-[#050816] py-16 light:bg-slate-50 md:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(faqPageJsonLd(items, id)),
+        }}
+      />
       <div className="container mx-auto max-w-[52rem]">
         <h2 id={id} className="heading-display font-heading font-semibold text-white light:text-slate-900">
           {title}
