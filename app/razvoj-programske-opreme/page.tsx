@@ -13,9 +13,9 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/razvoj-programske-opreme";
-const pageTitle = "Programska oprema po meri – Slovenija | JU-TAN";
+const pageTitle = "Razvoj programske opreme po meri za podjetja | JU-TAN";
 const pageDescription =
-  "Razvoj programske opreme po meri za podjetja v Sloveniji: poslovne, spletne in namizne aplikacije, interna orodja, integracije, avtomatizacija in dolgoročna podpora.";
+  "Razvoj poslovne programske opreme po meri: spletne in namizne aplikacije, CRM, integracije ter avtomatizacija procesov za podjetja po Sloveniji.";
 
 const baseMetadata = createPageMetadata({
   title: "Razvoj programske opreme po meri",
@@ -52,8 +52,8 @@ export default function RazvojProgramskeOpremePage() {
         <SoftwareDevPage />
         <section aria-labelledby="poslovna-programska-oprema" className="bg-[#050816] px-6 py-16 text-white light:bg-slate-50 light:text-slate-900">
           <div className="mx-auto max-w-5xl">
-            <h2 id="poslovna-programska-oprema" className="font-heading text-3xl font-semibold">Poslovna programska oprema po meri za slovenska podjetja</h2>
-            <p className="mt-5 max-w-3xl leading-8 text-slate-300 light:text-slate-700">Razvijamo poslovne aplikacije za mala in srednja podjetja, ki potrebujejo boljši pregled nad strankami, ponudbami, naročili, zalogami in delovnimi procesi. Rešitve prilagodimo potrebam podjetja in jih po potrebi povežemo z obstoječimi sistemi.</p>
+            <h2 id="poslovna-programska-oprema" className="font-heading text-3xl font-semibold">Razvoj poslovne programske opreme po meri</h2>
+            <p className="mt-5 max-w-3xl leading-8 text-slate-300 light:text-slate-700">Razvoj poslovne programske opreme prilagodimo konkretnim procesom podjetja: od vodenja strank, ponudb in naročil do zalog, dokumentov ter notranjih delovnih tokov. Pred implementacijo preverimo obstoječa orodja, podatke in možnosti integracij, da rešitev ne podvaja že opravljenega dela.</p>
             <div className="mt-8 grid gap-5 md:grid-cols-3">
               <div><h3 className="font-semibold">CRM in poslovni sistemi</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Upravljanje strank, ponudb, dokumentov in poslovnih opravil.</p></div>
               <div><h3 className="font-semibold">Avtomatizacija in integracije</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Povezovanje podatkov, zmanjšanje ročnega dela in prilagoditev procesom.</p></div>
