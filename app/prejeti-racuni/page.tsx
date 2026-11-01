@@ -17,8 +17,8 @@ const features = [
 ] as const;
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Zbirnik prejetih računov za Android",
-  description: "Brezplačna JU-TAN Android aplikacija za mesečno zbiranje prejetih računov, večstransko skeniranje, predogled, ZIP izvoz in pošiljanje računovodstvu.",
+  title: "Prejeti računi za Android – brezplačna aplikacija",
+  description: "Brezplačna Android aplikacija JU-TAN Prejeti računi: fotografirajte večstranske račune, uredite mesečni arhiv ter izvozite PDF, ZIP in CSV za računovodstvo.",
   path,
 });
 
@@ -61,6 +61,27 @@ export default function PrejetiRacuniPage() {
                 <p className="relative mt-4 text-center text-[10px] tracking-wide text-emerald-100/70">Pregleden mesečni arhiv v tvojem telefonu</p>
               </div>
             </div>
+          </div>
+        </Section>
+
+        <Section belowFold labelledBy="invoice-app-howto" className="bg-[#050816] light:bg-slate-50">
+          <div className="mx-auto max-w-[58rem]">
+            <h2 id="invoice-app-howto" className="heading-display font-heading font-semibold text-white light:text-slate-900">Kako urediti prejete račune za računovodstvo?</h2>
+            <p className={cn(bodyClass, "mt-4 max-w-[44rem] light:text-slate-600")}>Z mobilno aplikacijo JU-TAN Prejeti računi lahko dokumente zbirate sproti in jih ob koncu meseca pripravite za oddajo.</p>
+            <ol className="mt-8 grid gap-5 md:grid-cols-3">
+              <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                <h3 className="font-semibold text-white light:text-slate-900">1. Fotografirajte račun</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300 light:text-slate-700">Dodajte eno ali več strani prejetega računa v skupen PDF dokument.</p>
+              </li>
+              <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                <h3 className="font-semibold text-white light:text-slate-900">2. Preverite mesečno zbirko</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300 light:text-slate-700">Preglejte dokumente, uredite njihove podatke in po potrebi odstranite napačen vnos.</p>
+              </li>
+              <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                <h3 className="font-semibold text-white light:text-slate-900">3. Pripravite izvoz</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300 light:text-slate-700">Izvozite račune v paketu ZIP s CSV evidenco in jih pošljite računovodstvu.</p>
+              </li>
+            </ol>
           </div>
         </Section>
 
