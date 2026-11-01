@@ -78,6 +78,10 @@ export default function RazvojProgramskeOpremePage() {
                 <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">3. Razvoj in preizkus</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Funkcionalnosti preverimo na dogovorjenih primerih uporabe pred uvedbo.</p></li>
                 <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200"><h3 className="font-semibold">4. Uvedba in izboljšave</h3><p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">Načrtujemo prehod, podporo uporabnikom in nadaljnje nadgradnje po potrebi.</p></li>
               </ol>
+              <div className="mt-8 rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                <h3 className="font-semibold">Implementacija za veleprodajna in druga poslovna okolja</h3>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300 light:text-slate-700">V veleprodaji je smiselno najprej preveriti, kako so povezani naročila, zaloga, dobavitelji, računi in obstoječi poslovni programi. Nato ocenimo, ali je primernejša integracija že uporabljenih orodij, prilagoditev posameznega koraka ali razvoj nove aplikacije. Možnosti in obseg določi analiza podatkov ter razpoložljivih vmesnikov.</p>
+              </div>
               <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 light:text-slate-700">Za manjša podjetja je lahko primernejša prilagoditev obstoječega orodja kot razvoj novega. Če potrebujete povezavo med več sistemi, pred odločitvijo preverimo razpoložljive vmesnike in omejitve.</p>
             </section>
             <p className="mt-8 max-w-3xl leading-7 text-slate-300 light:text-slate-700">Oglejte si <Link href="/ju-tan-office" className="font-semibold underline underline-offset-4">JU-TAN Office</Link>, preverite <Link href="/reference" className="font-semibold underline underline-offset-4">reference</Link> ali pošljite <Link href="/kontakt?service=software" className="font-semibold underline underline-offset-4">povpraševanje za razvoj po meri</Link>.</p>
