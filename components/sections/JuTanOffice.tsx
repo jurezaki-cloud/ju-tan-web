@@ -108,6 +108,13 @@ export default function JuTanOffice() {
                 >
                   Prejeti računi za Android
                 </CtaLink>
+                <CtaLink
+                  href="/potni-nalogi"
+                  variant="secondary"
+                  className="border-white/14 bg-white/[0.03] text-white hover:border-[#37d8c3]/40 light:border-slate-200 light:bg-white light:text-slate-800"
+                >
+                  Pošlji potne naloge za Android
+                </CtaLink>
               </div>
             </div>
           </FadeIn>
