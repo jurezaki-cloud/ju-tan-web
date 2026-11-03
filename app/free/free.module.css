@@ -29,6 +29,7 @@
   --lab-text: #f4f7fb;
   --lab-muted: #a9b6c8;
   --lab-line: #273345;
+  --lab-control-line: #697b91;
   --lab-green: #00d67a;
   background: var(--lab-bg);
   color: var(--lab-text);
@@ -39,6 +40,7 @@
   --lab-text: #111c28;
   --lab-muted: #4b5c6b;
   --lab-line: #d2ded8;
+  --lab-control-line: #73877c;
   --lab-green: #087641;
 }
 .container {
@@ -48,6 +50,8 @@
 .lab a:focus-visible,
 .lab button:focus-visible,
 .lab input:focus-visible,
+.lab select:focus-visible,
+.lab textarea:focus-visible,
 .lab summary:focus-visible {
   outline: 3px solid var(--lab-green);
   outline-offset: 5px;
@@ -276,7 +280,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid var(--lab-line);
+  border: 1px solid var(--lab-control-line);
   background: var(--lab-panel);
   border-radius: 14px;
   padding: 0 18px;

@@ -48,6 +48,10 @@ Commands: `npm run test:free-lab`, `npm run test:seo`, `npm run test:hardening`,
 
 ## Review
 
+### Accessibility follow-up (2026-11-03)
+
+The shared keyboard focus treatment now includes selects and textareas. QR input/select borders, mode buttons and the secondary download button, plus the catalog search border, use a dedicated control token instead of decorative divider colors. Calculated contrast against the adjacent panel/input backgrounds is 4.24–4.60:1 in dark mode and 3.65–3.83:1 in light mode. Color choices switch to three columns below 600px and retain a 44px minimum width. These targeted fixes do not constitute a full WCAG audit; screen-reader and real-device checks remain required.
+
 PR: https://github.com/jurezaki-cloud/ju-tan-web/pull/75
 
 Initial verified preview: https://ju-tan-4x1283w46-ju-tan-studio.vercel.app/free
