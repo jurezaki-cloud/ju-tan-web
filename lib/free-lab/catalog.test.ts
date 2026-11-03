@@ -26,10 +26,14 @@ test("routes are unique and only implemented tools are actionable", () => {
   for (const tool of labTools) {
     assert.match(tool.slug, /^[a-z0-9-]+$/);
     if (tool.release.status === "available")
-      assert.ok(["/magic", "/free/qr-studio"].includes(tool.release.href));
+      assert.ok(
+        ["/magic", "/free/qr-studio", "/free/image-magic"].includes(
+          tool.release.href,
+        ),
+      );
   }
   assert.equal(
     labTools.filter((tool) => tool.release.status === "available").length,
-    2,
+    3,
   );
 });

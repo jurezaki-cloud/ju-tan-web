@@ -13,8 +13,8 @@ Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, No
 - `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search.
 - `components/free-lab/ToolCatalog.tsx`: small client boundary for search and filters; initial catalog is server-rendered. No network search, uploads, storage or tracking added.
 - `app/free`: static landing page, shared layout and isolated CSS module, generated OG image.
-- `app/free/[slug]`: five static introduction pages, excluding the dedicated QR Studio route. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
-- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF, image processing, quiz and site analysis remain planned.
+- `app/free/[slug]`: four static introduction pages, excluding dedicated QR Studio and Image Magic routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
+- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF, quiz and site analysis remain planned.
 - `app/free/qr-studio`: dedicated static page with metadata, WebApplication schema, sitemap inclusion and a browser-only editor. QR encoding is loaded on demand and never imported by the catalog.
 
 ## QR Studio first release
@@ -32,6 +32,16 @@ Tests: all six payload types decoded independently in every palette; SVG and PNG
 When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Website Doctor requires URL/SSRF protections, rate limits and caching before enabling requests.
 
 ## Verification
+
+### Image Magic first release
+
+`/free/image-magic` processes one static JPG/PNG/WebP locally with native browser APIs and no new dependencies. It preserves aspect ratio, never upscales, and offers 640/1280/1920/2560/4096px maximum edges and JPG/PNG/WebP export. JPEG uses a white background; PNG/WebP preserve alpha. Quality applies to JPEG/WebP. Actual output MIME is checked to prevent unsupported-format fallback from creating mislabeled files. Output size is shown honestly even if larger than the source.
+
+Bounded header inspection precedes bitmap decoding: maximum 20 MiB, 24 MP and 12000px per edge. Animated PNG/WebP, SVG, GIF and HEIC are rejected. Browser decoding is still the authoritative validity check. Canvas export does not copy source EXIF; the browser handles orientation/color conversion. Output URLs and decoded bitmaps are released when replaced or unmounted; version counters discard stale asynchronous results after replacement/reset. The route shares private-tool telemetry exclusions. No image/name is sent to a service or stored in app storage.
+
+Tests cover real JPEG, PNG and lossy/lossless WebP headers, bounds, truncated files, unsupported content, animation rejection, aspect ratio/no upscaling, safe filenames and private route recognition. Browser conversion/download validation is recorded in PR #75. HEIC, batch processing, cropping, real-device coverage and a full accessibility/performance audit remain outside this release.
+
+API references: [createImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap), [Canvas toBlob and format fallback](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob).
 
 Commands: `npm run test:free-lab`, `npm run test:seo`, `npm run test:hardening`, `npm run typecheck`; scoped ESLint on `app/free`, `components/free-lab`, `lib/free-lab`.
 

@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${origin}/free`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${origin}/free/qr-studio`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${origin}/free/image-magic`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${origin}/magic`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${origin}/izdelava-logotipa` },
     { url: `${origin}/potni-nalogi`, changeFrequency: "monthly", priority: 0.7 },

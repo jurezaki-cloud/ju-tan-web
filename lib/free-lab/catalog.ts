@@ -58,9 +58,13 @@ export const labTools: readonly LabTool[] = [
     features: [
       "Sprememba velikosti fotografij",
       "Pretvorba JPG, PNG in WebP",
-      "Načrtovana lokalna obdelava",
+      "Lokalna obdelava brez nalaganja",
     ],
-    release: { status: "planned" },
+    release: {
+      status: "available",
+      href: "/free/image-magic",
+      label: "Uredi sliko",
+    },
   },
   {
     slug: "voscilnice",

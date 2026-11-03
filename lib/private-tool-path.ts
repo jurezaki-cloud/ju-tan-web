@@ -9,5 +9,9 @@ export function isPrivateToolPath(path: string) {
   } catch {
     return false;
   }
-  return pathname === "/magic" || pathname === "/free/qr-studio";
+  return (
+    pathname === "/magic" ||
+    pathname === "/free/qr-studio" ||
+    pathname === "/free/image-magic"
+  );
 }

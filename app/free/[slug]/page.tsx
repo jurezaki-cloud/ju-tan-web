@@ -10,7 +10,7 @@ import styles from "../free.module.css";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return labTools
-    .filter((tool) => tool.slug !== "qr-studio")
+    .filter((tool) => !["qr-studio", "image-magic"].includes(tool.slug))
     .map(({ slug }) => ({ slug }));
 }
 type Props = { params: Promise<{ slug: string }> };

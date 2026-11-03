@@ -11,7 +11,7 @@ import styles from "./free.module.css";
 
 const title = "FREE LAB – brezplačna digitalna orodja";
 const description =
-  "Odkrij JU-TAN FREE LAB: brezplačni QR Studio in voščilnice Magic Surprise. PDF Master, Image Magic, kviz in Website Doctor so v pripravi.";
+  "Odkrij JU-TAN FREE LAB: brezplačni QR Studio, Image Magic in voščilnice Magic Surprise. PDF Master, kviz in Website Doctor so v pripravi.";
 const baseMetadata = createPageMetadata({ title, description, path: "/free" });
 export const metadata = {
   ...baseMetadata,
@@ -32,15 +32,15 @@ export const metadata = {
 const faqs = [
   [
     "Katera orodja lahko uporabljam že danes?",
-    "QR Studio za ustvarjanje QR kod in voščilnice v Magic Surprise sta že na voljo. Preostala štiri orodja pripravljamo. Oznaka na vsaki kartici pove, ali je orodje že na voljo.",
+    "QR Studio, Image Magic in voščilnice v Magic Surprise so že na voljo. Preostala tri orodja pripravljamo. Oznaka na vsaki kartici pove, ali je orodje že na voljo.",
   ],
   [
     "Ali potrebujem račun ali plačilno kartico?",
-    "Za QR Studio in Magic Surprise ne potrebuješ računa ali plačilne kartice. Tudi prihodnja orodja FREE LAB načrtujemo za brezplačno uporabo brez obvezne registracije.",
+    "Za QR Studio, Image Magic in Magic Surprise ne potrebuješ računa ali plačilne kartice. Tudi prihodnja orodja FREE LAB načrtujemo za brezplačno uporabo brez obvezne registracije.",
   ],
   [
     "Kaj se zgodi z mojimi datotekami?",
-    "Ta katalog ne sprejema in ne nalaga datotek. PDF Master in Image Magic načrtujemo z obdelavo v brskalniku. Pred uporabo posameznega orodja bodo jasno predstavljeni način obdelave in omejitve.",
+    "Image Magic obdeluje izbrano sliko v tvojem brskalniku, brez nalaganja datoteke na strežnik. Tudi PDF Master načrtujemo z lokalno obdelavo. Omejitve so navedene pri vsakem orodju.",
   ],
   [
     "Bo FREE LAB deloval na telefonu?",
@@ -80,7 +80,7 @@ export default function FreePage() {
               </Link>
             </div>
             <p className={styles.releaseNote}>
-              QR Studio in Magic Surprise sta že na voljo.
+              QR Studio, Image Magic in Magic Surprise so že na voljo.
             </p>
           </div>
           <div className={styles.heroArt} aria-hidden="true">
