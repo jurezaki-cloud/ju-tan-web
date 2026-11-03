@@ -13,8 +13,8 @@ Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, No
 - `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search.
 - `components/free-lab/ToolCatalog.tsx`: small client boundary for search and filters; initial catalog is server-rendered. No network search, uploads, storage or tracking added.
 - `app/free`: static landing page, shared layout and isolated CSS module, generated OG image.
-- `app/free/[slug]`: four static introduction pages, excluding dedicated QR Studio and Image Magic routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
-- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF, quiz and site analysis remain planned.
+- `app/free/[slug]`: three static introduction pages, excluding dedicated QR Studio, Image Magic and quiz routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
+- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF and site analysis remain planned.
 - `app/free/qr-studio`: dedicated static page with metadata, WebApplication schema, sitemap inclusion and a browser-only editor. QR encoding is loaded on demand and never imported by the catalog.
 
 ## QR Studio first release
@@ -32,6 +32,12 @@ Tests: all six payload types decoded independently in every palette; SVG and PNG
 When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Website Doctor requires URL/SSRF protections, rate limits and caching before enabling requests.
 
 ## Verification
+
+### Slovenia Quiz Battle first release
+
+`/free/kviz-slovenija` is explicitly a solo quiz, not a multiplayer service. Each round samples ten of twelve sourced questions and shuffles options on the start/replay event, avoiding hydration randomness. Each correct answer earns 100 points, independent of speed; there is no timer, account, public ranking, result persistence or backend. A reducer rejects skipped questions, invalid/double answers and actions after completion; score is derived from recorded answers. Feedback uses text as well as color, a live status region, and focus moves to the next question/result or returns to Start after reset. The final review includes every answer, explanation and source link.
+
+Question facts verified 2026-11-03 against [GOV.SI](https://www.gov.si/podrocja/drzava-in-druzba/o-sloveniji/) and the [Slovenian Tourist Board](https://www.slovenia.info/en/places-to-go/attractions/postojna-cave). No third-party quiz questions are copied. Pure-state tests cover full mixed-score rounds, answer locking, reset, no duplicates and bank integrity. Browser completion and preview checks are recorded in PR #75. The small initial bank repeats between games; more categories, multiplayer and durable personal scores are not implemented. No dependencies added.
 
 ### Image Magic first release
 

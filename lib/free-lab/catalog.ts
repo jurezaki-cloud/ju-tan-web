@@ -88,13 +88,17 @@ export const labTools: readonly LabTool[] = [
     name: "Slovenija Quiz Battle",
     category: "Zabava",
     icon: "quiz",
-    description: "Kako dobro poznaš Slovenijo? Pripravljamo izziv zate.",
+    description: "Kako dobro poznaš Slovenijo? Deset vprašanj. Tvoj izziv.",
     features: [
       "Vprašanja o Sloveniji",
-      "Kratki izzivi za vsak dan",
-      "Osebni rezultat na napravi",
+      "Solo kviz z razlagami odgovorov",
+      "Rezultat brez prijave",
     ],
-    release: { status: "planned" },
+    release: {
+      status: "available",
+      href: "/free/kviz-slovenija",
+      label: "Začni kviz",
+    },
   },
   {
     slug: "website-doctor",
