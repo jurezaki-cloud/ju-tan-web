@@ -32,11 +32,12 @@ test("routes are unique and only implemented tools are actionable", () => {
           "/free/qr-studio",
           "/free/image-magic",
           "/free/kviz-slovenija",
+          "/free/pdf-master",
         ].includes(tool.release.href),
       );
   }
   assert.equal(
     labTools.filter((tool) => tool.release.status === "available").length,
-    4,
+    5,
   );
 });

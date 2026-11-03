@@ -28,9 +28,13 @@ export const labTools: readonly LabTool[] = [
     features: [
       "Združevanje in razdeljevanje PDF",
       "Vrtenje in razvrščanje strani",
-      "Načrtovana obdelava na tvoji napravi",
+      "Obdelava na tvoji napravi",
     ],
-    release: { status: "planned" },
+    release: {
+      status: "available",
+      href: "/free/pdf-master",
+      label: "Uredi PDF",
+    },
   },
   {
     slug: "qr-studio",

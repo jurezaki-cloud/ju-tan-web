@@ -25,7 +25,8 @@ export default function SiteVisitTracker() {
       consent !== "accepted" ||
       pathname.startsWith("/admin") ||
       pathname === "/free/qr-studio" ||
-      pathname === "/free/image-magic"
+      pathname === "/free/image-magic" ||
+      pathname === "/free/pdf-master"
     )
       return;
     if (

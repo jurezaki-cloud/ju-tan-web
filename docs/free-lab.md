@@ -13,8 +13,8 @@ Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, No
 - `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search.
 - `components/free-lab/ToolCatalog.tsx`: small client boundary for search and filters; initial catalog is server-rendered. No network search, uploads, storage or tracking added.
 - `app/free`: static landing page, shared layout and isolated CSS module, generated OG image.
-- `app/free/[slug]`: three static introduction pages, excluding dedicated QR Studio, Image Magic and quiz routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
-- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF and site analysis remain planned.
+- `app/free/[slug]`: two static introduction pages, excluding dedicated PDF Master, QR Studio, Image Magic and quiz routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
+- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. Website Doctor remains planned.
 - `app/free/qr-studio`: dedicated static page with metadata, WebApplication schema, sitemap inclusion and a browser-only editor. QR encoding is loaded on demand and never imported by the catalog.
 
 ## QR Studio first release
@@ -32,6 +32,18 @@ Tests: all six payload types decoded independently in every palette; SVG and PNG
 When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Website Doctor requires URL/SSRF protections, rate limits and caching before enabling requests.
 
 ## Verification
+
+### PDF Master first release
+
+`/free/pdf-master` supports one output PDF assembled from up to ten source PDFs (20 MiB and 200 source/output pages in total). Blank range selects all pages; comma lists and ascending/descending ranges preserve requested order and permit duplicates. Documents can be moved up/down or removed. Rotation is added to source rotation without accumulating for repeated pages. There are no page thumbnails, text editing, OCR, compression or ZIP splitting. Extracting different ranges requires separate exports.
+
+Pinned MIT dependency `pdf-lib` 1.17.1 is imported only by a separate module worker, created on selection/export. Each job has a 30-second timeout; cancellation/replacement/unmount terminates the worker and stale replies cannot restore old results. Files remain in browser memory and downloadable URLs are revoked on replacement/unmount. The route uses the same analytics, Sentry, assistant and visit-tracker exclusions as Image Magic. No API or storage service was added.
+
+Encrypted PDFs and AcroForm fields are rejected. This is not a PDF sanitizer. The output does not preserve document outlines, accessibility tags or signature validity; the UI states these limitations and requests users keep originals. Existing annotations/content may be copied with pages. Bounds reduce resource risk, but are not a guarantee for every adversarial compressed PDF; use the cancellation/timeout and test real devices before release.
+
+Tests cover page ranges/order/duplicates, reconstruction/rotation, source immutability, forms, encryption, malformed headers, size and output limits. The library's downlevel Error subclass does not reliably pass instanceof, so encrypted errors are matched against the exact pinned-library error message. Production audit after installing reports the same 15 advisories, none for the added PDF packages. Browser worker/download checks are recorded in PR #75.
+
+API reference: [PDFDocument copyPages/load/save](https://pdf-lib.js.org/docs/api/classes/pdfdocument), [PDFPage rotation](https://pdf-lib.js.org/docs/api/classes/pdfpage).
 
 ### Slovenia Quiz Battle first release
 
