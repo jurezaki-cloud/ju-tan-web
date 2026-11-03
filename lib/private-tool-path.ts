@@ -13,6 +13,7 @@ export function isPrivateToolPath(path: string) {
     pathname === "/magic" ||
     pathname === "/free/qr-studio" ||
     pathname === "/free/image-magic" ||
-    pathname === "/free/pdf-master"
+    pathname === "/free/pdf-master" ||
+    pathname === "/free/website-doctor"
   );
 }

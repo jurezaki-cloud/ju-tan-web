@@ -13,8 +13,8 @@ Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, No
 - `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search.
 - `components/free-lab/ToolCatalog.tsx`: small client boundary for search and filters; initial catalog is server-rendered. No network search, uploads, storage or tracking added.
 - `app/free`: static landing page, shared layout and isolated CSS module, generated OG image.
-- `app/free/[slug]`: two static introduction pages, excluding dedicated PDF Master, QR Studio, Image Magic and quiz routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
-- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. Website Doctor remains planned.
+- `app/free/[slug]`: one static introduction page for the existing greeting tool, excluding dedicated PDF Master, QR Studio, Image Magic, Website Doctor and quiz routes. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
+- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. Website Doctor now offers a local HTML review; automatic URL fetching remains deferred.
 - `app/free/qr-studio`: dedicated static page with metadata, WebApplication schema, sitemap inclusion and a browser-only editor. QR encoding is loaded on demand and never imported by the catalog.
 
 ## QR Studio first release
@@ -29,7 +29,7 @@ Dependencies: pinned `qrcode` 1.5.4 (MIT); dev-only `@types/qrcode` and independ
 
 Tests: all six payload types decoded independently in every palette; SVG and PNG raster round-trips at each export size; Unicode/escaping, open-network password omission, injection rejection, vCard line folding, maximum-size payload and telemetry path exclusions. `npm run test:free-lab` now contains 11 passing tests. TypeScript, scoped lint, existing SEO and hardening suites also pass. New browser checks and preview build are recorded in PR #75. Real-camera/device interoperability still needs release QA; a software decoder is not a guarantee for all camera apps.
 
-When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Website Doctor requires URL/SSRF protections, rate limits and caching before enabling requests.
+When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Any future Website Doctor URL-fetching service requires DNS-pinned SSRF protections, shared rate limits and caching before enabling requests. The current local HTML review makes no such requests.
 
 ## Verification
 
@@ -85,3 +85,13 @@ PR: https://github.com/jurezaki-cloud/ju-tan-web/pull/75
 Initial verified preview: https://ju-tan-4x1283w46-ju-tan-studio.vercel.app/free
 
 No merge or production deployment is authorized.
+
+## Website Doctor first release
+
+`/free/website-doctor` reviews pasted full HTML locally using pinned MIT `htmlparser2` 12.0.0 in a disposable module worker. It does not mount the input in a DOM, execute scripts, load resources or send input to a server. Limits: 500 KiB UTF-8, 30,000 elements, 256 levels and an eight-second worker timeout. Edits, clear and unmount terminate pending jobs; old replies cannot restore a report. Download URLs are revoked. The route shares private-tool telemetry exclusions. No backend, credentials or paid service was added.
+
+Eleven advisory checks cover title, description, language shape, H1 count, heading levels, viewport/zoom, canonical URL shape, meta robots, img alt presence, basic Open Graph metadata and charset. Findings contain only fixed explanations/counts, never source HTML, URLs or scripts. Missing/duplicate metadata is flagged; deliberate noindex, empty decorative alt and multiple H1s are explained rather than treated as definitive SEO/accessibility failures. Output is a plain-text report, not a quality percentage. The parser is forgiving, not a standards validator; malformed HTML, CSS visibility, HTTP headers, robots.txt, dynamically rendered content, resource availability, performance and WCAG conformity are outside this review. Script/style/template/noscript/SVG/MathML subtrees are excluded.
+
+This first release intentionally accepts pasted HTML instead of automatically fetching arbitrary URLs. That avoids introducing server request abuse and recurring analysis costs. The separate Google PageSpeed Insights link opens a blank external tool; no HTML or URL is forwarded automatically. Automatic URL analysis remains a future feature, so this is not the full originally envisioned site audit.
+
+Tests exercise known findings, complete basic metadata, entities, duplicate tags, zoom restrictions, unsafe canonical schemes, noindex, excluded subtrees, malicious content, UTF-8 size/depth/element bounds and privacy paths. Current build/browser verification is recorded in PR #75. References: https://github.com/fb55/htmlparser2 and https://developers.google.com/speed/docs/insights/v5/about .

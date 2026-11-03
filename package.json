@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test:hardening": "node --conditions=react-server --import tsx src/security/rate-limit/cleanup.hardening.test.ts && node --conditions=react-server --import tsx src/notifications/delivery.hardening.test.ts && node --conditions=react-server --import tsx lib/office-download/office-download.hardening.test.ts",
     "test:seo": "node --test scripts/check-software-seo.mjs",
-    "test:free-lab": "node --import tsx --test lib/free-lab/catalog.test.ts lib/free-lab/qr/qr.test.ts lib/free-lab/image.test.ts lib/free-lab/quiz.test.ts lib/free-lab/pdf.test.ts",
+    "test:free-lab": "node --import tsx --test lib/free-lab/catalog.test.ts lib/free-lab/qr/qr.test.ts lib/free-lab/image.test.ts lib/free-lab/quiz.test.ts lib/free-lab/pdf.test.ts lib/free-lab/doctor.test.ts",
     "prebuild": "npm run test:seo"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^13.2.0",
+    "htmlparser2": "12.0.0",
     "lucide-react": "^1.45.0",
     "next": "16.3.5",
     "next-themes": "^0.4.6",

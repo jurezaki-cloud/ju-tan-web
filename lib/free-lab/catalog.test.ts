@@ -33,11 +33,12 @@ test("routes are unique and only implemented tools are actionable", () => {
           "/free/image-magic",
           "/free/kviz-slovenija",
           "/free/pdf-master",
+          "/free/website-doctor",
         ].includes(tool.release.href),
       );
   }
   assert.equal(
     labTools.filter((tool) => tool.release.status === "available").length,
-    5,
+    6,
   );
 });

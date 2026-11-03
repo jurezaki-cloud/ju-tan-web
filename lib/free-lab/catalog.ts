@@ -109,14 +109,17 @@ export const labTools: readonly LabTool[] = [
     name: "Website Doctor",
     category: "Splet",
     icon: "web",
-    description:
-      "Poglej svojo spletno stran skozi oči hitrosti in uporabnosti.",
+    description: "Odkrij, kaj lahko izboljšaš v HTML-ju svoje spletne strani.",
     features: [
-      "Pregled hitrosti, SEO in dostopnosti",
+      "Osnovni pregled SEO oznak in strukture",
       "Razumljiva priporočila",
-      "Načrtovana analiza javnih spletnih strani",
+      "Lokalni pregled prilepljenega HTML-ja",
     ],
-    release: { status: "planned" },
+    release: {
+      status: "available",
+      href: "/free/website-doctor",
+      label: "Preglej HTML",
+    },
   },
 ];
 

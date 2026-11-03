@@ -12,7 +12,13 @@ export function generateStaticParams() {
   return labTools
     .filter(
       (tool) =>
-        !["qr-studio", "image-magic", "kviz-slovenija", "pdf-master"].includes(tool.slug),
+        ![
+          "qr-studio",
+          "image-magic",
+          "kviz-slovenija",
+          "pdf-master",
+          "website-doctor",
+        ].includes(tool.slug),
     )
     .map(({ slug }) => ({ slug }));
 }

@@ -11,7 +11,7 @@ import styles from "./free.module.css";
 
 const title = "FREE LAB – brezplačna digitalna orodja";
 const description =
-  "Odkrij JU-TAN FREE LAB: PDF Master, QR Studio, Image Magic, kviz o Sloveniji in voščilnice Magic Surprise. Website Doctor je v pripravi.";
+  "Odkrij JU-TAN FREE LAB: PDF Master, QR Studio, Image Magic, kviz o Sloveniji in voščilnice Magic Surprise. Website Doctor pregleduje prilepljeni HTML.";
 const baseMetadata = createPageMetadata({ title, description, path: "/free" });
 export const metadata = {
   ...baseMetadata,
@@ -32,7 +32,7 @@ export const metadata = {
 const faqs = [
   [
     "Katera orodja lahko uporabljam že danes?",
-    "PDF Master, QR Studio, Image Magic, Slovenija Quiz Battle v solo načinu in voščilnice v Magic Surprise so že na voljo. Website Doctor še pripravljamo.",
+    "PDF Master, QR Studio, Image Magic, Slovenija Quiz Battle v solo načinu in voščilnice v Magic Surprise so že na voljo. Website Doctor omogoča osnovni pregled prilepljenega HTML-ja.",
   ],
   [
     "Ali potrebujem račun ali plačilno kartico?",
@@ -80,7 +80,7 @@ export default function FreePage() {
               </Link>
             </div>
             <p className={styles.releaseNote}>
-              PDF Master, QR Studio, Image Magic, solo kviz in Magic Surprise so že na voljo.
+              Šest orodij za dokumente, slike, splet in ustvarjalne trenutke.
             </p>
           </div>
           <div className={styles.heroArt} aria-hidden="true">
