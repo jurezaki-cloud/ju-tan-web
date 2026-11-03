@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import AgentButton from "./AgentButton";
+import { isPrivateToolPath } from "@/lib/private-tool-path";
 
 const JuTanAgent = dynamic(() => import("./JuTanAgent"), {
   ssr: false,
@@ -41,7 +42,7 @@ function isPlatformPath(pathname: string) {
 export default function JuTanAgentLazy() {
   const pathname = usePathname();
   const [activated, setActivated] = useState(false);
-  if (pathname === "/magic" || isPlatformPath(pathname)) return null;
+  if (isPrivateToolPath(pathname) || isPlatformPath(pathname)) return null;
   if (activated) return <JuTanAgent initialOpen />;
   return (
     <div

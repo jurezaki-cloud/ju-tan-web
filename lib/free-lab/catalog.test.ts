@@ -17,7 +17,7 @@ test("categories compose with search and resetting does not mutate the catalog",
   assert.equal(filterLabTools("slike", "Slike in dizajn").length, 2);
   assert.equal(labTools.length, 6);
 });
-test("routes are unique and only the existing Magic Surprise is actionable", () => {
+test("routes are unique and only implemented tools are actionable", () => {
   assert.equal(
     new Set(labTools.map((tool) => tool.slug)).size,
     labTools.length,
@@ -26,10 +26,10 @@ test("routes are unique and only the existing Magic Surprise is actionable", () 
   for (const tool of labTools) {
     assert.match(tool.slug, /^[a-z0-9-]+$/);
     if (tool.release.status === "available")
-      assert.equal(tool.release.href, "/magic");
+      assert.ok(["/magic", "/free/qr-studio"].includes(tool.release.href));
   }
   assert.equal(
     labTools.filter((tool) => tool.release.status === "available").length,
-    1,
+    2,
   );
 });

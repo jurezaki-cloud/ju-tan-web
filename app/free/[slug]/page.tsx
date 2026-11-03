@@ -9,7 +9,9 @@ import styles from "../free.module.css";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return labTools.map(({ slug }) => ({ slug }));
+  return labTools
+    .filter((tool) => tool.slug !== "qr-studio")
+    .map(({ slug }) => ({ slug }));
 }
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

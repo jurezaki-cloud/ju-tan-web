@@ -1,5 +1,7 @@
+import { isPrivateToolPath } from "@/lib/private-tool-path";
+
 if (
-  window.location.pathname !== "/magic" &&
+  !isPrivateToolPath(window.location.pathname) &&
   process.env.NEXT_PUBLIC_ENABLE_SENTRY === "true" &&
   process.env.NEXT_PUBLIC_SENTRY_DSN
 ) {
@@ -8,15 +10,15 @@ if (
       dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
       tracesSampleRate: 0.1,
       beforeSend: (event) =>
-        window.location.pathname === "/magic" ? null : event,
+        isPrivateToolPath(window.location.pathname) ? null : event,
       beforeSendTransaction: (event) =>
-        window.location.pathname === "/magic" ? null : event,
+        isPrivateToolPath(window.location.pathname) ? null : event,
       beforeBreadcrumb: (breadcrumb) => {
-        if (window.location.pathname === "/magic") return null;
+        if (isPrivateToolPath(window.location.pathname)) return null;
         if (
           breadcrumb.category === "navigation" &&
           [breadcrumb.data?.to, breadcrumb.data?.from].some(
-            (value) => typeof value === "string" && value.includes("/magic"),
+            (value) => typeof value === "string" && isPrivateToolPath(value),
           )
         )
           return null;

@@ -21,7 +21,7 @@ export default function SiteVisitTracker() {
 
   useEffect(() => {
     // Visits are opt-in. Honor browser privacy signals on the Magic page too.
-    if (consent !== "accepted" || pathname.startsWith("/admin")) return;
+    if (consent !== "accepted" || pathname.startsWith("/admin") || pathname === "/free/qr-studio") return;
     if (
       pathname === "/magic" &&
       (navigator.doNotTrack === "1" ||

@@ -43,7 +43,11 @@ export const labTools: readonly LabTool[] = [
       "Prilagajanje barv",
       "Izvoz PNG in SVG",
     ],
-    release: { status: "planned" },
+    release: {
+      status: "available",
+      href: "/free/qr-studio",
+      label: "Ustvari QR kodo",
+    },
   },
   {
     slug: "image-magic",

@@ -10,11 +10,24 @@ Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, No
 
 ## Module boundaries
 
-- `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search. No runtime dependencies added.
+- `lib/free-lab/catalog.ts`: typed registry, status/action discriminated union, category and accent-insensitive search.
 - `components/free-lab/ToolCatalog.tsx`: small client boundary for search and filters; initial catalog is server-rendered. No network search, uploads, storage or tracking added.
 - `app/free`: static landing page, shared layout and isolated CSS module, generated OG image.
-- `app/free/[slug]`: six static introduction pages. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
-- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF, QR, image processing, quiz and site analysis are planned, not implemented by this foundation.
+- `app/free/[slug]`: five static introduction pages, excluding the dedicated QR Studio route. These are noindex and omitted from the sitemap until substantive tool releases. Unknown slugs return 404.
+- Existing `/magic` is reused for greeting cards, clearly named Magic Surprise. PDF, image processing, quiz and site analysis remain planned.
+- `app/free/qr-studio`: dedicated static page with metadata, WebApplication schema, sitemap inclusion and a browser-only editor. QR encoding is loaded on demand and never imported by the catalog.
+
+## QR Studio first release
+
+Six payloads: HTTP(S) link, WPA/WPA2 Personal or open Wi-Fi, mailto, telephone, SMS and vCard 3.0. Six tested dark palettes on white; exports are PNG/SVG at 512, 1024 or 2048px. The fixed four-module quiet zone and integer PNG module sizes protect readability. Logos, arbitrary colors, dynamic redirects, scan tracking and Enterprise Wi-Fi are not implemented.
+
+`lib/free-lab/qr/payload.ts` validates/escapes input, normalizes telephone numbers, folds vCard lines on UTF-8 boundaries, and limits encoded content to 1000 bytes. `render.ts` accepts only approved export colors/sizes; SVG contains numeric module geometry rather than interpolated user content. Changing inputs invalidates the previous download until the matching preview is ready; pending encoder work is canceled on edit/unmount.
+
+No QR payload goes to a server, URL, local/session storage or logging. Sentry, Vercel browser analytics/speed insights and the site visit tracker are excluded from QR Studio; the assistant button is hidden there. Fields are cleared on reload or with the clear button. Downloaded codes themselves contain the data, including Wi-Fi passwords, which is explained in the UI. Consent settings outside this route are preserved.
+
+Dependencies: pinned `qrcode` 1.5.4 (MIT); dev-only `@types/qrcode` and independent `jsqr` decoder. Sources: [encoder documentation](https://github.com/soldair/node-qrcode), [Wi-Fi payload parser reference](https://github.com/zxing/zxing/blob/master/core/src/main/java/com/google/zxing/client/result/WifiResultParser.java), [independent decoder](https://github.com/cozmo/jsQR).
+
+Tests: all six payload types decoded independently in every palette; SVG and PNG raster round-trips at each export size; Unicode/escaping, open-network password omission, injection rejection, vCard line folding, maximum-size payload and telemetry path exclusions. `npm run test:free-lab` now contains 11 passing tests. TypeScript, scoped lint, existing SEO and hardening suites also pass. New browser checks and preview build are recorded in PR #75. Real-camera/device interoperability still needs release QA; a software decoder is not a guarantee for all camera apps.
 
 When implementing a tool, keep its runtime out of the catalog bundle, add a dedicated route/module and functional tests, and only change its available status once the action works. Review indexing and schema at that point. Do not advertise local file processing until verified. Website Doctor requires URL/SSRF protections, rate limits and caching before enabling requests.
 

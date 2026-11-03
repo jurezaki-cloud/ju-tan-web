@@ -83,7 +83,9 @@ export default function ToolCatalog() {
                 }
               >
                 {tool.release.status === "available"
-                  ? "Na voljo · Magic Surprise"
+                  ? tool.slug === "voscilnice"
+                    ? "Na voljo · Magic Surprise"
+                    : "Na voljo"
                   : "V pripravi"}
               </span>
             </div>
@@ -101,7 +103,7 @@ export default function ToolCatalog() {
                 }
               >
                 {tool.release.status === "available"
-                  ? "Ustvari voščilnico"
+                  ? tool.release.label
                   : "Kaj pripravljamo"}
                 <span className="sr-only"> — {tool.name}</span>
                 <ArrowUpRight size={18} aria-hidden="true" />
