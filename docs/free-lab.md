@@ -4,7 +4,7 @@ Status: review preview, 2026-11-03. Production release requires explicit owner a
 
 ## Existing architecture
 
-Next.js 16.3.5 App Router, React 19, TypeScript, Tailwind 4, existing local Geist/Syne fonts and JU-TAN brand assets. Root providers supply theme and consent-gated analytics. Existing Header/Footer and global reduced-motion behavior are reused. The platform/identity and licensing surfaces remain separate; `/free` is public through the existing proxy rules.
+Next.js 16.4.5 App Router (updated from 16.3.5 during release hardening), React 19, TypeScript, Tailwind 4, existing local Geist/Syne fonts and JU-TAN brand assets. Root providers supply theme and consent-gated analytics. Existing Header/Footer and global reduced-motion behavior are reused. The platform/identity and licensing surfaces remain separate; `/free` is public through the existing proxy rules.
 
 Vercel: existing `ju-tan-web` project, JU-TAN Studio team, Next.js framework, Node 24, GitHub integration. Existing CSP/security headers and preview noindex remain in force. `vercel.json` retains the existing license-backup cron; no hosting settings or secrets changed.
 
@@ -95,3 +95,15 @@ Eleven advisory checks cover title, description, language shape, H1 count, headi
 This first release intentionally accepts pasted HTML instead of automatically fetching arbitrary URLs. That avoids introducing server request abuse and recurring analysis costs. The separate Google PageSpeed Insights link opens a blank external tool; no HTML or URL is forwarded automatically. Automatic URL analysis remains a future feature, so this is not the full originally envisioned site audit.
 
 Tests exercise known findings, complete basic metadata, entities, duplicate tags, zoom restrictions, unsafe canonical schemes, noindex, excluded subtrees, malicious content, UTF-8 size/depth/element bounds and privacy paths. Current build/browser verification is recorded in PR #75. References: https://github.com/fb55/htmlparser2 and https://developers.google.com/speed/docs/insights/v5/about .
+
+## Release hardening (2026-11-04)
+
+Next.js and eslint-config-next are pinned to 16.4.5. Compatible dependency refreshes resolve Sentry 10.78.0, Vercel Blob 2.8.2 and Zod 4.6.7. A scoped override updates @vercel/oidc's pinned @vercel/cli-config to 0.3.6, which consumes patched Zod. This avoids the audit tool's suggested Blob downgrade and leaves application/storage APIs unchanged. No forced major upgrades or hosting/environment changes were made.
+
+Production audit fell from 15 affected packages (2 critical, 7 high, 6 moderate) to 5 moderate findings, with zero high/critical. Remaining production-tree findings are the Sentry bundler-plugin chain through glob and minimatch; these are tooling dependencies, not proof of a reachable runtime exploit. A compatible upstream resolution remains pending; blanket major-version overrides were not applied. The full development tree still reports 26 findings (24 moderate, 2 low). These are advisory counts, not a comprehensive security assessment.
+
+The contact form's service-link preselection now reads browser location through useSyncExternalStore with an empty hydration snapshot. Only own whitelist entries are accepted. An untouched service field derives its value from the link; manual selections, including an explicit empty value, take precedence. This removes the synchronous setState-in-effect lint error without suppressing the rule or changing message delivery. Browser preselection/override and final build results are recorded in PR #75.
+
+Repository-wide ESLint, typecheck, all 28 FREE LAB tests, four SEO checks and the existing hardening suite passed after the dependency update. Mobile speed and full screen-reader/physical-device audits remain release requirements; no numeric performance claim is made.
+
+Sources: https://github.com/advisories/GHSA-2464-fhr4-w9xw , https://github.com/advisories/GHSA-mchm-gjx6-7h55 , https://github.com/advisories/GHSA-mrhx-c7xc-m3w5 , https://react.dev/reference/react/useSyncExternalStore .

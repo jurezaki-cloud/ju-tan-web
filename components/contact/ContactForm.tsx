@@ -1,6 +1,13 @@
 "use client";
 
-import { useId, useState, useRef, useEffect, type FormEvent } from "react";
+import {
+  useId,
+  useState,
+  useRef,
+  useEffect,
+  useSyncExternalStore,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { Input } from "@/components/ui/input";
@@ -29,37 +36,50 @@ const emptyForm = {
 };
 
 /** Whitelisted, non-personal context from links on service pages. */
-const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> = {
-  web: "Spletne strani / UI-UX",
-  graphic: "Grafično oblikovanje / logotip / celostna podoba",
-  software: "Programska oprema po meri / SaaS",
-  app: "Spletna ali mobilna aplikacija",
-  office: "JU-TAN Office",
-  support: "Svetovanje ali dolgoročna podpora",
-};
+const serviceFromLink: Record<string, (typeof contactServiceOptions)[number]> =
+  {
+    web: "Spletne strani / UI-UX",
+    graphic: "Grafično oblikovanje / logotip / celostna podoba",
+    software: "Programska oprema po meri / SaaS",
+    app: "Spletna ali mobilna aplikacija",
+    office: "JU-TAN Office",
+    support: "Svetovanje ali dolgoročna podpora",
+  };
+
+function subscribeToLocation(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+}
+
+function getLinkedService() {
+  const key = new URLSearchParams(window.location.search).get("service");
+  return key && Object.hasOwn(serviceFromLink, key) ? serviceFromLink[key] : "";
+}
+
+const getServerService = () => "";
 
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
   const formId = useId();
   const summaryRef = useRef<HTMLDivElement>(null);
-  const [form, setForm] = useState(emptyForm);
+  const linkedService = useSyncExternalStore(
+    subscribeToLocation,
+    getLinkedService,
+    getServerService,
+  );
+  // Undefined means untouched; an explicit empty selection must remain empty.
+  const [form, setForm] = useState({
+    ...emptyForm,
+    service: undefined as string | undefined,
+  });
+  const selectedService = form.service ?? linkedService;
   const [consent, setConsent] = useState(false);
   const [consentAt, setConsentAt] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
-
-  useEffect(() => {
-    const key = new URLSearchParams(window.location.search).get("service");
-    const linkedService = key ? serviceFromLink[key] : undefined;
-    if (linkedService) {
-      setForm((current) =>
-        current.service ? current : { ...current, service: linkedService },
-      );
-    }
-  }, []);
 
   const update =
     (key: keyof typeof emptyForm) =>
@@ -91,7 +111,7 @@ export default function ContactForm() {
       company: form.company,
       email: form.email,
       phone: form.phone,
-      service: form.service,
+      service: selectedService,
       message: form.message,
       consent,
       consentAt: consent ? consentAt || new Date().toISOString() : "",
@@ -339,7 +359,7 @@ export default function ContactForm() {
             name="service"
             autoComplete="off"
             required
-            value={form.service}
+            value={selectedService}
             onChange={update("service")}
             aria-invalid={Boolean(errors.service)}
             aria-describedby={describedBy(`${formId}-service-error`, "service")}
