@@ -72,7 +72,7 @@ export const labTools: readonly LabTool[] = [
   },
   {
     slug: "voscilnice",
-    name: "WOW Voščilnice",
+    name: "Magic Surprise",
     category: "Slike in dizajn",
     icon: "gift",
     description: "Majhna pozornost. Velik nasmeh. Ustvari osebno presenečenje.",
