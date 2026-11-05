@@ -13,6 +13,7 @@ import {
 } from "@/lib/consent";
 import { colors } from "@/design";
 import { usePathname } from "next/navigation";
+import { isPrivateToolPath } from "@/lib/private-tool-path";
 
 const subscribeNoop = () => () => {};
 const getClientTrue = () => true;
@@ -52,7 +53,7 @@ export default function Providers({ children }: { children: ReactNode }) {
     >
       <ThemeColorMeta />
       {children}
-      {consent === "accepted" && pathname !== "/magic" ? (
+      {consent === "accepted" && !isPrivateToolPath(pathname) ? (
         <>
           <Analytics />
           <SpeedInsights />
