@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
  private static final int PICK_BACKUP=105;
  private static final int SAVE_BACKUP=106;
  private String pendingBackup;
- private static final String HOME="https://www.ju-tan.com/apk/marko";
+ private static final String HOME="https://ju-tan.com/apk/marko";
  private class Printer {
   @JavascriptInterface public void saveBackup(String json){runOnUiThread(()->{
    if(json==null||json.length()>2000000)return;
