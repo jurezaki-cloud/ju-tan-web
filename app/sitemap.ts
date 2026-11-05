@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Omit lastModified until a reliable per-page content timestamp is available.
   return [
+    { url: `${origin}/free-apk-za-podjetja`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${origin}/free`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${origin}/free/qr-studio`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${origin}/free/website-doctor`, changeFrequency: "monthly", priority: 0.7 },

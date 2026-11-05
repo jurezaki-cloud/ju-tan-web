@@ -20,8 +20,7 @@ const solutionAreas = [
   { label: "Programska oprema", href: "/razvoj-programske-opreme" },
   { label: "Poslovni sistemi", href: "/#services" },
   { label: "JU-TAN Office", href: "/ju-tan-office" },
-  { label: "Prejeti računi za Android", href: "/prejeti-racuni" },
-  { label: "Pošlji potne naloge za Android", href: "/potni-nalogi" },
+  { label: "FREE APK ZA PODJETJA", href: "/free-apk-za-podjetja" },
 ] as const;
 
 const brandDescriptor = "Design, digitalne rešitve in programski inženiring.";
