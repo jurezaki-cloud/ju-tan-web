@@ -1,5 +1,7 @@
 package com.jutan.dobavnica.marko;
 import android.app.Activity;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintManager;
@@ -22,8 +24,19 @@ public class MainActivity extends Activity {
  private WebView web;
  private ValueCallback<Uri[]> fileCallback;
  private static final int PICK_BACKUP=105;
+ private static final int SAVE_BACKUP=106;
+ private String pendingBackup;
  private static final String HOME="https://www.ju-tan.com/apk/marko";
  private class Printer {
+  @JavascriptInterface public void saveBackup(String json){runOnUiThread(()->{
+   if(json==null||json.length()>2000000)return;
+   pendingBackup=json;
+   Intent intent=new Intent(Intent.ACTION_CREATE_DOCUMENT);
+   intent.addCategory(Intent.CATEGORY_OPENABLE);
+   intent.setType("application/json");
+   intent.putExtra(Intent.EXTRA_TITLE,"marko-dobavnice-varnostna-kopija.json");
+   startActivityForResult(intent,SAVE_BACKUP);
+  });}
   @JavascriptInterface public void print(){runOnUiThread(()->{
    PrintManager manager=(PrintManager)getSystemService(Context.PRINT_SERVICE);
    if(manager!=null)manager.print("Dobavnica Marko",web.createPrintDocumentAdapter("Dobavnica Marko"),new PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A4).setColorMode(PrintAttributes.COLOR_MODE_COLOR).build());
@@ -64,6 +77,16 @@ public class MainActivity extends Activity {
  }
  @Override protected void onActivityResult(int requestCode,int resultCode,Intent data){
   super.onActivityResult(requestCode,resultCode,data);
+  if(requestCode==SAVE_BACKUP){
+   if(resultCode==RESULT_OK&&data!=null&&data.getData()!=null&&pendingBackup!=null){
+    try(OutputStream out=getContentResolver().openOutputStream(data.getData())){
+     if(out==null)throw new Exception("Ni mogoče odpreti datoteke");
+     out.write(pendingBackup.getBytes(StandardCharsets.UTF_8));
+     Toast.makeText(this,"Varnostna kopija shranjena",Toast.LENGTH_LONG).show();
+    }catch(Exception ex){Toast.makeText(this,"Shranjevanje ni uspelo",Toast.LENGTH_LONG).show();}
+   }
+   pendingBackup=null;
+  }
   if(requestCode==PICK_BACKUP&&fileCallback!=null){
    Uri[] result=(resultCode==RESULT_OK&&data!=null&&data.getData()!=null)?new Uri[]{data.getData()}:null;
    fileCallback.onReceiveValue(result);fileCallback=null;
