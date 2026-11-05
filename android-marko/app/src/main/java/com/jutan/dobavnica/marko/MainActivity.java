@@ -10,6 +10,8 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebSettings;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceError;
@@ -18,6 +20,8 @@ import android.view.View;
 import android.widget.Toast;
 public class MainActivity extends Activity {
  private WebView web;
+ private ValueCallback<Uri[]> fileCallback;
+ private static final int PICK_BACKUP=105;
  private static final String HOME="https://www.ju-tan.com/apk/marko";
  private class Printer {
   @JavascriptInterface public void print(){runOnUiThread(()->{
@@ -31,7 +35,20 @@ public class MainActivity extends Activity {
   s.setAllowFileAccess(false);s.setAllowContentAccess(false);
   s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
   web.addJavascriptInterface(new Printer(),"MarkoAndroid");
-  web.setWebChromeClient(new WebChromeClient());
+  web.setWebChromeClient(new WebChromeClient(){
+   @Override public boolean onShowFileChooser(WebView view,ValueCallback<Uri[]> callback,FileChooserParams params){
+    if(fileCallback!=null)fileCallback.onReceiveValue(null);
+    fileCallback=callback;
+    try{
+     Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+     intent.addCategory(Intent.CATEGORY_OPENABLE);
+     intent.setType("application/json");
+     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+     startActivityForResult(intent,PICK_BACKUP);
+     return true;
+    }catch(Exception ex){fileCallback=null;return false;}
+   }
+  });
   web.setWebViewClient(new WebViewClient(){
    @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest request){
     Uri u=request.getUrl();
@@ -44,6 +61,13 @@ public class MainActivity extends Activity {
    }
   });
   web.loadUrl(HOME);
+ }
+ @Override protected void onActivityResult(int requestCode,int resultCode,Intent data){
+  super.onActivityResult(requestCode,resultCode,data);
+  if(requestCode==PICK_BACKUP&&fileCallback!=null){
+   Uri[] result=(resultCode==RESULT_OK&&data!=null&&data.getData()!=null)?new Uri[]{data.getData()}:null;
+   fileCallback.onReceiveValue(result);fileCallback=null;
+  }
  }
  @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
  @Override protected void onDestroy(){web.removeJavascriptInterface("MarkoAndroid");web.destroy();super.onDestroy();}
