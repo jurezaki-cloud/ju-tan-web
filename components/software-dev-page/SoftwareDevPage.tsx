@@ -185,37 +185,35 @@ export default function SoftwareDevPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[46rem] pt-4 sm:pt-6 lg:pt-8">
-          <FadeIn>
-            <p className={cn(kickerClass, "light:text-slate-500")}>
-              PROGRAMSKA OPREMA PO MERI
-            </p>
+          <p className={cn(kickerClass, "light:text-slate-500")}>
+            PROGRAMSKA OPREMA PO MERI
+          </p>
 
-            <h1
-              id="software-dev-hero-title"
-              className="heading-hero mt-5 font-heading font-semibold break-words text-white light:text-slate-900"
-            >
-              Razvoj programske opreme po meri za podjetja
-            </h1>
+          <h1
+            id="software-dev-hero-title"
+            className="heading-hero mt-5 font-heading font-semibold break-words text-white light:text-slate-900"
+          >
+            Razvoj programske opreme po meri za podjetja
+          </h1>
 
-            <p
-              className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
-            >
-              Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
-              pokrijejo procesov dovolj dobro. Načrtujemo in zgradimo programsko
-              opremo po meri — spletne in namizne aplikacije, interna orodja,
-              integracije in sisteme, ki jih je mogoče vzdrževati in razvijati
-              naprej.
-            </p>
+          <p
+            className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
+          >
+            Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
+            pokrijejo procesov dovolj dobro. Načrtujemo in zgradimo programsko
+            opremo po meri — spletne in namizne aplikacije, interna orodja,
+            integracije in sisteme, ki jih je mogoče vzdrževati in razvijati
+            naprej.
+          </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <CtaLink href="/kontakt?service=software" variant="primary">
-                Začnimo projekt
-              </CtaLink>
-              <CtaLink href="#primer" variant="secondary">
-                Oglejte si primer
-              </CtaLink>
-            </div>
-          </FadeIn>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <CtaLink href="/kontakt?service=software" variant="primary">
+              Začnimo projekt
+            </CtaLink>
+            <CtaLink href="#primer" variant="secondary">
+              Oglejte si primer
+            </CtaLink>
+          </div>
         </div>
       </Section>
 
