@@ -81,6 +81,19 @@ export default function RazvojProgramskeOpremePage() {
                 </p>
               </div>
             </div>
+            <div className="mt-10">
+              <h3 className="font-heading text-xl font-semibold">
+                Primeri uporabe v proizvodnji in veleprodaji
+              </h3>
+              <p className="mt-3 max-w-3xl leading-7 text-slate-300 light:text-slate-700">
+                V manjšem proizvodnem podjetju lahko interna aplikacija poveže naročila
+                z delovnimi nalogi ter omogoči spremljanje njihovega napredka in porabe
+                materiala. V veleprodaji lahko integracija poveže naročila z zalogo in
+                računovodskim programom, da zaposleni podatke vnesejo samo enkrat.
+                Pred izvedbo preverimo obstoječe programe, kakovost podatkov in
+                razpoložljive vmesnike.
+              </p>
+            </div>
             <nav aria-label="Povezane storitve, reference in kontakt" className="mt-10">
               <h3 className="font-heading text-xl font-semibold">Oglejte si ustrezno rešitev</h3>
               <p className="mt-3 max-w-3xl leading-7 text-slate-300 light:text-slate-700">
