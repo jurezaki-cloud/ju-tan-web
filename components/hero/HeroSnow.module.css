@@ -1,0 +1,30 @@
+.fall {
+  position: absolute;
+  top: -2rem;
+  height: 100%;
+  animation: snow-fall linear infinite;
+}
+
+.drift {
+  animation: snow-drift 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes snow-fall {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(100% + 2rem));
+  }
+}
+
+@keyframes snow-drift {
+  from {
+    transform: translateX(-1rem) rotate(-25deg);
+  }
+
+  to {
+    transform: translateX(1rem) rotate(45deg);
+  }
+}

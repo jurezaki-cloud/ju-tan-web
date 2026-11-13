@@ -16,7 +16,6 @@ import MobileNavigation from "./MobileNavigation";
 import HeaderCTA from "./HeaderCTA";
 
 const items = getHeaderNavigation();
-const holidayBulbs = ["#fbbf24", "#fb7185", "#34d399", "#fde68a"];
 
 export default function Header() {
   const copy = getMessages().header;
@@ -73,25 +72,10 @@ export default function Header() {
         </div>
       </div>
 
-      <div
+      <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-[calc(60px+env(safe-area-inset-top,0px))]"
-      >
-        <div className="h-px bg-[linear-gradient(90deg,transparent,rgba(251,191,36,0.65),transparent)]" />
-        <div className="mx-auto flex max-w-5xl justify-evenly px-4">
-          {Array.from({ length: 20 }, (_, index) => {
-            const color = holidayBulbs[index % holidayBulbs.length];
-
-            return (
-              <span
-                key={index}
-                className="h-2 w-1.5 rounded-b-full [&:nth-child(n+11)]:hidden sm:[&:nth-child(n+11)]:block"
-                style={{ backgroundColor: color, boxShadow: `0 2px 8px ${color}` }}
-              />
-            );
-          })}
-        </div>
-      </div>
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(251,191,36,0.55),transparent)] light:bg-[linear-gradient(90deg,transparent,rgba(180,83,9,0.42),transparent)]"
+      />
 
       <MobileNavigation
         open={menuOpen}

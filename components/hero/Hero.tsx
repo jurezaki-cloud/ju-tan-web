@@ -4,6 +4,22 @@ import HeroContent from "./HeroContent";
 import HeroButtons from "./HeroButtons";
 import ScrollIndicator from "./ScrollIndicator";
 import HeroStage from "./HeroStage";
+import styles from "./HeroSnow.module.css";
+
+const snowflakes = [
+  { left: 4, size: 19, duration: 11, delay: -2 },
+  { left: 12, size: 10, duration: 15, delay: -10 },
+  { left: 20, size: 25, duration: 16, delay: -8 },
+  { left: 29, size: 14, duration: 12, delay: -1 },
+  { left: 37, size: 18, duration: 14, delay: -11 },
+  { left: 46, size: 11, duration: 10, delay: -4 },
+  { left: 54, size: 23, duration: 15, delay: -13 },
+  { left: 62, size: 13, duration: 12, delay: -6 },
+  { left: 71, size: 18, duration: 13, delay: -2 },
+  { left: 78, size: 27, duration: 17, delay: -5 },
+  { left: 86, size: 12, duration: 10, delay: -8 },
+  { left: 94, size: 21, duration: 14, delay: -7 },
+];
 
 export default function Hero() {
   return (
@@ -18,15 +34,25 @@ export default function Hero() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 text-sky-100/35 light:text-sky-700/30"
+        className="pointer-events-none absolute inset-0 text-sky-100/65 motion-reduce:hidden light:text-sky-700/45"
       >
-        <Snowflake className="absolute top-9 left-[8%] size-4 rotate-12" />
-        <Snowflake className="absolute top-12 right-[14%] size-6 -rotate-12" />
-        <Snowflake className="absolute top-[27%] right-[4%] size-9 rotate-12" />
-        <Snowflake className="absolute top-[38%] left-[2%] hidden size-6 lg:block" />
-        <Snowflake className="absolute bottom-[24%] right-[9%] size-5" />
-        <Snowflake className="absolute bottom-[15%] left-[6%] size-7 -rotate-12" />
-        <Snowflake className="absolute right-[28%] bottom-6 hidden size-5 lg:block" />
+        {snowflakes.map(({ left, size, duration, delay }) => (
+          <span
+            key={left}
+            className={styles.fall}
+            style={{
+              left: `${left}%`,
+              animationDuration: `${duration}s`,
+              animationDelay: `${delay}s`,
+            }}
+          >
+            <Snowflake
+              size={size}
+              className={styles.drift}
+              style={{ animationDelay: `${delay}s` }}
+            />
+          </span>
+        ))}
       </div>
 
       <div className="container relative z-10 grid items-center gap-8 py-3 sm:gap-10 xl:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] xl:gap-10 xl:py-5">
