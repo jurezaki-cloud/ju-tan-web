@@ -72,6 +72,11 @@ export default function Header() {
         </div>
       </div>
 
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(251,191,36,0.55),transparent)] light:bg-[linear-gradient(90deg,transparent,rgba(180,83,9,0.42),transparent)]"
+      />
+
       <MobileNavigation
         open={menuOpen}
         onClose={closeMenu}
