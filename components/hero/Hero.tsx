@@ -16,6 +16,18 @@ export default function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-16 h-36 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.14),transparent_68%)] light:bg-[radial-gradient(ellipse_at_top,rgba(217,119,6,0.12),transparent_68%)]"
       />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 text-sky-100/35 light:text-sky-700/30"
+      >
+        <Snowflake className="absolute top-9 left-[8%] size-4 rotate-12" />
+        <Snowflake className="absolute top-12 right-[14%] size-6 -rotate-12" />
+        <Snowflake className="absolute top-[27%] right-[4%] size-9 rotate-12" />
+        <Snowflake className="absolute top-[38%] left-[2%] hidden size-6 lg:block" />
+        <Snowflake className="absolute bottom-[24%] right-[9%] size-5" />
+        <Snowflake className="absolute bottom-[15%] left-[6%] size-7 -rotate-12" />
+        <Snowflake className="absolute right-[28%] bottom-6 hidden size-5 lg:block" />
+      </div>
 
       <div className="container relative z-10 grid items-center gap-8 py-3 sm:gap-10 xl:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] xl:gap-10 xl:py-5">
         <div className="min-w-0">
