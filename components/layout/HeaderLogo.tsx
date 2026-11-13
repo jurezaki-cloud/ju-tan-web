@@ -19,7 +19,7 @@ export default function HeaderLogo() {
         <BrandLogo variant="header" />
         <svg
           aria-hidden="true"
-          className="pointer-events-none absolute -top-3 left-0 h-[19px] w-[33px] drop-shadow-sm"
+          className="pointer-events-none absolute -top-4 -left-1 h-7 w-12 drop-shadow-sm"
           viewBox="0 0 40 23"
         >
           <path
