@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { getAdsConsent, type AdsConsent } from "@/lib/ads-consent";
+import { getAnalyticsConsentSnapshot } from "@/lib/consent";
 import Link from "next/link";
 import CTAButton from "@/components/navbar/CTAButton";
 import { focusRing } from "@/design";
@@ -8,10 +11,14 @@ import { getMessages } from "@/lib/i18n/messages";
 import type { AnalyticsConsent } from "@/lib/consent";
 
 type CookieBannerProps = {
-  onChoice: (value: AnalyticsConsent) => void;
+  onChoice: (value: AnalyticsConsent, ads: AdsConsent) => void;
 };
 
 export default function CookieBanner({ onChoice }: CookieBannerProps) {
+  const [analytics, setAnalytics] = useState(
+    getAnalyticsConsentSnapshot() === "accepted",
+  );
+  const [ads, setAds] = useState(getAdsConsent() === "accepted");
   const copy = getMessages().cookies;
 
   return (
@@ -44,22 +51,48 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
             </Link>
             .
           </p>
+          <label className="mt-3 block text-sm">
+            <input
+              type="checkbox"
+              checked={analytics}
+              onChange={(event) => setAnalytics(event.target.checked)}
+            />{" "}
+            Analitika obiska (Vercel)
+          </label>
+          <label className="mt-2 block text-sm">
+            <input
+              type="checkbox"
+              checked={ads}
+              onChange={(event) => setAds(event.target.checked)}
+            />{" "}
+            Merjenje uspešnih povpraševanj iz oglasov (Google Ads)
+          </label>
+          <p className="mt-2 text-xs">
+            Google Ads uporablja piškotke in podatke o obisku za pripis uspešne
+            oddaje oglasu. Vsebine obrazca ne pošiljamo Googlu. Izbiro lahko
+            kadar koli spremenite v nastavitvah piškotkov.
+          </p>
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <CTAButton
             type="button"
             variant="secondary"
             size="compact"
-            onClick={() => onChoice("necessary")}
+            onClick={() => onChoice("necessary", "necessary")}
           >
             {copy.necessary}
           </CTAButton>
           <CTAButton
             type="button"
             size="compact"
-            onClick={() => onChoice("accepted")}
+            onClick={() =>
+              onChoice(
+                analytics ? "accepted" : "necessary",
+                ads ? "accepted" : "necessary",
+              )
+            }
           >
-            {copy.accept}
+            Shrani izbiro
           </CTAButton>
         </div>
       </div>

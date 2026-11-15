@@ -23,6 +23,7 @@ import {
   flattenContactErrors,
   type ContactFieldKey,
 } from "@/lib/validation/contact";
+import { trackContactConversion } from "@/lib/google-ads";
 import ContactSuccess from "./ContactSuccess";
 import { labelClass } from "@/design";
 
@@ -62,6 +63,7 @@ type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
   const formId = useId();
+  const submitting = useRef(false);
   const summaryRef = useRef<HTMLDivElement>(null);
   const linkedService = useSyncExternalStore(
     subscribeToLocation,
@@ -103,7 +105,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    if (loading) return;
+    if (submitting.current || success) return;
     setErrors({});
 
     const parsed = contactSchema.safeParse({
@@ -123,7 +125,9 @@ export default function ContactForm() {
       return;
     }
 
+    submitting.current = true;
     setLoading(true);
+    let completed = false;
 
     try {
       const response = await fetch("/api/contact", {
@@ -159,15 +163,21 @@ export default function ContactForm() {
         return;
       }
 
+      trackContactConversion(result);
+
       // Record a conversion only after the API confirms delivery and only
       // when the visitor has opted in to analytics. Never send contact details.
-      if (getAnalyticsConsentSnapshot() === "accepted") {
+      if (
+        "conversionId" in result &&
+        getAnalyticsConsentSnapshot() === "accepted"
+      ) {
         try {
           track("Inquiry Submitted", { service: parsed.data.service });
         } catch {
           // Analytics must never interfere with a successful inquiry.
         }
       }
+      completed = true;
       setSuccess(true);
       setForm(emptyForm);
       setConsent(false);
@@ -178,6 +188,7 @@ export default function ContactForm() {
         form: "Oddaje ni bilo mogoče potrditi. Vneseni podatki so ohranjeni. Pred ponovno oddajo nas lahko kontaktirate po e-pošti.",
       });
     } finally {
+      submitting.current = completed;
       setLoading(false);
     }
   };

@@ -29,7 +29,7 @@
   },
   "cookies": {
     "title": "Piškotki",
-    "message": "Za merjenje obiska uporabljamo analitična orodja gostitelja. Podrobnosti so v Politiki piškotkov.",
+    "message": "Izberite, ali dovolite analitiko obiska in merjenje uspešnosti oglasov. Obe izbiri sta prostovoljni.",
     "accept": "Sprejmem",
     "necessary": "Samo nujno",
     "policy": "Politika piškotkov"

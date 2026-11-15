@@ -85,6 +85,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
+      conversionId: result.data.id,
     });
   } catch {
     return jsonError(500);

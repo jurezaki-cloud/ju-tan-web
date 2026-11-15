@@ -1,0 +1,33 @@
+name: Contact conversion checks
+on:
+  pull_request:
+    paths:
+      - "components/contact/**"
+      - "components/legal/**"
+      - "components/common/Providers.tsx"
+      - "app/api/contact/**"
+      - "lib/*consent*"
+      - "lib/google-ads.ts"
+      - "tests/**"
+      - "package*.json"
+      - "next.config.ts"
+      - "playwright.ads.config.ts"
+      - ".github/workflows/contact-conversion.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run test:ads
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ads:browser

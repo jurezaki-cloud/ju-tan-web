@@ -9,6 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test:hardening": "node --conditions=react-server --import tsx src/security/rate-limit/cleanup.hardening.test.ts && node --conditions=react-server --import tsx src/notifications/delivery.hardening.test.ts && node --conditions=react-server --import tsx lib/office-download/office-download.hardening.test.ts",
+    "test:ads:browser": "playwright test --config playwright.ads.config.ts",
+    "test:ads": "node --import tsx --test tests/google-ads.test.ts && node --require ./tests/server-only.cjs --import tsx tests/contact.test.ts",
     "test:seo": "node --test scripts/check-software-seo.mjs",
     "test:free-lab": "node --import tsx --test lib/free-lab/catalog.test.ts lib/free-lab/qr/qr.test.ts lib/free-lab/image.test.ts lib/free-lab/quiz.test.ts lib/free-lab/pdf.test.ts lib/free-lab/doctor.test.ts",
     "prebuild": "npm run test:seo"
@@ -38,6 +40,7 @@
     "zod": "^4.6.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.23.1",
