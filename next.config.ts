@@ -19,8 +19,11 @@ function contentSecurityPolicy(development: boolean) {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
-    ...(development ? ["'unsafe-eval'"] as const : []),
+    ...(development ? (["'unsafe-eval'"] as const) : []),
     ...vercelScripts,
+    "https://www.googletagmanager.com",
+    "https://www.googleadservices.com",
+    "https://www.google.com",
   ];
 
   return [
@@ -29,8 +32,9 @@ function contentSecurityPolicy(development: boolean) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
-    `connect-src 'self' ${vercelConnect.join(" ")}`,
+    `connect-src 'self' ${vercelConnect.join(" ")} https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.si https://ad.doubleclick.net`,
     "worker-src 'self' blob:",
+    "frame-src 'self' https://www.googletagmanager.com",
     "frame-ancestors 'self'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -46,7 +50,8 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()",
   },
   {
     key: "Strict-Transport-Security",
@@ -63,12 +68,16 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Isolate local verification output from a concurrently running dev server.
+  distDir: process.env.NEXT_TEST_DIST_DIR || ".next",
   poweredByHeader: false,
   compress: true,
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    deviceSizes: [320, 360, 375, 390, 412, 430, 640, 750, 768, 828, 1080, 1200, 1920],
+    deviceSizes: [
+      320, 360, 375, 390, 412, 430, 640, 750, 768, 828, 1080, 1200, 1920,
+    ],
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

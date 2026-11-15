@@ -20,7 +20,7 @@ export const metadata: Metadata = createPageMetadata({
   path: "/politika-piskotkov",
 });
 
-const lastUpdated = "17. 9. 2026";
+const lastUpdated = "15. 11. 2026";
 
 type StorageRow = {
   name: string;
@@ -31,6 +31,23 @@ type StorageRow = {
 };
 
 const storageRows: StorageRow[] = [
+  {
+    name: "ju-tan-ads-v1",
+    mechanism: "localStorage",
+    purpose:
+      "Shrani ločeno izbiro za merjenje Google Ads; prejšnje soglasje za analitiko tega merjenja ne omogoči.",
+    duration: "Do izbrisa ali spremembe izbire.",
+    category: "Nujno za zapomnitev prostovoljne izbire",
+  },
+  {
+    name: "_gcl_*",
+    mechanism: "piškotki Google Ads",
+    purpose:
+      "Po ločeni privolitvi povežejo obisk iz oglasa z uspešno oddajo kontaktnega obrazca.",
+    duration:
+      "Običajno do 90 dni; odvisno od vrste piškotka in nastavitev brskalnika.",
+    category: "Merjenje oglaševanja (prostovoljno)",
+  },
   {
     name: "theme",
     mechanism: "localStorage",
@@ -47,7 +64,8 @@ const storageRows: StorageRow[] = [
       "Shrani vašo odločitev o analitiki (»accepted« ali »necessary«), da se pasica ne prikaže znova in da se analitika vklopi le ob privolitvi.",
     duration:
       "Ostane v brskalniku, dokler ga ne izbrišete vi ali brskalnik (ni nastavljenega samodejnega poteka).",
-    category: "Nujno za zapomnitev izbire (vrednost same privolitve je prostovoljna)",
+    category:
+      "Nujno za zapomnitev izbire (vrednost same privolitve je prostovoljna)",
   },
   {
     name: "jutan-ai-agent",
@@ -107,8 +125,8 @@ export default function CookiePolicyPage() {
                   </h2>
                   <p>
                     Klasični piškotki so majhne datoteke, ki jih strežnik ali
-                    skripta shrani v brskalnik. Lokalna shramba (localStorage) je
-                    ločen mehanizem: podatki ostanejo na vaši napravi in se
+                    skripta shrani v brskalnik. Lokalna shramba (localStorage)
+                    je ločen mehanizem: podatki ostanejo na vaši napravi in se
                     samodejno ne pošiljajo z vsako zahtevo, kot to pogosto
                     počnejo piškotki.
                   </p>
@@ -138,8 +156,8 @@ export default function CookiePolicyPage() {
                   </p>
                   <ul className="list-disc space-y-2 pl-5">
                     <li>
-                      ob izbiri »Sprejmem« se aktivirata Vercel Web Analytics in
-                      Vercel Speed Insights;
+                      ob izbiri analitike in potrditvi »Shrani izbiro« se
+                      aktivirata Vercel Web Analytics in Vercel Speed Insights;
                     </li>
                     <li>
                       ob izbiri »Samo nujno« se ti komponenti ne naložita;
@@ -168,11 +186,38 @@ export default function CookiePolicyPage() {
 
                 <section className="space-y-4">
                   <h2 className="font-heading text-[20px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
+                    Merjenje Google Ads
+                  </h2>
+                  <p>
+                    Google Ads se naloži samo po ločeni privolitvi v merjenje
+                    oglasov. Konverzijo pošljemo šele, ko ponudnik e-pošte
+                    sprejme kontaktno sporočilo. Klik gumba in prikaz strani
+                    nista konverziji. Googlu ne pošiljamo imena, e-pošte ali
+                    vsebine obrazca; pošljemo identifikator oddaje, vrednost 1
+                    EUR in podatke za merjenje obiska. Personalizacija oglasov
+                    je izključena.
+                  </p>
+                  <p>
+                    Izbiro lahko spremenite ali prekličete z gumbom »Nastavitve
+                    piškotkov«. Brez privolitve se nove konverzije ne pošiljajo.
+                    Že nastavljene piškotke lahko odstranite v brskalniku. Več:{" "}
+                    <a
+                      href="https://policies.google.com/technologies/partner-sites"
+                      className={textLinkClass}
+                    >
+                      Googlova uporaba podatkov na partnerskih spletnih mestih
+                    </a>
+                    .
+                  </p>
+                </section>
+
+                <section className="space-y-3">
+                  <h2 className="font-heading text-[20px] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
                     Pregled shrambe
                   </h2>
                   <p>
-                    Spodnji seznam temelji na preverjenem obnašanju trenutne
-                    produkcijske kode.
+                    Spodnji seznam temelji na preverjenem obnašanju kode
+                    spletnega mesta.
                   </p>
 
                   <div className="hidden overflow-x-auto md:block">

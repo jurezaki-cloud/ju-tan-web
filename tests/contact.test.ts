@@ -44,7 +44,10 @@ async function main() {
     assert.equal(contactSchema.parse(payload).email, "test@example.com");
     const success = await POST(request(payload));
     assert.equal(success.status, 200);
-    assert.deepEqual(await success.json(), { success: true });
+    assert.deepEqual(await success.json(), {
+      success: true,
+      conversionId: "test-message-id",
+    });
     assert.equal(providerBody.reply_to, "test@example.com");
     assert.deepEqual(providerBody.to, ["info@ju-tan.com"]);
     assert.match(String(providerBody.html), /&lt;script&gt;/);
@@ -57,10 +60,9 @@ async function main() {
       (await POST(request({ ...payload, email: "invalid" }))).status,
       400,
     );
-    assert.equal(
-      (await POST(request({ ...payload, website: "spam" }))).status,
-      200,
-    );
+    const spam = await POST(request({ ...payload, website: "spam" }));
+    assert.equal(spam.status, 200);
+    assert.deepEqual(await spam.json(), { success: true });
     assert.equal(
       calls,
       baseline,
