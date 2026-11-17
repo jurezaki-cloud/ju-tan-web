@@ -26,11 +26,11 @@ export const projectStudies = [
   {
     slug: "instalacije-the-end",
     screenshot: {
-      src: "/reference/instalacije-the-end.svg",
-      alt: "Grafična predstavitev spletnega projekta Inštalacije THE END",
-      width: 1348,
-      height: 926,
-      caption: "Vizualna predstavitev projekta Inštalacije THE END.",
+      src: "/reference/instalacije-the-end.webp",
+      alt: "Posnetek začetne strani Inštalacije THE END s predstavitvijo klimatskih naprav in toplotnih črpalk",
+      width: 1600,
+      height: 900,
+      caption: "Dejanska začetna stran Inštalacije THE END – klimatske naprave, toplotne črpalke in servis.",
     },
     name: "Inštalacije THE END",
     title: "Inštalacije THE END – sodobna spletna predstavitev storitev",
