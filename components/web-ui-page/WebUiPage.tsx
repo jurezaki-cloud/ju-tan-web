@@ -252,17 +252,15 @@ export default function WebUiPage() {
             <p
               className={`${bodyClass} mt-6 max-w-[42rem] text-slate-300 light:text-slate-600`}
             >
-              Iz Cerknice za podjetja na Notranjskem in po Sloveniji. Za
-              profesionalno spletno prisotnost z jasno strukturo, uporabniško
-              izkušnjo in tehnično izvedbo. Načrtujemo in gradimo spletne
-              strani, digitalne izkušnje ter uporabniške vmesnike, kjer sta
-              oblikovanje in frontend del iste rešitve — pripravljene na
-              vzdrževanje in nadaljnji razvoj.
+              Za podjetja po Sloveniji izdelujemo in prenavljamo spletne
+              strani po meri. Jasno predstavimo vaše storitve in obiskovalcem
+              olajšamo oddajo povpraševanja tudi na telefonu. Opišite nam svoj
+              projekt in pripravili vam bomo ponudbo.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <CtaLink href="/kontakt?service=web" variant="primary">
-                Začnimo projekt
+                Pridobite ponudbo
               </CtaLink>
               <CtaLink href="#proces" variant="secondary">
                 Kako poteka izvedba
