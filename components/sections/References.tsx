@@ -5,6 +5,15 @@ import Section from "@/components/common/Section";
 
 const projects = [
   {
+    title: "Inštalacije THE END",
+    type: "Poslovna spletna stran",
+    text: "Sodobna in mobilnim napravam prilagojena spletna predstavitev storitvenega podjetja. Jasna struktura storitev, izrazit uvodni naslov in pregledni pozivi k povpraševanju obiskovalcu pomagajo hitro najti ključne informacije.",
+    href: "/reference/instalacije-the-end",
+    tags: ["Spletna stran", "UI/UX", "Responsive", "Predstavitev storitev"],
+    accent: "JASNO · SODOBNO · ZANESLJIVO",
+    metric: "instalacije-theend.si",
+  },
+  {
     title: "Veli Jože",
     type: "Neuradni portal pavšalistov",
     text: "Spletni portal za skupnost pavšalistov kampa Veli Jože v Savudriji. Projekt povezuje informacije o bivanju in okolici v pregledno spletno izkušnjo za telefon in računalnik. Gre za neuradni portal, ki ni uradna spletna stran upravljavca kampa.",
