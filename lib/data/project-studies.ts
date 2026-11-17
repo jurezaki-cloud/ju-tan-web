@@ -24,6 +24,32 @@ export type ProjectStudy = {
 
 export const projectStudies = [
   {
+    slug: "instalacije-the-end",
+    screenshot: {
+      src: "/reference/instalacije-the-end.svg",
+      alt: "Grafična predstavitev spletnega projekta Inštalacije THE END",
+      width: 1348,
+      height: 926,
+      caption: "Vizualna predstavitev projekta Inštalacije THE END.",
+    },
+    name: "Inštalacije THE END",
+    title: "Inštalacije THE END – sodobna spletna predstavitev storitev",
+    description:
+      "Izdelava pregledne in odzivne spletne predstavitve za Inštalacije THE END s poudarkom na jasni ponudbi, zaupanju in enostavnem povpraševanju.",
+    kind: "Poslovna spletna stran",
+    challenge:
+      "Storitveno podjetje potrebuje jasno spletno predstavitev, na kateri obiskovalec hitro razume ponudbo in najde pot do povpraševanja tudi na telefonu.",
+    solution:
+      "Zasnovali smo pregledno strukturo storitev, izrazit uvodni naslov, jasne pozive k dejanju ter predstavitev ključnih prednosti podjetja. Poseben poudarek je na mobilni uporabniški izkušnji.",
+    work:
+      "Oblikovanje vizualne podobe spletne strani, ureditev vsebinske hierarhije, prilagoditev mobilnim zaslonom in izboljšanje navigacije ter pozivov k stiku.",
+    outcome:
+      "Spletna predstavitev omogoča jasen pregled storitev in neposreden dostop do informacij za povpraševanje. Projekt si lahko ogledate na spletni strani naročnika.",
+    href: "https://instalacije-theend.si/",
+    service: "/spletne-strani-in-ui-ux",
+    serviceName: "Izdelava spletnih strani",
+  },
+  {
     slug: "veli-joze",
     screenshot: {
       src: "/reference/veli-joze.webp",
