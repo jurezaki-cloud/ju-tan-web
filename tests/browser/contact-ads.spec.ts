@@ -170,3 +170,22 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
     expect(errors).toEqual([]);
   });
 }
+
+test("contact introduction gives a direct shortcut to the enquiry form", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-ads-v1", "necessary");
+  });
+  await page.goto("/kontakt?service=web");
+  const shortcut = page.getByRole("link", { name: "Izpolnite obrazec" });
+  await expect(shortcut).toBeVisible();
+  const firstScreen = await shortcut.boundingBox();
+  expect(firstScreen).not.toBeNull();
+  expect(firstScreen!.y).toBeLessThan(844);
+  await shortcut.click();
+  await expect(page).toHaveURL(/#contact-form$/);
+  await expect(page.locator("#contact-form")).toBeInViewport();
+  await expect(page.locator("#contact-form select[name=service]"))
+    .toHaveValue("Spletne strani / UI-UX");
+});
