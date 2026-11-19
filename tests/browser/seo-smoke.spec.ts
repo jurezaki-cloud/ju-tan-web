@@ -45,6 +45,22 @@ test("capture stable mobile and desktop hero screenshots for visual review", asy
     await expect(page.locator("main h1")).toBeVisible();
     await expect(page.locator('main a[href="/kontakt"]').first()).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
+    if (viewport.name === "mobile-390") {
+      const consentBanner = page.locator('aside[aria-labelledby="cookie-banner-title"]');
+      await expect(consentBanner).toBeVisible();
+      const bgColor = await consentBanner.evaluate((element) =>
+        getComputedStyle(element).backgroundColor,
+      );
+      // An opaque backdrop stops underlying CTA/content from showing through.
+      expect(bgColor).not.toMatch(/rgba?\\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\)/);
+      await page.screenshot({
+        path: "test-results/visual/hero-mobile-390-consent.png",
+        fullPage: false,
+        animations: "disabled",
+      });
+      await page.getByRole("button", { name: "Samo nujno" }).click();
+      await expect(consentBanner).toHaveCount(0);
+    }
     await page.screenshot({
       path: `test-results/visual/hero-${viewport.name}.png`,
       fullPage: false,
