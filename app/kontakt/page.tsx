@@ -15,7 +15,7 @@ import { siteConfig } from "@/lib/config";
 export const metadata: Metadata = createPageMetadata({
   title: "Kontakt – JU-TAN Studio v Cerknici",
   description:
-    "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, logotipe in celostne podobe, izdelavo spletnih strani, razvoj programske opreme, avtomatizacijo in AI rešitve.",
+    "Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani, grafično oblikovanje, logotipe in razvoj programske opreme po meri.",
   path: "/kontakt",
 });
 
@@ -100,7 +100,7 @@ export default function KontaktPage() {
                 url: absoluteUrl("/kontakt"),
                 name: "Kontakt",
                 description:
-                  "Kontaktirajte JU-TAN Studio v Cerknici za grafično oblikovanje, logotipe in celostne podobe, izdelavo spletnih strani, razvoj programske opreme, avtomatizacijo in AI rešitve.",
+                  "Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani, grafično oblikovanje, logotipe in razvoj programske opreme po meri.",
                 inLanguage: "sl",
                 isPartOf: { "@id": `${origin}/#website` },
                 about: { "@id": `${origin}/#organization` },
