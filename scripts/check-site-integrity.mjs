@@ -77,3 +77,17 @@ test("reference inquiry CTA retains readable contrast and visible keyboard focus
   assert.ok(page.includes("focus-visible:ring-2 focus-visible:ring-emerald-300"));
   assert.ok(page.includes('href={inquiryHref}'));
 });
+
+test("graphic-design inquiry buttons use legible contrast and keyboard focus", () => {
+  const page = read("app/graficno-oblikovanje/page.tsx");
+  const ctas = page.match(/bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950/g) ?? [];
+  assert.equal(ctas.length, 2, "Both graphic inquiry CTAs should use dark text");
+  assert.equal((page.match(/focus-visible:ring-2 focus-visible:ring-emerald-300/g) ?? []).length, 2);
+  assert.equal((page.match(/href="\/kontakt\?service=graphic"/g) ?? []).length, 2);
+});
+
+test("reference card labels and links have light-theme contrast overrides", () => {
+  const cards = read("components/sections/References.tsx");
+  assert.ok(cards.includes("light:text-emerald-700 light:hover:text-emerald-800"));
+  assert.ok((cards.match(/light:text-emerald-700/g) ?? []).length >= 3);
+});
