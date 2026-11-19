@@ -115,3 +115,27 @@ test("legacy analytics, necessary-only and honeypot receipts never convert", asy
   ).toBeVisible();
   expect(await events(page)).toEqual([]);
 });
+
+test("ad landing page opens an immediately usable preselected contact form", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-ads-v1", "necessary");
+  });
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+
+  await page.goto("/spletne-strani-in-ui-ux");
+  const heading = page.getByRole("heading", {
+    level: 1,
+    name: "Izdelava spletnih strani za podjetja",
+  });
+  await expect(heading).toBeVisible();
+  await expect(page.getByRole("link", { name: "Pridobite ponudbo" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Pridobite ponudbo" }).click();
+  await expect(page).toHaveURL(/\/kontakt\?service=web$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Pošljite povpraševanje" })).toBeVisible();
+  await expect(page.locator("#contact-form")).toBeVisible();
+  await expect(page.locator("#contact-form select[name=service]")).toHaveValue("Spletne strani / UI-UX");
+  expect(pageErrors).toEqual([]);
+});
