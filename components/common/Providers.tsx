@@ -94,7 +94,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         <button
           type="button"
           onClick={() => setSettingsOpen(true)}
-          className="fixed bottom-2 left-2 z-banner rounded bg-slate-900 px-3 py-2 text-xs text-white"
+          className="fixed bottom-2 left-2 z-[100] rounded bg-slate-900 px-3 py-2 text-xs text-white"
         >
           Nastavitve piškotkov
         </button>
