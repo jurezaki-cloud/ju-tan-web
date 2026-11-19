@@ -121,7 +121,11 @@ export default function ContactForm() {
     });
 
     if (!parsed.success) {
-      setErrors(flattenContactErrors(parsed.error));
+      const fieldErrors = flattenContactErrors(parsed.error);
+      // Without consent, its timestamp cannot exist. Show one actionable
+      // message to visitors without weakening the schema or server checks.
+      if (!consent) delete fieldErrors.consentAt;
+      setErrors(fieldErrors);
       return;
     }
 
