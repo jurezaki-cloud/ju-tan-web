@@ -233,7 +233,8 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[48rem] pt-4 sm:pt-6 lg:pt-8">
-          <FadeIn>
+          {/* Above-the-fold content must be visible before JS hydration. */}
+          <div>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               <span
                 className="inline-block h-px w-6 bg-[#16a34a]/70"
@@ -266,7 +267,7 @@ export default function WebUiPage() {
                 Kako poteka izvedba
               </CtaLink>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </Section>
 
