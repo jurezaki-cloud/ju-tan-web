@@ -100,12 +100,12 @@ jobs:
             cat /tmp/ju-tan-main-lighthouse-server.log
             exit 1
           )
-          npx --yes lighthouse@12.8.2 http://127.0.0.1:3105/ \\
-            --chrome-flags="--headless --no-sandbox" \\
-            --only-categories=performance \\
-            --form-factor=mobile \\
-            --output=json \\
-            --output-path=lighthouse-results/main-local-mobile.json \\
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:3105/ \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance \
+            --form-factor=mobile \
+            --output=json \
+            --output-path=lighthouse-results/main-local-mobile.json \
             --quiet
           node - <<'NODE'
           const fs = require("node:fs");
