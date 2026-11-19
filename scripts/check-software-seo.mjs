@@ -97,3 +97,12 @@ test("APK catalog gives practical instructions and links to real app pages", () 
   assert.ok(apk.includes('href: "/potni-nalogi"'), "Travel orders app link missing");
   assert.ok(apk.includes('href="/kontakt"'), "Support contact link missing");
 });
+
+test("homepage defers the below-fold interactive hero without dropping its content", () => {
+  const homeHero = read("components/hero/Hero.tsx");
+  const deferred = read("components/hero/HeroStageDeferred.tsx");
+  assert.ok(homeHero.includes("HeroStageDeferred"), "Homepage must use deferred stage");
+  assert.ok(deferred.includes('dynamic(() => import("./HeroStage")'), "Interactive stage must be code-split");
+  assert.ok(deferred.includes("IntersectionObserver"), "Stage must load when seen");
+  assert.ok(deferred.includes("min-h-[440px]"), "Mobile stage must reserve layout height");
+});
