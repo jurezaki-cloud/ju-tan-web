@@ -12,6 +12,7 @@
     "test:ads:browser": "playwright test --config playwright.ads.config.ts",
     "test:ads": "node --import tsx --test tests/google-ads.test.ts && node --require ./tests/server-only.cjs --import tsx tests/contact.test.ts",
     "test:seo": "node --test scripts/check-software-seo.mjs",
+    "test:seo:browser": "playwright test --config playwright.seo.config.ts",
     "test:free-lab": "node --import tsx --test lib/free-lab/catalog.test.ts lib/free-lab/qr/qr.test.ts lib/free-lab/image.test.ts lib/free-lab/quiz.test.ts lib/free-lab/pdf.test.ts lib/free-lab/doctor.test.ts",
     "prebuild": "npm run test:seo"
   },

@@ -1,0 +1,58 @@
+name: SEO browser smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/kontakt/**"
+      - "app/spletne-strani-in-ui-ux/**"
+      - "components/hero/**"
+      - "playwright.seo.config.ts"
+      - "tests/browser/seo-smoke.spec.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/seo-browser-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-browser-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    name: Playwright Chromium / mobile SEO
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:seo:browser
+      - name: Upload visual review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-visual-review
+          path: test-results/visual/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-browser-failures
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7

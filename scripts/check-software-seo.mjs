@@ -44,3 +44,34 @@ test("software implementation wording, CTA, and FAQ remain aligned", () => {
   assert.ok(hero.includes("Pošljite povpraševanje za razvoj"));
   assert.ok(hero.includes('href="/kontakt?service=software"'));
 });
+
+
+test("contact and website service meta descriptions stay concise", () => {
+  const contactPage = read("app/kontakt/page.tsx");
+  const webPage = read("app/spletne-strani-in-ui-ux/page.tsx");
+  const contactDescription = contactPage.match(/description:\s*"([^"]+)"/)?.[1];
+  const webDescription = webPage.match(/const pageDescription\s*=\s*"([^"]+)"/)?.[1];
+
+  for (const [route, description] of [
+    ["/kontakt", contactDescription],
+    ["/spletne-strani-in-ui-ux", webDescription],
+  ]) {
+    assert.ok(description, `Missing description for ${route}`);
+    assert.ok(description.length >= 70, `Description too short for ${route}`);
+    assert.ok(description.length <= 160, `Description too long for ${route}`);
+    assert.ok(description.includes("JU-TAN"), `Missing branding for ${route}`);
+  }
+});
+
+
+test("hero reveal remains CSS-only and respects reduced motion", () => {
+  const reveal = read("components/hero/HeroReveal.tsx");
+  const styles = read("components/hero/HeroReveal.module.css");
+
+  assert.ok(!/^["']use client["'];/m.test(reveal), "HeroReveal must remain a server component");
+  assert.ok(reveal.includes('import styles from "./HeroReveal.module.css"'));
+  assert.ok(reveal.includes("styles.enter"), "HeroReveal must apply the CSS module class");
+  assert.ok(styles.includes("@keyframes heroRevealEnter"), "Missing entrance animation");
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/, "Missing reduced motion support");
+  assert.match(styles, /animation:\s*none\s*!important/, "Reduced motion must disable animation");
+});

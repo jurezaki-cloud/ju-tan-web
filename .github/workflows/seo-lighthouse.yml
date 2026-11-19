@@ -1,0 +1,178 @@
+name: SEO Lighthouse diagnostics
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/page.tsx"
+      - "app/kontakt/**"
+      - "app/spletne-strani-in-ui-ux/**"
+      - "components/hero/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/seo-lighthouse.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    name: Mobile Lighthouse diagnostics
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_TEST_DIST_DIR: ".next-lighthouse"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Start production-mode PR build
+        env:
+          # CI preview avoids requiring production mail credentials for a read-only audit.
+          VERCEL_ENV: preview
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3104 > /tmp/ju-tan-lighthouse-server.log 2>&1 &
+          for i in $(seq 1 45); do
+            if curl --fail --silent http://127.0.0.1:3104/ > /dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/ju-tan-lighthouse-server.log
+          exit 1
+      - name: Capture mobile Lighthouse reports
+        run: |
+          mkdir -p lighthouse-results
+          npx --yes lighthouse@12.8.2 https://ju-tan.com/ \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance \
+            --form-factor=mobile \
+            --output=json \
+            --output-path=lighthouse-results/production-mobile.json \
+            --quiet
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:3104/ \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance \
+            --form-factor=mobile \
+            --output=json \
+            --output-path=lighthouse-results/pr-mobile.json \
+            --quiet
+          node - <<'NODE'
+          const fs = require("node:fs");
+          for (const target of ["production", "pr"]) {
+            const report = JSON.parse(fs.readFileSync(`lighthouse-results/${target}-mobile.json`, "utf8"));
+            const audits = report.audits;
+            console.log(JSON.stringify({
+              target,
+              score: report.categories.performance.score * 100,
+              lcpMs: audits["largest-contentful-paint"]?.numericValue,
+              fcpMs: audits["first-contentful-paint"]?.numericValue,
+              tbtMs: audits["total-blocking-time"]?.numericValue,
+              cls: audits["cumulative-layout-shift"]?.numericValue,
+              note: "Lab only; production is remote while PR runs on localhost; not a controlled real-user comparison."
+            }));
+          }
+          NODE
+      - name: Measure main branch on the same local runner
+        env:
+          VERCEL_ENV: preview
+        run: |
+          git fetch --depth=1 origin main:refs/remotes/origin/main
+          git worktree add --detach "$RUNNER_TEMP/ju-tan-main" origin/main
+          (
+            cd "$RUNNER_TEMP/ju-tan-main"
+            npm ci
+            npm run build
+            npm run start -- --hostname 127.0.0.1 --port 3105 > /tmp/ju-tan-main-lighthouse-server.log 2>&1 &
+            for i in $(seq 1 45); do
+              if curl --fail --silent http://127.0.0.1:3105/ > /dev/null; then exit 0; fi
+              sleep 2
+            done
+            cat /tmp/ju-tan-main-lighthouse-server.log
+            exit 1
+          )
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:3105/ \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance \
+            --form-factor=mobile \
+            --output=json \
+            --output-path=lighthouse-results/main-local-mobile.json \
+            --quiet
+          node - <<'NODE'
+          const fs = require("node:fs");
+          for (const target of ["main-local", "pr"]) {
+            const report = JSON.parse(fs.readFileSync(`lighthouse-results/${target === "pr" ? "pr" : target}-mobile.json`, "utf8"));
+            const audits = report.audits;
+            console.log(JSON.stringify({
+              target,
+              score: report.categories.performance.score * 100,
+              lcpMs: audits["largest-contentful-paint"]?.numericValue,
+              fcpMs: audits["first-contentful-paint"]?.numericValue,
+              tbtMs: audits["total-blocking-time"]?.numericValue,
+              cls: audits["cumulative-layout-shift"]?.numericValue,
+              note: "Same runner with local production-mode servers; lab measurements may still vary between runs."
+            }));
+          }
+          NODE
+      - name: Repeat local mobile Lighthouse (4 samples per branch)
+        run: |
+          # First pair is already saved as pr-mobile and main-local-mobile.
+          # Alternate order to reduce systematic cold/warm run bias.
+          for round in 2 3 4; do
+            if [ "$round" -eq 3 ]; then
+              targets="main-local pr"
+            else
+              targets="pr main-local"
+            fi
+            for target in $targets; do
+              if [ "$target" = "pr" ]; then url="http://127.0.0.1:3104/"; else url="http://127.0.0.1:3105/"; fi
+              npx --yes lighthouse@12.8.2 "$url" \
+                --chrome-flags="--headless --no-sandbox" \
+                --only-categories=performance \
+                --form-factor=mobile \
+                --output=json \
+                --output-path="lighthouse-results/${target}-mobile-${round}.json" \
+                --quiet
+            done
+          done
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const metrics = ["largest-contentful-paint", "first-contentful-paint", "total-blocking-time", "cumulative-layout-shift"];
+          const median = values => {
+            const sorted = values.slice().sort((a, b) => a - b);
+            return (sorted[1] + sorted[2]) / 2;
+          };
+          const all = {};
+          for (const target of ["main-local", "pr"]) {
+            const files = [`lighthouse-results/${target}-mobile.json`, ...[2,3,4].map(n => `lighthouse-results/${target}-mobile-${n}.json`)];
+            const reports = files.map(file => JSON.parse(fs.readFileSync(file, "utf8")));
+            all[target] = {
+              samples: reports.length,
+              score: median(reports.map(r => r.categories.performance.score * 100)),
+              ...Object.fromEntries(metrics.map(k => [k, median(reports.map(r => r.audits[k].numericValue))])),
+              perRunLcpMs: reports.map(r => Math.round(r.audits["largest-contentful-paint"].numericValue)),
+            };
+          }
+          const summary = { method: "Lab medians from four runs each; same runner, production builds, local servers. Not field data.", ...all,
+            lcpMedianDeltaMs: all.pr["largest-contentful-paint"] - all["main-local"]["largest-contentful-paint"] };
+          console.log("LIGHTHOUSE_REPEATED_SUMMARY " + JSON.stringify(summary));
+          fs.writeFileSync("lighthouse-results/summary.json", JSON.stringify(summary, null, 2));
+          NODE
+      - name: Upload reports and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-lighthouse-mobile
+          path: |
+            lighthouse-results/
+          if-no-files-found: ignore
+          retention-days: 14

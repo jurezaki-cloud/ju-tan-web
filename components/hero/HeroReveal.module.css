@@ -1,0 +1,21 @@
+@keyframes heroRevealEnter {
+  from {
+    opacity: 0.72;
+    transform: translate3d(0, 6px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.enter {
+  animation: heroRevealEnter 0.34s var(--ease-premium) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    animation: none !important;
+  }
+}
