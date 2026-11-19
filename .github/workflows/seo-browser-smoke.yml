@@ -38,6 +38,14 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx playwright install --with-deps chromium
       - run: npm run test:seo:browser
+      - name: Upload visual review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-visual-review
+          path: test-results/visual/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Upload browser failure artifacts
         if: failure()
         uses: actions/upload-artifact@v4
