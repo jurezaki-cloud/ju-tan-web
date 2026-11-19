@@ -1,7 +1,7 @@
-import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import SectionTitle from "@/components/common/SectionTitle";
 import ContactForm from "@/components/contact/ContactForm";
+import CtaLink from "@/components/navbar/CtaLink";
 import { contactNextSteps } from "@/lib/data/contactNext";
 import { surfacePanel, numberBadgeClass, headingCard, cardBodyClass } from "@/design";
 
@@ -22,7 +22,7 @@ export default function Contact() {
           aria-hidden
         />
 
-        <FadeIn className="w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[720px]">
+        <div className="w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[720px]">
           <SectionTitle
             heading="h1"
             align="center"
@@ -32,9 +32,15 @@ export default function Contact() {
             title="Pošljite povpraševanje"
             description="Za začetek zadostuje kratek opis vaše ideje. Sporočite nam, kaj potrebujete, za koga je rešitev in kakšen je okvirni rok."
           />
-        </FadeIn>
+        </div>
 
-        <FadeIn delay={0.06} className="relative mt-8 w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[760px]">
+        <div className="mt-6 flex w-full justify-center">
+          <CtaLink href="#contact-form" size="compact" variant="primary">
+            Izpolnite obrazec
+          </CtaLink>
+        </div>
+
+        <div className="relative mt-8 w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[760px]">
           <div>
             <h2 className="mb-4 text-center font-heading text-[1.15rem] font-semibold tracking-[-0.03em] text-white light:text-slate-900">
               Kaj sledi po oddaji?
@@ -51,9 +57,9 @@ export default function Contact() {
               ))}
             </ol>
           </div>
-        </FadeIn>
+        </div>
 
-        <FadeIn delay={0.1} className="relative mt-6 w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[760px]">
+        <div className="relative mt-6 w-full max-w-[min(100%,21rem)] sm:max-w-[32rem] md:max-w-[760px]">
           <div className={surfacePanel}>
             <div
               className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(22,163,74,0.07),transparent_55%)]"
@@ -73,7 +79,7 @@ export default function Contact() {
               <ContactForm />
             </div>
           </div>
-        </FadeIn>
+        </div>
       </div>
     </Section>
   );

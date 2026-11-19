@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FadeIn } from "@/components/animations";
+import type { ReactNode } from "react";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
 import SeoFaq from "@/components/common/SeoFaq";
@@ -223,6 +223,20 @@ const sectionDecor = (
   </>
 );
 
+// The paid-search landing page intentionally renders all content as server HTML.
+// Scroll-reveal hydration on its long list of sections adds client work but
+// does not help visitors find information or submit an enquiry.
+function StaticReveal({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return <div className={className}>{children}</div>;
+}
+
 export default function WebUiPage() {
   return (
     <>
@@ -233,7 +247,8 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[48rem] pt-4 sm:pt-6 lg:pt-8">
-          <FadeIn>
+          {/* Above-the-fold content must be visible before JS hydration. */}
+          <div>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               <span
                 className="inline-block h-px w-6 bg-[#16a34a]/70"
@@ -266,7 +281,7 @@ export default function WebUiPage() {
                 Kako poteka izvedba
               </CtaLink>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </Section>
 
@@ -277,7 +292,7 @@ export default function WebUiPage() {
         className="bg-[#050816] light:bg-slate-50"
       >
         <div className="mx-auto max-w-[56rem]">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               KDAJ IMA SMISEL
             </p>
@@ -287,7 +302,7 @@ export default function WebUiPage() {
             >
               Ko spletna stran postane del poslovanja.
             </h2>
-          </FadeIn>
+          </StaticReveal>
 
           <ol className="mt-10 space-y-0 border-t border-white/10 light:border-slate-200">
             {whenSituations.map((item, index) => (
@@ -295,7 +310,7 @@ export default function WebUiPage() {
                 key={item.lead}
                 className="border-b border-white/10 light:border-slate-200"
               >
-                <FadeIn delay={0.03 + index * 0.03}>
+                <StaticReveal delay={0.03 + index * 0.03}>
                   <div className="grid gap-3 py-6 sm:grid-cols-[2.5rem_minmax(0,1fr)] sm:gap-5 md:py-7">
                     <span className="pt-1 font-heading text-[12px] font-medium tabular-nums tracking-[0.16em] text-[#16a34a]/80 light:text-[#15803d]">
                       {String(index + 1).padStart(2, "0")}
@@ -311,7 +326,7 @@ export default function WebUiPage() {
                       </p>
                     </div>
                   </div>
-                </FadeIn>
+                </StaticReveal>
               </li>
             ))}
           </ol>
@@ -326,7 +341,7 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto grid max-w-[1100px] gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16 lg:items-start">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>UI / UX</p>
             <h2
               id="web-ui-ux-title"
@@ -340,9 +355,9 @@ export default function WebUiPage() {
               UI/UX ni okras. Je način, kako spletna rešitev vodi obiskovalca —
               od prvega vtisa do jasnega naslednjega koraka.
             </p>
-          </FadeIn>
+          </StaticReveal>
 
-          <FadeIn delay={0.06}>
+          <StaticReveal delay={0.06}>
             <div className="border-l border-[#16a34a]/35 pl-6 light:border-[#16a34a]/40 sm:pl-8">
               <p className="text-[13px] font-medium uppercase tracking-[0.16em] text-slate-500 light:text-slate-500">
                 Obiskovalcu mora omogočiti, da
@@ -362,7 +377,7 @@ export default function WebUiPage() {
                 ))}
               </ul>
             </div>
-          </FadeIn>
+          </StaticReveal>
         </div>
       </Section>
 
@@ -373,7 +388,7 @@ export default function WebUiPage() {
         className="bg-[#050816] light:bg-slate-50"
       >
         <div className="mx-auto w-full max-w-[1200px]">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               SPLETNE REŠITVE
             </p>
@@ -383,7 +398,7 @@ export default function WebUiPage() {
             >
               Od predstavitve podjetja do zahtevnejše digitalne izkušnje.
             </h2>
-          </FadeIn>
+          </StaticReveal>
 
           <ol className="mt-10 border-t border-white/10 light:border-slate-200">
             {solutions.map((item) => (
@@ -418,7 +433,7 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[56rem]">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               OBLIKOVANJE + INŽENIRING
             </p>
@@ -434,12 +449,12 @@ export default function WebUiPage() {
               Frontend ni samo izvedba dizajna. Je del uporabniške izkušnje in
               dolgoročne kakovosti produkta.
             </p>
-          </FadeIn>
+          </StaticReveal>
 
           <ul className="mt-10 divide-y divide-white/8 border-y border-white/8 light:divide-slate-200/80 light:border-slate-200/80">
             {designEngineering.map((item, index) => (
               <li key={item.title}>
-                <FadeIn delay={0.03 + index * 0.03}>
+                <StaticReveal delay={0.03 + index * 0.03}>
                   <div className="grid gap-2 py-6 sm:grid-cols-[minmax(10rem,17rem)_minmax(0,1fr)] sm:gap-8 md:py-7">
                     <h3 className="font-heading text-[1.05rem] font-semibold tracking-[-0.03em] text-white light:text-slate-900 md:text-[1.12rem]">
                       {item.title}
@@ -450,12 +465,12 @@ export default function WebUiPage() {
                       {item.body}
                     </p>
                   </div>
-                </FadeIn>
+                </StaticReveal>
               </li>
             ))}
           </ul>
 
-          <FadeIn delay={0.12}>
+          <StaticReveal delay={0.12}>
             <p className="mt-8 text-[13px] tracking-[0.04em] text-slate-500 light:text-slate-500">
               <span className="text-slate-400 light:text-slate-600">
                 Next.js
@@ -471,7 +486,7 @@ export default function WebUiPage() {
                 Tailwind CSS
               </span>
             </p>
-          </FadeIn>
+          </StaticReveal>
         </div>
       </Section>
 
@@ -484,7 +499,7 @@ export default function WebUiPage() {
         innerClassName="overflow-x-hidden"
       >
         <div className="mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start lg:gap-14">
-          <FadeIn className="lg:pt-1">
+          <StaticReveal className="lg:pt-1">
             <div className="max-w-[32rem]">
               <p className={cn(kickerClass, "light:text-slate-500")}>
                 NAČIN DELA
@@ -502,7 +517,7 @@ export default function WebUiPage() {
                 razvijajo.
               </p>
             </div>
-          </FadeIn>
+          </StaticReveal>
 
           <ol className="border-y border-white/8 light:border-slate-200/80">
             {phases.map((phase, index) => (
@@ -514,7 +529,7 @@ export default function WebUiPage() {
                     "border-t border-white/8 hover:border-white/14 light:border-slate-200/80 light:hover:border-slate-300/90",
                 )}
               >
-                <FadeIn delay={0.06 + index * 0.05}>
+                <StaticReveal delay={0.06 + index * 0.05}>
                   <div
                     className={cn(
                       "grid items-start gap-3.5 py-7 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-5 md:gap-6 md:py-8 lg:py-[2.15rem]",
@@ -535,7 +550,7 @@ export default function WebUiPage() {
                       </p>
                     </div>
                   </div>
-                </FadeIn>
+                </StaticReveal>
               </li>
             ))}
           </ol>
@@ -550,7 +565,7 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[52rem]">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>PO OBJAVI</p>
             <h2
               id="web-ui-after-title"
@@ -564,12 +579,12 @@ export default function WebUiPage() {
               Po objavi ostane prostor za vzdrževanje, izboljšave in rast — z
               lastništvom kode in brez nepotrebne vezave.
             </p>
-          </FadeIn>
+          </StaticReveal>
 
           <ul className="mt-9 space-y-5">
             {afterLaunch.map((item, index) => (
               <li key={item.title}>
-                <FadeIn delay={0.03 + index * 0.03}>
+                <StaticReveal delay={0.03 + index * 0.03}>
                   <div className="flex gap-4 sm:gap-5">
                     <span
                       className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#16a34a]/80"
@@ -586,7 +601,7 @@ export default function WebUiPage() {
                       </p>
                     </div>
                   </div>
-                </FadeIn>
+                </StaticReveal>
               </li>
             ))}
           </ul>
@@ -636,6 +651,7 @@ export default function WebUiPage() {
               <li key={project.href}>
                 <Link
                   href={project.href}
+                  prefetch={false}
                   className="block h-full rounded-2xl border border-white/10 bg-white/[0.035] p-6 transition hover:border-emerald-500/40 light:border-slate-200 light:bg-white"
                 >
                   <h3 className="font-heading text-lg font-semibold text-white light:text-slate-900">
@@ -663,7 +679,7 @@ export default function WebUiPage() {
         className="bg-[#050816] light:bg-slate-50"
       >
         <div className="mx-auto max-w-[40rem]">
-          <FadeIn>
+          <StaticReveal>
             <h2
               id="web-ui-related-title"
               className="font-heading text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-slate-500 light:text-slate-500"
@@ -675,6 +691,7 @@ export default function WebUiPage() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={link.href === "/kontakt"}
                     className={cn(
                       textLinkClass,
                       "w-full justify-between py-3.5 text-[15px] no-underline hover:underline light:hover:text-slate-900",
@@ -685,7 +702,7 @@ export default function WebUiPage() {
                 </li>
               ))}
             </ul>
-          </FadeIn>
+          </StaticReveal>
         </div>
       </Section>
 
@@ -697,7 +714,7 @@ export default function WebUiPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[40rem] pb-4 sm:pb-6 lg:pb-10">
-          <FadeIn>
+          <StaticReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               NASLEDNJI KORAK
             </p>
@@ -717,7 +734,7 @@ export default function WebUiPage() {
                 Pošljite povpraševanje
               </CtaLink>
             </div>
-          </FadeIn>
+          </StaticReveal>
         </div>
       </Section>
     </>

@@ -134,7 +134,7 @@ test("above-fold brand only preloads the default visible variant", () => {
   assert.ok(light.includes('loading="lazy"'), "Hidden light logo must avoid eager preloading");
   assert.ok(light.includes('fetchPriority="low"'), "Hidden light logo should have low fetch priority");
   const cookie = read("components/legal/CookieBanner.tsx");
-  assert.ok(cookie.includes('href="/politika-piskotkov"\n              prefetch={false}'), "Cookie policy link should not prefetch");
+  assert.ok(cookie.replace(/\r\n/g, "\n").includes('href="/politika-piskotkov"\n              prefetch={false}'), "Cookie policy link should not prefetch");
 });
 
 test("mobile navigation does not eagerly hydrate the animation framework", () => {
@@ -176,4 +176,34 @@ test("contact consent validation shows one actionable error", () => {
   const contact = read("components/contact/ContactForm.tsx");
   assert.ok(contact.includes("if (!consent) delete fieldErrors.consentAt"), "Do not show duplicate missing consent and timestamp warnings");
   assert.ok(contact.includes("contactSchema.safeParse"), "Keep strict server-compatible schema");
+});
+
+test("paid-search service page renders content without hydration-dependent reveal", () => {
+  const page = read("components/web-ui-page/WebUiPage.tsx");
+  assert.ok(page.includes("function StaticReveal("), "Landing-page content must remain server rendered");
+  assert.ok(!page.includes('import { FadeIn }'), "Avoid client-side reveal animations on this landing page");
+  assert.ok(page.includes('href="/kontakt?service=web"'), "Keep fast conversion path");
+  assert.ok(page.includes("prefetch={false}"), "Offscreen project links must avoid eager RSC fetch");
+  assert.ok(page.includes('prefetch={link.href === "/kontakt"}'), "Retain intentional contact prefetch");
+});
+test("marketing navigation avoids unintended background prefetch", () => {
+  assert.ok(read("components/layout/HeaderLogo.tsx").includes("prefetch={false}"), "Header logo should not prefetch home on landing pages");
+  assert.ok(read("components/layout/FooterColumns.tsx").includes("prefetch={false}"), "Footer service links should not prefetch every service");
+  assert.ok(read("components/layout/Footer.tsx").includes("prefetch={false}"), "Legal links should not prefetch");
+});
+
+test("contact form remains visible immediately and keeps working", () => {
+  const page = read("components/sections/Contact.tsx");
+  assert.ok(!page.includes("FadeIn"), "Contact form must not wait for a scroll reveal animation");
+  assert.ok(page.includes("<ContactForm />"), "Contact form remains available");
+  assert.ok(page.includes("Pošljite povpraševanje"), "Keep conversion CTA heading");
+});
+
+test("brand SVG logos remain pixel-accurate lossless and below 25 kB", () => {
+  for (const mode of ["dark", "light"]) {
+    const svg = read(`public/brand/logo-horizontal-${mode}.svg`);
+    assert.match(svg, /<svg[^>]+viewBox="0 0 1995 397"/);
+    assert.match(svg, /data:image\/webp;base64,/);
+    assert.ok(Buffer.byteLength(svg, "utf8") < 25000, `${mode} header logo should be under 25 kB`);
+  }
 });

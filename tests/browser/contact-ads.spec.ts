@@ -115,3 +115,77 @@ test("legacy analytics, necessary-only and honeypot receipts never convert", asy
   ).toBeVisible();
   expect(await events(page)).toEqual([]);
 });
+
+test("ad landing page opens an immediately usable preselected contact form", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-ads-v1", "necessary");
+  });
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+
+  await page.goto("/spletne-strani-in-ui-ux");
+  const heading = page.getByRole("heading", {
+    level: 1,
+    name: "Izdelava spletnih strani za podjetja",
+  });
+  await expect(heading).toBeVisible();
+  await expect(page.getByRole("link", { name: "Pridobite ponudbo" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Pridobite ponudbo" }).click();
+  await expect(page).toHaveURL(/\/kontakt\?service=web$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Pošljite povpraševanje" })).toBeVisible();
+  await expect(page.locator("#contact-form")).toBeVisible();
+  await expect(page.locator("#contact-form select[name=service]")).toHaveValue("Spletne strani / UI-UX");
+  expect(pageErrors).toEqual([]);
+});
+
+for (const width of [320, 375, 390, 768, 1024, 1440]) {
+  test(`ad-to-contact layout stays usable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 840 });
+    await page.addInitScript(() => {
+      localStorage.setItem("ju-tan-analytics", "necessary");
+      localStorage.setItem("ju-tan-ads-v1", "necessary");
+    });
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+
+    await page.goto("/spletne-strani-in-ui-ux");
+    await expect(page.getByRole("heading", {
+      level: 1,
+      name: "Izdelava spletnih strani za podjetja",
+    })).toBeVisible();
+    await expect.poll(() => page.evaluate(() =>
+      document.documentElement.scrollWidth <= window.innerWidth
+    )).toBe(true);
+
+    await page.getByRole("link", { name: "Pridobite ponudbo" }).click();
+    await expect(page).toHaveURL(/\/kontakt\?service=web$/);
+    await expect(page.locator("#contact-form")).toBeVisible();
+    await expect(page.locator("#contact-form select[name=service]"))
+      .toHaveValue("Spletne strani / UI-UX");
+    await expect.poll(() => page.evaluate(() =>
+      document.documentElement.scrollWidth <= window.innerWidth
+    )).toBe(true);
+    expect(errors).toEqual([]);
+  });
+}
+
+test("contact introduction gives a direct shortcut to the enquiry form", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-ads-v1", "necessary");
+  });
+  await page.goto("/kontakt?service=web");
+  const shortcut = page.getByRole("link", { name: "Izpolnite obrazec" });
+  await expect(shortcut).toBeVisible();
+  const firstScreen = await shortcut.boundingBox();
+  expect(firstScreen).not.toBeNull();
+  expect(firstScreen!.y).toBeLessThan(844);
+  await shortcut.click();
+  await expect(page).toHaveURL(/#contact-form$/);
+  await expect(page.locator("#contact-form")).toBeInViewport();
+  await expect(page.locator("#contact-form select[name=service]"))
+    .toHaveValue("Spletne strani / UI-UX");
+});

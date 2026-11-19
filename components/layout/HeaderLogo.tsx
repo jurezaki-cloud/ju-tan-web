@@ -8,6 +8,7 @@ export default function HeaderLogo() {
   return (
     <Link
       href="/#home"
+      prefetch={false}
       aria-label={`${brandName} domov`}
       className={cn(
         "flex min-h-11 min-w-11 shrink-0 items-center rounded-lg hover:-translate-y-px",
