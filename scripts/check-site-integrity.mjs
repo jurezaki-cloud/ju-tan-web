@@ -68,5 +68,5 @@ test("homepage ecosystem modules navigate to relevant public service pages", () 
   for (const destination of ["/graficno-oblikovanje", "/razvoj-programske-opreme", "/ju-tan-office"]) {
     assert.ok(stage.includes('href: "' + destination + '"'), "Missing ecosystem destination: " + destination);
   }
-  assert.equal((stage.match(/<button\\b/g) ?? []).length, 0, "Inactive decorative button remains in ecosystem");
+  assert.ok(!stage.includes("<button"), "Inactive decorative button remains in ecosystem");
 });
