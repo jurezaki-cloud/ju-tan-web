@@ -177,3 +177,17 @@ test("contact consent validation shows one actionable error", () => {
   assert.ok(contact.includes("if (!consent) delete fieldErrors.consentAt"), "Do not show duplicate missing consent and timestamp warnings");
   assert.ok(contact.includes("contactSchema.safeParse"), "Keep strict server-compatible schema");
 });
+
+test("paid-search service page renders content without hydration-dependent reveal", () => {
+  const page = read("components/web-ui-page/WebUiPage.tsx");
+  assert.ok(page.includes("function StaticReveal("), "Landing-page content must remain server rendered");
+  assert.ok(!page.includes('import { FadeIn }'), "Avoid client-side reveal animations on this landing page");
+  assert.ok(page.includes('href="/kontakt?service=web"'), "Keep fast conversion path");
+  assert.ok(page.includes("prefetch={false}"), "Offscreen project links must avoid eager RSC fetch");
+  assert.ok(page.includes('prefetch={link.href === "/kontakt"}'), "Retain intentional contact prefetch");
+});
+test("marketing navigation avoids unintended background prefetch", () => {
+  assert.ok(read("components/layout/HeaderLogo.tsx").includes("prefetch={false}"), "Header logo should not prefetch home on landing pages");
+  assert.ok(read("components/layout/FooterColumns.tsx").includes("prefetch={false}"), "Footer service links should not prefetch every service");
+  assert.ok(read("components/layout/Footer.tsx").includes("prefetch={false}"), "Legal links should not prefetch");
+});
