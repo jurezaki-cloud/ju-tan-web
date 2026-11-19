@@ -171,3 +171,9 @@ test("contact form explains missing consent without submitting data", () => {
   assert.ok(form.includes("if (!parsed.success)"), "Invalid contact submissions must be rejected before fetch");
   assert.ok(!form.includes("disabled={loading || !consent}"), "Consent must not silently lock the submit button");
 });
+
+test("contact consent validation shows one actionable error", () => {
+  const contact = read("components/contact/ContactForm.tsx");
+  assert.ok(contact.includes("if (!consent) delete fieldErrors.consentAt"), "Do not show duplicate missing consent and timestamp warnings");
+  assert.ok(contact.includes("contactSchema.safeParse"), "Keep strict server-compatible schema");
+});
