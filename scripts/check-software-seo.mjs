@@ -191,3 +191,10 @@ test("marketing navigation avoids unintended background prefetch", () => {
   assert.ok(read("components/layout/FooterColumns.tsx").includes("prefetch={false}"), "Footer service links should not prefetch every service");
   assert.ok(read("components/layout/Footer.tsx").includes("prefetch={false}"), "Legal links should not prefetch");
 });
+
+test("contact form remains visible immediately and keeps working", () => {
+  const page = read("components/sections/Contact.tsx");
+  assert.ok(!page.includes("FadeIn"), "Contact form must not wait for a scroll reveal animation");
+  assert.ok(page.includes("<ContactForm />"), "Contact form remains available");
+  assert.ok(page.includes("Pošljite povpraševanje"), "Keep conversion CTA heading");
+});
