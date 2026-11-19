@@ -3,7 +3,7 @@
 import { FadeIn } from "@/components/animations";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
-import OfficeProductStage from "@/components/sections/office/OfficeProductStage";
+import OfficeProductStageDeferred from "@/components/sections/office/OfficeProductStageDeferred";
 import { bodyClass, kickerClass } from "@/design";
 import { cn } from "@/lib/utils";
 
@@ -120,7 +120,7 @@ export default function JuTanOffice() {
           </FadeIn>
 
           <FadeIn delay={0.08}>
-            <OfficeProductStage />
+            <OfficeProductStageDeferred />
           </FadeIn>
         </div>
       </div>
