@@ -61,6 +61,11 @@ test("capture stable mobile and desktop hero screenshots for visual review", asy
       });
       await page.getByRole("button", { name: "Samo nujno" }).click();
       await expect(consentBanner).toHaveCount(0);
+      // Consent must remain editable after the visitor's first choice.
+      await page.getByRole("button", { name: "Nastavitve piškotkov" }).click();
+      await expect(consentBanner).toBeVisible();
+      await page.getByRole("button", { name: "Samo nujno" }).click();
+      await expect(consentBanner).toHaveCount(0);
     }
     await page.screenshot({
       path: `test-results/visual/hero-${viewport.name}.png`,
