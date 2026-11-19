@@ -136,3 +136,12 @@ test("above-fold brand only preloads the default visible variant", () => {
   const cookie = read("components/legal/CookieBanner.tsx");
   assert.ok(cookie.includes('href="/politika-piskotkov"\n              prefetch={false}'), "Cookie policy link should not prefetch");
 });
+
+test("mobile navigation does not eagerly hydrate the animation framework", () => {
+  const menu = read("components/layout/MobileNavigation.tsx");
+  assert.ok(!menu.includes("framer-motion"), "Closed mobile menu must not load Framer Motion");
+  assert.ok(menu.includes("mobile-nav-enter"), "Menu keeps its entrance animation");
+  assert.ok(menu.includes('z-[60]'), "Menu must be above header and below consent");
+  assert.ok(menu.includes('event.key === "Escape"'), "Escape close must be preserved");
+  assert.ok(menu.includes("querySelectorAll<HTMLElement>(FOCUSABLE)"), "Focus trap must be preserved");
+});
