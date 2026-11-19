@@ -629,7 +629,7 @@ export default function WebUiPage() {
               },
               {
                 href: "/reference/instalacije-the-end",
-                title: "Instalacije THE END",
+                title: "Inštalacije THE END",
                 description: "Predstavitvena spletna stran za storitveno podjetje.",
               },
             ].map((project) => (
