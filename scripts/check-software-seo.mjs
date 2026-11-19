@@ -79,3 +79,21 @@ test("preview deployments stay noindex while production keeps crawl directives",
   assert.ok(sharedSeo.includes('alternates: {'), "Canonical metadata missing");
   assert.ok(sharedSeo.includes('canonical: url'), "Canonical URL must be absolute");
 });
+
+test("reference SEO title stays concise without changing the visible heading", () => {
+  const projectPage = read("app/reference/[slug]/page.tsx");
+  const data = read("lib/data/project-studies.ts");
+  const title = data.match(/seoTitle: "([^"]+)"/)?.[1];
+  assert.ok(title, "The END metadata title must be set");
+  assert.ok(title.length + " | JU-TAN".length <= 60, "The END full search title is too long");
+  assert.ok(projectPage.includes("title: project.seoTitle ?? project.title"), "SEO title fallback is missing");
+  assert.ok(projectPage.includes("{project.title}"), "Visible project title must remain unchanged");
+});
+
+test("APK catalog gives practical instructions and links to real app pages", () => {
+  const apk = read("app/free-apk-za-podjetja/page.tsx");
+  assert.ok(apk.includes('aria-labelledby="apk-guide-title"'), "APK installation guide missing");
+  assert.ok(apk.includes('href: "/prejeti-racuni"'), "Received invoices app link missing");
+  assert.ok(apk.includes('href: "/potni-nalogi"'), "Travel orders app link missing");
+  assert.ok(apk.includes('href="/kontakt"'), "Support contact link missing");
+});
