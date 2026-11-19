@@ -126,3 +126,13 @@ test("marketing sections do not load the animation library in the critical path"
   assert.ok(deferred.includes('dynamic(() => import("./OfficeProductStage")'), "Office animation must be code split");
   assert.ok(deferred.includes("rootMargin"), "Office showcase should load before it enters view");
 });
+
+test("above-fold brand only preloads the default visible variant", () => {
+  const logo = read("components/common/BrandLogo.tsx");
+  const light = logo.split("src={sources.light}")[1];
+  assert.ok(light, "Theme-aware logo variant missing");
+  assert.ok(light.includes('loading="lazy"'), "Hidden light logo must avoid eager preloading");
+  assert.ok(light.includes('fetchPriority="low"'), "Hidden light logo should have low fetch priority");
+  const cookie = read("components/legal/CookieBanner.tsx");
+  assert.ok(cookie.includes('href="/politika-piskotkov"\n              prefetch={false}'), "Cookie policy link should not prefetch");
+});
