@@ -157,7 +157,7 @@ export default function References({ full = false }: { full?: boolean }) {
               </>
             );
             const cls =
-              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] light:border-slate-200 light:bg-white";
+              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-emerald-700 light:focus-visible:ring-offset-slate-50 light:border-slate-200 light:bg-white";
             return project.href.startsWith("http") ? (
               <a
                 key={project.title}
