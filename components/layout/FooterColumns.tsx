@@ -128,6 +128,7 @@ export default function FooterColumns() {
                 <li key={area.label}>
                   <Link
                     href={area.href}
+                    prefetch={false}
                     className={cn(
                       "group flex min-h-10 items-center gap-3 rounded-lg py-2.5 text-[15px] leading-[1.5] text-slate-300",
                       hoverTransition,
