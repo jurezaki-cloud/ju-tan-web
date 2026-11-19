@@ -610,7 +610,7 @@ export default function WebUiPage() {
             Oglejte si, kako smo zasnovali spletne portale in predstavitveno stran
             z različnimi cilji, vsebinami in uporabniki.
           </p>
-          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 href: "/reference/kampradar",
@@ -626,6 +626,11 @@ export default function WebUiPage() {
                 href: "/reference/tanjina-lucka-upanja",
                 title: "Tanjina lučka upanja",
                 description: "Spletna predstavitev pobude z jasno potjo do stika.",
+              },
+              {
+                href: "/reference/instalacije-the-end",
+                title: "Instalacije THE END",
+                description: "Predstavitvena spletna stran za storitveno podjetje.",
               },
             ].map((project) => (
               <li key={project.href}>
