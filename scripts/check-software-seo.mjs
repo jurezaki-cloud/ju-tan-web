@@ -154,3 +154,12 @@ test("Office marketing section stays server-rendered while interactions remain d
   assert.ok(office.includes("<FadeIn"), "Section entrance transitions should remain available");
 });
 
+
+test("open mobile navigation stays above the floating assistant", () => {
+  const header = read("components/layout/Header.tsx");
+  const agent = read("components/ai/JuTanAgentLazy.tsx");
+  const mobile = read("components/layout/MobileNavigation.tsx");
+  assert.ok(header.includes("style={menuOpen ? { zIndex: 65 } : undefined}"), "Open header must outrank assistant layer");
+  assert.ok(agent.includes("z-[60]"), "Assistant layer must remain below open navigation");
+  assert.ok(mobile.includes("z-[60]"), "Mobile panel layer must remain set");
+});
