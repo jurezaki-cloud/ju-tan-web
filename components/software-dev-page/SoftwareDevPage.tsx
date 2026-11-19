@@ -144,6 +144,11 @@ export const seoFaq = [
       "Razvijamo poslovne, spletne in namizne aplikacije, interna orodja, integracije, API-je ter avtomatizacije poslovnih procesov.",
   },
   {
+    question: "Kako poteka implementacija programske opreme v obstoječe podjetje?",
+    answer:
+      "Najprej pregledamo obstoječe programe, potek dela, podatke in možnosti povezovanja. Nato opredelimo zahteve, preizkusimo ključne podatkovne tokove ter uvedbo načrtujemo po preverljivih korakih. Obseg prilagodimo dejanskim potrebam podjetja.",
+  },
+  {
     question: "Ali razvijate rešitve za podjetja po Sloveniji?",
     answer:
       "Da. JU-TAN Studio ima sedež v Cerknici in razvija programske rešitve za podjetja po Sloveniji.",
@@ -200,15 +205,15 @@ export default function SoftwareDevPage() {
             className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
           >
             Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
-            pokrijejo procesov dovolj dobro. Načrtujemo in zgradimo programsko
-            opremo po meri — spletne in namizne aplikacije, interna orodja,
-            integracije in sisteme, ki jih je mogoče vzdrževati in razvijati
-            naprej.
+            pokrijejo procesov dovolj dobro. Pomagamo pri načrtovanju, razvoju
+            in implementaciji programske opreme po meri — od spletnih in namiznih
+            aplikacij do integracij z obstoječimi sistemi. Najprej preverimo
+            poslovni proces, podatke in tehnične možnosti povezovanja.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <CtaLink href="/kontakt?service=software" variant="primary">
-              Začnimo projekt
+              Pošljite povpraševanje za razvoj
             </CtaLink>
             <CtaLink href="#primer" variant="secondary">
               Oglejte si primer

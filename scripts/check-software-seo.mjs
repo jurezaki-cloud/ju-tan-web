@@ -36,3 +36,11 @@ test("structured service and breadcrumb declarations", () => {
     assert.ok(page.includes(token), "Missing structured data: " + token);
   }
 });
+
+test("software implementation wording, CTA, and FAQ remain aligned", () => {
+  assert.ok(hero.includes("in implementaciji programske opreme po meri"));
+  assert.ok(hero.includes("integracij z obstoječimi sistemi"));
+  assert.ok(hero.includes("Kako poteka implementacija programske opreme v obstoječe podjetje?"));
+  assert.ok(hero.includes("Pošljite povpraševanje za razvoj"));
+  assert.ok(hero.includes('href="/kontakt?service=software"'));
+});
