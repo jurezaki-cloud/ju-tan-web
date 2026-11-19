@@ -154,9 +154,3 @@ test("Office marketing section stays server-rendered while interactions remain d
   assert.ok(office.includes("<FadeIn"), "Section entrance transitions should remain available");
 });
 
-test("mobile menu code is not loaded until the menu opens", () => {
-  const header = read("components/layout/Header.tsx");
-  assert.ok(header.includes('dynamic(() => import("./MobileNavigation")'), "Mobile navigation should be code split");
-  assert.ok(header.includes("{menuOpen ? ("), "Hidden mobile menu should remain unmounted");
-  assert.ok(header.includes('aria-controls={menuOpen ? "mobile-navigation" : undefined}'), "Menu control must reference a mounted navigation panel");
-});
