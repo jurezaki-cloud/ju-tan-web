@@ -145,3 +145,11 @@ test("mobile navigation does not eagerly hydrate the animation framework", () =>
   assert.ok(menu.includes('event.key === "Escape"'), "Escape close must be preserved");
   assert.ok(menu.includes("querySelectorAll<HTMLElement>(FOCUSABLE)"), "Focus trap must be preserved");
 });
+
+test("same-page anchor links avoid redundant RSC prefetch without delaying contact CTA", () => {
+  const logo = read("components/layout/HeaderLogo.tsx");
+  const cta = read("components/navbar/CtaLink.tsx");
+  assert.ok(logo.includes('href="/#home"\n      prefetch={false}'), "Home anchor must avoid same-page prefetch");
+  assert.ok(cta.includes('prefetch={href.startsWith("#") ? false : undefined}'), "Hash-only links should not prefetch");
+  assert.ok(read("components/hero/HeroButtons.tsx").includes('href="/kontakt"'), "Primary contact navigation must be preserved");
+});
