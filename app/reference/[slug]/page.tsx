@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: Props) {
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <Link
                 href={inquiryHref}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-offset-slate-50"
               >
                 Povpraševanje za podoben projekt →
               </Link>
