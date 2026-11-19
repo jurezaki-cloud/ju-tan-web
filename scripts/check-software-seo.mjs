@@ -58,6 +58,12 @@ test("web service SEO metadata and real project references stay consistent", () 
   for (const route of ["/reference/instalacije-the-end", "/reference/veli-joze", "/kontakt?service=web"]) {
     assert.ok(webContent.includes(route), "Missing web service conversion link: " + route);
   }
+  const referencesTitle = references.split("const pageTitle =")[1]?.match(/"([^"]+)"/)?.[1];
+  assert.ok(referencesTitle, "Reference title missing");
+  assert.ok(referencesTitle.length <= 50, "Reference title plus brand suffix is too long");
+  const contactDescription = contact.split("description:")[1]?.match(/"([^"]+)"/)?.[1];
+  assert.ok(contactDescription, "Contact description missing");
+  assert.ok(contactDescription.length <= 160, "Contact description should be concise");
   assert.ok(references.includes("Reference spletnih strani in poslovnih rešitev"));
   assert.ok(contact.includes("Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani"));
 });
