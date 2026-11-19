@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useTransform } from "framer-motion";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import CoreMark from "@/components/common/CoreMark";
 import { useHeroRadarMotion } from "@/hooks/useHeroRadarMotion";
@@ -10,6 +11,7 @@ import { heroCopy } from "./copy";
 const stageModules = [
   {
     id: "design",
+    href: "/graficno-oblikovanje",
     label: "Design",
     left: "27%",
     top: "28%",
@@ -19,6 +21,7 @@ const stageModules = [
   },
   {
     id: "aplikacije",
+    href: "/razvoj-programske-opreme",
     label: "Aplikacije",
     left: "50%",
     top: "18%",
@@ -28,6 +31,7 @@ const stageModules = [
   },
   {
     id: "podatki",
+    href: "/razvoj-programske-opreme",
     label: "Podatki",
     left: "73%",
     top: "28%",
@@ -37,6 +41,7 @@ const stageModules = [
   },
   {
     id: "poslovni-sistemi",
+    href: "/ju-tan-office",
     label: "Poslovni sistemi",
     left: "27%",
     top: "72%",
@@ -46,6 +51,7 @@ const stageModules = [
   },
   {
     id: "integracije",
+    href: "/razvoj-programske-opreme",
     label: "Integracije",
     left: "50%",
     top: "82%",
@@ -55,6 +61,7 @@ const stageModules = [
   },
   {
     id: "ai",
+    href: "/razvoj-programske-opreme",
     label: "AI",
     left: "73%",
     top: "72%",
@@ -255,9 +262,9 @@ export default function HeroStage() {
                             }
                       }
                     >
-                      <button
-                        type="button"
-                        aria-label={`${module.label} v digitalnem ekosistemu JU-TAN`}
+                      <Link
+                        href={module.href}
+                        aria-label={`Več o področju ${module.label} v JU-TAN Studio`}
                         onPointerEnter={() => setActiveNodeId(module.id)}
                         onPointerLeave={() => setActiveNodeId((current) => (current === module.id ? null : current))}
                         onFocus={() => setActiveNodeId(module.id)}
@@ -301,7 +308,7 @@ export default function HeroStage() {
                         >
                           {module.label}
                         </span>
-                      </button>
+                      </Link>
                     </div>
                   );
                 })}
