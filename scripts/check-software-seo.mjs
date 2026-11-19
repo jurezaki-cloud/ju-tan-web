@@ -198,3 +198,12 @@ test("contact form remains visible immediately and keeps working", () => {
   assert.ok(page.includes("<ContactForm />"), "Contact form remains available");
   assert.ok(page.includes("Pošljite povpraševanje"), "Keep conversion CTA heading");
 });
+
+test("brand SVG logos remain pixel-accurate lossless and below 25 kB", () => {
+  for (const mode of ["dark", "light"]) {
+    const svg = read(`public/brand/logo-horizontal-${mode}.svg`);
+    assert.match(svg, /<svg[^>]+viewBox="0 0 1995 397"/);
+    assert.match(svg, /data:image\/webp;base64,/);
+    assert.ok(Buffer.byteLength(svg, "utf8") < 25000, `${mode} header logo should be under 25 kB`);
+  }
+});
