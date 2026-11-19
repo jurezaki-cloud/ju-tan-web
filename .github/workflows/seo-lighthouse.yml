@@ -24,7 +24,7 @@ jobs:
   lighthouse:
     name: Mobile Lighthouse diagnostics
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       CI: "true"
       NEXT_TELEMETRY_DISABLED: "1"
@@ -122,6 +122,50 @@ jobs:
               note: "Same runner with local production-mode servers; lab measurements may still vary between runs."
             }));
           }
+          NODE
+      - name: Repeat local mobile Lighthouse (4 samples per branch)
+        run: |
+          # First pair is already saved as pr-mobile and main-local-mobile.
+          # Alternate order to reduce systematic cold/warm run bias.
+          for round in 2 3 4; do
+            if [ "$round" -eq 3 ]; then
+              targets="main-local pr"
+            else
+              targets="pr main-local"
+            fi
+            for target in $targets; do
+              if [ "$target" = "pr" ]; then url="http://127.0.0.1:3104/"; else url="http://127.0.0.1:3105/"; fi
+              npx --yes lighthouse@12.8.2 "$url" \
+                --chrome-flags="--headless --no-sandbox" \
+                --only-categories=performance \
+                --form-factor=mobile \
+                --output=json \
+                --output-path="lighthouse-results/${target}-mobile-${round}.json" \
+                --quiet
+            done
+          done
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const metrics = ["largest-contentful-paint", "first-contentful-paint", "total-blocking-time", "cumulative-layout-shift"];
+          const median = values => {
+            const sorted = values.slice().sort((a, b) => a - b);
+            return (sorted[1] + sorted[2]) / 2;
+          };
+          const all = {};
+          for (const target of ["main-local", "pr"]) {
+            const files = [`lighthouse-results/${target}-mobile.json`, ...[2,3,4].map(n => `lighthouse-results/${target}-mobile-${n}.json`)];
+            const reports = files.map(file => JSON.parse(fs.readFileSync(file, "utf8")));
+            all[target] = {
+              samples: reports.length,
+              score: median(reports.map(r => r.categories.performance.score * 100)),
+              ...Object.fromEntries(metrics.map(k => [k, median(reports.map(r => r.audits[k].numericValue))])),
+              perRunLcpMs: reports.map(r => Math.round(r.audits["largest-contentful-paint"].numericValue)),
+            };
+          }
+          const summary = { method: "Lab medians from four runs each; same runner, production builds, local servers. Not field data.", ...all,
+            lcpMedianDeltaMs: all.pr["largest-contentful-paint"] - all["main-local"]["largest-contentful-paint"] };
+          console.log("LIGHTHOUSE_REPEATED_SUMMARY " + JSON.stringify(summary));
+          fs.writeFileSync("lighthouse-results/summary.json", JSON.stringify(summary, null, 2));
           NODE
       - name: Upload reports and logs
         if: always()
