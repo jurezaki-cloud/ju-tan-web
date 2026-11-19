@@ -24,10 +24,6 @@ export default function RootLayout({
       // Official requirement: https://github.com/pacocoursey/next-themes#with-app
       suppressHydrationWarning
     >
-      <head>
-        <link rel="preload" href="/fonts/syne-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/syne-latin-ext.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-      </head>
       <body className="min-h-screen bg-[#050816] font-sans text-white antialiased light:bg-slate-50 light:text-slate-900">
         <Providers>
           <a href="#main" className="skip-link">
