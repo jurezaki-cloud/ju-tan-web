@@ -44,3 +44,20 @@ test("software implementation wording, CTA, and FAQ remain aligned", () => {
   assert.ok(hero.includes("Pošljite povpraševanje za razvoj"));
   assert.ok(hero.includes('href="/kontakt?service=software"'));
 });
+
+test("web service SEO metadata and real project references stay consistent", () => {
+  const webPage = read("app/spletne-strani-in-ui-ux/page.tsx");
+  const webContent = read("components/web-ui-page/WebUiPage.tsx");
+  const references = read("app/reference/page.tsx");
+  const contact = read("app/kontakt/page.tsx");
+  const description = webPage.match(/const pageDescription =\\s*\n?\\s*"([^"]+)"/)?.[1];
+  assert.ok(description, "Web service meta description missing");
+  assert.ok(description.length <= 160, "Web service description should be concise");
+  assert.ok(webPage.includes('path,'));
+  assert.equal((webContent.match(/<h1\\b/g) ?? []).length, 1);
+  for (const route of ["/reference/instalacije-the-end", "/reference/veli-joze", "/kontakt?service=web"]) {
+    assert.ok(webContent.includes(route), "Missing web service conversion link: " + route);
+  }
+  assert.ok(references.includes("Reference spletnih strani in poslovnih rešitev"));
+  assert.ok(contact.includes("Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani"));
+});
