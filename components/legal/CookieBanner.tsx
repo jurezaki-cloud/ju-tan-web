@@ -42,6 +42,7 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
             {copy.message}{" "}
             <Link
               href="/politika-piskotkov"
+              prefetch={false}
               className={cn(
                 "font-medium text-slate-200 underline-offset-4 hover:underline light:text-slate-800",
                 focusRing,
