@@ -651,6 +651,7 @@ export default function WebUiPage() {
               <li key={project.href}>
                 <Link
                   href={project.href}
+                  prefetch={false}
                   className="block h-full rounded-2xl border border-white/10 bg-white/[0.035] p-6 transition hover:border-emerald-500/40 light:border-slate-200 light:bg-white"
                 >
                   <h3 className="font-heading text-lg font-semibold text-white light:text-slate-900">
@@ -690,6 +691,7 @@ export default function WebUiPage() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={link.href === "/kontakt"}
                     className={cn(
                       textLinkClass,
                       "w-full justify-between py-3.5 text-[15px] no-underline hover:underline light:hover:text-slate-900",
