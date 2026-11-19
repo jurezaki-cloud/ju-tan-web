@@ -163,3 +163,11 @@ test("open mobile navigation stays above the floating assistant", () => {
   assert.ok(agent.includes("z-[60]"), "Assistant layer must remain below open navigation");
   assert.ok(mobile.includes("z-[60]"), "Mobile panel layer must remain set");
 });
+
+test("contact form explains missing consent without submitting data", () => {
+  const form = read("components/contact/ContactForm.tsx");
+  assert.ok(form.includes("disabled={loading}"), "Visitors need an enabled submit button to see validation errors");
+  assert.ok(form.includes("contactSchema.safeParse"), "Contact submission must still require schema validation");
+  assert.ok(form.includes("if (!parsed.success)"), "Invalid contact submissions must be rejected before fetch");
+  assert.ok(!form.includes("disabled={loading || !consent}"), "Consent must not silently lock the submit button");
+});
