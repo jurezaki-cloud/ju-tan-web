@@ -33,3 +33,22 @@ test("contact and web service pages expose concise metadata and a single H1", as
     expect(content!.length).toBeLessThanOrEqual(160);
   }
 });
+
+test("capture stable mobile and desktop hero screenshots for visual review", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const viewport of [
+    { name: "mobile-390", width: 390, height: 844 },
+    { name: "desktop-1440", width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/");
+    await expect(page.locator("main h1")).toBeVisible();
+    await expect(page.locator('main a[href="/kontakt"]').first()).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({
+      path: `test-results/visual/hero-${viewport.name}.png`,
+      fullPage: false,
+      animations: "disabled",
+    });
+  }
+});
