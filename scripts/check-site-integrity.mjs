@@ -91,3 +91,12 @@ test("reference card labels and links have light-theme contrast overrides", () =
   assert.ok(cards.includes("light:text-emerald-700 light:hover:text-emerald-800"));
   assert.ok((cards.match(/light:text-emerald-700/g) ?? []).length >= 3);
 });
+
+test("logo inquiry CTA has clear contrast, visible focus and preselected graphic service", () => {
+  const page = read("app/izdelava-logotipa/page.tsx");
+  const form = read("components/contact/ContactForm.tsx");
+  assert.ok(page.includes("bg-emerald-600 px-6 py-3 font-semibold text-slate-950"));
+  assert.ok(page.includes("focus-visible:ring-2 focus-visible:ring-emerald-300"));
+  assert.ok(page.includes('href="/kontakt?service=graphic"'));
+  assert.ok(form.includes('graphic: "'));
+});
