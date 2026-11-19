@@ -62,3 +62,16 @@ test("contact and website service meta descriptions stay concise", () => {
     assert.ok(description.includes("JU-TAN"), `Missing branding for ${route}`);
   }
 });
+
+
+test("hero reveal remains CSS-only and respects reduced motion", () => {
+  const reveal = read("components/hero/HeroReveal.tsx");
+  const styles = read("components/hero/HeroReveal.module.css");
+
+  assert.ok(!/^["']use client["'];/m.test(reveal), "HeroReveal must remain a server component");
+  assert.ok(reveal.includes('import styles from "./HeroReveal.module.css"'));
+  assert.ok(reveal.includes("styles.enter"), "HeroReveal must apply the CSS module class");
+  assert.ok(styles.includes("@keyframes heroRevealEnter"), "Missing entrance animation");
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/, "Missing reduced motion support");
+  assert.match(styles, /animation:\s*none\s*!important/, "Reduced motion must disable animation");
+});
