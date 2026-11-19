@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const metadata = createPageMetadata({
-  title: "FREE APK ZA PODJETJA – brezplačne Android aplikacije",
+  title: "Brezplačne Android aplikacije za podjetja",
   description: "Brezplačni Android aplikaciji JU-TAN za podjetja: Prejeti računi in Pošlji potne naloge. Predstavitve, navodila in prenosi APK na enem mestu.",
   path: "/free-apk-za-podjetja",
 });
@@ -62,9 +62,34 @@ export default function FreeApkPage() {
                 </article>
               ))}
             </div>
-            <p className="mt-8 max-w-[48rem] text-sm leading-7 text-slate-400 light:text-slate-600">
-              APK je namestitvena datoteka za Android. Pred prenosom preveri zahteve in opombe pri izbrani aplikaciji. Aplikaciji nista namenjeni napravam iPhone.
-            </p>
+            <section aria-labelledby="apk-guide-title" className="mt-12 max-w-[64rem] border-t border-white/10 pt-9 light:border-slate-200">
+              <h2 id="apk-guide-title" className="font-heading text-2xl font-semibold text-white light:text-slate-900">
+                Kako izbrati in namestiti aplikacijo?
+              </h2>
+              <ol className="mt-6 grid gap-5 md:grid-cols-3">
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                  <h3 className="font-semibold text-emerald-400 light:text-emerald-700">1. Izberi opravilo</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-300 light:text-slate-700">
+                    Za fotografiranje in urejanje prejetih računov odpri Prejeti računi. Če urejaš že podpisane potne naloge, izberi Pošlji potne naloge.
+                  </p>
+                </li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                  <h3 className="font-semibold text-emerald-400 light:text-emerald-700">2. Preveri zahteve in različico</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-300 light:text-slate-700">
+                    Na strani izbrane aplikacije preberi opis, opombe o različici in navodila. Namestitveno datoteko prenesi prek tam navedene povezave.
+                  </p>
+                </li>
+                <li className="rounded-2xl border border-white/10 p-5 light:border-slate-200">
+                  <h3 className="font-semibold text-emerald-400 light:text-emerald-700">3. Namesti na Android</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-300 light:text-slate-700">
+                    Odpri preneseno datoteko APK in sledi navodilom telefona. Če Android zahteva dovoljenje za namestitev iz tega vira, ga odobri le za zaupanja vredno datoteko in ga nato po potrebi znova izklopi.
+                  </p>
+                </li>
+              </ol>
+              <p className="mt-6 text-sm leading-7 text-slate-400 light:text-slate-600">
+                APK je namestitvena datoteka za Android; aplikaciji nista namenjeni napravam iPhone. Če potrebuješ pojasnilo glede izbire ali namestitve, nam <Link href="/kontakt" className="font-semibold text-emerald-400 underline underline-offset-4 light:text-emerald-700">pošlji vprašanje</Link>.
+              </p>
+            </section>
           </div>
         </Section>
       </main>

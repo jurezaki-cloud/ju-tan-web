@@ -14,7 +14,7 @@ import { projectStudies } from "@/lib/data/project-studies";
 
 const path = "/reference";
 const pageTitle =
-  "Reference | Spletne strani, grafično oblikovanje in poslovna programska oprema";
+  "Reference spletnih strani in poslovnih rešitev";
 const pageDescription =
   "Izbrani projekti JU-TAN Studio: spletne strani, portali, grafično oblikovanje, logotipi, celostne podobe in poslovni program JU-TAN Office.";
 

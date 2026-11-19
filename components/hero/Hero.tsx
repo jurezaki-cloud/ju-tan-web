@@ -3,7 +3,7 @@ import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
 import HeroButtons from "./HeroButtons";
 import ScrollIndicator from "./ScrollIndicator";
-import HeroStage from "./HeroStage";
+import HeroStageDeferred from "./HeroStageDeferred";
 import styles from "./HeroSnow.module.css";
 
 const snowflakes = [
@@ -66,7 +66,7 @@ export default function Hero() {
         </div>
 
         <div className="relative mx-auto w-full max-w-[33rem] xl:mr-0 xl:max-w-[min(34rem,40vw)]">
-          <HeroStage />
+          <HeroStageDeferred />
         </div>
       </div>
 

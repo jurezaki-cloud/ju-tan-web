@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = findProject((await params).slug);
   if (!project) notFound();
   const base = createPageMetadata({
-    title: project.title,
+    title: project.seoTitle ?? project.title,
     description: project.description,
     path: `/reference/${project.slug}`,
   });

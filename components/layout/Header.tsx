@@ -32,6 +32,7 @@ export default function Header() {
 
   return (
     <header
+      style={menuOpen ? { zIndex: 65 } : undefined}
       className={cn(
         "header-shell sticky top-0 w-full pt-[env(safe-area-inset-top,0px)]",
         (scrolled || menuOpen) && "header-shell-scrolled",

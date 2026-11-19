@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import MagicStudio from "@/components/magic/MagicStudio";
 import { siteConfig } from "@/lib/config";
 
-const title = "MAGIC SURPRISE – brezplačne voščilnice in presenečenja";
+const title = "MAGIC SURPRISE – brezplačne spletne voščilnice";
 const description =
   "Ustvari animirano voščilnico, skrivno sporočilo, digitalno presenečenje ali osebno vabilo. Brez prijave. Brezplačno. Deli z eno povezavo.";
 export const metadata: Metadata = {

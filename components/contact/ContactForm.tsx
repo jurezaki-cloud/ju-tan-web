@@ -121,7 +121,11 @@ export default function ContactForm() {
     });
 
     if (!parsed.success) {
-      setErrors(flattenContactErrors(parsed.error));
+      const fieldErrors = flattenContactErrors(parsed.error);
+      // Without consent, its timestamp cannot exist. Show one actionable
+      // message to visitors without weakening the schema or server checks.
+      if (!consent) delete fieldErrors.consentAt;
+      setErrors(fieldErrors);
       return;
     }
 
@@ -476,7 +480,7 @@ export default function ContactForm() {
       <div className="mt-6 flex justify-center pb-[env(safe-area-inset-bottom,0px)]">
         <CTAButton
           type="submit"
-          disabled={loading || !consent}
+          disabled={loading}
           className="w-full sm:w-auto"
         >
           {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
