@@ -106,3 +106,12 @@ test("homepage defers the below-fold interactive hero without dropping its conte
   assert.ok(deferred.includes("IntersectionObserver"), "Stage must load when seen");
   assert.ok(deferred.includes("min-h-[440px]"), "Mobile stage must reserve layout height");
 });
+
+test("cookie consent overlay stays above CTAs and floating assistant", () => {
+  const cookie = read("components/legal/CookieBanner.tsx");
+  const providers = read("components/common/Providers.tsx");
+  const agent = read("components/ai/JuTanAgentLazy.tsx");
+  assert.ok(cookie.includes("z-[70]"), "Cookie banner needs an explicit stacking layer");
+  assert.ok(providers.includes("z-[70]"), "Cookie preferences control needs the same layer");
+  assert.ok(agent.includes("z-[60]"), "Floating assistant must stay beneath cookie consent");
+});
