@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import dynamic from "next/dynamic";
 import { iconButtonClass } from "@/design";
 import { cn } from "@/lib/utils";
 import { lockBodyScroll } from "@/lib/lock-body-scroll";
@@ -13,7 +12,7 @@ import { useScroll } from "@/hooks/useScroll";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import HeaderLogo from "./HeaderLogo";
 import DesktopNavigation from "./DesktopNavigation";
-const MobileNavigation = dynamic(() => import("./MobileNavigation"), { ssr: false });
+import MobileNavigation from "./MobileNavigation";
 import HeaderCTA from "./HeaderCTA";
 
 const items = getHeaderNavigation();
@@ -60,7 +59,7 @@ export default function Header() {
           <button
             type="button"
             aria-expanded={menuOpen}
-            aria-controls={menuOpen ? "mobile-navigation" : undefined}
+            aria-controls="mobile-navigation"
             aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
             className={cn(
               iconButtonClass,
@@ -78,14 +77,12 @@ export default function Header() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(251,191,36,0.55),transparent)] light:bg-[linear-gradient(90deg,transparent,rgba(180,83,9,0.42),transparent)]"
       />
 
-      {menuOpen ? (
-        <MobileNavigation
-          open={menuOpen}
-          onClose={closeMenu}
-          items={items}
-          activeSection={activeSection}
-        />
-      ) : null}
+      <MobileNavigation
+        open={menuOpen}
+        onClose={closeMenu}
+        items={items}
+        activeSection={activeSection}
+      />
     </header>
   );
 }
