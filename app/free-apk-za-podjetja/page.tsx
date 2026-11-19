@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const metadata = createPageMetadata({
-  title: "FREE APK ZA PODJETJA – brezplačne Android aplikacije",
+  title: "Brezplačne Android aplikacije za podjetja",
   description: "Brezplačni Android aplikaciji JU-TAN za podjetja: Prejeti računi in Pošlji potne naloge. Predstavitve, navodila in prenosi APK na enem mestu.",
   path: "/free-apk-za-podjetja",
 });
