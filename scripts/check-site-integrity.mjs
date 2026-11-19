@@ -60,3 +60,13 @@ test("preview and missing pages are excluded from indexing", () => {
   assert.ok(metadata.includes('process.env.VERCEL_ENV !== "preview"'));
   assert.ok(notFound.includes("index: false"));
 });
+
+test("homepage ecosystem modules navigate to relevant public service pages", () => {
+  const stage = read("components/hero/HeroStage.tsx");
+  assert.ok(stage.includes('import Link from "next/link"'));
+  assert.ok(stage.includes("href={module.href}"));
+  for (const destination of ["/graficno-oblikovanje", "/razvoj-programske-opreme", "/ju-tan-office"]) {
+    assert.ok(stage.includes('href: "' + destination + '"'), "Missing ecosystem destination: " + destination);
+  }
+  assert.equal((stage.match(/<button\\b/g) ?? []).length, 0, "Inactive decorative button remains in ecosystem");
+});
