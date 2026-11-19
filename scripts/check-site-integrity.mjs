@@ -100,3 +100,11 @@ test("logo inquiry CTA has clear contrast, visible focus and preselected graphic
   assert.ok(page.includes('href="/kontakt?service=graphic"'));
   assert.ok(form.includes('graphic: "'));
 });
+
+test("clickable reference cards show a keyboard focus ring in both themes", () => {
+  const cards = read("components/sections/References.tsx");
+  assert.ok(cards.includes("focus-visible:ring-2 focus-visible:ring-emerald-300"));
+  assert.ok(cards.includes("light:focus-visible:ring-emerald-700"));
+  assert.ok(cards.includes("focus-visible:ring-offset-[#050816]"));
+  assert.ok(cards.includes("light:focus-visible:ring-offset-slate-50"));
+});
