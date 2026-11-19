@@ -115,3 +115,14 @@ test("cookie consent overlay stays above CTAs and floating assistant", () => {
   assert.ok(providers.includes("z-[70]"), "Cookie preferences control needs the same layer");
   assert.ok(agent.includes("z-[60]"), "Floating assistant must stay beneath cookie consent");
 });
+
+test("marketing sections do not load the animation library in the critical path", () => {
+  const fade = read("components/animations/FadeIn.tsx");
+  const office = read("components/sections/JuTanOffice.tsx");
+  const deferred = read("components/sections/office/OfficeProductStageDeferred.tsx");
+  assert.ok(!fade.includes("framer-motion"), "Common reveals must stay lightweight");
+  assert.ok(fade.includes("IntersectionObserver"), "Marketing reveals need visibility observation");
+  assert.ok(office.includes("OfficeProductStageDeferred"), "Office stage must be deferred");
+  assert.ok(deferred.includes('dynamic(() => import("./OfficeProductStage")'), "Office animation must be code split");
+  assert.ok(deferred.includes("rootMargin"), "Office showcase should load before it enters view");
+});
