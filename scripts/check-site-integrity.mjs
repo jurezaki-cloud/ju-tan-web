@@ -70,3 +70,10 @@ test("homepage ecosystem modules navigate to relevant public service pages", () 
   }
   assert.ok(!stage.includes("<button"), "Inactive decorative button remains in ecosystem");
 });
+
+test("reference inquiry CTA retains readable contrast and visible keyboard focus", () => {
+  const page = read("app/reference/[slug]/page.tsx");
+  assert.ok(page.includes('bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950'));
+  assert.ok(page.includes("focus-visible:ring-2 focus-visible:ring-emerald-300"));
+  assert.ok(page.includes('href={inquiryHref}'));
+});
