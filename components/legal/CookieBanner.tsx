@@ -25,7 +25,7 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
     <aside
       aria-labelledby="cookie-banner-title"
       aria-describedby="cookie-banner-copy"
-      className="fixed inset-x-0 bottom-0 z-banner border-t border-white/10 bg-[#050816]/95 px-[max(1.125rem,env(safe-area-inset-left,0px))] py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] backdrop-blur-md light:border-slate-200 light:bg-white/95"
+      className="fixed inset-x-0 bottom-0 z-[70] border-t border-white/10 bg-[#050816]/95 px-[max(1.125rem,env(safe-area-inset-left,0px))] py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] backdrop-blur-md light:border-slate-200 light:bg-white/95"
     >
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
