@@ -40,7 +40,7 @@ export default function CtaLink({
   }
 
   return (
-    <Link href={href} prefetch={href.startsWith("#") ? false : undefined} aria-label={ariaLabel} className={classNames}>
+    <Link href={href} aria-label={ariaLabel} className={classNames}>
       {children}
     </Link>
   );
