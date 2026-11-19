@@ -134,7 +134,7 @@ test("above-fold brand only preloads the default visible variant", () => {
   assert.ok(light.includes('loading="lazy"'), "Hidden light logo must avoid eager preloading");
   assert.ok(light.includes('fetchPriority="low"'), "Hidden light logo should have low fetch priority");
   const cookie = read("components/legal/CookieBanner.tsx");
-  assert.match(cookie, /href="\\/politika-piskotkov"\\s+prefetch=\\{false\\}/, "Cookie policy link should not prefetch (both LF and CRLF supported)");
+  assert.ok(cookie.replace(/\r\n/g, "\n").includes('href="/politika-piskotkov"\n              prefetch={false}'), "Cookie policy link should not prefetch");
 });
 
 test("mobile navigation does not eagerly hydrate the animation framework", () => {
