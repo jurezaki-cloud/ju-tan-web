@@ -24,9 +24,6 @@ export const metadata: Metadata = createPageMetadata({ path: "/" });
 export default function Home() {
   return (
     <>
-      {/* Prioritize both Unicode subsets used by the Slovenian LCP headline. */}
-      <link rel="preload" href="/fonts/syne-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-      <link rel="preload" href="/fonts/syne-latin-ext.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       <Header />
       <main id="main">
         <Hero />
