@@ -44,3 +44,21 @@ test("software implementation wording, CTA, and FAQ remain aligned", () => {
   assert.ok(hero.includes("Pošljite povpraševanje za razvoj"));
   assert.ok(hero.includes('href="/kontakt?service=software"'));
 });
+
+
+test("contact and website service meta descriptions stay concise", () => {
+  const contactPage = read("app/kontakt/page.tsx");
+  const webPage = read("app/spletne-strani-in-ui-ux/page.tsx");
+  const contactDescription = contactPage.match(/description:\s*"([^"]+)"/)?.[1];
+  const webDescription = webPage.match(/const pageDescription\s*=\s*"([^"]+)"/)?.[1];
+
+  for (const [route, description] of [
+    ["/kontakt", contactDescription],
+    ["/spletne-strani-in-ui-ux", webDescription],
+  ]) {
+    assert.ok(description, `Missing description for ${route}`);
+    assert.ok(description.length >= 70, `Description too short for ${route}`);
+    assert.ok(description.length <= 160, `Description too long for ${route}`);
+    assert.ok(description.includes("JU-TAN"), `Missing branding for ${route}`);
+  }
+});
