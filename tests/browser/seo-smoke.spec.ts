@@ -52,7 +52,8 @@ test("capture stable mobile and desktop hero screenshots for visual review", asy
         getComputedStyle(element).backgroundColor,
       );
       // An opaque backdrop stops underlying CTA/content from showing through.
-      expect(bgColor).not.toMatch(/rgba?\\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\)/);
+      const alpha = bgColor.startsWith("rgba(") ? Number(bgColor.split(",").at(-1)?.replace(")", "").trim()) : 1;
+      expect(alpha).toBeGreaterThanOrEqual(0.99);
       await page.screenshot({
         path: "test-results/visual/hero-mobile-390-consent.png",
         fullPage: false,
