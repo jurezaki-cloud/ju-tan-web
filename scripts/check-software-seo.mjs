@@ -69,3 +69,13 @@ test("web service SEO metadata and real project references stay consistent", () 
   assert.ok(references.includes("Reference spletnih strani in poslovnih rešitev"));
   assert.ok(contact.includes("Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani"));
 });
+
+test("preview deployments stay noindex while production keeps crawl directives", () => {
+  const rootMetadata = read("lib/metadata.ts");
+  const sharedSeo = read("lib/seo.ts");
+  assert.ok(rootMetadata.includes('process.env.VERCEL_ENV !== "preview"'), "Preview indexing safeguard is missing");
+  assert.ok(rootMetadata.includes("index: process.env.VERCEL_ENV !== \"preview\""), "Preview index should be disabled");
+  assert.ok(rootMetadata.includes('template: `%s | ${company.name}`'), "Shared page title template changed");
+  assert.ok(sharedSeo.includes('alternates: {'), "Canonical metadata missing");
+  assert.ok(sharedSeo.includes('canonical: url'), "Canonical URL must be absolute");
+});
