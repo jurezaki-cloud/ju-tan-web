@@ -64,6 +64,8 @@ test("web service SEO metadata and real project references stay consistent", () 
   const contactDescription = contact.split("description:")[1]?.match(/"([^"]+)"/)?.[1];
   assert.ok(contactDescription, "Contact description missing");
   assert.ok(contactDescription.length <= 160, "Contact description should be concise");
+  assert.ok(webContent.includes('title: "Inštalacije THE END"'), "Case study name should match portfolio data");
+  assert.ok(read("lib/data/project-studies.ts").includes('slug: "instalacije-the-end"'), "Referenced case study must exist");
   assert.ok(references.includes("Reference spletnih strani in poslovnih rešitev"));
   assert.ok(contact.includes("Kontaktirajte JU-TAN Studio v Cerknici za izdelavo spletnih strani"));
 });
