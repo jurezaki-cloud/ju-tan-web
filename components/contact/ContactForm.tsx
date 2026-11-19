@@ -476,7 +476,7 @@ export default function ContactForm() {
       <div className="mt-6 flex justify-center pb-[env(safe-area-inset-bottom,0px)]">
         <CTAButton
           type="submit"
-          disabled={loading || !consent}
+          disabled={loading}
           className="w-full sm:w-auto"
         >
           {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
