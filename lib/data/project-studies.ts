@@ -2,6 +2,7 @@ export type ProjectStudy = {
   slug: string;
   name: string;
   title: string;
+  seoTitle?: string;
   description: string;
   kind: string;
   challenge: string;
@@ -25,6 +26,7 @@ export type ProjectStudy = {
 export const projectStudies = [
   {
     slug: "instalacije-the-end",
+    seoTitle: "Inštalacije THE END – izdelava spletne strani",
     screenshot: {
       src: "/reference/instalacije-the-end.webp",
       alt: "Posnetek začetne strani Inštalacije THE END s predstavitvijo klimatskih naprav in toplotnih črpalk",
