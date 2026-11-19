@@ -29,7 +29,7 @@ export default function Footer() {
               <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:justify-start">
                 {legalLinks.map((item, index) => (
                   <li key={item.href} className="inline-flex items-center gap-3">
-                    <Link href={item.href} className={legalLinkClass}>
+                    <Link href={item.href} prefetch={false} className={legalLinkClass}>
                       {item.label}
                     </Link>
                     {index < legalLinks.length - 1 ? (
