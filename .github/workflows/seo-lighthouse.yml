@@ -38,6 +38,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Start production-mode PR build
+        env:
+          # CI preview avoids requiring production mail credentials for a read-only audit.
+          VERCEL_ENV: preview
         run: |
           npm run start -- --hostname 127.0.0.1 --port 3104 > /tmp/ju-tan-lighthouse-server.log 2>&1 &
           for i in $(seq 1 45); do
