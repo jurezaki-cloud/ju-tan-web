@@ -50,11 +50,11 @@ test("web service SEO metadata and real project references stay consistent", () 
   const webContent = read("components/web-ui-page/WebUiPage.tsx");
   const references = read("app/reference/page.tsx");
   const contact = read("app/kontakt/page.tsx");
-  const description = webPage.match(/const pageDescription =\\s*\n?\\s*"([^"]+)"/)?.[1];
+  const description = webPage.split("const pageDescription =")[1]?.match(/"([^"]+)"/)?.[1];
   assert.ok(description, "Web service meta description missing");
   assert.ok(description.length <= 160, "Web service description should be concise");
   assert.ok(webPage.includes('path,'));
-  assert.equal((webContent.match(/<h1\\b/g) ?? []).length, 1);
+  assert.equal((webContent.match(/<h1\b/g) ?? []).length, 1);
   for (const route of ["/reference/instalacije-the-end", "/reference/veli-joze", "/kontakt?service=web"]) {
     assert.ok(webContent.includes(route), "Missing web service conversion link: " + route);
   }
