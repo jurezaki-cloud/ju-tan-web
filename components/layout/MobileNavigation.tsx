@@ -2,13 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import type { NavItem, NavSectionId } from "@/types/navigation";
 import { getMessages } from "@/lib/i18n/messages";
 import HeaderCTA from "./HeaderCTA";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { colorTransition, duration, easeOut, focusRing, iconButtonClass } from "@/design";
+import { colorTransition, focusRing, iconButtonClass } from "@/design";
 import { cn } from "@/lib/utils";
 
 type MobileNavigationProps = {
@@ -21,8 +19,6 @@ type MobileNavigationProps = {
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-const transition = { duration: duration.hover, ease: easeOut };
-
 export default function MobileNavigation({
   open,
   onClose,
@@ -32,7 +28,6 @@ export default function MobileNavigation({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
-  const reduceMotion = usePrefersReducedMotion();
   const copy = getMessages().header;
 
   useEffect(() => {
@@ -77,19 +72,14 @@ export default function MobileNavigation({
 
   return (
     <div className="xl:hidden" id="mobile-navigation">
-      <AnimatePresence>
-        {open ? (
-          <motion.div
+      {open ? (
+          <div
             key="header-mobile-menu"
             ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-label={copy.menuAria}
-            className="fixed inset-0 z-overlay flex h-dvh flex-col overflow-y-auto overscroll-contain bg-[#050816]/96 px-4 pt-[max(4.75rem,calc(env(safe-area-inset-top,0px)+3.5rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
-            initial={reduceMotion ? false : { opacity: 0, x: 28 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, x: 16 }}
-            transition={transition}
+            className="mobile-nav-panel fixed inset-0 z-[60] flex h-dvh flex-col overflow-y-auto overscroll-contain bg-[#050816]/96 px-4 pt-[max(4.75rem,calc(env(safe-area-inset-top,0px)+3.5rem))] pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] backdrop-blur-xl light:bg-white/96"
           >
             <button
               ref={closeRef}
@@ -132,9 +122,19 @@ export default function MobileNavigation({
             </nav>
 
             <HeaderCTA className="w-full" onClick={onClose} />
-          </motion.div>
+          </div>
         ) : null}
-      </AnimatePresence>
+        <style jsx>{`
+          @media (prefers-reduced-motion: no-preference) {
+            .mobile-nav-panel {
+              animation: mobile-nav-enter 220ms ease-out both;
+            }
+          }
+          @keyframes mobile-nav-enter {
+            from { opacity: 0; transform: translateX(28px); }
+            to { opacity: 1; transform: translateX(0); }
+          }
+        `}</style>
     </div>
   );
 }
