@@ -65,7 +65,7 @@ export default function LogoPage() {
             </p>
             <Link
               href="/kontakt?service=graphic"
-              className="mt-8 inline-block rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white"
+              className="mt-8 inline-flex min-h-11 items-center justify-center rounded-full bg-emerald-600 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-offset-slate-50"
             >
               Pošljite povpraševanje za logotip
             </Link>
