@@ -146,3 +146,10 @@ test("mobile navigation does not eagerly hydrate the animation framework", () =>
   assert.ok(menu.includes("querySelectorAll<HTMLElement>(FOCUSABLE)"), "Focus trap must be preserved");
 });
 
+
+test("Office marketing section stays server-rendered while interactions remain deferred", () => {
+  const office = read("components/sections/JuTanOffice.tsx");
+  assert.ok(!office.startsWith('"use client"'), "Static Office marketing content should not hydrate as a full client component");
+  assert.ok(office.includes("OfficeProductStageDeferred"), "Interactive Office stage must remain lazy");
+  assert.ok(office.includes("<FadeIn"), "Section entrance transitions should remain available");
+});
