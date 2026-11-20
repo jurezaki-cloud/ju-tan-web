@@ -68,6 +68,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Experimental A/B only: reduce render-blocking CSS on first mobile visit.
+  // Do not promote without measured benefit and repeat-visit regression checks.
+  experimental: { inlineCss: true },
   // Isolate local verification output from a concurrently running dev server.
   distDir: process.env.NEXT_TEST_DIST_DIR || ".next",
   poweredByHeader: false,
