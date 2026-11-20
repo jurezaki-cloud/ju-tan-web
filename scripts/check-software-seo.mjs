@@ -106,6 +106,16 @@ test("APK catalog gives practical instructions and links to real app pages", () 
   assert.ok(apk.includes('href="/kontakt"'), "Support contact link missing");
 });
 
+test("hero entrance reveal stays server-rendered and preserves reduced-motion accessibility", () => {
+  const reveal = read("components/hero/HeroReveal.tsx");
+  const css = read("components/hero/HeroReveal.module.css");
+  assert.ok(!reveal.includes('"use client"'), "Hero copy animation should not add client hydration");
+  assert.ok(!reveal.includes("<style jsx>"), "Avoid styled-jsx on the critical hero path");
+  assert.ok(reveal.includes('import styles from "./HeroReveal.module.css"'));
+  assert.ok(css.includes("prefers-reduced-motion: reduce"), "Respect motion preferences");
+  assert.ok(css.includes("animation: hero-reveal-enter"));
+});
+
 test("homepage defers the below-fold interactive hero without dropping its content", () => {
   const homeHero = read("components/hero/Hero.tsx");
   const deferred = read("components/hero/HeroStageDeferred.tsx");
