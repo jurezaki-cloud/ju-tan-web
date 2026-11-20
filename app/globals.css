@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+/* Ignore non-rendered repository fixtures and documentation when detecting
+   Tailwind utilities. All actual app, component and library sources remain. */
+@source not "../docs";
+@source not "../tests";
+@source not "../scripts";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
