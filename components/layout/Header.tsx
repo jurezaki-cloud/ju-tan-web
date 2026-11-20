@@ -12,7 +12,11 @@ import { useScroll } from "@/hooks/useScroll";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import HeaderLogo from "./HeaderLogo";
 import DesktopNavigation from "./DesktopNavigation";
-import MobileNavigation from "./MobileNavigation";
+import dynamic from "next/dynamic";
+
+const MobileNavigation = dynamic(() => import("./MobileNavigation"), {
+  ssr: false,
+});
 import HeaderCTA from "./HeaderCTA";
 
 const items = getHeaderNavigation();
@@ -60,7 +64,7 @@ export default function Header() {
           <button
             type="button"
             aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
+            aria-controls={menuOpen ? "mobile-navigation" : undefined}
             aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
             className={cn(
               iconButtonClass,
@@ -78,12 +82,14 @@ export default function Header() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(251,191,36,0.55),transparent)] light:bg-[linear-gradient(90deg,transparent,rgba(180,83,9,0.42),transparent)]"
       />
 
-      <MobileNavigation
-        open={menuOpen}
-        onClose={closeMenu}
-        items={items}
-        activeSection={activeSection}
-      />
+      {menuOpen ? (
+        <MobileNavigation
+          open={menuOpen}
+          onClose={closeMenu}
+          items={items}
+          activeSection={activeSection}
+        />
+      ) : null}
     </header>
   );
 }
