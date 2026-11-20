@@ -116,6 +116,12 @@ test("hero entrance reveal stays server-rendered and preserves reduced-motion ac
   assert.ok(css.includes("animation: hero-reveal-enter"));
 });
 
+test("primary CTAs do not prefetch contact RSC payloads before interaction", () => {
+  const cta = read("components/navbar/CtaLink.tsx");
+  assert.ok(cta.includes('prefetch={false}'), "Keep CTAs interactive but do not eagerly preload target pages");
+  assert.ok(cta.includes('<Link href={href}'), "Internal navigation must continue using Next Link");
+});
+
 test("same-page CTA anchors use native navigation without RSC prefetch", () => {
   const cta = read("components/navbar/CtaLink.tsx");
   assert.ok(cta.includes('if (href.startsWith("#"))'), "Same-page anchors should bypass the router");
