@@ -93,6 +93,17 @@ export default function RazvojProgramskeOpremePage() {
                 Pred izvedbo preverimo obstoječe programe, kakovost podatkov in
                 razpoložljive vmesnike.
               </p>
+              <h3 className="mt-8 font-heading text-xl font-semibold">
+                Implementacija programske opreme v javnih zavodih
+              </h3>
+              <p className="mt-3 max-w-3xl leading-7 text-slate-300 light:text-slate-700">
+                Pri uvajanju programske opreme v javni zavod je treba najprej
+                preveriti obstoječe evidence, pravice uporabnikov, varovanje
+                osebnih podatkov in možnosti povezovanja z obstoječimi sistemi.
+                Na podlagi zahtev lahko pripravimo predlog postopne uvedbe,
+                preizkus prenosa podatkov in usposabljanje uporabnikov.
+                Končna rešitev je odvisna od tehničnih in organizacijskih pogojev.
+              </p>
             </div>
             <nav aria-label="Povezane storitve, reference in kontakt" className="mt-10">
               <h3 className="font-heading text-xl font-semibold">Oglejte si ustrezno rešitev</h3>
