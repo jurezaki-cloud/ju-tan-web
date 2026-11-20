@@ -50,7 +50,7 @@ export default function CtaLink({
   }
 
   return (
-    <Link href={href} aria-label={ariaLabel} className={classNames}>
+    <Link href={href} prefetch={false} aria-label={ariaLabel} className={classNames}>
       {children}
     </Link>
   );
