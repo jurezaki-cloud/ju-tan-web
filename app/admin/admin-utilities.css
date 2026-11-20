@@ -1,0 +1,4 @@
+/* Admin-only Tailwind utility classes. The shared base/theme CSS is loaded by root. */
+@reference "../globals.css";
+@import "tailwindcss/utilities.css" source(none);
+@source ".";
