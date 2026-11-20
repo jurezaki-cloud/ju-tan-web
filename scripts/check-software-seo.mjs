@@ -173,6 +173,13 @@ test("Office marketing section stays server-rendered while interactions remain d
 });
 
 
+test("mobile menu code loads only after opening the menu", () => {
+  const header = read("components/layout/Header.tsx");
+  assert.ok(header.includes('dynamic(() => import("./MobileNavigation")'), "Menu should be split into its own chunk");
+  assert.ok(header.includes("{menuOpen ? ("), "Do not load the mobile navigation when closed");
+  assert.ok(header.includes('aria-controls={menuOpen ? "mobile-navigation" : undefined}'), "Menu control must reference a mounted panel");
+});
+
 test("open mobile navigation stays above the floating assistant", () => {
   const header = read("components/layout/Header.tsx");
   const agent = read("components/ai/JuTanAgentLazy.tsx");
