@@ -26,6 +26,16 @@ export default function CtaLink({
 }: CtaLinkProps) {
   const classNames = cn(ctaBase, ctaSizes[size], ctaVariants[variant], className);
 
+  // Same-page anchors do not need Next.js navigation or route prefetching.
+  // Use native navigation for lightweight, accessible in-page scrolling.
+  if (href.startsWith("#")) {
+    return (
+      <a href={href} aria-label={ariaLabel} className={classNames}>
+        {children}
+      </a>
+    );
+  }
+
   if (isExternalHref(href)) {
     return (
       <a
