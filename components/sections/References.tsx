@@ -64,6 +64,7 @@ export default function References({ full = false }: { full?: boolean }) {
   const titleClass = `${full ? "heading-hero" : "heading-display"} font-heading font-semibold`;
   return (
     <Section
+      belowFold={!full}
       labelledBy="references-title"
       className="bg-[#050816] light:bg-slate-50"
     >
