@@ -116,6 +116,13 @@ test("hero entrance reveal stays server-rendered and preserves reduced-motion ac
   assert.ok(css.includes("animation: hero-reveal-enter"));
 });
 
+test("same-page CTA anchors use native navigation without RSC prefetch", () => {
+  const cta = read("components/navbar/CtaLink.tsx");
+  assert.ok(cta.includes('if (href.startsWith("#"))'), "Same-page anchors should bypass the router");
+  assert.ok(cta.includes('<a href={href} aria-label={ariaLabel} className={classNames}>'));
+  assert.ok(cta.includes('<Link href={href}'), "Internal route navigation should still use Next Link");
+});
+
 test("homepage defers the below-fold interactive hero without dropping its content", () => {
   const homeHero = read("components/hero/Hero.tsx");
   const deferred = read("components/hero/HeroStageDeferred.tsx");
