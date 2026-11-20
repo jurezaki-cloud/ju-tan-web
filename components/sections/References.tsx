@@ -92,7 +92,7 @@ export default function References({ full = false }: { full?: boolean }) {
           {!full && (
             <Link
               href="/reference"
-              className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
+              className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 light:text-emerald-700 light:hover:text-emerald-800"
             >
               Vse reference →
             </Link>
@@ -117,7 +117,7 @@ export default function References({ full = false }: { full?: boolean }) {
                     />
                   ) : null}
                   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
-                  <p className="relative text-[10px] font-semibold tracking-[0.22em] text-emerald-400">
+                  <p className="relative text-[10px] font-semibold tracking-[0.22em] text-emerald-400 light:text-emerald-700">
                     {project.accent}
                   </p>
                   <p className="relative mt-8 font-heading text-xl font-semibold">
@@ -128,7 +128,7 @@ export default function References({ full = false }: { full?: boolean }) {
                   </p>
                 </div>
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-xs uppercase tracking-[0.16em] text-emerald-400">
+                  <span className="text-xs uppercase tracking-[0.16em] text-emerald-400 light:text-emerald-700">
                     {project.type}
                   </span>
                   <span
@@ -157,7 +157,7 @@ export default function References({ full = false }: { full?: boolean }) {
               </>
             );
             const cls =
-              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] light:border-slate-200 light:bg-white";
+              "group block rounded-3xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-[0_20px_70px_rgba(22,163,74,.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-emerald-700 light:focus-visible:ring-offset-slate-50 light:border-slate-200 light:bg-white";
             return project.href.startsWith("http") ? (
               <a
                 key={project.title}

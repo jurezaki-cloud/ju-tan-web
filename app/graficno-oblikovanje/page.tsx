@@ -153,7 +153,7 @@ export default function GraphicDesignPage() {
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/kontakt?service=graphic"
-                className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                className="rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-offset-slate-50"
               >
                 Želim grafično rešitev
               </Link>
@@ -395,7 +395,7 @@ export default function GraphicDesignPage() {
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <Link
                 href="/kontakt?service=graphic"
-                className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                className="inline-flex rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816] light:focus-visible:ring-offset-slate-50"
               >
                 Pošljite povpraševanje
               </Link>
