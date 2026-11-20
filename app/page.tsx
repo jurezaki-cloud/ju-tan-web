@@ -24,6 +24,9 @@ export const metadata: Metadata = createPageMetadata({ path: "/" });
 export default function Home() {
   return (
     <>
+      {/* Prioritize the two unicode subsets used by the headline above the fold. */}
+      <link rel="preload" href="/fonts/syne-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      <link rel="preload" href="/fonts/syne-latin-ext.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       <Header />
       <main id="main">
         <Hero />
