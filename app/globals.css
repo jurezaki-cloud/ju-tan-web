@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "shadcn/tailwind.css";
+/* shadcn utility plugin excluded: no used generated utilities detected. */
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:is(.light *));
