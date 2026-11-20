@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
 
+/* Admin-only Tailwind utilities are emitted from app/admin/admin-utilities.css. */
+@source not "../app/admin";
+
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:is(.light *));
 
