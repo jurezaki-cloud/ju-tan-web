@@ -25,6 +25,14 @@ test("exactly one H1 and service-related internal links", () => {
   }
 });
 
+test("public institution implementation guidance is present and keeps one page H1", () => {
+  assert.ok(page.includes("Implementacija programske opreme v javnih zavodih"));
+  assert.ok(page.includes("varovanje"));
+  assert.ok(page.includes("usposabljanje uporabnikov"));
+  assert.equal((page.match(/<h1\\b/g) ?? []).length, 0);
+  assert.ok(page.includes('href="/kontakt?service=software"'));
+});
+
 test("service URL in sitemap and public crawling allowed", () => {
   assert.ok(sitemap.includes("/razvoj-programske-opreme"));
   assert.ok(robots.includes('allow: "/"'));
