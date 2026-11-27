@@ -24,6 +24,7 @@ import {
   type ContactFieldKey,
 } from "@/lib/validation/contact";
 import { trackContactConversion } from "@/lib/google-ads";
+import { sendContactRequest, readContactSuccess, type ContactAttempt } from "@/lib/contact-client";
 import ContactSuccess from "./ContactSuccess";
 import { labelClass } from "@/design";
 
@@ -64,6 +65,7 @@ type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 export default function ContactForm() {
   const formId = useId();
   const submitting = useRef(false);
+  const attempt = useRef<ContactAttempt>({});
   const summaryRef = useRef<HTMLDivElement>(null);
   const linkedService = useSyncExternalStore(
     subscribeToLocation,
@@ -134,12 +136,7 @@ export default function ContactForm() {
     let completed = false;
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
+      const response = await sendContactRequest(parsed.data, attempt.current);
       if (!response.ok) {
         setErrors({
           form:
@@ -154,13 +151,8 @@ export default function ContactForm() {
         return;
       }
 
-      const result: unknown = await response.json();
-      if (
-        !result ||
-        typeof result !== "object" ||
-        !("success" in result) ||
-        result.success !== true
-      ) {
+      const result = await readContactSuccess(response);
+      if (!result) {
         setErrors({
           form: "Oddaja ni potrjena. Pišite nam neposredno po e-pošti.",
         });
@@ -169,10 +161,9 @@ export default function ContactForm() {
 
       trackContactConversion(result);
 
-      // Record a conversion only after the API confirms delivery and only
-      // when the visitor has opted in to analytics. Never send contact details.
+      // Separate analytics consent, never contact details.
       if (
-        "conversionId" in result &&
+        result.conversionId &&
         getAnalyticsConsentSnapshot() === "accepted"
       ) {
         try {
