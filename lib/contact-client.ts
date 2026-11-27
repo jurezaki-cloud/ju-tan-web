@@ -34,9 +34,9 @@ export async function recoverContactRequest(): Promise<"none" | "accepted" | "ca
 async function send(payload: ContactPayload, attempt: ContactAttempt) {
   const body = JSON.stringify(payload);
   if (!attempt.key && storedPending()) {
-    await recoverContactRequest();
-    // Never display the old acceptance as success for newly entered content,
-    // and never replay its conversion using potentially changed consent.
+    // Only the explicit recovery control may inspect and clear a cancelled
+    // attempt. A submit click must not silently authorize the next click.
+    // Never display old acceptance as success or replay its conversion.
     throw new Error("Check previous inquiry status and explicitly choose a new submission");
   }
   if (!attempt.key) {
