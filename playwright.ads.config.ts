@@ -2,7 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/browser",
-  testMatch: ["contact-ads.spec.ts", "contact-p0.spec.ts"],
+  testMatch: ["contact-ads.spec.ts", "contact-p0.spec.ts", "contact-release.spec.ts"],
   workers: 1,
   use: { baseURL: "http://127.0.0.1:3100", browserName: "chromium" },
   webServer: {

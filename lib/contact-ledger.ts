@@ -1,13 +1,12 @@
 import "server-only";
-import { licensingPool } from "./licensing/db";
+import { contactPool } from "./contact-db";
 import { contactServiceOptions } from "./data/services";
 
-/** Schema is installed explicitly, never during a contact request.
- * Only opaque retry keys, server timestamps and a counted flag are persisted.
- * No form contents, fingerprints, IPs, names or contact details are stored here.
+/** Schema is installed explicitly. Only opaque keys, times and counted flags;
+ * no form contents, fingerprints, IPs, names or contact details are persisted.
  */
 export async function reserveContactAttempt(key: string): Promise<{ receivedAt: string } | null> {
-  const result = await licensingPool().query<{ created_at: Date; valid: boolean }>(
+  const result = await contactPool().query<{ created_at: Date; valid: boolean }>(
     `INSERT INTO contact_delivery_attempts (retry_key) VALUES ($1)
      ON CONFLICT (retry_key) DO UPDATE SET retry_key = EXCLUDED.retry_key
      RETURNING created_at,
@@ -18,13 +17,10 @@ export async function reserveContactAttempt(key: string): Promise<{ receivedAt: 
   return row?.valid ? { receivedAt: row.created_at.toISOString() } : null;
 }
 
-/** Atomic marker + aggregate increment: retrying the same accepted request
- * cannot increment twice, even on different workers or across midnight.
- * Failure rolls the whole statement back and can be retried later.
- */
+/** One atomic statement: retries cannot increment the aggregate twice. */
 export async function countContactAttempt(key: string, service: string): Promise<void> {
   const category = contactServiceOptions.some((label) => label === service) ? service : "Drugo";
-  await licensingPool().query(
+  await contactPool().query(
     `WITH first_count AS (
        UPDATE contact_delivery_attempts SET counted = true
        WHERE retry_key = $1 AND counted = false RETURNING created_at

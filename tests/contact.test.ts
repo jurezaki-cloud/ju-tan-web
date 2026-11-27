@@ -3,15 +3,19 @@ import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { POST } from "../app/api/contact/route";
 import { contactSchema } from "../lib/validation/contact";
-import { licensingPool } from "../lib/licensing/db";
+import { contactPool } from "../lib/contact-db";
 import { reserveContactAttempt, countContactAttempt } from "../lib/contact-ledger";
 
 async function main() {
-  // Refuse any non-local database before connecting. No production fixtures.
-  const url = new URL(process.env.LICENSING_DATABASE_URL ?? "http://invalid");
+  const url = new URL(process.env.CONTACT_DATABASE_URL ?? "http://invalid");
   assert.equal(url.hostname, "localhost");
   assert.equal(url.pathname, "/ju_tan_contact_test");
-  const db = licensingPool();
+  // License configuration is deliberately unusable: contact must not read it.
+  process.env.LICENSING_DATABASE_URL = "not-a-license-database";
+  delete process.env.JU_TAN_LICENSE_TOKEN_SECRET;
+  delete process.env.JU_TAN_LICENSE_KEY_PEPPER;
+  const db = contactPool();
+  assert.equal((globalThis as { __juTanLicensingPool?: unknown }).__juTanLicensingPool, undefined);
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.RESEND_API_KEY;
   const originalFrom = process.env.EMAIL_FROM;
@@ -37,7 +41,7 @@ async function main() {
     const body = String(init?.body);
     providerBody = JSON.parse(body);
     const key = new Headers(init?.headers).get("Idempotency-Key");
-    assert.ok(key, "every send must use provider idempotency");
+    assert.ok(key);
     providerKeys.push(key);
     const stored = replay.get(key);
     if (stored && stored !== body) return Response.json({ name: "invalid_idempotent_request", message: "Conflict" }, { status: 409 });
@@ -68,7 +72,6 @@ async function main() {
     assert.deepEqual(await (await POST(request({ ...payload, website: "spam" }))).json(), { success: true });
     assert.equal((await POST(request(payload, null))).status, 409);
     assert.equal(calls, baseline);
-
     const retryKey = key();
     const deliveredBefore = deliveries;
     const first = await POST(request(payload, retryKey));
@@ -81,9 +84,7 @@ async function main() {
     assert.equal((await POST(request(payload, "invalid-key"))).status, 409);
     await db.query("UPDATE contact_delivery_attempts SET created_at = clock_timestamp() - INTERVAL '24 hours' WHERE retry_key=$1", [`contact/${retryKey}`]);
     assert.equal((await POST(request(payload, retryKey))).status, 409);
-    assert.equal(calls, beforeInvalid, "expired persisted keys never reach provider");
-
-    // Old/future client timestamps are opaque; server time is authoritative.
+    assert.equal(calls, beforeInvalid);
     for (const clientTime of [Date.now() - 864000000, Date.now() + 864000000]) {
       assert.equal((await POST(request(payload, `${clientTime}.${randomUUID()}`))).status, 200);
     }
@@ -96,23 +97,18 @@ async function main() {
     assert.equal(deliveries, beforeConcurrent + 1);
     const counted = await db.query("SELECT counted FROM contact_delivery_attempts WHERE retry_key=$1", [`contact/${concurrentKey}`]);
     assert.equal(counted.rows[0].counted, true);
-
     const ledgerKey = `contact/${key()}`;
-    const reserved = await reserveContactAttempt(ledgerKey);
-    const reservedAgain = await reserveContactAttempt(ledgerKey);
-    assert.deepEqual(reservedAgain, reserved, "stable server time across instances/retries");
+    assert.deepEqual(await reserveContactAttempt(ledgerKey), await reserveContactAttempt(ledgerKey));
     const beforeCount = await db.query("SELECT COALESCE(SUM(confirmed),0)::text n FROM site_inquiry_daily WHERE service='Drugo'");
     await Promise.all(Array.from({ length: 8 }, () => countContactAttempt(ledgerKey, "not-a-service")));
     const afterCount = await db.query("SELECT COALESCE(SUM(confirmed),0)::text n FROM site_inquiry_daily WHERE service='Drugo'");
-    assert.equal(Number(afterCount.rows[0].n) - Number(beforeCount.rows[0].n), 1, "atomic counter increment exactly once");
-
+    assert.equal(Number(afterCount.rows[0].n) - Number(beforeCount.rows[0].n), 1);
     const uncertainKey = key();
     const beforeUncertain = deliveries;
     failAfterAccept = true;
     assert.equal((await POST(request(payload, uncertainKey))).status, 500);
     assert.equal((await POST(request(payload, uncertainKey))).status, 200);
-    assert.equal(deliveries, beforeUncertain + 1, "lost provider reply must not send twice");
-
+    assert.equal(deliveries, beforeUncertain + 1);
     providerStatus = 422;
     providerResult = { name: "validation_error", message: "Test rejection" };
     assert.equal((await POST(request(payload))).status, 500);
@@ -126,8 +122,9 @@ async function main() {
     const beforeDbFailure = calls;
     await db.end();
     assert.equal((await POST(request(payload))).status, 503);
-    assert.equal(calls, beforeDbFailure, "database failure fails closed before provider");
-    console.log("PASS: local PostgreSQL ledger, concurrent count, persisted expiry, clock skew, response loss and mocked provider contract");
+    assert.equal(calls, beforeDbFailure);
+    assert.equal((globalThis as { __juTanLicensingPool?: unknown }).__juTanLicensingPool, undefined);
+    console.log("PASS: independent contact pool, local PostgreSQL, concurrency, expiry, clock skew, response loss and mocked provider");
   } finally {
     globalThis.fetch = originalFetch;
     for (const [key, value] of Object.entries({ RESEND_API_KEY: originalKey, EMAIL_FROM: originalFrom, FROM_EMAIL: originalFallback })) {

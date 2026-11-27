@@ -17,7 +17,7 @@ test("only explicit success is accepted; missing receipt never becomes a measure
   assert.deepEqual(await readContactSuccess(Response.json({ success: true, conversionId: " receipt " })), { success: true, conversionId: "receipt" });
 });
 
-test("unchanged retries retain key and exact body; expiry fails closed", async () => {
+test("unchanged retries retain key and exact body; edits and expiry fail closed", async () => {
   const previous = globalThis.fetch;
   const now = Date.now;
   let time = now();
@@ -33,11 +33,10 @@ test("unchanged retries retain key and exact body; expiry fails closed", async (
     const key = (calls[0].headers as Record<string, string>)["Idempotency-Key"];
     assert.ok(contactRetryKey(key));
     assert.ok(!key.includes(payload.email));
-    await sendContactRequest({ ...payload, message: "New intent" }, attempt);
-    assert.notEqual((calls[2].headers as Record<string, string>)["Idempotency-Key"], key);
-    time += 24 * 60 * 60 * 1000;
     assert.throws(() => sendContactRequest({ ...payload, message: "New intent" }, attempt));
-    assert.equal(calls.length, 3);
+    time += 24 * 60 * 60 * 1000;
+    assert.throws(() => sendContactRequest(payload, attempt));
+    assert.equal(calls.length, 2);
   } finally { globalThis.fetch = previous; Date.now = now; }
 });
 

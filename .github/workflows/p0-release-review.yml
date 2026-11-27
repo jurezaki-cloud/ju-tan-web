@@ -1,0 +1,40 @@
+name: P0 release security and isolation review
+on:
+  push:
+    branches: [fix/google-ads-conversion-tracking-p0]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/p0-release-review.mjs
+  contact-isolation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: contact_test
+          POSTGRES_PASSWORD: local_fixture_only
+          POSTGRES_DB: ju_tan_contact_test
+        ports: ['5432:5432']
+        options: --health-cmd 'pg_isready -U contact_test -d ju_tan_contact_test' --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      CONTACT_DATABASE_URL: postgres://contact_test:local_fixture_only@localhost:5432/ju_tan_contact_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run test:ads
