@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { getMailConfig } from "./mail";
+import { recordConfirmed } from "./contact-operations";
 import { inboxId, type Intent, type InboxStore } from "./contact-inbox-core";
 import { contactSchema } from "./validation/contact";
 export async function deliverInboxIntent(intent: Intent): Promise<string> {
@@ -19,10 +20,14 @@ export async function deliverInboxIntent(intent: Intent): Promise<string> {
 export async function deliverInboxNow(store: InboxStore, intent: Intent) {
   const id = inboxId(intent.key);
   const existing = await store.read<{ receipt: string }>(`receipts/${id}.json`);
-  if (existing) return existing.receipt;
-  const first = await store.create(`attempts/${id}.json`, { startedAt: Date.now() });
-  if (Date.now() - first.startedAt >= 23 * 3600000) throw new Error("manual-reconciliation-required");
-  const receipt = await deliverInboxIntent(intent);
-  await store.create(`receipts/${id}.json`, { receipt, confirmedAt: new Date().toISOString() });
+  let receipt = existing?.receipt;
+  if (!receipt) {
+    const first = await store.create(`attempts/${id}.json`, { startedAt: Date.now() });
+    if (Date.now() - first.startedAt >= 23 * 3600000) throw new Error("manual-reconciliation-required");
+    receipt = await deliverInboxIntent(intent);
+    await store.create(`receipts/${id}.json`, { receipt, confirmedAt: new Date().toISOString() });
+  }
+  try { await recordConfirmed(store, intent); }
+  catch { console.error("Contact daily projection pending recovery"); }
   return receipt;
 }
