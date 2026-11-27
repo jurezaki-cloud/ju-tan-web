@@ -96,7 +96,11 @@ for (const guide of [false, true]) {
     if (!guide) await expect(page.getByRole("heading", { name: "Povpraševanje je oddano." })).toBeVisible();
     else await expect(page.getByText(/Hvala, Synthetic Visitor/)).toBeVisible();
     expect(await page.locator("#ju-tan-google-ads").count()).toBe(0);
-    if (guide) await page.getByRole("button", { name: "Zapri vodič storitev" }).first().click();
+    if (guide) {
+      const dialog = page.getByRole("dialog", { name: "JU-TAN vodič" });
+      await dialog.getByRole("button", { name: "Zapri vodič storitev", exact: true }).click();
+      await expect(dialog).not.toBeVisible();
+    }
     await page.getByRole("button", { name: "Nastavitve piškotkov" }).click();
     await page.getByLabel("Merjenje uspešnih povpraševanj iz oglasov (Google Ads)").check();
     await page.getByRole("button", { name: "Shrani izbiro" }).click();
