@@ -8,6 +8,7 @@ import { contactRetryKey } from "@/lib/contact-idempotency";
 import { reserveContactAttempt, countContactAttempt, acceptContactAttempt } from "@/lib/contact-ledger";
 import { acceptInbox } from "@/lib/contact-inbox-core";
 import { privateInbox, inboxConfigHash } from "@/lib/contact-inbox-blob";
+import { deliverInboxNow } from "@/lib/contact-inbox-delivery";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: { "Cache-Control": "no-store", ...extra } });
@@ -30,12 +31,18 @@ export async function POST(req: Request) {
     if (!mail) return jsonError(503);
     if (process.env.CONTACT_DURABLE_INBOX === "1") {
       if (!process.env.CONTACT_EMAIL_TO) return jsonError(503);
+      const store = privateInbox();
+      let intent;
+      try { intent = await acceptInbox(store, retry.key, parsed.data, inboxConfigHash()); }
+      catch { return jsonError(503); }
       try {
-        await acceptInbox(privateInbox(), retry.key, parsed.data, inboxConfigHash());
-        // Durable intake is not provider acceptance. No conversionId: neither
-        // Google Ads nor analytics may count delivery before its confirmation.
+        const conversionId = await deliverInboxNow(store, intent);
+        return NextResponse.json({ success: true, conversionId }, { headers: { "Cache-Control": "no-store" } });
+      } catch {
+        // Persisted intake is successful even during provider failure, but it
+        // must never count as a confirmed advertising conversion.
         return NextResponse.json({ success: true, queued: true }, { status: 202, headers: { "Cache-Control": "no-store" } });
-      } catch { return jsonError(503); }
+      }
     }
     let reservation: { receivedAt: string } | null;
     try { reservation = await reserveContactAttempt(retry.key); }
