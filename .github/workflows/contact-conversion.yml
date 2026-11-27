@@ -1,6 +1,8 @@
 name: Contact conversion checks
 on:
+  workflow_dispatch:
   pull_request:
+    types: [opened, reopened, ready_for_review]
     paths:
       - "components/contact/**"
       - "components/ai/LeadForm.tsx"

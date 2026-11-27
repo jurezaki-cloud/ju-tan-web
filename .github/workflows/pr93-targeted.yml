@@ -1,0 +1,38 @@
+name: PR93 targeted contact release checks
+on:
+  push:
+    branches: [fix/google-ads-conversion-tracking-p0]
+    paths:
+      - 'components/contact/ContactForm.tsx'
+      - 'components/ai/LeadForm.tsx'
+      - 'tests/browser/contact-p0.spec.ts'
+      - '.github/workflows/pr93-targeted.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contact-hydration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_PUBLIC_GOOGLE_ADS_LOCAL_TEST: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx eslint components/contact/ContactForm.tsx components/ai/LeadForm.tsx tests/browser/contact-p0.spec.ts
+      - run: npm run typecheck
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --config playwright.ads.config.ts contact-p0.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: pr93-targeted-contact-evidence
+          path: test-results/

@@ -141,6 +141,8 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
 
   return (
     <form
+      method="post"
+      action="/api/contact"
       onSubmit={handleSubmit}
       aria-label="Povpraševanje za ponudbo"
       className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"

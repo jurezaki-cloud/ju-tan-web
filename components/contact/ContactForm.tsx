@@ -60,10 +60,14 @@ function getLinkedService() {
 }
 
 const getServerService = () => "";
+const subscribeToHydration = () => () => {};
+const getClientReady = () => true;
+const getServerReady = () => false;
 
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
+  const hydrated = useSyncExternalStore(subscribeToHydration, getClientReady, getServerReady);
   const formId = useId();
   const submitting = useRef(false);
   const attempt = useRef<ContactAttempt>({});
@@ -205,12 +209,15 @@ export default function ContactForm() {
   return (
     <form
       id="contact-form"
+      method="post"
+      action="/api/contact"
       onSubmit={handleSubmit}
       noValidate
       aria-label="Kontaktni obrazec"
-      aria-busy={loading}
+      aria-busy={!hydrated || loading}
       className="relative"
     >
+      <fieldset disabled={!hydrated} className="contents">
       <div
         className="pointer-events-none absolute left-[-10000px] h-px w-px overflow-hidden"
         aria-hidden="true"
@@ -479,6 +486,7 @@ export default function ContactForm() {
           {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
         </CTAButton>
       </div>
+      </fieldset>
     </form>
   );
 }

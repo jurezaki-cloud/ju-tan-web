@@ -33,6 +33,20 @@ async function doubleSubmit(form: Locator) {
   });
 }
 
+test("main: without JavaScript fields cannot submit personal data into the URL", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.route("**/*", route => new URL(route.request().url()).hostname === "127.0.0.1" ? route.continue() : route.abort());
+  await page.goto("http://127.0.0.1:3100/kontakt");
+  const form = page.locator("#contact-form");
+  await expect(form.locator('[name="name"]')).toBeDisabled();
+  await expect(form.locator('[type="submit"]')).toBeDisabled();
+  await expect(form).toHaveAttribute("method", "post");
+  await expect(form).toHaveAttribute("action", "/api/contact");
+  expect(new URL(page.url()).search).toBe("");
+  await context.close();
+});
+
 test.beforeEach(async ({ page }) => {
   // Fail closed: ALL off-origin requests are stubbed/aborted. No provider or
   // Google request can leave the local browser test, even if tracking regresses.

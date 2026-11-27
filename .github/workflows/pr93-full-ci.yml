@@ -1,7 +1,5 @@
 name: PR93 complete isolated CI
 on:
-  push:
-    branches: [fix/pr93-readiness-security-test, fix/google-ads-conversion-tracking-p0]
   workflow_dispatch:
 permissions:
   contents: read
