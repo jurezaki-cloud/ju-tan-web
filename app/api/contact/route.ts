@@ -9,6 +9,7 @@ import { reserveContactAttempt, countContactAttempt, acceptContactAttempt } from
 import { acceptInbox } from "@/lib/contact-inbox-core";
 import { privateInbox, inboxConfigHash } from "@/lib/contact-inbox-blob";
 import { deliverInboxNow } from "@/lib/contact-inbox-delivery";
+import { readContactJson } from "@/lib/contact-request";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: { "Cache-Control": "no-store", ...extra } });
@@ -17,10 +18,10 @@ function jsonError(status: number, extra?: HeadersInit) {
 export async function POST(req: Request) {
   try {
     const contentType = req.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().includes("application/json")) return jsonError(415);
+    if (contentType.split(";", 1)[0].trim().toLowerCase() !== "application/json") return jsonError(415);
     if (isRateLimited(clientKey(req))) return jsonError(429, { "Retry-After": "600" });
     let json: unknown;
-    try { json = await req.json(); } catch { return jsonError(400); }
+    try { json = await readContactJson(req); } catch (error) { return jsonError(error instanceof Error && error.message === "body-too-large" ? 413 : 400); }
     const parsed = contactSchema.safeParse(json);
     if (!parsed.success || parsed.data.consent !== true) return jsonError(400);
     if (parsed.data.website) return NextResponse.json({ success: true });
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
       const store = privateInbox();
       let intent;
       try { intent = await acceptInbox(store, retry.key, parsed.data, inboxConfigHash()); }
-      catch { return jsonError(503); }
+      catch (error) { return jsonError(error instanceof Error && error.message === "inbox-conflict" ? 409 : 503); }
       try {
         const conversionId = await deliverInboxNow(store, intent);
         return NextResponse.json({ success: true, conversionId }, { headers: { "Cache-Control": "no-store" } });

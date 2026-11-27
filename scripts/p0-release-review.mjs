@@ -1,9 +1,16 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { dirname, join } from 'node:path';
+
+// Windows cannot spawn npm.cmd directly without a shell. Invoke its JS entry
+// instead, preserving argument boundaries and avoiding shell interpolation.
+const npm = (args, options) => process.platform === 'win32'
+  ? spawnSync(process.execPath, [join(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js'), ...args], options)
+  : spawnSync('npm', args, options);
 
 // Registry advisory analysis only: no install/update/fix and no secret access.
-const result = spawnSync('npm', ['audit', '--json'], { encoding: 'utf8', maxBuffer: 8_000_000 });
+const result = npm(['audit', '--json'], { encoding: 'utf8', maxBuffer: 8_000_000 });
 let audit;
 try { audit = JSON.parse(result.stdout); } catch { throw new Error('npm audit produced no valid report'); }
 if (audit.error || !audit.metadata?.vulnerabilities) throw new Error('npm audit registry failure');
@@ -11,7 +18,7 @@ console.log('AUDIT_METADATA', JSON.stringify(audit.metadata));
 const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
 for (const [name, info] of Object.entries(audit.vulnerabilities ?? {})) {
   const nodes = info.nodes.map(path => ({path, version: lock.packages[path]?.version, dev: lock.packages[path]?.dev === true}));
-  const explain = spawnSync('npm', ['explain', name, '--json'], {encoding:'utf8', maxBuffer:2_000_000});
+  const explain = npm(['explain', name, '--json'], {encoding:'utf8', maxBuffer:2_000_000});
   console.log('AUDIT_PACKAGE', JSON.stringify({name, ...info, nodes, dependencyPaths: JSON.parse(explain.stdout || '[]')}));
 }
 const client = readFileSync('lib/contact-client.ts','utf8');

@@ -5,6 +5,8 @@ import { acceptInbox, inboxId, type InboxStore } from "../lib/contact-inbox-core
 import { contactDay, dailyCount, recordConfirmed, queueHealth, workerHealth, runContactWorker } from "../lib/contact-operations";
 import { authorizeContactWorker } from "../lib/contact-worker-auth";
 import type { ContactPayload } from "../lib/validation/contact";
+import { projectConfirmed } from "../lib/contact-projection";
+import { readContactJson } from "../lib/contact-request";
 function fixture() {
   const entries = new Map<string, unknown>();
   const store: InboxStore = {
@@ -16,6 +18,49 @@ function fixture() {
 }
 const payload = { name: "Test Example", email: "test@example.com", message: "Synthetic only", company: "", phone: "", service: "Spletna stran", consent: true, consentAt: "2026-11-27T10:00:00.000Z", website: "" } as ContactPayload;
 const now = Date.parse("2026-11-27T10:00:00Z");
+
+test("Neon projection failure never blocks delivery and replay repairs without another send", async () => {
+  const { store } = fixture();
+  await acceptInbox(store, "projection", payload, "cfg", now);
+  let sends = 0;
+  const deliver = async () => { sends++; return "receipt"; };
+  const failed = await runContactWorker(store, "cfg", deliver, () => now, async () => { throw new Error("db-offline"); });
+  assert.equal(failed.delivered, 1);
+  assert.equal(failed.projectionPending, 1);
+  assert.equal(failed.healthy, false);
+  assert.equal((await workerHealth(store, now)).projectionPending, 1);
+  const rows = new Map<string, unknown[]>();
+  const db = { async query(sql: string, values: unknown[]) {
+    assert.match(sql, /ON CONFLICT \(intent_id\) DO NOTHING/);
+    rows.set(String(values[0]), values);
+  } };
+  for (let i = 1; i <= 3; i++) {
+    const result = await runContactWorker(store, "cfg", deliver, () => now + i, (intent, receipt) => projectConfirmed(db, intent, receipt));
+    assert.equal(result.healthy, true);
+  }
+  assert.equal(sends, 1);
+  assert.equal(rows.size, 1);
+  assert.deepEqual([...rows.values()][0].slice(1), ["receipt", "2026-11-27", payload.service]);
+});
+
+test("request size is enforced on actual bytes without trusting Content-Length", async () => {
+  const request = (body: string) => new Request("https://example.test", { method: "POST", body, headers: { "Content-Length": "1" } });
+  assert.deepEqual(await readContactJson(request('{"ok":true}')), { ok: true });
+  await assert.rejects(readContactJson(request('"' + "é".repeat(17000) + '"')), /body-too-large/);
+  await assert.rejects(readContactJson(request('{broken')), SyntaxError);
+});
+
+test("batch overflow does not start provider expiry before the first delivery attempt", async () => {
+  const { store } = fixture();
+  for (let i = 0; i < 51; i++) await acceptInbox(store, `batch-${i}`, payload, "cfg", now);
+  const first = await runContactWorker(store, "cfg", async intent => `receipt-${intent.key}`, () => now);
+  assert.equal(first.delivered, 50);
+  assert.equal(first.pending, 1);
+  assert.equal(await store.read(`attempts/${inboxId("batch-50")}.json`), null);
+  const next = await runContactWorker(store, "cfg", async intent => `receipt-${intent.key}`, () => now + 24 * 3600000);
+  assert.equal(next.delivered, 1);
+  assert.equal(next.reconciliation, 0);
+});
 const confirmed = async (store: InboxStore, key: string) => store.create(`receipts/${inboxId(key)}.json`, { receipt: `provider-${key}` });
 test("daily ledger counts confirmed inquiries, not retries or queued requests", async () => {
   const { store } = fixture();

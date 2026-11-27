@@ -46,18 +46,22 @@ export async function queueHealth(store: InboxStore, now = Date.now()) {
   }
   return { pending, oldestPendingMs, counterLag, queueStale: pending > 0 && oldestPendingMs >= 600000 };
 }
-type Run = { startedAt: number; finishedAt?: number; healthy?: boolean; failed?: boolean };
+type Run = { startedAt: number; finishedAt?: number; healthy?: boolean; failed?: boolean; projectionPending?: number; reconciliation?: number };
 function utcDay(now: number) { return new Date(now).toISOString().slice(0, 10); }
 export async function workerHealth(store: InboxStore, now = Date.now()) {
   let latestStarted = -1, latestFinished = -1, latestHealthy = -1;
   let latestFailed = false;
+  let projectionPending = 0, reconciliation = 0;
   for (const day of [utcDay(now), utcDay(now - 86400000)]) {
     for (const path of await store.paths(`runs/${day}/`)) {
       const run = await store.read<Run>(path);
       if (!run || !Number.isFinite(run.startedAt) || run.startedAt > now) continue;
       latestStarted = Math.max(latestStarted, run.startedAt);
       if (Number.isFinite(run.finishedAt) && run.finishedAt! <= now) {
-        if (run.finishedAt! >= latestFinished) { latestFinished = run.finishedAt!; latestFailed = run.healthy !== true; }
+        if (run.finishedAt! >= latestFinished) {
+          latestFinished = run.finishedAt!; latestFailed = run.healthy !== true;
+          projectionPending = run.projectionPending ?? 0; reconciliation = run.reconciliation ?? 0;
+        }
         if (run.healthy === true) latestHealthy = Math.max(latestHealthy, run.finishedAt!);
       }
     }
@@ -65,23 +69,30 @@ export async function workerHealth(store: InboxStore, now = Date.now()) {
   const queue = await queueHealth(store, now);
   const stalled = latestStarted < 0 || latestFinished < latestStarted && now - latestStarted >= 600000;
   const heartbeatStale = latestHealthy < 0 || now - latestHealthy >= 600000;
-  return { ...queue, stalled, heartbeatStale, latestFailed, healthy: !stalled && !heartbeatStale && !latestFailed && !queue.queueStale && queue.counterLag === 0, latestHealthy: latestHealthy < 0 ? null : new Date(latestHealthy).toISOString() };
+  return { ...queue, stalled, heartbeatStale, latestFailed, projectionPending, reconciliation, healthy: !stalled && !heartbeatStale && !latestFailed && !queue.queueStale && queue.counterLag === 0, latestHealthy: latestHealthy < 0 ? null : new Date(latestHealthy).toISOString() };
 }
-export async function runContactWorker(store: InboxStore, configHash: string, deliver: (intent: Intent) => Promise<string>, clock = Date.now) {
+export async function runContactWorker(store: InboxStore, configHash: string, deliver: (intent: Intent) => Promise<string>, clock = Date.now, project?: (intent: Intent, receipt: string) => Promise<void>) {
   const startedAt = clock();
   const base = `runs/${utcDay(startedAt)}/${String(startedAt).padStart(13, "0")}-${randomUUID()}`;
   await store.create<Run>(`${base}-start.json`, { startedAt });
   try {
     const delivery = await drainInbox(store, configHash, deliver, startedAt);
-    let confirmed = 0;
+    let confirmed = 0, projectionPending = 0;
     for (const path of await store.paths()) {
       const intent = await store.read<Entry>(path);
-      if (intent?.kind === "intent" && await recordConfirmed(store, intent)) confirmed++;
+      if (intent?.kind === "intent" && await recordConfirmed(store, intent)) {
+        confirmed++;
+        if (project) {
+          const receipt = await store.read<{ receipt: string }>(`receipts/${inboxId(intent.key)}.json`);
+          try { await project(intent, receipt!.receipt); }
+          catch { projectionPending++; }
+        }
+      }
     }
     const queue = await queueHealth(store, clock());
-    const healthy = delivery.pending === 0 && delivery.reconciliation === 0 && !queue.queueStale && queue.counterLag === 0;
-    await store.create<Run>(`${base}-finish.json`, { startedAt, finishedAt: clock(), healthy });
-    return { ...delivery, ...queue, confirmed, healthy };
+    const healthy = delivery.pending === 0 && delivery.reconciliation === 0 && !queue.queueStale && queue.counterLag === 0 && projectionPending === 0;
+    await store.create<Run>(`${base}-finish.json`, { startedAt, finishedAt: clock(), healthy, projectionPending, reconciliation: delivery.reconciliation });
+    return { ...delivery, ...queue, confirmed, projectionPending, healthy };
   } catch (error) {
     await store.create<Run>(`${base}-finish.json`, { startedAt, finishedAt: clock(), healthy: false, failed: true });
     throw error;

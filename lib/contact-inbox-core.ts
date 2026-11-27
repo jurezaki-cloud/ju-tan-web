@@ -28,11 +28,12 @@ export async function drainInbox(store: InboxStore, configHash: string, deliver:
     if (!entry || entry.kind === "cancelled") { result.cancelled++; continue; }
     const id = inboxId(entry.key);
     if (await store.read(`receipts/${id}.json`)) continue;
+    if (processed >= 50) { result.pending++; continue; }
     const first = await store.create(`attempts/${id}.json`, { startedAt: now });
     if (entry.configHash !== configHash || now - first.startedAt >= 23 * 3600000) {
       result.reconciliation++; continue;
     }
-    if (processed++ >= 50) { result.pending++; continue; }
+    processed++;
     try {
       const receipt = await deliver(entry);
       if (!receipt.trim()) throw new Error("missing-receipt");

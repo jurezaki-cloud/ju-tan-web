@@ -36,7 +36,9 @@ jobs:
       - if: matrix.task == 'inventory'
         run: node scripts/p0-test-inventory.mjs
       - if: matrix.task == 'inbox'
-        run: node --import tsx --test tests/contact-inbox.test.ts tests/contact-operations.test.ts
+        run: node --import tsx --test tests/contact-inbox.test.ts tests/contact-operations.test.ts scripts/contact-runner.test.mjs
+      - if: matrix.task == 'inbox'
+        run: node --require ./tests/server-only.cjs --import tsx scripts/contact-security-check.ts
       - if: matrix.task == 'audit'
         run: npm audit --audit-level=low
       - if: matrix.task == 'browser'

@@ -4,7 +4,7 @@ import { spawnSync } from 'node:child_process';
 const files = [];
 function walk(dir) {
   for (const item of readdirSync(dir, { withFileTypes: true })) {
-    const path = join(dir, item.name);
+    const path = join(dir, item.name).replaceAll('\\', '/');
     if (item.isDirectory()) walk(path);
     else if (/\.test\.[cm]?[jt]sx?$/.test(item.name)) files.push(path);
   }

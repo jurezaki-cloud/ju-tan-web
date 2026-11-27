@@ -6,6 +6,7 @@ import { POST as STATUS } from "../app/api/contact/status/route";
 import { contactSchema } from "../lib/validation/contact";
 import { contactPool } from "../lib/contact-db";
 import { reserveContactAttempt, countContactAttempt } from "../lib/contact-ledger";
+import { projectConfirmed } from "../lib/contact-projection";
 
 async function main() {
   const url = new URL(process.env.CONTACT_DATABASE_URL ?? "http://invalid");
@@ -60,6 +61,15 @@ async function main() {
   });
   try {
     await db.query(readFileSync("scripts/sql/contact-idempotency.sql", "utf8"));
+    await db.query(readFileSync("scripts/sql/contact-inbox-projection.sql", "utf8"));
+    const projectionService = `projection-${randomUUID()}`;
+    const projectionPayload = contactSchema.parse({ ...payload, service: projectionService });
+    const intents = [0, 1, 2].map(() => ({ kind: "intent" as const, key: randomUUID(), body: JSON.stringify(projectionPayload), receivedAt: "2026-10-24T22:30:00Z", configHash: "fixture" }));
+    const countProjection = async () => Number((await db.query("SELECT confirmed FROM contact_inbox_daily WHERE day = '2026-10-25' AND service=$1", [projectionService])).rows[0]?.confirmed || 0);
+    await Promise.all(Array.from({ length: 8 }, () => Promise.all(intents.slice(0, 2).map(intent => projectConfirmed(db, intent, `receipt-${intent.key}`)))));
+    assert.equal(await countProjection(), 2);
+    await Promise.all(Array.from({ length: 8 }, () => projectConfirmed(db, intents[2], "receipt-third")));
+    assert.equal(await countProjection(), 3);
     assert.equal(contactSchema.parse(payload).email, "test@example.com");
     const success = await POST(request(payload));
     assert.equal(success.status, 200);
