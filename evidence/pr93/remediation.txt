@@ -1,7 +1,7 @@
 
-up to date, audited 728 packages in 4s
+up to date, audited 726 packages in 4s
 
-235 packages are looking for funding
+234 packages are looking for funding
   run `npm fund` for details
 
 # npm audit report
@@ -12,14 +12,15 @@ Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal -
 Depends on vulnerable versions of minimatch
 fix available via `npm audit fix`
 node_modules/glob
-  @sentry/bundler-plugin-core  >=0.5.0
+  @sentry/bundler-plugins  <=11.10.0
   Depends on vulnerable versions of glob
-  node_modules/@sentry/bundler-plugin-core
-    @sentry/nextjs  10.10.0 - 10.76.1
-    Depends on vulnerable versions of @sentry/bundler-plugin-core
+  node_modules/@sentry/bundler-plugins
+    @sentry/nextjs  10.76.2 - 11.10.0
+    Depends on vulnerable versions of @sentry/bundler-plugins
+    Depends on vulnerable versions of @sentry/webpack-plugin
     node_modules/@sentry/nextjs
-    @sentry/webpack-plugin  2.0.0-alpha.1 - 5.3.0
-    Depends on vulnerable versions of @sentry/bundler-plugin-core
+    @sentry/webpack-plugin  5.4.0 - 11.10.0
+    Depends on vulnerable versions of @sentry/bundler-plugins
     node_modules/@sentry/webpack-plugin
 
 minimatch  7.0.0 - 11.0.0
