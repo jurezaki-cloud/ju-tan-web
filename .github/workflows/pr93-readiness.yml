@@ -5,35 +5,36 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: pr93-readiness
+  cancel-in-progress: true
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: fix/pr93-readiness-security-test
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-      - name: Audit and compatible remediation only
+      - name: Scoped transitive remediation on isolated branch
         run: |
           mkdir -p evidence/pr93
-          npm audit --json > evidence/pr93/audit-before.json || test "$?" = 1
-          npm audit fix --package-lock-only --ignore-scripts > evidence/pr93/remediation.txt 2>&1 || test "$?" = 1
+          npm pkg set 'overrides.@sentry/bundler-plugin-core.glob=14.0.6'
+          npm install --package-lock-only --ignore-scripts
           npm ci
           npm audit --json > evidence/pr93/audit-after.json || test "$?" = 1
-          node -e "const a=require('./evidence/pr93/audit-after.json'); if(!a.metadata) process.exit(2); console.log(JSON.stringify(a.metadata.vulnerabilities))"
-          test ! -d node_modules/next/dist/docs || find node_modules/next/dist/docs -type f -iname '*route*' | head -20 > evidence/pr93/next-guides.txt
-      - name: Preserve compatible changes on this branch only
+          npm ls glob minimatch > evidence/pr93/dependency-tree.txt
+          npm audit --audit-level=low
+      - name: Preserve dependency changes only when manifest or lock changed
         run: |
           git diff --check
-          git add package-lock.json evidence/pr93/
-          if git diff --cached --quiet; then exit 0; fi
+          if git diff --quiet -- package.json package-lock.json; then exit 0; fi
+          git add package.json package-lock.json evidence/pr93/audit-after.json evidence/pr93/dependency-tree.txt
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'security(pr93): compatible lockfile remediation and exact audit evidence'
+          git commit -m 'security(pr93): scoped glob remediation with zero-warning audit'
           git push origin HEAD:refs/heads/fix/pr93-readiness-security-test
       - uses: actions/upload-artifact@v4
         if: always()
