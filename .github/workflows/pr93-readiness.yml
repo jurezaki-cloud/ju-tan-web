@@ -1,43 +1,20 @@
 name: PR93 isolated readiness
 on:
-  push:
-    branches: [fix/pr93-readiness-security-test]
   workflow_dispatch:
 permissions:
-  contents: write
-concurrency:
-  group: pr93-readiness
-  cancel-in-progress: true
+  contents: read
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-      - name: Scoped transitive remediation on isolated branch
-        run: |
-          mkdir -p evidence/pr93
-          npm pkg set 'overrides.@sentry/bundler-plugin-core.glob=14.0.6' 'overrides.@sentry/bundler-plugins.glob=14.0.6'
-          npm install --package-lock-only --ignore-scripts
-          npm ci
-          npm audit --json > evidence/pr93/audit-after.json || test "$?" = 1
-          npm ls glob minimatch > evidence/pr93/dependency-tree.txt
-          npm audit --audit-level=low
-      - name: Preserve dependency changes only when manifest or lock changed
-        run: |
-          git diff --check
-          if git diff --quiet -- package.json package-lock.json; then exit 0; fi
-          git add package.json package-lock.json evidence/pr93/audit-after.json evidence/pr93/dependency-tree.txt
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'security(pr93): scoped glob remediation with zero-warning audit'
-          git push origin HEAD:refs/heads/fix/pr93-readiness-security-test
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pr93-dependency-evidence
-          path: evidence/pr93/
+      - run: npm ci
+      - run: npm audit --audit-level=low
+      - run: node scripts/p0-release-review.mjs

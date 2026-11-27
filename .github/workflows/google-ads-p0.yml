@@ -1,7 +1,6 @@
 name: Google Ads P0 isolated verification
 on:
-  push:
-    branches: [fix/google-ads-conversion-tracking-p0]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:

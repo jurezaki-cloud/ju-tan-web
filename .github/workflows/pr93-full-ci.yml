@@ -1,7 +1,7 @@
 name: PR93 complete isolated CI
 on:
   push:
-    branches: [fix/pr93-readiness-security-test]
+    branches: [fix/pr93-readiness-security-test, fix/google-ads-conversion-tracking-p0]
   workflow_dispatch:
 permissions:
   contents: read
@@ -36,7 +36,7 @@ jobs:
       - if: matrix.task == 'inventory'
         run: node scripts/p0-test-inventory.mjs
       - if: matrix.task == 'inbox'
-        run: node --import tsx --test tests/contact-inbox.test.ts tests/contact-operations.test.ts scripts/contact-runner.test.mjs
+        run: node --import tsx --test tests/contact-inbox.test.ts tests/contact-operations.test.ts scripts/contact-runner.test.mjs scripts/contact-cron.test.ts
       - if: matrix.task == 'inbox'
         run: node --require ./tests/server-only.cjs --import tsx scripts/contact-security-check.ts
       - if: matrix.task == 'audit'

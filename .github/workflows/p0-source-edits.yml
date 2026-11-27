@@ -1,8 +1,6 @@
 name: Apply reviewed P0 source edits on isolated branch
 on:
-  push:
-    branches: [fix/google-ads-conversion-tracking-p0]
-    paths: [scripts/p0-reviewed-source-patch.mjs, .github/workflows/p0-source-edits.yml]
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:

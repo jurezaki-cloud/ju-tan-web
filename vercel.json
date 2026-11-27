@@ -2,5 +2,14 @@
   "git": {
     "deploymentEnabled": false
   },
-  "crons": []
+  "crons": [
+    {
+      "path": "/api/cron/license-backup",
+      "schedule": "15 2 * * *"
+    },
+    {
+      "path": "/api/cron/contact-worker",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }

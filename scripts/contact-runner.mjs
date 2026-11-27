@@ -5,15 +5,20 @@ import { setTimeout as delay } from 'node:timers/promises';
 // independent existing schedulers; monitor must run even if worker is stopped.
 export async function checkContact(mode, env = process.env, request = fetch) {
   if (!['worker', 'monitor'].includes(mode)) throw new Error('invalid-mode');
-  const target = new URL(env.CONTACT_PREVIEW_ORIGIN);
-  if (target.protocol !== 'https:' || target.hostname !== env.CONTACT_ALLOWED_PREVIEW_HOST ||
-      !target.hostname.endsWith('.vercel.app') || target.port || target.username || target.password ||
+  const production = env.CONTACT_RUNNER_ENV === 'production';
+  if (env.CONTACT_RUNNER_ENV && !['preview', 'production'].includes(env.CONTACT_RUNNER_ENV)) throw new Error('invalid-environment');
+  const target = new URL(production ? env.CONTACT_PRODUCTION_ORIGIN : env.CONTACT_PREVIEW_ORIGIN);
+  const allowedHost = production ? 'ju-tan.com' : env.CONTACT_ALLOWED_PREVIEW_HOST;
+  if (target.protocol !== 'https:' || target.hostname !== allowedHost ||
+      (!production && !target.hostname.endsWith('.vercel.app')) || target.port || target.username || target.password ||
       target.pathname !== '/' || target.search || target.hash) throw new Error('invalid-preview-target');
   const secret = mode === 'worker' ? env.CONTACT_WORKER_SECRET : env.CONTACT_MONITOR_SECRET;
-  if (!secret || secret.length < 32 || !env.CONTACT_PROTECTION_BYPASS) throw new Error('missing-runner-secret');
+  if (!secret || secret.length < 32 || (!production && !env.CONTACT_PROTECTION_BYPASS)) throw new Error('missing-runner-secret');
+  if (production && (!env.CONTACT_ALERT_WEBHOOK || !env.CONTACT_ALERT_ALLOWED_HOST ||
+      (mode === 'monitor' && (!env.CONTACT_MONITOR_HEARTBEAT_URL || !env.CONTACT_MONITOR_HEARTBEAT_HOST)))) throw new Error('missing-independent-monitoring');
   const response = await request(new URL(`/api/contact/${mode === 'worker' ? 'drain' : 'health'}`, target), {
     method: mode === 'worker' ? 'POST' : 'GET', redirect: 'error', signal: AbortSignal.timeout(55000),
-    headers: { Authorization: `Bearer ${secret}`, 'x-vercel-protection-bypass': env.CONTACT_PROTECTION_BYPASS },
+    headers: { Authorization: `Bearer ${secret}`, ...(!production ? { 'x-vercel-protection-bypass': env.CONTACT_PROTECTION_BYPASS } : {}) },
   });
   if (!response.ok) throw new Error('contact-unhealthy');
   const state = await response.json();
@@ -23,7 +28,17 @@ export async function checkContact(mode, env = process.env, request = fetch) {
 }
 
 export async function runContactCheck(mode, env = process.env, request = fetch) {
-  try { return await checkContact(mode, env, request); }
+  try {
+    const result = await checkContact(mode, env, request);
+    // External dead-man monitor must alarm if this success ping stops arriving.
+    if (mode === 'monitor' && env.CONTACT_MONITOR_HEARTBEAT_URL) {
+      const url = new URL(env.CONTACT_MONITOR_HEARTBEAT_URL);
+      if (url.protocol !== 'https:' || url.hostname !== env.CONTACT_MONITOR_HEARTBEAT_HOST || url.username || url.password || url.port || url.hash) throw new Error('invalid-heartbeat-target');
+      const response = await request(url, { method: 'POST', redirect: 'error', signal: AbortSignal.timeout(10000) });
+      if (!response.ok) throw new Error('heartbeat-unavailable');
+    }
+    return result;
+  }
   catch {
     // Optional independent channel. Never forward response bodies, URLs or secrets.
     // The scheduler must also alert on exit 1, including failure of this webhook.
