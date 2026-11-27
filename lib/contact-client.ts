@@ -58,13 +58,13 @@ async function send(payload: ContactPayload, attempt: ContactAttempt) {
   }
   return response;
 }
-export function sendContactRequest(payload: ContactPayload, attempt: ContactAttempt): Promise<Response> {
+export async function sendContactRequest(payload: ContactPayload, attempt: ContactAttempt): Promise<Response> {
   if (typeof window === "undefined") return send(payload, attempt);
-  if (!navigator.locks) return Promise.reject(new Error("Safe submission unsupported; contact us directly"));
+  if (!navigator.locks) throw new Error("Safe submission unsupported; contact us directly");
   let observed: string | null;
   try { observed = window.localStorage.getItem(LAST_KEY); }
-  catch { return Promise.reject(new Error("Safe storage unavailable")); }
-  return navigator.locks.request("ju-tan-contact-send-v1", () => {
+  catch { throw new Error("Safe storage unavailable"); }
+  return await navigator.locks.request("ju-tan-contact-send-v1", () => {
     if (!attempt.key && window.localStorage.getItem(LAST_KEY) !== observed) throw new Error("Another tab completed an inquiry; verify before submitting again");
     return send(payload, attempt);
   });
