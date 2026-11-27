@@ -6,9 +6,11 @@ import { clientKey, isRateLimited } from "@/lib/rate-limit";
 import { getMailConfig } from "@/lib/mail";
 import { contactRetryKey } from "@/lib/contact-idempotency";
 import { reserveContactAttempt, countContactAttempt, acceptContactAttempt } from "@/lib/contact-ledger";
+import { acceptInbox } from "@/lib/contact-inbox-core";
+import { privateInbox, inboxConfigHash } from "@/lib/contact-inbox-blob";
 
 function jsonError(status: number, extra?: HeadersInit) {
-  return NextResponse.json({ success: false }, { status, headers: extra });
+  return NextResponse.json({ success: false }, { status, headers: { "Cache-Control": "no-store", ...extra } });
 }
 
 export async function POST(req: Request) {
@@ -22,15 +24,22 @@ export async function POST(req: Request) {
     if (!parsed.success || parsed.data.consent !== true) return jsonError(400);
     if (parsed.data.website) return NextResponse.json({ success: true });
 
-    // Missing keys fail closed: already-open old clients must reload. Never
-    // generate a random fallback that could silently duplicate an inquiry.
     const retry = contactRetryKey(req.headers.get("Idempotency-Key"));
     if (!retry) return jsonError(409);
     const mail = getMailConfig();
     if (!mail) return jsonError(503);
+    if (process.env.CONTACT_DURABLE_INBOX === "1") {
+      if (!process.env.CONTACT_EMAIL_TO) return jsonError(503);
+      try {
+        await acceptInbox(privateInbox(), retry.key, parsed.data, inboxConfigHash());
+        // Durable intake is not provider acceptance. No conversionId: neither
+        // Google Ads nor analytics may count delivery before its confirmation.
+        return NextResponse.json({ success: true, queued: true }, { status: 202, headers: { "Cache-Control": "no-store" } });
+      } catch { return jsonError(503); }
+    }
     let reservation: { receivedAt: string } | null;
     try { reservation = await reserveContactAttempt(retry.key); }
-    catch { return jsonError(503); } // no database/schema = no external send
+    catch { return jsonError(503); }
     if (!reservation) return jsonError(409);
 
     const resend = new Resend(mail.apiKey);
@@ -55,9 +64,6 @@ export async function POST(req: Request) {
     }, { idempotencyKey: retry.key });
     if (result.error || !result.data?.id) return jsonError(500);
     await acceptContactAttempt(retry.key, result.data.id);
-
-    // Acceptance is not inbox delivery. Counter failure must not turn an
-    // accepted message into a user-visible delivery error or a new mail send.
     try { await countContactAttempt(retry.key, service); }
     catch { console.error("Confirmed inquiry counter unavailable"); }
     return NextResponse.json({ success: true, conversionId: result.data.id });
