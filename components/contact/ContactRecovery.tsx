@@ -1,19 +1,19 @@
 "use client";
 import { useState } from "react";
-import { recoverContactRequest, type ContactAttempt } from "@/lib/contact-client";
+import { CONTACT_PENDING_KEY, recoverContactRequest, type ContactAttempt } from "@/lib/contact-client";
 
-/** Only rendered alongside a delivery error; no form contents are persisted. */
 export default function ContactRecovery({ attempt }: { attempt: { current: ContactAttempt } }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [accepted, setAccepted] = useState(false);
   return <div className="space-y-2 text-sm" aria-live="polite">
-    <button type="button" className="underline" disabled={busy} onClick={async () => {
+    <button type="button" className="underline" disabled={busy || accepted} onClick={async () => {
       setBusy(true);
       try {
         const state = await recoverContactRequest();
         if (state === "accepted") {
-          attempt.current = {};
-          setMessage("Prejšnje povpraševanje je sprejeto. Ne pošiljajte ga ponovno. Za drug projekt lahko oddate novo povpraševanje.");
+          setAccepted(true);
+          setMessage("Prejšnje povpraševanje je sprejeto. Ne pošiljajte ga ponovno.");
         } else if (state === "cancelled" || state === "none") {
           attempt.current = {};
           setMessage("Prejšnji poskus ni bil poslan. Če želite, ponovno pritisnite Pošlji povpraševanje.");
@@ -22,5 +22,13 @@ export default function ContactRecovery({ attempt }: { attempt: { current: Conta
       finally { setBusy(false); }
     }}>{busy ? "Preverjam ..." : "Preveri stanje prejšnje oddaje"}</button>
     {message ? <p>{message}</p> : null}
+    {accepted ? <button type="button" className="underline" onClick={() => {
+      // Explicit NEW intent only, never an automatic ambiguous resend.
+      try { window.localStorage.removeItem(CONTACT_PENDING_KEY); }
+      catch { setMessage("Shramba ni dosegljiva. Za novo povpraševanje pišite na info@ju-tan.com."); return; }
+      attempt.current = {};
+      setAccepted(false);
+      setMessage("Za drug projekt preverite in spremenite vsebino ter izrecno pritisnite Pošlji povpraševanje.");
+    }}>Začni drugo povpraševanje</button> : null}
   </div>;
 }
