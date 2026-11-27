@@ -23,6 +23,7 @@ import {
   flattenContactErrors,
   type ContactFieldKey,
 } from "@/lib/validation/contact";
+import ContactRecovery from "@/components/contact/ContactRecovery";
 import { trackContactConversion } from "@/lib/google-ads";
 import { sendContactRequest, readContactSuccess, type ContactAttempt } from "@/lib/contact-client";
 import ContactSuccess from "./ContactSuccess";
@@ -253,6 +254,7 @@ export default function ContactForm() {
         </div>
       ) : null}
 
+      {errors.form ? <ContactRecovery attempt={attempt} /> : null}
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor={`${formId}-name`} className={labelClass}>

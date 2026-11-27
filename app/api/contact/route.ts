@@ -5,7 +5,7 @@ import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
 import { getMailConfig } from "@/lib/mail";
 import { contactRetryKey } from "@/lib/contact-idempotency";
-import { reserveContactAttempt, countContactAttempt } from "@/lib/contact-ledger";
+import { reserveContactAttempt, countContactAttempt, acceptContactAttempt } from "@/lib/contact-ledger";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: extra });
@@ -54,6 +54,7 @@ export async function POST(req: Request) {
   `,
     }, { idempotencyKey: retry.key });
     if (result.error || !result.data?.id) return jsonError(500);
+    await acceptContactAttempt(retry.key, result.data.id);
 
     // Acceptance is not inbox delivery. Counter failure must not turn an
     // accepted message into a user-visible delivery error or a new mail send.

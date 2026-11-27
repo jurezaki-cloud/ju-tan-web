@@ -33,9 +33,9 @@ test("unchanged retries retain key and exact body; edits and expiry fail closed"
     const key = (calls[0].headers as Record<string, string>)["Idempotency-Key"];
     assert.ok(contactRetryKey(key));
     assert.ok(!key.includes(payload.email));
-    assert.throws(() => sendContactRequest({ ...payload, message: "New intent" }, attempt));
+    await assert.rejects(() => sendContactRequest({ ...payload, message: "New intent" }, attempt));
     time += 24 * 60 * 60 * 1000;
-    assert.throws(() => sendContactRequest(payload, attempt));
+    await assert.rejects(() => sendContactRequest(payload, attempt));
     assert.equal(calls.length, 2);
   } finally { globalThis.fetch = previous; Date.now = now; }
 });

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { useObserverFallback } from "@/hooks/use-browser-capabilities";
 
 // The interactive diagram is below the initial mobile viewport. Do not ship
 // Framer Motion and its event handlers until the visitor reaches the diagram.
@@ -13,14 +14,12 @@ const InteractiveHeroStage = dynamic(() => import("./HeroStage"), {
 export default function HeroStageDeferred() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const observerFallback = useObserverFallback();
 
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
-    if (!("IntersectionObserver" in window)) {
-      setVisible(true);
-      return;
-    }
+    if (!("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -37,7 +36,7 @@ export default function HeroStageDeferred() {
 
   return (
     <div ref={containerRef} className="min-h-[440px] sm:min-h-[500px]">
-      {visible ? (
+      {visible || observerFallback ? (
         <InteractiveHeroStage />
       ) : (
         <div

@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { contactSchema } from "@/lib/validation/contact";
 import { sendContactRequest, readContactSuccess, type ContactAttempt } from "@/lib/contact-client";
+import ContactRecovery from "@/components/contact/ContactRecovery";
 import { trackContactConversion } from "@/lib/google-ads";
 import {
   budgetOptions,
@@ -252,6 +253,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       ) : (
         <p className="min-h-5" aria-hidden />
       )}
+      {error ? <ContactRecovery attempt={attempt} /> : null}
       <label className="flex items-start gap-2 text-[12px] leading-5 text-slate-300">
         <Checkbox
           required
