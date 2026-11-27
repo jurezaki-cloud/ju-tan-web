@@ -1,7 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { getMailConfig } from "./mail";
-import { inboxId, type Intent } from "./contact-inbox-core";
+import { inboxId, type Intent, type InboxStore } from "./contact-inbox-core";
 import { contactSchema } from "./validation/contact";
 export async function deliverInboxIntent(intent: Intent): Promise<string> {
   const mail = getMailConfig();
@@ -15,4 +15,14 @@ export async function deliverInboxIntent(intent: Intent): Promise<string> {
   }, { idempotencyKey: `inbox-${inboxId(intent.key)}` });
   if (response.error || !response.data?.id) throw new Error("provider-unconfirmed");
   return response.data.id;
+}
+export async function deliverInboxNow(store: InboxStore, intent: Intent) {
+  const id = inboxId(intent.key);
+  const existing = await store.read<{ receipt: string }>(`receipts/${id}.json`);
+  if (existing) return existing.receipt;
+  const first = await store.create(`attempts/${id}.json`, { startedAt: Date.now() });
+  if (Date.now() - first.startedAt >= 23 * 3600000) throw new Error("manual-reconciliation-required");
+  const receipt = await deliverInboxIntent(intent);
+  await store.create(`receipts/${id}.json`, { receipt, confirmedAt: new Date().toISOString() });
+  return receipt;
 }
