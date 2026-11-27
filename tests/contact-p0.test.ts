@@ -6,7 +6,7 @@ import { readContactSuccess, sendContactRequest, type ContactAttempt } from "../
 import { contactRetryKey } from "../lib/contact-idempotency";
 import type { ContactPayload } from "../lib/validation/contact";
 
-const payload: ContactPayload = { name: "Synthetic", email: "nobody@example.invalid", service: "Splet", message: "Fixture", consent: true, consentAt: "2026-11-27T00:00:00Z" };
+const payload: ContactPayload = { name: "Synthetic", company: undefined, phone: undefined, email: "nobody@example.invalid", service: "Splet", message: "Fixture", consent: true, consentAt: "2026-11-27T00:00:00Z" };
 
 test("only explicit success is accepted; missing receipt never becomes a measured ID", async () => {
   for (const body of [null, {}, { success: false }, { success: "true" }]) {
@@ -57,7 +57,7 @@ test("inventory all contact callers and guard both form integrations", () => {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       const path = join(dir, entry.name);
       if (entry.isDirectory()) walk(path);
-      else if (/\.[cm]?[jt]sx?$/.test(entry.name) && readFileSync(path, "utf8").includes('fetch("/api/contact"')) callers.push(path);
+      else if (/\.[cm]?[jt]sx?$/.test(entry.name) && /fetch\s*\(\s*["'`]\/api\/contact["'`]/.test(readFileSync(path, "utf8"))) callers.push(path);
     }
   }
   for (const dir of ["app", "components", "lib", "src", "hooks"]) walk(dir);

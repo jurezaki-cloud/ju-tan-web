@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        task: [lint, typecheck, build, 'test:ads', 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser]
+        task: [lint, scoped-lint, typecheck, build, 'test:ads', 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser, inventory]
     env:
       VERCEL_ENV: preview
       NEXT_PUBLIC_VERCEL_ENV: preview
@@ -24,14 +24,20 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Run existing verification
-        if: matrix.task != 'magic' && matrix.task != 'p0' && matrix.task != 'browser'
+        if: matrix.task != 'magic' && matrix.task != 'p0' && matrix.task != 'browser' && matrix.task != 'scoped-lint' && matrix.task != 'inventory'
         run: npm run ${{ matrix.task }}
+      - name: Changed runtime and regression files lint
+        if: matrix.task == 'scoped-lint'
+        run: npx eslint lib/google-ads.ts lib/contact-client.ts lib/contact-idempotency.ts components/contact/ContactForm.tsx components/ai/LeadForm.tsx app/api/contact/route.ts tests/*p0.test.ts tests/contact.test.ts tests/google-ads.test.ts tests/browser/contact-p0.spec.ts playwright.ads.config.ts
       - name: Other existing tests
         if: matrix.task == 'magic'
         run: node --import tsx --test tests/magic.test.ts
       - name: P0 regressions
         if: matrix.task == 'p0'
-        run: node --import tsx --test tests/contact-p0.test.ts tests/google-ads-p0.test.ts
+        run: node --import tsx --test tests/*p0.test.ts
+      - name: Inventory and run remaining unit tests
+        if: matrix.task == 'inventory'
+        run: node scripts/p0-test-inventory.mjs
       - name: Install isolated browser
         if: matrix.task == 'browser'
         run: npx playwright install --with-deps chromium

@@ -16,7 +16,6 @@ let ready = false;
 let activeScript: HTMLScriptElement | undefined;
 let attempts = 0;
 let lastFailure = 0;
-let generation = 0;
 const seen = new Set<string>();
 const pending = new Set<string>();
 const denied = {
@@ -62,7 +61,6 @@ export function syncGoogleAds() {
   if (typeof window === "undefined") return;
   if (!allowed()) {
     pending.clear();
-    generation++;
     if (initialized) window.gtag?.("consent", "update", denied);
     return;
   }
@@ -93,7 +91,6 @@ export function syncGoogleAds() {
   attempts++;
   const script = document.createElement("script");
   activeScript = script;
-  const loadGeneration = generation;
   script.id = "ju-tan-google-ads";
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${ADS_ID}`;
@@ -101,7 +98,7 @@ export function syncGoogleAds() {
     if (activeScript !== script) return;
     ready = true;
     activeScript = undefined;
-    if (allowed() && loadGeneration === generation) {
+    if (allowed()) {
       pending.forEach((id) => {
         try { emit(id); } catch { /* Never break a confirmed form. */ }
       });
@@ -114,9 +111,9 @@ export function syncGoogleAds() {
     ready = false;
     lastFailure = Date.now();
     script.remove();
-    // Keep only receipts collected under the current, uninterrupted consent.
-    // They are not marked seen until queued; explicit retry may flush them.
-    if (!allowed() || loadGeneration !== generation) pending.clear();
+    // Revocation synchronously clears pending through syncGoogleAds. New
+    // opt-ins never enqueue old receipts; no persistent conversion backlog.
+    if (!allowed()) pending.clear();
   };
   document.head.appendChild(script);
 }
@@ -128,8 +125,9 @@ export function trackContactConversion(result: unknown): boolean {
       !("success" in result) || result.success !== true ||
       !("conversionId" in result) || typeof result.conversionId !== "string") return false;
     const id = result.conversionId.trim();
-    if (!id || seen.has(id) || pending.has(id)) return false;
+    if (!id || seen.has(id)) return false;
     syncGoogleAds();
+    if (pending.has(id)) return false;
     if (ready) emit(id);
     else pending.add(id);
     return true;
