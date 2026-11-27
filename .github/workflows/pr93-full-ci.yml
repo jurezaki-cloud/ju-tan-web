@@ -1,0 +1,77 @@
+name: PR93 complete isolated CI
+on:
+  push:
+    branches: [fix/pr93-readiness-security-test]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pr93-full-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, typecheck, build, 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser, inventory, inbox, audit]
+    env:
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_PUBLIC_GOOGLE_ADS_LOCAL_TEST: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - if: contains(fromJSON('["lint","typecheck","build","test:hardening","test:free-lab","test:seo"]'), matrix.task)
+        run: npm run ${{ matrix.task }}
+      - if: matrix.task == 'magic'
+        run: node --import tsx --test tests/magic.test.ts
+      - if: matrix.task == 'p0'
+        run: node --import tsx --test tests/*p0.test.ts
+      - if: matrix.task == 'inventory'
+        run: node scripts/p0-test-inventory.mjs
+      - if: matrix.task == 'inbox'
+        run: node --import tsx --test tests/contact-inbox.test.ts
+      - if: matrix.task == 'audit'
+        run: npm audit --audit-level=low
+      - if: matrix.task == 'browser'
+        run: npx playwright install --with-deps chromium
+      - if: matrix.task == 'browser'
+        run: npm run test:ads:browser
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.task == 'browser'
+        with:
+          name: pr93-complete-browser-evidence
+          path: test-results/
+  contact-isolation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: contact_test
+          POSTGRES_PASSWORD: local_fixture_only
+          POSTGRES_DB: ju_tan_contact_test
+          PGUSER: contact_test
+          PGDATABASE: ju_tan_contact_test
+        ports: ['5432:5432']
+        options: --health-cmd=pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      CONTACT_DATABASE_URL: postgres://contact_test:local_fixture_only@localhost:5432/ju_tan_contact_test
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run test:ads
+      - run: node scripts/p0-release-review.mjs
