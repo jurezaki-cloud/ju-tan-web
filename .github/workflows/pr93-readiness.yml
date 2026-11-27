@@ -21,7 +21,7 @@ jobs:
       - name: Scoped transitive remediation on isolated branch
         run: |
           mkdir -p evidence/pr93
-          npm pkg set 'overrides.@sentry/bundler-plugin-core.glob=14.0.6'
+          npm pkg set 'overrides.@sentry/bundler-plugin-core.glob=14.0.6' 'overrides.@sentry/bundler-plugins.glob=14.0.6'
           npm install --package-lock-only --ignore-scripts
           npm ci
           npm audit --json > evidence/pr93/audit-after.json || test "$?" = 1
