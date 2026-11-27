@@ -17,23 +17,23 @@ export async function acceptInbox(store: InboxStore, key: string, payload: Conta
   return entry;
 }
 export async function inboxStatus(store: InboxStore, key: string) {
-  // Same atomic object as acceptance: no lookup-then-cancel race.
   const entry = await store.create<Entry>(entryPath(key), { kind: "cancelled", key });
   return entry.kind === "cancelled" ? "cancelled" as const : "accepted" as const;
 }
 export async function drainInbox(store: InboxStore, configHash: string, deliver: (intent: Intent) => Promise<string>, now = Date.now()) {
   const result = { delivered: 0, pending: 0, reconciliation: 0, cancelled: 0 };
-  for (const path of (await store.paths()).slice(0, 50)) {
+  let processed = 0;
+  for (const path of await store.paths()) {
     const entry = await store.read<Entry>(path);
     if (!entry || entry.kind === "cancelled") { result.cancelled++; continue; }
     const id = inboxId(entry.key);
     if (await store.read(`receipts/${id}.json`)) continue;
-    // An independent first-attempt marker survives DB failure and process death.
-    // Never blindly resend outside the provider's 24-hour deduplication window.
     const first = await store.create(`attempts/${id}.json`, { startedAt: now });
+    // Never blindly resend outside the provider's 24-hour deduplication window.
     if (entry.configHash !== configHash || now - first.startedAt >= 23 * 3600000) {
       result.reconciliation++; continue;
     }
+    if (processed++ >= 50) { result.pending++; continue; }
     try {
       const receipt = await deliver(entry);
       if (!receipt.trim()) throw new Error("missing-receipt");
