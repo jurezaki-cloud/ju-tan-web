@@ -126,11 +126,13 @@ test("invalid secret including Unicode fails closed, no timing comparison except
   assert.equal(authorizeContactWorker(new Request("https://example.test", { headers: { authorization: `Bearer ${"é".repeat(40)}` } }), secret), false);
   assert.equal(authorizeContactWorker(new Request("https://example.test"), "short"), false);
 });
-test("test deployment config disables Git deployment and all licensed jobs", () => {
+test("release config disables Git deployment and preserves the Office backup schedule", () => {
   const config = JSON.parse(readFileSync("vercel.json", "utf8"));
   assert.equal(config.git.deploymentEnabled, false);
-  assert.deepEqual(config.crons, []);
-  assert.equal(JSON.stringify(config).includes("license-backup"), false);
+  assert.deepEqual(config.crons, [
+    { path: "/api/cron/license-backup", schedule: "15 2 * * *" },
+    { path: "/api/cron/contact-worker", schedule: "*/5 * * * *" },
+  ]);
   assert.equal(config.schedules, undefined);
 });
 test("counter failures make worker unhealthy rather than silently reporting success", async () => {
@@ -142,3 +144,4 @@ test("counter failures make worker unhealthy rather than silently reporting succ
   await assert.rejects(runContactWorker(store, "cfg", async () => "bad", () => now + 1000));
   assert.equal((await workerHealth(store, now + 2000)).healthy, false);
 });
+
