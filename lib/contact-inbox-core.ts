@@ -6,7 +6,7 @@ export type Entry = Intent | { kind: "cancelled"; key: string };
 export interface InboxStore {
   read<T>(path: string): Promise<T | null>;
   create<T>(path: string, value: T): Promise<T>;
-  paths(): Promise<string[]>;
+  paths(prefix?: string): Promise<string[]>;
 }
 export const inboxId = (key: string) => createHash("sha256").update(key).digest("hex");
 const entryPath = (key: string) => `intents/${inboxId(key)}.json`;
@@ -29,7 +29,6 @@ export async function drainInbox(store: InboxStore, configHash: string, deliver:
     const id = inboxId(entry.key);
     if (await store.read(`receipts/${id}.json`)) continue;
     const first = await store.create(`attempts/${id}.json`, { startedAt: now });
-    // Never blindly resend outside the provider's 24-hour deduplication window.
     if (entry.configHash !== configHash || now - first.startedAt >= 23 * 3600000) {
       result.reconciliation++; continue;
     }
