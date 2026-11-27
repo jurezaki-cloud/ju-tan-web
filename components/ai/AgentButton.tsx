@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { X } from "lucide-react";
 import CoreMark from "@/components/common/CoreMark";
 import { focusRing } from "@/design";
@@ -10,10 +11,18 @@ type AgentButtonProps = {
   onToggle: () => void;
 };
 
+const subscribeReady = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
+
 export default function AgentButton({ open, onToggle }: AgentButtonProps) {
+  // The server-rendered launcher must not accept clicks before its handler
+  // is hydrated; otherwise a fast first click can appear to do nothing.
+  const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   return (
     <button
       type="button"
+      disabled={!ready}
       aria-expanded={open}
       aria-controls="jutan-agent-window"
       aria-label={open ? "Zapri vodič storitev" : "Odpri vodič storitev"}
