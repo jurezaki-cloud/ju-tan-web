@@ -1,8 +1,8 @@
 {
   "auditReportVersion": 2,
   "vulnerabilities": {
-    "@sentry/bundler-plugin-core": {
-      "name": "@sentry/bundler-plugin-core",
+    "@sentry/bundler-plugins": {
+      "name": "@sentry/bundler-plugins",
       "severity": "moderate",
       "isDirect": false,
       "via": [
@@ -12,9 +12,9 @@
         "@sentry/nextjs",
         "@sentry/webpack-plugin"
       ],
-      "range": ">=0.5.0",
+      "range": "<=11.10.0",
       "nodes": [
-        "node_modules/@sentry/bundler-plugin-core"
+        "node_modules/@sentry/bundler-plugins"
       ],
       "fixAvailable": true
     },
@@ -23,10 +23,11 @@
       "severity": "moderate",
       "isDirect": true,
       "via": [
-        "@sentry/bundler-plugin-core"
+        "@sentry/bundler-plugins",
+        "@sentry/webpack-plugin"
       ],
       "effects": [],
-      "range": "10.10.0 - 10.76.1",
+      "range": "10.76.2 - 11.10.0",
       "nodes": [
         "node_modules/@sentry/nextjs"
       ],
@@ -37,10 +38,12 @@
       "severity": "moderate",
       "isDirect": false,
       "via": [
-        "@sentry/bundler-plugin-core"
+        "@sentry/bundler-plugins"
       ],
-      "effects": [],
-      "range": "2.0.0-alpha.1 - 5.3.0",
+      "effects": [
+        "@sentry/nextjs"
+      ],
+      "range": "5.4.0 - 11.10.0",
       "nodes": [
         "node_modules/@sentry/webpack-plugin"
       ],
@@ -70,7 +73,7 @@
         "minimatch"
       ],
       "effects": [
-        "@sentry/bundler-plugin-core"
+        "@sentry/bundler-plugins"
       ],
       "range": "9.0.0 - 14.0.1",
       "nodes": [
@@ -120,12 +123,12 @@
       "total": 5
     },
     "dependencies": {
-      "prod": 248,
-      "dev": 508,
+      "prod": 247,
+      "dev": 507,
       "optional": 156,
       "peer": 36,
       "peerOptional": 0,
-      "total": 865
+      "total": 863
     }
   }
 }
