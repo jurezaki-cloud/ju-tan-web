@@ -3,11 +3,14 @@ on:
   pull_request:
     paths:
       - "components/contact/**"
+      - "components/ai/LeadForm.tsx"
       - "components/legal/**"
       - "components/common/Providers.tsx"
       - "app/api/contact/**"
+      - "lib/contact-*.ts"
       - "lib/*consent*"
       - "lib/google-ads.ts"
+      - "scripts/sql/contact-idempotency.sql"
       - "tests/**"
       - "package*.json"
       - "next.config.ts"
@@ -19,6 +22,22 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: contact_test
+          POSTGRES_PASSWORD: local_fixture_only
+          POSTGRES_DB: ju_tan_contact_test
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      LICENSING_DATABASE_URL: postgres://contact_test:local_fixture_only@localhost:5432/ju_tan_contact_test
+      JU_TAN_LICENSE_TOKEN_SECRET: local-test-token-not-a-production-secret-000
+      JU_TAN_LICENSE_KEY_PEPPER: local-test-pepper-not-a-production-secret-000
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_PUBLIC_GOOGLE_ADS_LOCAL_TEST: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

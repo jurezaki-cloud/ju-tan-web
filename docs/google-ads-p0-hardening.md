@@ -1,57 +1,75 @@
-# JU-TAN P0 – izvorna koda, varnost in način preverjanja
+# JU-TAN P0 – izvorna koda, varnost in preverjanje
 
-## Obseg
+## Obseg in odločitev
 
-Veja: `fix/google-ads-conversion-tracking-p0`. Osnova: `main` z dne 19. 11. 2026. Brez merge, objave v produkcijo, sprememb Google Ads ali resničnih oddaj. Končna odločitev je NO-GO do zaključenih preverjanj in lastnikove odobritve.
+Veja `fix/google-ads-conversion-tracking-p0`; predlog #93 ostane osnutek. Brez merge, produkcijskega deploya, realnih testnih oddaj in sprememb Google Ads. **NO-GO** do pregleda migracije, delujočega podatkovnega okolja in posebej odobrenih end-to-end preverjanj. Rezultati starejšega kandidata niso rezultati novega: sledite GitHub Actions za točno trenutno različico.
 
-Identifikatorji ostanejo nespremenjeni: AW-18531808239 / YQbkCOaJz7gdEO_n04RF. Dejanje 7903364326 je nastavitev Google Ads in ni parameter, ki bi nadomestil Conversion ID.
+Pravilni identifikatorji ostajajo AW-18531808239 / YQbkCOaJz7gdEO_n04RF. Obstoječe dejanje Google Ads je 7903364326. Ni nove konverzije, dodatnega GTM, dizajnskih ali SEO sprememb.
 
-## Potrjeno v osnovi
+## Potrjeno v osnovi main
 
-- `components/ai/LeadForm.tsx` po `response.ok` ni bral JSON, preveril `success:true`, poklical `trackContactConversion` ali uporabljal sinhronega zaklepa `useRef`.
-- Glavni `components/contact/ContactForm.tsx` že preverja uspeh in uporablja zaklep; oba obrazca sta bila neposredna odjemalca `/api/contact`.
-- `lib/google-ads.ts` v `onerror` ni ponastavil začetega nalaganja, izpraznil je čakajoče, ID pa je ostal v `seen`. Ponoven poskus ni bil izvedljiv.
-- `/api/contact` uporablja Resend, potrdi `result.data.id` in vrne ta ID kot `conversionId`. Sprejem pri ponudniku ni dokaz dostave v nabiralnik. Ni uporabljal ponudnikovega idempotency ključa.
-- Oglasno soglasje je ločeno od analitike; ohranjena sta isti ključ in osnovni Consent Mode. Ni dodatnega GTM ali nove konverzije.
+- Vodič `components/ai/LeadForm.tsx` po HTTP uspehu ni bral JSON, preverjal success:true, meril konverzije ali sinhrono zaklepal dvojne oddaje.
+- Glavni `components/contact/ContactForm.tsx` je preverjanje uspeha in zaklep že imel.
+- `lib/google-ads.ts` je ob onerror počistil čakajoče, pustil initialized in seen ter onemogočil obnovitev nalaganja.
+- `/api/contact` uporablja Resend; success:true in conversionId nastaneta šele po ponudnikovem ID. To potrdi sprejem, ne dostave v nabiralnik. Idempotency ključa pred popravkom ni bilo.
+- Osnovni Consent Mode in ločeno prostovoljno oglasno soglasje sta že obstajala.
 
-## Spremembe
+## Skupna obdelava obrazcev
 
-- Oba obrazca uporabljata `sendContactRequest` in `readContactSuccess`. `success:true` brez ID ostaja neizmerjen navidezni uspeh zaradi obstoječe zaščite honeypot; ni Google Ads konverzija.
-- Vodič sproži obstoječi adapter šele po potrditvi odgovora in ima sinhroni zaklep. Glavni obrazec ohrani obliko, polja in obstoječo analitiko.
-- Nespremenjeni normalizirani podatki ponovijo isti neosebni ključ in enako telo. Po omrežni napaki se ključ ne ponastavi. Druga vsebina se šteje za nov namen.
-- Strežnik validira ključ in ga posreduje Resend kot `idempotencyKey`. Čas v telesu e-pošte je determinističen za isti ključ. Resend po uradni dokumentaciji hrani idempotency ključe 24 ur; aplikacija dovoljuje 23-urno okno. ID uspeha je ponudnikov ID, uporabljen kot `transaction_id`.
-- Oglasni adapter loči čakajoče in že postavljene dogodke. Odstrani neuspešno skripto; ponovni poskus se izvede le ob eksplicitnem sync/novem potrjenem odgovoru, z 1-sekundnim presledkom in največ 2 naložitvama na dokument. Ni samodejnega neskončnega retry.
-- Preklic soglasja izprazni čakajoče; kasnejša privolitev ne predvaja preteklih zavrnjenih oddaj. ID je označen kot postavljen šele po klicu `gtag`.
-- Produkcijska oznaka deluje samo na ju-tan.com/www.ju-tan.com in s `NEXT_PUBLIC_VERCEL_ENV=production`. Preview in neznana okolja so privzeto blokirana. Lokalni CI ima izrecni flag in prestreže Google promet.
+Oba obrazca uporabljata `sendContactRequest` in `readContactSuccess`. Neuspešen HTTP, neveljaven JSON in success:false niso uspeh. Obstoječi honeypot vrne navidezni success:true brez ID: nikoli se ne meri. Manjkajoč/prazen conversionId tudi sicer ne sproži Google Ads.
 
-## Testiranje
+Vodič po potrditvi kliče isti adapter in ima sinhroni zaklep useRef. Ključ in točno telo se ohranita pri ponovitvi istega zahtevka v istem nameščenem obrazcu. Druga vsebina pomeni nov namen in nov ključ. Ključ ni izpeljan iz osebnih podatkov. Vztrajnega brskalniškega shranjevanja vsebine ali njenih hashov nismo dodali.
 
-Namestitev: `npm ci` z obstoječim zaklepom odvisnosti; ni novih paketov. CI na tej veji izvaja lint, ločen lint spremenjenih datotek, typecheck, build, vse obstoječe npm testne ukaze, dodatni magic test, P0 teste in brskalniške teste. Inventar poišče vse datoteke `.test.*`; dve izvozljivi varnostni zbirki pokliče izrecno.
+## Trajni strežniški ključ in enkratno štetje
 
-Novi testi vključujejo glavni obrazec in vodič, potrjen/nepotrjen odgovor, pokvarjen JSON, napako HTTP, manjkajoč ID, dvojno oddajo, retry istega telesa/ključa, nov namen, potek ključa, odobritev/preklic soglasja, neuspešno nalaganje in zastarel onload, pravilni transaction_id in blokado Preview. Google in e-poštni ponudnik sta nadomeščena; brskalnik deluje samo proti lokalnemu strežniku.
+Dodana sta `lib/contact-ledger.ts` in **neizvedena** migracija `scripts/sql/contact-idempotency.sql`.
 
-Rezultate zadnje različice preverite v `.github/workflows/google-ads-p0.yml` / GitHub Actions; stanje starejšega izvajanja ni dokaz za novejšo različico. Poln lint je že pred posegi v ostale datoteke pokazal 5 obstoječih napak v Marko, FadeIn, HeroStageDeferred in OfficeProductStageDeferred. Te datoteke in pravila niso spremenjeni.
+- `contact_delivery_attempts` hrani samo naključni ključ, čas prvega prejema na strežniku in zastavico counted. Nobene vsebine obrazca, kontakta, IP, prstnega odtisa ali Googlovega profila.
+- Unikatna vrstica se ob ponovitvi ne pomladi. Čas prejema za isto e-poštno telo je stabilen prek različnih procesov. Ura odjemalca se ne uporablja za strežniško veljavnost.
+- Strežnik preda isti ključ in telo Resend. Resend po uradni dokumentaciji 24 ur vrača isti odgovor za isti ključ/telo; aplikacija po 23 urah strežniškega časa zahtevek zavrne, namesto da bi tvegala novo dostavo. Isti ID ponudnika postane transaction_id.
+- Isti ključ z drugim telesom Resend zavrne; aplikacija ne zamenja ključa in ne vrne lažnega uspeha.
+- CTE v eni atomski SQL izjavi označi counted in poveča dnevni števec samo prvič. Sočasne ponovitve istega ključa ne povečajo števca večkrat. Datum agregata izhaja iz prvega prejema v Europe/Ljubljana.
+- Če števec po ponudnikovem sprejemu odpove, odgovor ostane uspeh in ne sproži nove pošte. Kasnejša varna ponovitev lahko števec dopolni; brez ponovitve lahko ostane podštet. Starih precenjenih zgodovinskih podatkov nismo popravljali.
+- Manjkajoča glava je zdaj zavrnjena. Stare že odprte strani morajo po objavi ponovno naložiti novo kodo. Ni naključnega fallback ključa.
+- Če baza ali shema pred pošiljanjem ni dosegljiva, oddaja vrne 503 in ne kliče ponudnika. **To je nova kritična produkcijska odvisnost, ne neopazna izboljšava.**
+
+### Pomembna meja garancije
+
+Jamstvo se nanaša na isti logični ključ, ne na semantično podobna sporočila z novimi ključi. Refresh/remount, druga naprava, nov zavihek ali ročni ponovni vnos lahko ustvarijo nov ključ. Tega ne prikrivamo kot odpravljeno: za nadaljevanje istega namena čez refresh bi potrebovali pregledano obnovitev neosebnega tokena in izrecno obravnavo novega namena, ne shranjevanja osebnih podatkov. Blokator, odhod s strani ali zavrnitev soglasja lahko prepreči zajem Google dogodka.
+
+## Migracija in objava: samo po odobritvi
+
+1. Lastnik naj odobri shemo in izbrano **testno** bazo; ne uporabljati produkcijskih podatkov za CI.
+2. Skrbnik na odobrenem okolju izvede `scripts/sql/contact-idempotency.sql`; aplikacija ne izvaja te migracije pri zahtevku ali build. Produkcijske migracije v tej nalogi nismo izvedli.
+3. Preveriti pravice INSERT/UPDATE/SELECT na novi tabeli in obstoječem agregatu ter povezavo, ki jo uporablja `licensingPool`. Ta trenutno zahteva LICENSING_DATABASE_URL (ali DATABASE_URL), JU_TAN_LICENSE_TOKEN_SECRET in JU_TAN_LICENSE_KEY_PEPPER. Ne razkrivati skrivnosti.
+4. Expired vrstice so trajni tombstones: samodejno jih ne brisati. Brisanje bi znova dovolilo star ključ po izteku ponudnikove zaščite. Dogovoriti arhiviranje, spremljanje rasti in operativno politiko, preden gre v produkcijo.
+5. Preveriti, da NEXT_PUBLIC_VERCEL_ENV obstaja pri produkcijskem build. Preview in neznane domene so za Google blokirane; ni treba omogočiti produkcijskih konverzij za CI.
+6. Po odobritvi end-to-end testa preveriti glavni obrazec in vodič, dostavo/prejem pri ponudniku in Tag Assistant. Šele nato ločena odobritev merge/deploy. Do takrat NO-GO.
+
+## Merjenje in soglasje
+
+Ohranjen je ključ ju-tan-ads-v1. Pred privolitvijo se gtag.js ne nalaga. Vsi 4 privzeti parametri so denied; po izrecnem sprejemu sta ad_storage in ad_user_data granted, personalizacija in Google analitika ostaneta denied.
+
+Čakajoči in že postavljeni ID so ločeni. Napaka odstrani skripto in omogoči naslednji eksplicitni sync/nov potrjen odgovor po vsaj 1 sekundi; največ 2 poskusa na dokument. Zastarel onload ne odpošlje vrste. Preklic izbriše čakajoče, ponoven sprejem ne predvaja zavrnjenih oddaj. Postavitev v gtag vrsto NI potrdilo prejema pri Googlu.
+
+Google deluje samo na produkcijskem ju-tan.com/www.ju-tan.com. Izrecni lokalni flag velja le za localhost/127.0.0.1 in neprodukcijski način. Preview ne pomeni nujno blokade e-pošte: če bi imel Resend skrivnosti, bi jo lahko pošiljal; zato brez odobritve ni realnih testov.
+
+## Avtomatizirani testi
+
+CI izvaja lint, scoped lint, typecheck, build, obstoječe zbirke hardening/free-lab/SEO/magic, inventar preostalih izvozljivih preverjanj, P0 enotske in brskalniške teste. `test:ads` sedaj potrebuje lokalni PostgreSQL in poteka v izoliranem CI servisu PostgreSQL 17, ne proti Vercel bazi. Test zavrne povezavo, če gostitelj ni localhost in ime baze ni ju_tan_contact_test.
+
+`tests/contact.test.ts` uporablja pravo lokalno SQL izvajanje in nadomestni Resend: enak ID, izgubljen odgovor po sprejemu, 4 sočasni zahtevki, 8 sočasnih povečanj internega števca, nespremenjen server timestamp, potek vrstice, velika odstopanja klientove ure, odsotna glava ter izpad baze pred pošiljanjem. Ne kliče prave e-poštne storitve.
+
+Brskalniški testi preverijo oba obrazca, potrjene in napačne odgovore, dvojni submit, soglasje, refresh po uspehu in ohranitev ključa po omrežni napaki. To ni test vztrajnega tokena po izgubljenem odgovoru IN refreshu; tega ne trdimo. Testi za Google vključujejo retry budget, stale onload, pravilen transaction_id in Preview guard.
+
+Celoten lint ima 5 predhodnih napak zunaj P0; neodvisni baseline jih potrjuje. Pravil ne izklapljamo. Glava strani prekriva gumb za zapiranje vodiča v prejšnjem browser teku; Escape je obstoječa podprta pot, ne popravek prekrivanja. Dizajn je nespremenjen.
 
 ## Zgodovina okoli 18. novembra
 
-Na dosegljivi zgodovini `main` ni commita 18. 11. Google Ads adapter in kontaktna strežniška pot sta bila nazadnje spremenjena 15. 11. z #84. 17. in 19. 11. sledijo spremembe ciljnih strani ter optimizacije; sama časovna bližina ni dokaz izpada merjenja. GitHub beleži uspešno produkcijsko objavo osnove 19. 11.; to ni vpogled v Vercel/Resend dnevnike.
+V pregledani dosegljivi zgodovini main ni commita 18. 11.; osnovni adapter in kontaktna strežniška pot sta od #84 z dne 15. 11. Sledijo spremembe strani 17. in 19. 11. To ne dokazuje vzroka manjkajočega pinga. Vercel/Resend zgodovinski dnevniki in produkcijske skrivnosti niso bili pregledani.
 
-## Meje in tveganja – ne prikrivati
+## Tag Assistant, šele po odobritvi
 
-- Ni dokazano, da so pingi nehali zaradi ene od teh vrzeli; zadnji ping 18. 11. je uporabnikov podatek. Dejanskega prejema konverzije ni bilo dovoljeno preizkusiti.
-- Idempotentnost je omejena na isti ključ/telo znotraj okna ponudnika. Predhodno odprte stare strani brez glave so zaradi združljivosti še sprejete brez zagotovila retry. Osvežitev/remount ali ročno ponovno vneseno povpraševanje lahko ustvari nov ključ. Za trajno preprečevanje ponovitev prek naprav/zavihkov je potreben dodaten strežniški dnevnik/hranjenje; tega ni mogoče obljubiti iz trenutne izvedbe.
-- Ključ uporablja uro odjemalca; čas več kot minuto v prihodnosti se zavrne. Pred odobritvijo produkcije preveriti vpliv napačne ure odjemalca in po potrebi dogovoriti strežniško izdajo ključa.
-- Obstoječi agregatni števec `recordConfirmedInquiry` se izvede tudi ob ponovljenem uspehu ponudnika in lahko preceni interno statistiko. Ne določa Google Ads dogodka; za njegovo deduplikacijo je potrebna ločena sprememba podatkovne plasti. Ni uvedena tiha migracija baze.
-- `seen` varuje isti dokument, Google deduplicira isti transaction_id. Postavitev v vrsto ni potrdilo prejema pri Googlu. Zaprt zavihek, blokator ali zavrnjeno soglasje lahko prepreči meritev.
-- Nobeno novo beleženje osebnih podatkov. Obstoječi vodič že shranjuje svoj povzetek v lokalno zgodovino; ta ločena funkcija ni spremenjena.
-- Preview privzeto blokira Google, ne pa nujno pošiljanja e-pošte, če so tam že nastavljene produkcijske skrivnosti. Vseh testnih oddaj na resničnem okolju ni dovoljeno izvajati brez odobritve.
+Povežite https://ju-tan.com/kontakt v tagassistant.google.com. Preverite default/update vseh 4 stanj pred privolitvijo, po sprejemu in preklicu. Po posebej odobreni oddaji vsakega obrazca pričakujte success:true, neprazen conversionId in en logični conversion z istim transaction_id. Napačen odgovor, gumb brez uspeha in odsotna privolitev morajo dati 0. Testni obisk brez klika oglasa ni nujno pripisan v Google Ads; lastnega oglasa ne klikati.
 
-## Ročno preverjanje – samo po odobritvi
-
-1. Pregled izvornih sprememb in vsi zahtevani CI koraki. Obstoječe napake lint naj lastnik odpravi ali izrecno sprejme kot ločeno znano blokado; pravil ne izklapljamo.
-2. Na odobrenem testnem okolju preveriti Consent default/update v Tag Assistant; pred soglasjem in po preklicu 0 novih konverzij. Preveriti vsako od 4 stanj.
-3. Po eni posebej odobreni oddaji prek obeh obrazcev: potrjen sprejem pri Resend, isti conversionId/transaction_id, 1 logični dogodek; po refresh ali dvojnem kliku 0 dodatnih. Napaka, click brez oddaje in zavrnitev soglasja ostanejo 0.
-4. Preveriti neposredni/preusmerjeni prihod na kontakt in Vercel produkcijske okoljske vrednosti. Nobenega klika lastnega oglasa. Nepripisan testni dogodek ni nujno viden kot konverzija Google Ads.
-5. Izrecna odobritev merge in produkcijske objave; do tedaj NO-GO. Povratek: povrnitev tega izoliranega popravka/objave po odobritvi; brez spremembe identifikatorjev.
-
-Viri: https://resend.com/docs/dashboard/emails/idempotency-keys ; https://vercel.com/docs/environment-variables/framework-environment-variables ; https://developers.google.com/tag-platform/security/guides/consent-debugging
+Viri: https://resend.com/docs/dashboard/emails/idempotency-keys ; https://developers.google.com/tag-platform/security/guides/consent-debugging ; https://vercel.com/docs/environment-variables/framework-environment-variables
