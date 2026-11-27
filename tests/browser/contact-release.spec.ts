@@ -34,8 +34,12 @@ for (const guide of [false, true]) {
   for (const state of ["accepted", "cancelled", "pending", "unavailable"]) {
     test(`${guide ? 'guide' : 'main'}: recover ${state} after lost response and refresh`, async ({ page }) => {
       let sends = 0;
+      let statusChecks = 0;
       await page.route("**/api/contact", route => { sends++; return route.abort(); });
-      await page.route("**/api/contact/status", route => route.fulfill({ status: state === "unavailable" ? 503 : 200, json: { state } }));
+      await page.route("**/api/contact/status", route => {
+        statusChecks++;
+        return route.fulfill({ status: state === "unavailable" ? 503 : 200, json: { state } });
+      });
       await page.goto("/kontakt");
       let form = await fill(page, guide);
       await form.locator('[type="submit"]').click();
@@ -46,11 +50,18 @@ for (const guide of [false, true]) {
       expect(marker).not.toContain("nobody");
       await page.reload();
       form = await fill(page, guide);
-      await form.locator('[type="submit"]').click();
-      await expect(form.getByRole("alert")).toBeVisible();
+      for (let click = 0; click < 2; click++) {
+        await form.locator('[type="submit"]').click();
+        await expect(form.getByRole("alert")).toBeVisible();
+        await expect(form).toHaveAttribute("aria-busy", "false");
+        expect(sends).toBe(1);
+        expect(statusChecks).toBe(0);
+        expect(await page.evaluate(() => localStorage.getItem("ju-tan-contact-pending-v1"))).toBe(marker);
+      }
       await form.getByRole("button", { name: "Preveri stanje prejšnje oddaje" }).click();
       const expected = { accepted: /Prejšnje povpraševanje je sprejeto/, cancelled: /Prejšnji poskus ni bil poslan/, pending: /Izid oddaje še ni potrjen/, unavailable: /Stanje trenutno ni dosegljivo/ }[state];
       await expect(form.getByText(expected!)).toBeVisible();
+      expect(statusChecks).toBe(1);
       expect(sends).toBe(1);
       expect(await events(page)).toEqual([]);
       const remaining = await page.evaluate(() => localStorage.getItem("ju-tan-contact-pending-v1"));
