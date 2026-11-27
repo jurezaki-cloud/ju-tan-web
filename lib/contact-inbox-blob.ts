@@ -41,11 +41,12 @@ export function privateInbox(): InboxStore {
       }
       return value;
     },
-    async paths() {
+    async paths(namespace = "intents/") {
+      if (!/^(intents\/|daily\/|runs\/)[a-zA-Z0-9/_.-]*$/.test(namespace) || namespace.includes("..")) throw new Error("invalid-inbox-namespace");
       const paths: string[] = [];
       let cursor: string | undefined;
       do {
-        const page = await list({ token, prefix: prefix + "intents/", cursor, limit: 1000 });
+        const page = await list({ token, prefix: prefix + namespace, cursor, limit: 1000 });
         paths.push(...page.blobs.map(blob => blob.pathname.slice(prefix.length)));
         cursor = page.hasMore ? page.cursor : undefined;
       } while (cursor);
