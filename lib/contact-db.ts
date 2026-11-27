@@ -2,10 +2,7 @@ import "server-only";
 import { Pool } from "pg";
 
 const shared = globalThis as typeof globalThis & { __juTanContactPool?: Pool };
-/** Separate credentials, pool, time budget and ownership. Never fall back to
- * Office DATABASE_URL or LICENSING_DATABASE_URL, or import licensing config.
- * Provision a role limited to contact_delivery_attempts/site_inquiry_daily.
- */
+/** Independent credentials and bounded pool; never import licensing config. */
 export function contactPool(): Pool {
   if (!shared.__juTanContactPool) {
     const raw = process.env.CONTACT_DATABASE_URL;
@@ -13,9 +10,18 @@ export function contactPool(): Pool {
     const url = new URL(raw);
     if (!["postgres:", "postgresql:"].includes(url.protocol)) throw new Error("contact-database-invalid");
     const local = ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
-    if (!local && url.searchParams.get("sslmode") === "disable") throw new Error("contact-database-tls-required");
+    if (!local) {
+      const mode = url.searchParams.get("sslmode");
+      if (mode && mode !== "verify-full") throw new Error("contact-database-verified-tls-required");
+      if (["sslcert", "sslkey", "sslrootcert", "uselibpqcompat"].some(key => url.searchParams.has(key))) {
+        throw new Error("contact-database-tls-config-review-required");
+      }
+      // pg connection-string ssl parameters must not override explicit peer
+      // verification. Private CA support requires a separately reviewed config.
+      url.searchParams.delete("sslmode");
+    }
     shared.__juTanContactPool = new Pool({
-      connectionString: raw,
+      connectionString: url.toString(),
       max: 2,
       connectionTimeoutMillis: 3000,
       idleTimeoutMillis: 10000,
@@ -24,7 +30,6 @@ export function contactPool(): Pool {
       application_name: "ju-tan-contact",
       ssl: local ? false : { rejectUnauthorized: true },
     });
-    // Never print connection URLs or database error objects containing queries.
     shared.__juTanContactPool.on("error", () => { console.error("Contact database unavailable"); });
   }
   return shared.__juTanContactPool;

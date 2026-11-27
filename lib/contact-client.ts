@@ -13,20 +13,23 @@ export async function readContactSuccess(response: Response): Promise<ContactSuc
   return { success: true, ...(id ? { conversionId: id } : {}) };
 }
 
-/** Fail safe after refresh/remount with an ambiguous prior response. Persist
- * ONLY an opaque key, never form fields, hashes or consent. No silent replay.
- * Losing all browser storage/new devices remains outside this guarantee.
+/** Persist ONLY an opaque pending marker, never form contents/hashes/consent.
+ * Remount after an ambiguous response blocks sending, rather than inventing
+ * a new key. Recovery UX and independent durable intake remain release gates.
  */
 export function sendContactRequest(payload: ContactPayload, attempt: ContactAttempt) {
   const body = JSON.stringify(payload);
   const storage = typeof window === "undefined" ? null : window.localStorage;
   if (!attempt.key) {
-    // Storage failure must not silently degrade refresh protection.
     if (storage?.getItem(PENDING_KEY)) throw new Error("Previous inquiry unconfirmed; verify receipt before resending");
+    const createdAt = Date.now();
+    const key = `${createdAt}.${crypto.randomUUID()}`;
+    // Persist before mutating the attempt: a failed storage write must not
+    // let the next click send an unprotected request.
+    storage?.setItem(PENDING_KEY, key);
     attempt.body = body;
-    attempt.createdAt = Date.now();
-    attempt.key = `${attempt.createdAt}.${crypto.randomUUID()}`;
-    storage?.setItem(PENDING_KEY, attempt.key);
+    attempt.createdAt = createdAt;
+    attempt.key = key;
   } else if (attempt.body !== body) {
     throw new Error("Unconfirmed inquiry changed; verify receipt before a new submission");
   }
@@ -38,10 +41,13 @@ export function sendContactRequest(payload: ContactPayload, attempt: ContactAtte
     headers: { "Content-Type": "application/json", "Idempotency-Key": attempt.key },
     body,
   }).then(async (response) => {
-    // Clone: the form must still read its own success response. Clear only the
-    // matching marker, never on timeouts, 503, invalid JSON or success:false.
     const result = await readContactSuccess(response.clone());
-    if (result && storage?.getItem(PENDING_KEY) === attempt.key) storage.removeItem(PENDING_KEY);
+    if (result && storage) {
+      // Storage cleanup failure cannot turn accepted mail into a delivery
+      // error. Leaving the marker is safer than triggering another send.
+      try { if (storage.getItem(PENDING_KEY) === attempt.key) storage.removeItem(PENDING_KEY); }
+      catch { /* pending recovery required; no content or errors logged */ }
+    }
     return response;
   });
 }
