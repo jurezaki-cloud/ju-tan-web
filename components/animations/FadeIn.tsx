@@ -21,3 +21,4 @@ export default function FadeIn({ children, delay = 0, duration: durationProp = d
   const shown = visible || reduceMotion || fallback;
   const transition = reduceMotion ? "none" : `opacity ${durationProp}s ease-out ${delay}s, transform ${durationProp}s ease-out ${delay}s`;
   return <div ref={ref} className={className} style={{ opacity: shown ? 1 : 0, transform: shown ? "translate3d(0, 0, 0)" : `translate3d(0, ${y}px, 0)`, transition }}>{children}</div>;
+}
