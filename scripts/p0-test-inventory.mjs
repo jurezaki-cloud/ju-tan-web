@@ -19,6 +19,8 @@ const covered = new Set([
   'src/identity/login.hardening.test.ts', 'src/security/network/proxy.hardening.test.ts',
   'tests/contact-p0.test.ts', 'tests/contact.test.ts', 'tests/google-ads-consent-p0.test.ts',
   'tests/google-ads-p0.test.ts', 'tests/google-ads-retry-p0.test.ts', 'tests/google-ads.test.ts', 'tests/magic.test.ts',
+  // Explicit runner: pr93-full-ci.yml, checks (inbox).
+  'tests/contact-inbox.test.ts',
 ]);
 const unknown = files.filter((file) => !covered.has(file));
 if (unknown.length) throw new Error(`Unmapped tests require an explicit runner: ${unknown.join(', ')}`);
