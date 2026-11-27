@@ -1,0 +1,29 @@
+name: Apply reviewed P0 source edits on isolated branch
+on:
+  push:
+    branches: [fix/google-ads-conversion-tracking-p0]
+    paths: [scripts/p0-reviewed-source-patch.mjs, .github/workflows/p0-source-edits.yml]
+permissions:
+  contents: write
+jobs:
+  source-edits:
+    if: github.ref == 'refs/heads/fix/google-ads-conversion-tracking-p0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/google-ads-conversion-tracking-p0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/p0-reviewed-source-patch.mjs
+      - name: Persist reviewed changes only on the P0 branch
+        run: |
+          git diff --check
+          git add app/api/contact/route.ts components/contact/ContactForm.tsx components/ai/LeadForm.tsx components/ai/JuTanAgent.tsx components/hero/HeroStageDeferred.tsx components/sections/office/OfficeProductStageDeferred.tsx app/apk/marko/page.tsx tests/contact-p0.test.ts tests/contact.test.ts
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(p0): integrate recovery, correct overlay stacking and remove effect lint violations'
+          git push origin HEAD:refs/heads/fix/google-ads-conversion-tracking-p0
