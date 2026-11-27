@@ -53,7 +53,7 @@ for (const guide of [false, true]) {
       for (let click = 0; click < 2; click++) {
         await form.locator('[type="submit"]').click();
         await expect(form.getByRole("alert")).toBeVisible();
-        await expect(form).toHaveAttribute("aria-busy", "false");
+        await expect(form.locator('[type="submit"]')).toBeEnabled();
         expect(sends).toBe(1);
         expect(statusChecks).toBe(0);
         expect(await page.evaluate(() => localStorage.getItem("ju-tan-contact-pending-v1"))).toBe(marker);
