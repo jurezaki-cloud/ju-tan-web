@@ -23,7 +23,9 @@ import {
   flattenContactErrors,
   type ContactFieldKey,
 } from "@/lib/validation/contact";
+import ContactRecovery from "@/components/contact/ContactRecovery";
 import { trackContactConversion } from "@/lib/google-ads";
+import { sendContactRequest, readContactSuccess, type ContactAttempt } from "@/lib/contact-client";
 import ContactSuccess from "./ContactSuccess";
 import { labelClass } from "@/design";
 
@@ -58,12 +60,17 @@ function getLinkedService() {
 }
 
 const getServerService = () => "";
+const subscribeToHydration = () => () => {};
+const getClientReady = () => true;
+const getServerReady = () => false;
 
 type FieldErrors = Partial<Record<ContactFieldKey | "form", string>>;
 
 export default function ContactForm() {
+  const hydrated = useSyncExternalStore(subscribeToHydration, getClientReady, getServerReady);
   const formId = useId();
   const submitting = useRef(false);
+  const attempt = useRef<ContactAttempt>({});
   const summaryRef = useRef<HTMLDivElement>(null);
   const linkedService = useSyncExternalStore(
     subscribeToLocation,
@@ -134,12 +141,7 @@ export default function ContactForm() {
     let completed = false;
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
+      const response = await sendContactRequest(parsed.data, attempt.current);
       if (!response.ok) {
         setErrors({
           form:
@@ -154,13 +156,8 @@ export default function ContactForm() {
         return;
       }
 
-      const result: unknown = await response.json();
-      if (
-        !result ||
-        typeof result !== "object" ||
-        !("success" in result) ||
-        result.success !== true
-      ) {
+      const result = await readContactSuccess(response);
+      if (!result) {
         setErrors({
           form: "Oddaja ni potrjena. Pišite nam neposredno po e-pošti.",
         });
@@ -169,10 +166,9 @@ export default function ContactForm() {
 
       trackContactConversion(result);
 
-      // Record a conversion only after the API confirms delivery and only
-      // when the visitor has opted in to analytics. Never send contact details.
+      // Separate analytics consent, never contact details.
       if (
-        "conversionId" in result &&
+        result.conversionId &&
         getAnalyticsConsentSnapshot() === "accepted"
       ) {
         try {
@@ -213,12 +209,15 @@ export default function ContactForm() {
   return (
     <form
       id="contact-form"
+      method="post"
+      action="/api/contact"
       onSubmit={handleSubmit}
       noValidate
       aria-label="Kontaktni obrazec"
-      aria-busy={loading}
+      aria-busy={!hydrated || loading}
       className="relative"
     >
+      <fieldset disabled={!hydrated} className="contents">
       <div
         className="pointer-events-none absolute left-[-10000px] h-px w-px overflow-hidden"
         aria-hidden="true"
@@ -262,6 +261,7 @@ export default function ContactForm() {
         </div>
       ) : null}
 
+      {errors.form ? <ContactRecovery attempt={attempt} /> : null}
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor={`${formId}-name`} className={labelClass}>
@@ -486,6 +486,7 @@ export default function ContactForm() {
           {loading ? "Pošiljam ..." : "Pošlji povpraševanje"}
         </CTAButton>
       </div>
+      </fieldset>
     </form>
   );
 }

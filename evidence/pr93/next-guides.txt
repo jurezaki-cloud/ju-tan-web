@@ -1,0 +1,14 @@
+node_modules/next/dist/docs/02-pages/04-api-reference/03-functions/use-router.md
+node_modules/next/dist/docs/02-pages/04-api-reference/04-config/01-next-config-js/bundlePagesRouterDependencies.md
+node_modules/next/dist/docs/02-pages/03-building-your-application/01-routing/02-dynamic-routes.md
+node_modules/next/dist/docs/02-pages/03-building-your-application/01-routing/07-api-routes.md
+node_modules/next/dist/docs/02-pages/02-guides/migrating/app-router-migration.md
+node_modules/next/dist/docs/01-app/01-getting-started/15-route-handlers.md
+node_modules/next/dist/docs/01-app/03-api-reference/04-functions/use-router.md
+node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/parallel-routes.md
+node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/route-groups.md
+node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/dynamic-routes.md
+node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/route.md
+node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/intercepting-routes.md
+node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/typedRoutes.md
+node_modules/next/dist/docs/01-app/02-guides/migrating/app-router-migration.md

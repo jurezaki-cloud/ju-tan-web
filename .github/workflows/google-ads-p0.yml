@@ -1,0 +1,92 @@
+name: Google Ads P0 isolated verification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  baseline-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 908a06f72ca47f6014350f036d1de4adbfc6eb15
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+  contact-ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: contact_test
+          POSTGRES_PASSWORD: local_fixture_only
+          POSTGRES_DB: ju_tan_contact_test
+          PGUSER: contact_test
+          PGDATABASE: ju_tan_contact_test
+        ports: ['5432:5432']
+        options: --health-cmd=pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      CONTACT_DATABASE_URL: postgres://contact_test:local_fixture_only@localhost:5432/ju_tan_contact_test
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Existing Ads tests and real local PostgreSQL contract
+        run: npm run test:ads
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, scoped-lint, typecheck, build, 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser, inventory]
+    env:
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_PUBLIC_GOOGLE_ADS_LOCAL_TEST: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run existing verification
+        if: matrix.task != 'magic' && matrix.task != 'p0' && matrix.task != 'browser' && matrix.task != 'scoped-lint' && matrix.task != 'inventory'
+        run: npm run ${{ matrix.task }}
+      - name: Changed runtime and regression files lint
+        if: matrix.task == 'scoped-lint'
+        run: npx eslint lib/google-ads.ts lib/contact-client.ts lib/contact-idempotency.ts lib/contact-db.ts lib/contact-ledger.ts components/contact/ContactForm.tsx components/ai/LeadForm.tsx app/api/contact/route.ts tests/*p0.test.ts tests/contact.test.ts tests/google-ads.test.ts tests/browser/contact-p0.spec.ts tests/browser/contact-release.spec.ts playwright.ads.config.ts
+      - name: Other existing tests
+        if: matrix.task == 'magic'
+        run: node --import tsx --test tests/magic.test.ts
+      - name: P0 regressions
+        if: matrix.task == 'p0'
+        run: node --import tsx --test tests/*p0.test.ts
+      - name: Inventory and run remaining unit tests
+        if: matrix.task == 'inventory'
+        run: node scripts/p0-test-inventory.mjs
+      - name: Install isolated browser
+        if: matrix.task == 'browser'
+        run: npx playwright install --with-deps chromium
+      - name: Mocked local browser tests only
+        if: matrix.task == 'browser'
+        run: npm run test:ads:browser
+      - name: Retain mocked browser evidence
+        if: always() && matrix.task == 'browser'
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0-local-browser-results
+          path: test-results/
+          retention-days: 7

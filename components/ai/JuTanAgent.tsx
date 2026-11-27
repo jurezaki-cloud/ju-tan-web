@@ -149,7 +149,7 @@ export default function JuTanAgent({ initialOpen = false }: { initialOpen?: bool
   return (
     <div
       data-nosnippet="true"
-      className={`pointer-events-none fixed z-overlay ${
+      className={`pointer-events-none fixed z-[60] ${
         open
           ? "inset-0 md:inset-auto md:right-6 md:bottom-6"
           : "right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] md:right-6 md:bottom-6"

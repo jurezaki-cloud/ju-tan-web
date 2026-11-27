@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
 import CTAButton from "@/components/navbar/CTAButton";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { contactSchema } from "@/lib/validation/contact";
+import { sendContactRequest, readContactSuccess, type ContactAttempt } from "@/lib/contact-client";
+import ContactRecovery from "@/components/contact/ContactRecovery";
+import { trackContactConversion } from "@/lib/google-ads";
 import {
   budgetOptions,
   deadlineOptions,
@@ -44,6 +47,8 @@ Kmalu vas kontaktiramo.`;
 }
 
 export default function LeadForm({ onSubmit }: LeadFormProps) {
+  const submitting = useRef(false);
+  const attempt = useRef<ContactAttempt>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -67,6 +72,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (submitting.current) return;
     if (!form.budget || !form.deadline) {
       setError("Izberite proračun in rok izvedbe.");
       return;
@@ -101,16 +107,12 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       return;
     }
 
+    submitting.current = true;
     setError("");
     setLoading(true);
-
+    let completed = false;
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
+      const response = await sendContactRequest(parsed.data, attempt.current);
       if (!response.ok) {
         setError(
           response.status === 429
@@ -121,17 +123,26 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
         );
         return;
       }
-
+      const result = await readContactSuccess(response);
+      if (!result) {
+        setError("Oddaja ni potrjena. Pišite nam neposredno po e-pošti.");
+        return;
+      }
+      completed = true;
+      trackContactConversion(result);
       onSubmit(payload);
     } catch {
-      setError("Pošiljanje povpraševanja ni uspelo.");
+      setError("Oddaje ni bilo mogoče potrditi. Pred ponovno oddajo nas kontaktirajte po e-pošti.");
     } finally {
+      submitting.current = completed;
       setLoading(false);
     }
   };
 
   return (
     <form
+      method="post"
+      action="/api/contact"
       onSubmit={handleSubmit}
       aria-label="Povpraševanje za ponudbo"
       className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-3 backdrop-blur-md light:border-slate-200 light:bg-white"
@@ -244,6 +255,7 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
       ) : (
         <p className="min-h-5" aria-hidden />
       )}
+      {error ? <ContactRecovery attempt={attempt} /> : null}
       <label className="flex items-start gap-2 text-[12px] leading-5 text-slate-300">
         <Checkbox
           required
