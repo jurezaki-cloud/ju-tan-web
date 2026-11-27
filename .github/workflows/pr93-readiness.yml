@@ -1,0 +1,42 @@
+name: PR93 isolated readiness
+on:
+  push:
+    branches: [fix/pr93-readiness-security-test]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/pr93-readiness-security-test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Audit and compatible remediation only
+        run: |
+          mkdir -p evidence/pr93
+          npm audit --json > evidence/pr93/audit-before.json || test "$?" = 1
+          npm audit fix --package-lock-only --ignore-scripts > evidence/pr93/remediation.txt 2>&1 || test "$?" = 1
+          npm ci
+          npm audit --json > evidence/pr93/audit-after.json || test "$?" = 1
+          node -e "const a=require('./evidence/pr93/audit-after.json'); if(!a.metadata) process.exit(2); console.log(JSON.stringify(a.metadata.vulnerabilities))"
+          test ! -d node_modules/next/dist/docs || find node_modules/next/dist/docs -type f -iname '*route*' | head -20 > evidence/pr93/next-guides.txt
+      - name: Preserve compatible changes on this branch only
+        run: |
+          git diff --check
+          git add package-lock.json evidence/pr93/
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'security(pr93): compatible lockfile remediation and exact audit evidence'
+          git push origin HEAD:refs/heads/fix/pr93-readiness-security-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr93-dependency-evidence
+          path: evidence/pr93/
