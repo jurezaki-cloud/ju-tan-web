@@ -1,0 +1,40 @@
+name: Google Ads P0 isolated verification
+on:
+  push:
+    branches: [fix/google-ads-conversion-tracking-p0]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, typecheck, build, 'test:ads', 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser]
+    env:
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_PUBLIC_GOOGLE_ADS_LOCAL_TEST: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run existing verification
+        if: matrix.task != 'magic' && matrix.task != 'p0' && matrix.task != 'browser'
+        run: npm run ${{ matrix.task }}
+      - name: Other existing tests
+        if: matrix.task == 'magic'
+        run: node --import tsx --test tests/magic.test.ts
+      - name: P0 regressions
+        if: matrix.task == 'p0'
+        run: node --import tsx --test tests/contact-p0.test.ts tests/google-ads-p0.test.ts
+      - name: Install isolated browser
+        if: matrix.task == 'browser'
+        run: npx playwright install --with-deps chromium
+      - name: Mocked local browser tests only
+        if: matrix.task == 'browser'
+        run: npm run test:ads:browser
