@@ -4,8 +4,8 @@ import { escapeHtml } from "@/lib/utils";
 import { contactSchema } from "@/lib/validation/contact";
 import { clientKey, isRateLimited } from "@/lib/rate-limit";
 import { getMailConfig } from "@/lib/mail";
-import { recordConfirmedInquiry } from "@/lib/inquiry-stats";
 import { contactRetryKey } from "@/lib/contact-idempotency";
+import { reserveContactAttempt, countContactAttempt } from "@/lib/contact-ledger";
 
 function jsonError(status: number, extra?: HeadersInit) {
   return NextResponse.json({ success: false }, { status, headers: extra });
@@ -22,15 +22,19 @@ export async function POST(req: Request) {
     if (!parsed.success || parsed.data.consent !== true) return jsonError(400);
     if (parsed.data.website) return NextResponse.json({ success: true });
 
+    // Missing keys fail closed: already-open old clients must reload. Never
+    // generate a random fallback that could silently duplicate an inquiry.
     const retry = contactRetryKey(req.headers.get("Idempotency-Key"));
-    if (retry === false) return jsonError(409);
+    if (!retry) return jsonError(409);
     const mail = getMailConfig();
     if (!mail) return jsonError(503);
+    let reservation: { receivedAt: string } | null;
+    try { reservation = await reserveContactAttempt(retry.key); }
+    catch { return jsonError(503); } // no database/schema = no external send
+    if (!reservation) return jsonError(409);
+
     const resend = new Resend(mail.apiKey);
     const { name, email, message, company, phone, service, consentAt } = parsed.data;
-    // Deterministic for retries: a changing timestamp would conflict with the
-    // provider's same-key/same-body requirement and prevent safe recovery.
-    const recordedAt = retry ? retry.receivedAt : new Date().toISOString();
     const result = await resend.emails.send({
       from: mail.from,
       to: ["info@ju-tan.com"],
@@ -45,15 +49,15 @@ export async function POST(req: Request) {
     <p><strong>Storitev:</strong> ${escapeHtml(service)}</p>
     <p><strong>Soglasje:</strong> da</p>
     <p><strong>Čas soglasja (odjemalec):</strong> ${escapeHtml(consentAt)}</p>
-    <p><strong>Čas prejema poskusa (odjemalec):</strong> ${escapeHtml(recordedAt)}</p>
+    <p><strong>Čas prvega prejema (strežnik):</strong> ${escapeHtml(reservation.receivedAt)}</p>
     <p>${escapeHtml(message)}</p>
   `,
-    }, retry ? { idempotencyKey: retry.key } : undefined);
+    }, { idempotencyKey: retry.key });
     if (result.error || !result.data?.id) return jsonError(500);
 
-    // Count only provider acceptance, never promise inbox delivery. Counters
-    // remain best effort and cannot turn an accepted delivery into an error.
-    try { await recordConfirmedInquiry(service); }
+    // Acceptance is not inbox delivery. Counter failure must not turn an
+    // accepted message into a user-visible delivery error or a new mail send.
+    try { await countContactAttempt(retry.key, service); }
     catch { console.error("Confirmed inquiry counter unavailable"); }
     return NextResponse.json({ success: true, conversionId: result.data.id });
   } catch {

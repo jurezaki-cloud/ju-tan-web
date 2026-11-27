@@ -1,8 +1,17 @@
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { POST } from "../app/api/contact/route";
 import { contactSchema } from "../lib/validation/contact";
+import { licensingPool } from "../lib/licensing/db";
+import { reserveContactAttempt, countContactAttempt } from "../lib/contact-ledger";
 
 async function main() {
+  // Refuse any non-local database before connecting. No production fixtures.
+  const url = new URL(process.env.LICENSING_DATABASE_URL ?? "http://invalid");
+  assert.equal(url.hostname, "localhost");
+  assert.equal(url.pathname, "/ju_tan_contact_test");
+  const db = licensingPool();
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.RESEND_API_KEY;
   const originalFrom = process.env.EMAIL_FROM;
@@ -21,28 +30,31 @@ async function main() {
   let providerResult: object = { id: "test-message-id" };
   const replay = new Map<string, string>();
   const providerKeys: string[] = [];
+  let failAfterAccept = false;
   globalThis.fetch = async (url, init) => {
     assert.match(String(url), /^https:\/\/api.resend.com\/emails$/);
     calls++;
     const body = String(init?.body);
     providerBody = JSON.parse(body);
     const key = new Headers(init?.headers).get("Idempotency-Key");
-    if (key) {
-      providerKeys.push(key);
-      const stored = replay.get(key);
-      if (stored && stored !== body) return Response.json({ name: "invalid_idempotent_request", message: "Conflict" }, { status: 409 });
-      if (!stored && providerStatus === 200) { replay.set(key, body); deliveries++; }
-    } else if (providerStatus === 200) deliveries++;
+    assert.ok(key, "every send must use provider idempotency");
+    providerKeys.push(key);
+    const stored = replay.get(key);
+    if (stored && stored !== body) return Response.json({ name: "invalid_idempotent_request", message: "Conflict" }, { status: 409 });
+    if (!stored && providerStatus === 200) { replay.set(key, body); deliveries++; }
+    if (failAfterAccept) { failAfterAccept = false; throw new Error("isolated lost response"); }
     return Response.json(providerResult, { status: providerStatus });
   };
   let sequence = 0;
-  const request = (body: unknown, key?: string) => new Request("https://example.com/api/contact", {
+  const key = () => `${Date.now()}.${randomUUID()}`;
+  const request = (body: unknown, id: string | null = key()) => new Request("https://example.com/api/contact", {
     method: "POST", headers: {
       "Content-Type": "application/json", "x-real-ip": `contact-test-${sequence++}`,
-      ...(key ? { "Idempotency-Key": key } : {}),
+      ...(id ? { "Idempotency-Key": id } : {}),
     }, body: JSON.stringify(body),
   });
   try {
+    await db.query(readFileSync("scripts/sql/contact-idempotency.sql", "utf8"));
     assert.equal(contactSchema.parse(payload).email, "test@example.com");
     const success = await POST(request(payload));
     assert.equal(success.status, 200);
@@ -53,22 +65,53 @@ async function main() {
     const baseline = calls;
     assert.equal((await POST(request({ ...payload, consent: false }))).status, 400);
     assert.equal((await POST(request({ ...payload, email: "invalid" }))).status, 400);
-    const spam = await POST(request({ ...payload, website: "spam" }));
-    assert.deepEqual(await spam.json(), { success: true });
+    assert.deepEqual(await (await POST(request({ ...payload, website: "spam" }))).json(), { success: true });
+    assert.equal((await POST(request(payload, null))).status, 409);
     assert.equal(calls, baseline);
 
-    const retryKey = `${Date.now()}.00000000-0000-4000-8000-000000000001`;
+    const retryKey = key();
     const deliveredBefore = deliveries;
     const first = await POST(request(payload, retryKey));
     const second = await POST(request(payload, retryKey));
     assert.deepEqual(await first.json(), await second.json());
-    assert.equal(deliveries, deliveredBefore + 1, "provider receives identical key/body across retries");
+    assert.equal(deliveries, deliveredBefore + 1);
     assert.equal(providerKeys.at(-1), `contact/${retryKey}`);
     assert.equal((await POST(request({ ...payload, message: "Changed" }, retryKey))).status, 500);
     const beforeInvalid = calls;
     assert.equal((await POST(request(payload, "invalid-key"))).status, 409);
-    assert.equal((await POST(request(payload, `${Date.now() - 86400000}.00000000-0000-4000-8000-000000000002`))).status, 409);
-    assert.equal(calls, beforeInvalid, "expired keys never reach provider");
+    await db.query("UPDATE contact_delivery_attempts SET created_at = clock_timestamp() - INTERVAL '24 hours' WHERE retry_key=$1", [`contact/${retryKey}`]);
+    assert.equal((await POST(request(payload, retryKey))).status, 409);
+    assert.equal(calls, beforeInvalid, "expired persisted keys never reach provider");
+
+    // Old/future client timestamps are opaque; server time is authoritative.
+    for (const clientTime of [Date.now() - 864000000, Date.now() + 864000000]) {
+      assert.equal((await POST(request(payload, `${clientTime}.${randomUUID()}`))).status, 200);
+    }
+    const concurrentKey = key();
+    const beforeConcurrent = deliveries;
+    const concurrent = await Promise.all(Array.from({ length: 4 }, () => POST(request(payload, concurrentKey))));
+    assert.ok(concurrent.every((res) => res.status === 200));
+    const receipts = await Promise.all(concurrent.map((res) => res.json()));
+    assert.ok(receipts.every((receipt) => receipt.conversionId === "test-message-id"));
+    assert.equal(deliveries, beforeConcurrent + 1);
+    const counted = await db.query("SELECT counted FROM contact_delivery_attempts WHERE retry_key=$1", [`contact/${concurrentKey}`]);
+    assert.equal(counted.rows[0].counted, true);
+
+    const ledgerKey = `contact/${key()}`;
+    const reserved = await reserveContactAttempt(ledgerKey);
+    const reservedAgain = await reserveContactAttempt(ledgerKey);
+    assert.deepEqual(reservedAgain, reserved, "stable server time across instances/retries");
+    const beforeCount = await db.query("SELECT COALESCE(SUM(confirmed),0)::text n FROM site_inquiry_daily WHERE service='Drugo'");
+    await Promise.all(Array.from({ length: 8 }, () => countContactAttempt(ledgerKey, "not-a-service")));
+    const afterCount = await db.query("SELECT COALESCE(SUM(confirmed),0)::text n FROM site_inquiry_daily WHERE service='Drugo'");
+    assert.equal(Number(afterCount.rows[0].n) - Number(beforeCount.rows[0].n), 1, "atomic counter increment exactly once");
+
+    const uncertainKey = key();
+    const beforeUncertain = deliveries;
+    failAfterAccept = true;
+    assert.equal((await POST(request(payload, uncertainKey))).status, 500);
+    assert.equal((await POST(request(payload, uncertainKey))).status, 200);
+    assert.equal(deliveries, beforeUncertain + 1, "lost provider reply must not send twice");
 
     providerStatus = 422;
     providerResult = { name: "validation_error", message: "Test rejection" };
@@ -78,12 +121,19 @@ async function main() {
     assert.equal((await POST(request(payload))).status, 500);
     delete process.env.RESEND_API_KEY; delete process.env.EMAIL_FROM; delete process.env.FROM_EMAIL;
     assert.equal((await POST(request(payload))).status, 503);
-    console.log("PASS: contact validation, accepted receipt, no false success, deterministic provider idempotency and expiry (all external calls mocked)");
+    process.env.RESEND_API_KEY = "re_test_only";
+    process.env.EMAIL_FROM = "JU-TAN Test <test@example.com>";
+    const beforeDbFailure = calls;
+    await db.end();
+    assert.equal((await POST(request(payload))).status, 503);
+    assert.equal(calls, beforeDbFailure, "database failure fails closed before provider");
+    console.log("PASS: local PostgreSQL ledger, concurrent count, persisted expiry, clock skew, response loss and mocked provider contract");
   } finally {
     globalThis.fetch = originalFetch;
     for (const [key, value] of Object.entries({ RESEND_API_KEY: originalKey, EMAIL_FROM: originalFrom, FROM_EMAIL: originalFallback })) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
     }
+    await db.end().catch(() => {});
   }
 }
 main().catch((error) => { console.error(error); process.exitCode = 1; });

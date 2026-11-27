@@ -9,9 +9,7 @@ import type { ContactPayload } from "../lib/validation/contact";
 const payload: ContactPayload = { name: "Synthetic", company: undefined, phone: undefined, email: "nobody@example.invalid", service: "Splet", message: "Fixture", consent: true, consentAt: "2026-11-27T00:00:00Z" };
 
 test("only explicit success is accepted; missing receipt never becomes a measured ID", async () => {
-  for (const body of [null, {}, { success: false }, { success: "true" }]) {
-    assert.equal(await readContactSuccess(Response.json(body)), null);
-  }
+  for (const body of [null, {}, { success: false }, { success: "true" }]) assert.equal(await readContactSuccess(Response.json(body)), null);
   assert.equal(await readContactSuccess(new Response("{broken")), null);
   assert.equal(await readContactSuccess(Response.json({ success: true }, { status: 500 })), null);
   assert.deepEqual(await readContactSuccess(Response.json({ success: true })), { success: true });
@@ -33,7 +31,7 @@ test("unchanged retries retain key and exact body; expiry fails closed", async (
     await sendContactRequest(payload, attempt);
     assert.deepEqual(calls[0], calls[1]);
     const key = (calls[0].headers as Record<string, string>)["Idempotency-Key"];
-    assert.ok(contactRetryKey(key, time));
+    assert.ok(contactRetryKey(key));
     assert.ok(!key.includes(payload.email));
     await sendContactRequest({ ...payload, message: "New intent" }, attempt);
     assert.notEqual((calls[2].headers as Record<string, string>)["Idempotency-Key"], key);
@@ -43,12 +41,13 @@ test("unchanged retries retain key and exact body; expiry fails closed", async (
   } finally { globalThis.fetch = previous; Date.now = now; }
 });
 
-test("retry key rejects malformed, future and expired requests", () => {
+test("retry key requires opaque syntax but never trusts the client clock", () => {
   const now = Date.now();
   const uuid = "00000000-0000-4000-8000-000000000001";
-  assert.equal(contactRetryKey(null, now), null);
-  for (const raw of ["", "email@example.com", `${now + 120000}.${uuid}`, `${now - 86400000}.${uuid}`]) assert.equal(contactRetryKey(raw, now), false);
-  assert.deepEqual(contactRetryKey(`${now}.${uuid}`, now), { key: `contact/${now}.${uuid}`, receivedAt: new Date(now).toISOString() });
+  for (const raw of [null, "", "email@example.com", `${now}.invalid`]) assert.equal(contactRetryKey(raw), false);
+  for (const time of [now, now + 864000000, now - 864000000]) {
+    assert.deepEqual(contactRetryKey(`${time}.${uuid}`), { key: `contact/${time}.${uuid}` });
+  }
 });
 
 test("inventory all contact callers and guard both form integrations", () => {

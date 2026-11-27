@@ -17,15 +17,41 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Unmodified main lint baseline (failure remains visible)
-        run: npm run lint
+      - run: npm run lint
+  contact-ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: contact_test
+          POSTGRES_PASSWORD: local_fixture_only
+          POSTGRES_DB: ju_tan_contact_test
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      LICENSING_DATABASE_URL: postgres://contact_test:local_fixture_only@localhost:5432/ju_tan_contact_test
+      JU_TAN_LICENSE_TOKEN_SECRET: local-test-token-not-a-production-secret-000
+      JU_TAN_LICENSE_KEY_PEPPER: local-test-pepper-not-a-production-secret-000
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Existing Ads tests and real local PostgreSQL contract
+        run: npm run test:ads
   checks:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
-        task: [lint, scoped-lint, typecheck, build, 'test:ads', 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser, inventory]
+        task: [lint, scoped-lint, typecheck, build, 'test:hardening', 'test:free-lab', 'test:seo', magic, p0, browser, inventory]
     env:
       VERCEL_ENV: preview
       NEXT_PUBLIC_VERCEL_ENV: preview
@@ -42,7 +68,7 @@ jobs:
         run: npm run ${{ matrix.task }}
       - name: Changed runtime and regression files lint
         if: matrix.task == 'scoped-lint'
-        run: npx eslint lib/google-ads.ts lib/contact-client.ts lib/contact-idempotency.ts components/contact/ContactForm.tsx components/ai/LeadForm.tsx app/api/contact/route.ts tests/*p0.test.ts tests/contact.test.ts tests/google-ads.test.ts tests/browser/contact-p0.spec.ts playwright.ads.config.ts
+        run: npx eslint lib/google-ads.ts lib/contact-client.ts lib/contact-idempotency.ts lib/contact-ledger.ts components/contact/ContactForm.tsx components/ai/LeadForm.tsx app/api/contact/route.ts tests/*p0.test.ts tests/contact.test.ts tests/google-ads.test.ts tests/browser/contact-p0.spec.ts playwright.ads.config.ts
       - name: Other existing tests
         if: matrix.task == 'magic'
         run: node --import tsx --test tests/magic.test.ts
