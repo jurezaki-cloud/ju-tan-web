@@ -1,0 +1,26 @@
+ju-tan-web@0.1.0 /home/runner/work/ju-tan-web/ju-tan-web
+├─┬ @sentry/nextjs@10.78.0
+│ └─┬ @sentry/bundler-plugins@10.78.0
+│   └─┬ glob@14.0.6 overridden
+│     └── minimatch@11.0.9
+├─┬ eslint-config-next@16.4.5
+│ ├─┬ eslint-plugin-import@2.32.0
+│ │ └── minimatch@3.1.5 deduped
+│ ├─┬ eslint-plugin-jsx-a11y@6.10.2
+│ │ └── minimatch@3.1.5 deduped
+│ ├─┬ eslint-plugin-react@7.37.5
+│ │ └── minimatch@3.1.5 deduped
+│ └─┬ typescript-eslint@8.74.0
+│   └─┬ @typescript-eslint/typescript-estree@8.74.0
+│     └── minimatch@11.0.9
+├─┬ eslint@9.39.5
+│ ├─┬ @eslint/config-array@0.21.2
+│ │ └── minimatch@3.1.5 deduped
+│ ├─┬ @eslint/eslintrc@3.3.7
+│ │ └── minimatch@3.1.5 deduped
+│ └── minimatch@3.1.5
+└─┬ shadcn@4.23.1
+  └─┬ ts-morph@28.0.0
+    └─┬ @ts-morph/common@0.29.1
+      └── minimatch@11.0.9
+
