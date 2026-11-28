@@ -53,7 +53,9 @@ export default function Providers({ children }: { children: ReactNode }) {
   );
   useEffect(() => {
     syncGoogleAds();
-    return subscribeAdsConsent(syncGoogleAds);
+    const stopAds = subscribeAdsConsent(syncGoogleAds);
+    const stopAnalytics = subscribeAnalyticsConsent(syncGoogleAds);
+    return () => { stopAds(); stopAnalytics(); };
   }, [pathname]);
   const hydrated = useSyncExternalStore(
     subscribeNoop,

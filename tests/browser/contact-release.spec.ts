@@ -21,7 +21,7 @@ async function fill(page: Page, guide: boolean) {
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("ju-tan-ads-v1", "necessary");
-    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-analytics-v2", "necessary");
   });
   await page.route("**/*", route => {
     const url = new URL(route.request().url());
@@ -99,7 +99,7 @@ for (const analytics of [false, true]) {
       await page.route("**/api/contact", route => route.fulfill({ json: { success: true, conversionId: "choice-receipt" } }));
       await page.goto("/kontakt");
       await page.getByRole("button", { name: "Nastavitve piškotkov" }).click();
-      await page.getByLabel("Analitika obiska (Vercel)").setChecked(analytics);
+      await page.getByLabel("Analitika obiska (Vercel in Google Analytics 4)").setChecked(analytics);
       await page.getByLabel("Merjenje uspešnih povpraševanj iz oglasov (Google Ads)").setChecked(ads);
       await page.getByRole("button", { name: "Shrani izbiro" }).click();
       const form = await fill(page, false);

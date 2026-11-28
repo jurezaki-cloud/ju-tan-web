@@ -1,4 +1,5 @@
-export const ANALYTICS_CONSENT_KEY = "ju-tan-analytics";
+// Renew consent: the previous Vercel-only choice did not include Google Analytics.
+export const ANALYTICS_CONSENT_KEY = "ju-tan-analytics-v2";
 
 export type AnalyticsConsent = "accepted" | "necessary";
 
