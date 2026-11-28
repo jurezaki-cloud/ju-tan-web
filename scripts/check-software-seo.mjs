@@ -10,8 +10,8 @@ const sitemap = read("app/sitemap.ts");
 const robots = read("app/robots.ts");
 
 test("software SEO metadata and canonical helper", () => {
-  assert.ok(page.includes('const pageTitle = "Razvoj programske opreme po meri za podjetja | JU-TAN"'));
-  assert.ok(page.includes('"Razvoj poslovne programske opreme po meri:'));
+  assert.ok(page.includes('const pageTitle = "Razvoj programske opreme in implementacija | JU-TAN"'));
+  assert.ok(page.includes('"Razvoj in implementacija programske opreme za podjetja.'));
   assert.ok(page.includes("title: { absolute: pageTitle }"));
   assert.ok(page.includes("createPageMetadata({"));
   assert.ok(seo.includes("canonical: url"));

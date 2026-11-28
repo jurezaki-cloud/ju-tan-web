@@ -13,9 +13,9 @@ import {
 import { siteConfig } from "@/lib/config";
 
 const path = "/razvoj-programske-opreme";
-const pageTitle = "Razvoj programske opreme po meri za podjetja | JU-TAN";
+const pageTitle = "Razvoj programske opreme in implementacija | JU-TAN";
 const pageDescription =
-  "Razvoj poslovne programske opreme po meri: spletne in namizne aplikacije, CRM, integracije ter avtomatizacija procesov za podjetja po Sloveniji.";
+  "Razvoj in implementacija programske opreme za podjetja. Povežite naročila, proizvodnjo in zalogo z obstoječimi sistemi. Opišite svoj proces.";
 
 const baseMetadata = createPageMetadata({
   title: "Razvoj programske opreme po meri",
@@ -83,12 +83,14 @@ export default function RazvojProgramskeOpremePage() {
             </div>
             <div className="mt-10">
               <h3 className="font-heading text-xl font-semibold">
-                Primeri uporabe v proizvodnji in veleprodaji
+                Implementacija programske opreme v proizvodnji in veleprodaji
               </h3>
               <p className="mt-3 max-w-3xl leading-7 text-slate-300 light:text-slate-700">
                 V manjšem proizvodnem podjetju lahko interna aplikacija poveže naročila
                 z delovnimi nalogi ter omogoči spremljanje njihovega napredka in porabe
-                materiala. V veleprodaji lahko integracija poveže naročila z zalogo in
+                materiala. Uvedbo začnemo z enim dogovorjenim procesom, preverimo podatke
+                in z uporabniki preizkusimo potek pred širšo uporabo.
+                V veleprodaji lahko integracija poveže naročila z zalogo in
                 računovodskim programom, da zaposleni podatke vnesejo samo enkrat.
                 Pred izvedbo preverimo obstoječe programe, kakovost podatkov in
                 razpoložljive vmesnike.

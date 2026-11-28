@@ -1,0 +1,69 @@
+name: SEO growth targeted checks and mobile comparison
+on:
+  push:
+    branches: [feature/seo-growth-20261128]
+    paths:
+      - 'app/razvoj-programske-opreme/**'
+      - 'components/software-dev-page/**'
+      - 'scripts/check-software-seo.mjs'
+      - 'scripts/seo-growth-benchmark.mjs'
+      - '.github/workflows/seo-growth.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  software-page:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      VERCEL_ENV: preview
+      NEXT_PUBLIC_VERCEL_ENV: preview
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 069e5c976370158b2f4d8fba38bab93df29a558a
+          path: baseline
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: candidate/package-lock.json
+      - run: npm ci
+        working-directory: candidate
+      - name: Targeted SEO assertions, lint and typecheck
+        working-directory: candidate
+        run: |
+          node --test --test-name-pattern='software SEO|exactly one H1|service URL|structured service|software implementation' scripts/check-software-seo.mjs
+          npx eslint app/razvoj-programske-opreme/page.tsx components/software-dev-page/SoftwareDevPage.tsx scripts/seo-growth-benchmark.mjs
+          npm run typecheck
+      - name: Build candidate (without unrelated prebuild tests)
+        run: npx next build
+        working-directory: candidate
+      - name: Build exact main baseline
+        working-directory: baseline
+        run: |
+          npm ci
+          npx next build
+      - name: Prepare fixed measurement tools
+        working-directory: candidate
+        run: |
+          npx playwright install --with-deps chromium
+          npm install --prefix "$RUNNER_TEMP/seo-tools" --no-audit --no-fund --ignore-scripts lighthouse@13.6.0
+      - name: Paired mobile measurements and page regressions
+        working-directory: candidate
+        env:
+          SEO_BASELINE: ${{ github.workspace }}/baseline
+          SEO_OUTPUT: ${{ github.workspace }}/seo-evidence
+          SEO_TOOLS: ${{ runner.temp }}/seo-tools
+        run: node scripts/seo-growth-benchmark.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seo-growth-mobile-evidence
+          path: seo-evidence/
