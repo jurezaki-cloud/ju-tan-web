@@ -1,17 +1,23 @@
 import { getAdsConsent } from "./ads-consent";
+import { getAnalyticsConsentSnapshot } from "./consent";
 import { isPrivateToolPath } from "./private-tool-path";
 
 export const ADS_ID = "AW-18531808239";
+export const GA4_ID = "G-8Y5Z1S1GMG";
 export const ADS_DESTINATION = `${ADS_ID}/YQbkCOaJz7gdEO_n04RF`;
 type Gtag = (...args: unknown[]) => void;
 declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: Gtag;
+    "ga-disable-G-8Y5Z1S1GMG"?: boolean;
   }
 }
 
 let initialized = false;
+let adsConfigured = false;
+let analyticsConfigured = false;
+let lastAnalyticsPath: string | undefined;
 let ready = false;
 let activeScript: HTMLScriptElement | undefined;
 let attempts = 0;
@@ -56,12 +62,45 @@ function emit(id: string) {
   seen.add(id);
 }
 
-/** Basic Consent Mode: never load Google or queue conversions before Ads opt-in. */
+function analyticsAllowed() {
+  return typeof window !== "undefined" &&
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production" &&
+    (window.location.hostname === "ju-tan.com" || window.location.hostname === "www.ju-tan.com") &&
+    getAnalyticsConsentSnapshot() === "accepted" &&
+    !isPrivateToolPath(window.location.pathname);
+}
+
+function emitPageView() {
+  if (!ready || !analyticsAllowed() || !window.gtag) return;
+  const path = window.location.pathname;
+  if (lastAnalyticsPath === path) return;
+  window.gtag("event", "page_view", {
+    send_to: GA4_ID,
+    page_location: `https://ju-tan.com${path}`,
+    page_referrer: "",
+    // Do not forward query strings, fragments, form data or dynamic titles.
+    page_title: path,
+  });
+  lastAnalyticsPath = path;
+}
+
+/** Shared loader; Analytics and Ads retain independent opt-ins (Basic Consent Mode). */
 export function syncGoogleAds() {
   if (typeof window === "undefined") return;
-  if (!allowed()) {
+  const ads = allowed();
+  const analytics = analyticsAllowed();
+  window["ga-disable-G-8Y5Z1S1GMG"] = !analytics;
+  if (!ads) pending.clear();
+  if (!analytics) lastAnalyticsPath = undefined;
+  const consent = {
+    ...denied,
+    ad_storage: ads ? "granted" : "denied",
+    ad_user_data: ads ? "granted" : "denied",
+    analytics_storage: analytics ? "granted" : "denied",
+  };
+  if (!ads && !analytics) {
     pending.clear();
-    if (initialized) window.gtag?.("consent", "update", denied);
+    if (initialized) window.gtag?.("consent", "update", consent);
     return;
   }
   if (!initialized) {
@@ -74,16 +113,27 @@ export function syncGoogleAds() {
     window.gtag("set", "ads_data_redaction", true);
     window.gtag("js", new Date());
     initialized = true;
-    window.gtag("config", ADS_ID, {
+  }
+  window.gtag?.("consent", "update", consent);
+  if (ads && !adsConfigured) {
+    window.gtag?.("config", ADS_ID, {
       send_page_view: false,
       allow_ad_personalization_signals: false,
     });
+    adsConfigured = true;
   }
-  window.gtag?.("consent", "update", {
-    ...denied,
-    ad_storage: "granted",
-    ad_user_data: "granted",
-  });
+  if (analytics && !analyticsConfigured) {
+    window.gtag?.("config", GA4_ID, {
+      send_page_view: false,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      page_location: `https://ju-tan.com${window.location.pathname}`,
+      page_referrer: "",
+      page_title: window.location.pathname,
+    });
+    analyticsConfigured = true;
+  }
+  emitPageView();
   // One in-flight load; at most 2 attempts per document. Retrying is explicit
   // via sync/another accepted receipt, never a timer or replay on later opt-in.
   if (ready || activeScript || attempts >= 2 ||
@@ -93,7 +143,7 @@ export function syncGoogleAds() {
   activeScript = script;
   script.id = "ju-tan-google-ads";
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${ADS_ID}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${ads ? ADS_ID : GA4_ID}`;
   script.onload = () => {
     if (activeScript !== script) return;
     ready = true;
@@ -104,6 +154,7 @@ export function syncGoogleAds() {
       });
     }
     pending.clear();
+    emitPageView();
   };
   script.onerror = () => {
     if (activeScript !== script) return;

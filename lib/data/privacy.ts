@@ -1,6 +1,6 @@
 import { siteConfig } from "@/lib/config";
 
-export const privacyLastUpdated = "17. 9. 2026";
+export const privacyLastUpdated = "28. 11. 2026";
 
 export const privacyGdprEmail = "zasebnost-gdpr@ju-tan.com";
 
@@ -106,7 +106,7 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Če privolite v analitiko, se lahko obdelajo tudi agregirani oziroma anonimizirani podatki o uporabi strani in tehnični kazalniki učinkovitosti (glejte poglavje o analitiki in Politiko piškotkov).",
+        text: "Če privolite v analitiko, se lahko obdelajo tudi podatki o obiskih, sejah in psevdonimni identifikatorji piškotkov ter podatki o uporabi strani in tehnični kazalniki učinkovitosti (glejte poglavje o analitiki in Politiko piškotkov).",
       },
       {
         type: "p",
@@ -204,7 +204,7 @@ export const privacyChapters: PrivacyChapter[] = [
         items: [
           "ponudnik gostovanja in infrastrukture spletnega mesta (Vercel) — za dostavo strani in tehnično delovanje",
           "ponudnik dostave e-pošte (Resend) — za pošiljanje sporočil iz kontaktnega obrazca na naš nabiralnik",
-          "ponudnik analitike in merjenja učinkovitosti (Vercel Web Analytics in Vercel Speed Insights) — le, če ste privolili v analitiko",
+          "ponudnik analitike in merjenja učinkovitosti (Vercel Web Analytics, Vercel Speed Insights in Google Analytics 4) — le, če ste privolili v analitiko",
           "državni organi, če to zahteva zakon ali veljavna odredba",
         ],
       },
@@ -240,19 +240,19 @@ export const privacyChapters: PrivacyChapter[] = [
       },
       {
         type: "p",
-        text: "Ob prvem obisku se prikaže pasica, v kateri lahko izberete »Sprejmem« ali »Samo nujno«. Izbira se shrani v lokalni shrambi brskalnika pod ključem ju-tan-analytics.",
+        text: "Pasica omogoča ločeno izbiro analitike (Vercel in Google Analytics 4) ter Google Ads ali izbiro »Samo nujno«. Staro soglasje samo za Vercel ne vključi GA4. Izbira se shrani v lokalni shrambi brskalnika pod ključem ju-tan-analytics-v2.",
       },
       {
         type: "list",
         items: [
-          "če izberete »Sprejmem«, se aktivirata Vercel Web Analytics in Vercel Speed Insights",
+          "če označite analitiko in potrdite »Shrani izbiro«, se aktivirajo Vercel Web Analytics, Vercel Speed Insights in Google Analytics 4",
           "če izberete »Samo nujno«, se ta orodja ne naložijo",
           "dokler odločitve ne sprejmete, se analitika ne aktivira",
         ],
       },
       {
         type: "p",
-        text: "Ločenega nastavitvenega zaslona za spremembo privolitve trenutno ni. Če želite odločitev spremeniti, v nastavitvah brskalnika izbrišite shranjene podatke tega spletnega mesta oziroma ključ ju-tan-analytics; ob naslednjem obisku se pasica znova prikaže.",
+        text: "Izbiro lahko kadar koli spremenite prek gumba »Nastavitve piškotkov«; preklic ustavi nadaljnje merjenje GA4. Če želite odločitev spremeniti, v nastavitvah brskalnika izbrišite shranjene podatke tega spletnega mesta oziroma ključ ju-tan-analytics-v2; ob naslednjem obisku se pasica znova prikaže.",
       },
       {
         type: "p",
@@ -267,7 +267,7 @@ export const privacyChapters: PrivacyChapter[] = [
     blocks: [
       {
         type: "p",
-        text: "Javno spletno mesto se v veliki meri opira na lokalno shrambo brskalnika (localStorage), ne na klasične piškotke. Za prijavo v platformo se lahko uporabijo tudi sejni piškotki.",
+        text: "Javno spletno mesto uporablja lokalno shrambo brskalnika (localStorage), po privolitvi pa tudi piškotke Google Analytics 4 in Google Ads. Za prijavo v platformo se lahko uporabijo tudi sejni piškotki.",
       },
       {
         type: "p",

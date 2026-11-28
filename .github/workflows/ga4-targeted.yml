@@ -1,0 +1,26 @@
+name: GA4 targeted static checks
+on:
+  push:
+    branches: [feature/ga4-consent-20261128]
+    paths-ignore: ['**/*.md']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ga4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # The five targeted GA4/Ads tests already passed locally; do not repeat them.
+      - if: github.event_name == 'workflow_dispatch'
+        run: node --import tsx --test tests/google-analytics.test.ts tests/google-ads.test.ts tests/google-ads-consent-p0.test.ts tests/google-ads-p0.test.ts tests/google-ads-retry-p0.test.ts
+      - run: npx eslint lib/google-ads.ts lib/consent.ts components/common/Providers.tsx components/legal/CookieBanner.tsx lib/data/privacy.ts app/politika-piskotkov/page.tsx next.config.ts tests/google-analytics.test.ts tests/browser/contact-ads.spec.ts tests/browser/contact-concurrency.spec.ts tests/browser/contact-inbox.spec.ts tests/browser/contact-p0.spec.ts tests/browser/contact-release.spec.ts
+      - run: npx next typegen && npm run typecheck

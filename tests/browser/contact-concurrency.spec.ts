@@ -12,7 +12,7 @@ async function fill(page: Page) {
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() => {
     localStorage.setItem("ju-tan-ads-v1", "necessary");
-    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-analytics-v2", "necessary");
   });
   await context.route("**/*", route => {
     const url = new URL(route.request().url());

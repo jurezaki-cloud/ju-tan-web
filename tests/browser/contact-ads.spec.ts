@@ -118,7 +118,7 @@ test("legacy analytics, necessary-only and honeypot receipts never convert", asy
 
 test("ad landing page opens an immediately usable preselected contact form", async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-analytics-v2", "necessary");
     localStorage.setItem("ju-tan-ads-v1", "necessary");
   });
   const pageErrors: string[] = [];
@@ -144,7 +144,7 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
   test(`ad-to-contact layout stays usable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 840 });
     await page.addInitScript(() => {
-      localStorage.setItem("ju-tan-analytics", "necessary");
+      localStorage.setItem("ju-tan-analytics-v2", "necessary");
       localStorage.setItem("ju-tan-ads-v1", "necessary");
     });
     const errors: string[] = [];
@@ -174,7 +174,7 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
 test("contact introduction gives a direct shortcut to the enquiry form", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
-    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-analytics-v2", "necessary");
     localStorage.setItem("ju-tan-ads-v1", "necessary");
   });
   await page.goto("/kontakt?service=web");
