@@ -6,7 +6,7 @@ const conversionEvents = (page: Page) => page.evaluate(() =>
 
 async function consent(page: Page, ads: boolean) {
   await page.addInitScript((accepted) => {
-    localStorage.setItem("ju-tan-analytics", "necessary");
+    localStorage.setItem("ju-tan-analytics-v2", "necessary");
     localStorage.setItem("ju-tan-ads-v1", accepted ? "accepted" : "necessary");
   }, ads);
 }

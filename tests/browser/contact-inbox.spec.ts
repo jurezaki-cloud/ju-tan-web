@@ -19,7 +19,7 @@ async function fill(page: Page, guide: boolean) {
 for (const guide of [false, true]) for (const analytics of [false, true]) for (const ads of [false, true]) {
   test(`durable queue does not count delivery: guide=${guide}, analytics=${analytics}, ads=${ads}`, async ({ page }) => {
     await page.addInitScript(({ analytics, ads }) => {
-      localStorage.setItem("ju-tan-analytics", analytics ? "accepted" : "necessary");
+      localStorage.setItem("ju-tan-analytics-v2", analytics ? "accepted" : "necessary");
       localStorage.setItem("ju-tan-ads-v1", ads ? "accepted" : "necessary");
     }, { analytics, ads });
     await page.route(/https:\/\/(.*google.*|.*doubleclick.*)/, route => route.fulfill({ contentType: "application/javascript", body: "/* isolated test */" }));

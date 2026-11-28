@@ -58,7 +58,7 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
               checked={analytics}
               onChange={(event) => setAnalytics(event.target.checked)}
             />{" "}
-            Analitika obiska (Vercel)
+            Analitika obiska (Vercel in Google Analytics 4)
           </label>
           <label className="mt-2 block text-sm">
             <input
@@ -69,6 +69,8 @@ export default function CookieBanner({ onChoice }: CookieBannerProps) {
             Merjenje uspešnih povpraševanj iz oglasov (Google Ads)
           </label>
           <p className="mt-2 text-xs">
+            Google Analytics 4 uporablja piškotke za merjenje obiska po vaši
+            privolitvi v analitiko. Ta izbira ne omogoči merjenja Google Ads.{" "}
             Google Ads uporablja piškotke in podatke o obisku za pripis uspešne
             oddaje oglasu. Vsebine obrazca ne pošiljamo Googlu. Izbiro lahko
             kadar koli spremenite v nastavitvah piškotkov.

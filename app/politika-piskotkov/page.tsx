@@ -20,7 +20,7 @@ export const metadata: Metadata = createPageMetadata({
   path: "/politika-piskotkov",
 });
 
-const lastUpdated = "15. 11. 2026";
+const lastUpdated = "28. 11. 2026";
 
 type StorageRow = {
   name: string;
@@ -31,6 +31,13 @@ type StorageRow = {
 };
 
 const storageRows: StorageRow[] = [
+  {
+    name: "_ga, _ga_*",
+    mechanism: "piškotki Google Analytics 4",
+    purpose: "Po privolitvi v analitiko razlikujejo obiske in seje. Vsebine kontaktnih obrazcev ne pošiljamo v GA4.",
+    duration: "Privzeto do 2 leti; piškotke lahko izbrišete v brskalniku.",
+    category: "Analitika (prostovoljno)",
+  },
   {
     name: "ju-tan-ads-v1",
     mechanism: "localStorage",
@@ -58,7 +65,7 @@ const storageRows: StorageRow[] = [
     category: "Nujno / preferenca prikaza",
   },
   {
-    name: "ju-tan-analytics",
+    name: "ju-tan-analytics-v2",
     mechanism: "localStorage",
     purpose:
       "Shrani vašo odločitev o analitiki (»accepted« ali »necessary«), da se pasica ne prikaže znova in da se analitika vklopi le ob privolitvi.",
@@ -133,7 +140,7 @@ export default function CookiePolicyPage() {
                   <p>
                     Javno spletno mesto JU-TAN se v veliki meri opira na
                     localStorage (tema, privolitev v analitiko, zgodovina
-                    vodiča). Tradicionalni piškotki se uporabljajo predvsem za
+                    vodiča). Piškotki se po privolitvi uporabljajo tudi za analitiko in Google Ads ter za
                     prijavo v platformo.
                   </p>
                 </section>
@@ -147,20 +154,20 @@ export default function CookiePolicyPage() {
                     kontaktni obrazec) ni pogojeno s privolitvijo v analitiko.
                   </p>
                   <p>
-                    Ob prvem obisku se prikaže pasica z možnostjo »Sprejmem« ali
+                    Pasica omogoča ločeno izbiro analitike in Google Ads ali
                     »Samo nujno«. Izbira se shrani v localStorage pod ključem{" "}
                     <code className="text-[14px] text-slate-300 light:text-slate-700">
-                      ju-tan-analytics
+                      ju-tan-analytics-v2
                     </code>
                     .
                   </p>
                   <ul className="list-disc space-y-2 pl-5">
                     <li>
                       ob izbiri analitike in potrditvi »Shrani izbiro« se
-                      aktivirata Vercel Web Analytics in Vercel Speed Insights;
+                      aktivirajo Vercel Web Analytics, Vercel Speed Insights in Google Analytics 4;
                     </li>
                     <li>
-                      ob izbiri »Samo nujno« se ti komponenti ne naložita;
+                      ob izbiri »Samo nujno« se analitična orodja ne naložijo;
                     </li>
                     <li>
                       dokler odločitve ne sprejmete, se analitika ne aktivira.
@@ -170,15 +177,15 @@ export default function CookiePolicyPage() {
                     Po javni dokumentaciji ponudnika Vercel Web Analytics in
                     Speed Insights ne temeljita na tradicionalnih piškotkih za
                     sledenje. V tej implementaciji ju nalagamo le po privolitvi;
-                    ločenih piškotkov analitike v naši kodi ne nastavljamo.
+                    Google Analytics 4 po novi privolitvi uporablja piškotke _ga in _ga_* za merjenje obiskov. Prejšnja izbira samo za Vercel ne vključi GA4.
                   </p>
                   <p>
-                    Ločenega nastavitvenega zaslona za spremembo privolitve ni.
+                    Izbiro lahko kadar koli spremenite prek gumba »Nastavitve piškotkov«.
                     Če želite odločitev spremeniti, v nastavitvah brskalnika
                     izbrišite shranjene podatke tega spletnega mesta oziroma
                     ključ{" "}
                     <code className="text-[14px] text-slate-300 light:text-slate-700">
-                      ju-tan-analytics
+                      ju-tan-analytics-v2
                     </code>
                     ; ob naslednjem obisku se pasica znova prikaže.
                   </p>
@@ -279,7 +286,7 @@ export default function CookiePolicyPage() {
                     Piškotke in localStorage lahko kadar koli izbrišete ali
                     omejite v nastavitvah brskalnika. Brisanje ključa{" "}
                     <code className="text-[14px] text-slate-300 light:text-slate-700">
-                      ju-tan-analytics
+                      ju-tan-analytics-v2
                     </code>{" "}
                     ponovno prikaže pasico za analitiko. Brisanje{" "}
                     <code className="text-[14px] text-slate-300 light:text-slate-700">

@@ -32,7 +32,7 @@ function contentSecurityPolicy(development: boolean) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
-    `connect-src 'self' ${vercelConnect.join(" ")} https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.si https://ad.doubleclick.net`,
+    `connect-src 'self' ${vercelConnect.join(" ")} https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.si https://ad.doubleclick.net`,
     "worker-src 'self' blob:",
     "frame-src 'self' https://www.googletagmanager.com",
     "frame-ancestors 'self'",
