@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FadeIn } from "@/components/animations";
+import type { ReactNode } from "react";
+import styles from "./software-reveal.module.css";
 import Section from "@/components/common/Section";
 import CtaLink from "@/components/navbar/CtaLink";
 import SeoFaq from "@/components/common/SeoFaq";
@@ -11,6 +12,11 @@ import {
 } from "@/components/office-page/officeAssets";
 import { bodyClass, kickerClass, textLinkClass } from "@/design";
 import { cn } from "@/lib/utils";
+
+// Server-rendered progressive motion: no per-section hydration or observers.
+function SoftwareReveal({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn(styles.reveal, className)}>{children}</div>;
+}
 
 const whenCustom = [
   {
@@ -134,6 +140,16 @@ const phases = [
 
 export const seoFaq = [
   {
+    question: "Kako uvedemo programsko opremo v proizvodno podjetje?",
+    answer:
+      "Najprej opišemo pot od naročila do delovnega naloga in preverimo, kje nastajajo podatki o materialu ter napredku. Nato določimo povezave z obstoječimi programi in pripravimo omejen preizkus z uporabniki. Širitev načrtujemo po preverjenem pilotu, ne z nenadno menjavo vseh sistemov.",
+  },
+  {
+    question: "Ali lahko povežete programsko opremo za veleprodajo z zalogo in računovodstvom?",
+    answer:
+      "Možnosti povezave preverimo glede na razpoložljive API-je ali izvoze obstoječih programov. Opredelimo, kateri sistem je vir podatkov o artiklih, zalogi in naročilih, nato preizkusimo prenos ter obravnavo napak. Končni obseg je odvisen od dostopnih vmesnikov in kakovosti podatkov.",
+  },
+  {
     question: "Kdaj je smiselna programska oprema po meri?",
     answer:
       "Ko standardna orodja ne sledijo vašim procesom, zahtevajo podvajanje podatkov ali omejujejo nadaljnji razvoj. Najprej preverimo, ali je razvoj po meri sploh smiselna izbira.",
@@ -204,8 +220,9 @@ export default function SoftwareDevPage() {
           <p
             className={`${bodyClass} mt-6 max-w-[40rem] text-slate-300 light:text-slate-600`}
           >
-            Iz Cerknice za podjetja po Sloveniji, kjer standardna orodja ne
-            pokrijejo procesov dovolj dobro. Pomagamo pri načrtovanju, razvoju
+            Povežite naročila, delovne naloge in zalogo v pregleden poslovni proces.
+            Iz Cerknice pomagamo proizvodnim in veleprodajnim podjetjem po Sloveniji
+            pri načrtovanju, razvoju
             in implementaciji programske opreme po meri — od spletnih in namiznih
             aplikacij do integracij z obstoječimi sistemi. Najprej preverimo
             poslovni proces, podatke in tehnične možnosti povezovanja.
@@ -229,7 +246,7 @@ export default function SoftwareDevPage() {
         className="bg-[#050816] light:bg-slate-50"
       >
         <div className="mx-auto max-w-[52rem]">
-          <FadeIn>
+          <SoftwareReveal>
             <h2
               id="software-dev-when-title"
               className="heading-display font-heading font-semibold text-white light:text-slate-900"
@@ -242,12 +259,12 @@ export default function SoftwareDevPage() {
               Po meri ima smisel, ko standardna orodja ne sledijo dovolj dobro
               temu, kako podjetje dejansko dela.
             </p>
-          </FadeIn>
+          </SoftwareReveal>
 
           <ul className="mt-9 divide-y divide-white/8 border-y border-white/8 light:divide-slate-200/80 light:border-slate-200/80">
-            {whenCustom.map((item, index) => (
+            {whenCustom.map((item) => (
               <li key={item.title}>
-                <FadeIn delay={0.04 + index * 0.04}>
+                <SoftwareReveal>
                   <div className="grid gap-2 py-7 sm:grid-cols-[minmax(10rem,16rem)_minmax(0,1fr)] sm:gap-8 md:py-8">
                     <h3 className="font-heading text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#16a34a]/90 light:text-[#15803d]">
                       {item.title}
@@ -258,7 +275,7 @@ export default function SoftwareDevPage() {
                       {item.body}
                     </p>
                   </div>
-                </FadeIn>
+                </SoftwareReveal>
               </li>
             ))}
           </ul>
@@ -273,7 +290,7 @@ export default function SoftwareDevPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto w-full max-w-[1200px]">
-          <FadeIn>
+          <SoftwareReveal>
             <h2
               id="software-dev-systems-title"
               className="heading-display max-w-[40rem] font-heading font-semibold text-white light:text-slate-900"
@@ -286,7 +303,7 @@ export default function SoftwareDevPage() {
               Gradimo programske sisteme okoli poslovnih zahtev — ne prodajamo
               zaključenega ERP paketa.
             </p>
-          </FadeIn>
+          </SoftwareReveal>
 
           <ol className="mt-10 border-t border-white/10 light:border-slate-200">
             {systems.map((item) => (
@@ -320,7 +337,7 @@ export default function SoftwareDevPage() {
         className="bg-[#050816] light:bg-slate-50"
       >
         <div className="mx-auto max-w-[52rem]">
-          <FadeIn>
+          <SoftwareReveal>
             <h2
               id="software-dev-approach-title"
               className="heading-display font-heading font-semibold text-white light:text-slate-900"
@@ -333,12 +350,12 @@ export default function SoftwareDevPage() {
               Programska oprema mora biti razumljiva, vzdržljiva in pripravljena
               na rast — ne le objavljena.
             </p>
-          </FadeIn>
+          </SoftwareReveal>
 
           <ul className="mt-9 divide-y divide-white/8 border-y border-white/8 light:divide-slate-200/80 light:border-slate-200/80">
-            {approach.map((item, index) => (
+            {approach.map((item) => (
               <li key={item.title}>
-                <FadeIn delay={0.04 + index * 0.03}>
+                <SoftwareReveal>
                   <div className="grid gap-2 py-6 sm:grid-cols-[minmax(10rem,18rem)_minmax(0,1fr)] sm:gap-8 md:py-7">
                     <h3 className="font-heading text-[1.05rem] font-semibold tracking-[-0.03em] text-white light:text-slate-900 md:text-[1.15rem]">
                       {item.title}
@@ -349,7 +366,7 @@ export default function SoftwareDevPage() {
                       {item.body}
                     </p>
                   </div>
-                </FadeIn>
+                </SoftwareReveal>
               </li>
             ))}
           </ul>
@@ -365,7 +382,7 @@ export default function SoftwareDevPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[68rem]">
-          <FadeIn>
+          <SoftwareReveal>
             <div className="mb-8 max-w-[40rem] md:mb-10">
               <h2
                 id="software-dev-proof-title"
@@ -382,9 +399,9 @@ export default function SoftwareDevPage() {
                 demonstracijski.
               </p>
             </div>
-          </FadeIn>
+          </SoftwareReveal>
 
-          <FadeIn delay={0.06}>
+          <SoftwareReveal>
             <figure
               className={cn(
                 "overflow-hidden rounded-[1.05rem] border border-white/12 bg-[#0a1012]",
@@ -404,18 +421,19 @@ export default function SoftwareDevPage() {
               </div>
               <figcaption className="sr-only">{dashboard.label}</figcaption>
             </figure>
-          </FadeIn>
+          </SoftwareReveal>
 
-          <FadeIn delay={0.1}>
+          <SoftwareReveal>
             <div className="mt-7">
               <Link
                 href="/ju-tan-office"
+                prefetch={false}
                 className={cn(textLinkClass, "light:hover:text-slate-900")}
               >
                 Spoznajte JU-TAN Office
               </Link>
             </div>
-          </FadeIn>
+          </SoftwareReveal>
         </div>
       </Section>
 
@@ -427,7 +445,7 @@ export default function SoftwareDevPage() {
         innerClassName="overflow-x-hidden"
       >
         <div className="mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start lg:gap-14">
-          <FadeIn className="lg:pt-1">
+          <SoftwareReveal className="lg:pt-1">
             <div className="max-w-[34rem]">
               <h2
                 id="software-dev-process-title"
@@ -442,7 +460,7 @@ export default function SoftwareDevPage() {
                 preverljivih korakih.
               </p>
             </div>
-          </FadeIn>
+          </SoftwareReveal>
 
           <ol className="border-y border-white/8 light:border-slate-200/80">
             {phases.map((phase, index) => (
@@ -454,7 +472,7 @@ export default function SoftwareDevPage() {
                     "border-t border-white/8 hover:border-white/14 light:border-slate-200/80 light:hover:border-slate-300/90",
                 )}
               >
-                <FadeIn delay={0.06 + index * 0.05}>
+                <SoftwareReveal>
                   <div
                     className={cn(
                       "grid items-start gap-3.5 py-7 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-5 md:gap-6 md:py-8 lg:py-[2.15rem]",
@@ -475,7 +493,7 @@ export default function SoftwareDevPage() {
                       </p>
                     </div>
                   </div>
-                </FadeIn>
+                </SoftwareReveal>
               </li>
             ))}
           </ol>
@@ -492,7 +510,7 @@ export default function SoftwareDevPage() {
         decorate={sectionDecor}
       >
         <div className="mx-auto max-w-[40rem] pb-4 sm:pb-6 lg:pb-10">
-          <FadeIn>
+          <SoftwareReveal>
             <p className={cn(kickerClass, "light:text-slate-500")}>
               NASLEDNJI KORAK
             </p>
@@ -511,7 +529,7 @@ export default function SoftwareDevPage() {
                 Pošljite povpraševanje
               </CtaLink>
             </div>
-          </FadeIn>
+          </SoftwareReveal>
         </div>
       </Section>
     </>

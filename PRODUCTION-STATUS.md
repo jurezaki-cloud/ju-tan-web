@@ -1,3 +1,20 @@
+# ACTIVE TASK — SEO growth, 28 November 2026
+
+Branch: feature/seo-growth-20261128. Base main: 069e5c976370158b2f4d8fba38bab93df29a558a.
+
+- [x] Reuse owner-confirmed 311 impressions / 0 clicks; one scoped GSC page read, no repeated full audit.
+- [x] Refine software-development snippet and implementation content; preserve premium design and Office/Ads code.
+- [x] Prepare CSS-only progressive reveals and targeted SEO assertions (5/5 local PASS).
+- [x] Targeted CI PASS 46099661283 and three-run paired mobile comparison completed.
+- [x] PR #94 prepared; results in docs/seo-growth-20261128.md: score 100→100, LCP 909→1061 ms (worse), transfer −8.8%; inherited no-JS streaming limitation disclosed.
+- [ ] Owner approval before any merge or production deployment.
+
+Details: docs/seo-growth-20261128.md. No cosmetic or unrelated changes.
+
+## Previous PR93 status (historical, retained for operational gates)
+
+PR93 was merged externally into main 069e5c9; this agent did not merge or deploy it. Its final targeted hydration check passed: https://github.com/jurezaki-cloud/ju-tan-web/actions/runs/46062499412. Older candidate/CI entries below are historical, not current failures. Missing production resources and external alarms are not resolved by a merge alone.
+
 # PRODUCTION STATUS — JU-TAN WEB PR #93
 
 Updated: 2026-11-27 (Europe/Ljubljana). Decision: **NO-GO**. No merge or production deployment approved/performed.
