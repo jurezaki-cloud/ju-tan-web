@@ -29,9 +29,28 @@ Inference: align the snippet and visible service explanation with implementation
 
 Five targeted source SEO checks passed locally. The dedicated seo-growth workflow builds the exact baseline and candidate, runs scoped lint/typecheck and page regressions, then uses Lighthouse 13.6.0 on the same Linux runner and Chrome with default mobile simulation.
 Three fresh browser measurements each, report median score/FCP/LCP/TBT/CLS/transfer bytes. Both servers use production builds and Preview analytics guards; external HTTPS requests are blocked consistently. No real form submission or Ads conversion.
-The page checks verify canonical, one H1, schema parsing, software CTA, responsive overflow, no-JavaScript content and identical premium hero typography. Dark/light mobile screenshots are artifacts.
-This is a local laboratory comparison, not hosted CDN speed, field CWV or post-release organic growth. Results will be recorded after the workflow completes.
+The page checks verify canonical, one H1, schema parsing, software CTA, responsive overflow, server-rendered content, the inherited no-JavaScript shell limitation and identical premium hero typography. Dark/light mobile screenshots are artifacts.
+This is a local laboratory comparison, not hosted CDN speed, field CWV or post-release organic growth. See the final evidence below.
 
 ## Release
 
 Prepare PR with complete changes and evidence. Do not merge or deploy. The pre-existing PR93 operational gates remain separate; a successful SEO test does not establish production inbox/heartbeat readiness.
+## Final evidence — 28 November 2026
+
+CI PASS: https://github.com/jurezaki-cloud/ju-tan-web/actions/runs/46099661283 on 7af33fcecb12855c6de00de4c8fb976036c694db. Five targeted SEO assertions, scoped ESLint, TypeScript, both production builds and browser page regressions passed. Later changes are documentation only.
+
+| Median mobile metric (3 runs each) | Main before | Candidate after |
+|---|---:|---:|
+| Lighthouse performance | 100 | 100 |
+| FCP / LCP | 909.10 ms | 1060.84 ms |
+| TBT | 46.5 ms | 51 ms |
+| CLS | 0 | 0 |
+| Transfer bytes | 511274 | 466291 |
+
+Transfer fell 44983 bytes (8.8%). LCP increased 151.75 ms (16.7%); TBT increased 4.5 ms. This demonstrates less transfer, NOT a measured speed improvement. No additional tuning or repeated runs to select a more favorable result. The tradeoff is explicitly submitted for review.
+
+No-JavaScript investigation: both exact main and candidate place content inside Next streaming hidden ancestor S:0 (heading height 0). Server text and the candidate reveal wrapper opacity are correct, but whole-page no-JavaScript usability does NOT pass. This is a reproduced baseline limitation, not introduced by the SEO change; it is outside this scoped change. Earlier benchmark failures came from incorrectly assuming baseline no-script usability. The final check compares both shells and records the limitation rather than claiming it fixed.
+
+Dark mobile screenshots were visually compared: premium header, hero typography, colors and consent banner retained. Light screenshots are diagnostic only because the baseline capture includes a theme-transition frame. Automated checks confirm no horizontal overflow in either theme; they are not a full pixel-perfect visual audit.
+
+Decision: GO for SEO code review, with the measured LCP tradeoff disclosed. NO-GO for production publication until owner approval and the separate PR93 production-resource/heartbeat gates are resolved. PR: https://github.com/jurezaki-cloud/ju-tan-web/pull/94. No merge, deployment, paid service, Ads campaign or consent configuration change performed.

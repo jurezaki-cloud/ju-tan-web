@@ -5,8 +5,8 @@ Branch: feature/seo-growth-20261128. Base main: 069e5c976370158b2f4d8fba38bab93d
 - [x] Reuse owner-confirmed 311 impressions / 0 clicks; one scoped GSC page read, no repeated full audit.
 - [x] Refine software-development snippet and implementation content; preserve premium design and Office/Ads code.
 - [x] Prepare CSS-only progressive reveals and targeted SEO assertions (5/5 local PASS).
-- [ ] Complete targeted CI and three-run mobile before/after comparison.
-- [ ] Record measured results and open the SEO Pull Request.
+- [x] Targeted CI PASS 46099661283 and three-run paired mobile comparison completed.
+- [x] PR #94 prepared; results in docs/seo-growth-20261128.md: score 100→100, LCP 909→1061 ms (worse), transfer −8.8%; inherited no-JS streaming limitation disclosed.
 - [ ] Owner approval before any merge or production deployment.
 
 Details: docs/seo-growth-20261128.md. No cosmetic or unrelated changes.
