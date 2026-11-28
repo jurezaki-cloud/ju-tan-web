@@ -74,8 +74,10 @@ async function inspect(label) {
     const staticPage = await noJS.newPage();
     await staticPage.goto(url);
     const heading = staticPage.locator('#software-dev-process-title');
+    // Wake the existing content-visibility:auto section before targeting its children.
+    await staticPage.locator('section[aria-labelledby=software-dev-process-title]').evaluate(el => el.scrollIntoView());
     await heading.scrollIntoViewIfNeeded();
-    assert.equal(await heading.evaluate(el => getComputedStyle(el.parentElement).opacity), '1');
+    assert.equal(await heading.evaluate(el => getComputedStyle(el.parentElement.parentElement).opacity), '1');
     assert.ok((await staticPage.locator('body').innerText()).includes('Kako uvedemo programsko opremo'));
     await noJS.close();
   }
