@@ -74,9 +74,14 @@ async function inspect(label) {
     const staticPage = await noJS.newPage();
     await staticPage.goto(url);
     const heading = staticPage.locator('#software-dev-process-title');
-    // Wake the existing content-visibility:auto section before targeting its children.
-    await staticPage.locator('section[aria-labelledby=software-dev-process-title]').evaluate(el => el.scrollIntoView());
-    await heading.scrollIntoViewIfNeeded();
+    // Native scrolling also materializes descendants of content-visibility:auto.
+    await heading.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await staticPage.screenshot({ path: join(output, 'candidate-nojs-mobile.png') });
+    console.log('SEO_NOJS', JSON.stringify(await heading.evaluate(el => {
+      const nodes = []; for (let node = el; node; node = node.parentElement) {
+        const style = getComputedStyle(node); nodes.push({tag: node.tagName, id: node.id, display: style.display, visibility: style.visibility, opacity: style.opacity, height: node.getBoundingClientRect().height});
+      } return nodes;
+    })));
     assert.equal(await heading.evaluate(el => getComputedStyle(el.parentElement.parentElement).opacity), '1');
     assert.ok((await staticPage.locator('body').innerText()).includes('Kako uvedemo programsko opremo'));
     await noJS.close();
